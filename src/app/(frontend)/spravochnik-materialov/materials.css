@@ -12,7 +12,7 @@
   color: #071c62;
   background: #fff;
   border-bottom: 2px solid #0757e8;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.09em;
   text-transform: uppercase;
@@ -40,13 +40,13 @@
 .material-hero > p {
   margin: 0 0 24px;
   color: #8db7ff;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 .materials-hero h1 {
-  font-size: clamp(58px, 8vw, 126px);
+  font-size: clamp(58px, 6.1vw, 90px);
   line-height: 0.86;
 }
 .materials-hero h1 em {
@@ -58,7 +58,7 @@
   max-width: 780px;
   margin-top: 34px;
   color: #d7e3fb;
-  font-size: clamp(16px, 1.4vw, 21px);
+  font-size: clamp(16px, 1.25vw, 20px);
   line-height: 1.65;
 }
 .materials-groups {
@@ -76,7 +76,7 @@
   padding: 21px 25px;
   border-left: 1px solid #d9e0ec;
   color: #536079;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -97,7 +97,7 @@
 }
 .materials-group-title > span {
   color: #0757e8;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 800;
 }
 .materials-group-title h2 {
@@ -107,7 +107,7 @@
 }
 .materials-group-title p {
   color: #68748b;
-  font-size: 11px;
+  font-size: 12px;
   text-transform: uppercase;
 }
 .materials-grid {
@@ -139,14 +139,14 @@
 }
 .materials-grid p {
   color: #647087;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.65;
 }
 .materials-grid b {
   margin-top: auto;
   padding-top: 25px;
   color: #0757e8;
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -162,13 +162,13 @@
 .material-intro > p {
   margin: 0 0 22px;
   color: #bed2ff;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.13em;
   text-transform: uppercase;
 }
 .materials-note h2 {
-  font-size: clamp(42px, 6vw, 88px);
+  font-size: clamp(42px, 5vw, 74px);
 }
 .materials-note > span {
   display: block;
@@ -183,7 +183,7 @@
   padding: 16px 20px;
   color: #071c62;
   background: #fff;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -202,7 +202,7 @@
 .material-hero-visual > div > p {
   margin: 0 0 24px;
   color: #8db7ff;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -227,11 +227,11 @@
 .material-hero-visual figcaption {
   margin-top: 10px;
   color: #9fb5e4;
-  font-size: 9px;
+  font-size: 11px;
   line-height: 1.5;
 }
 .material-hero h1 {
-  font-size: clamp(80px, 13vw, 190px);
+  font-size: clamp(72px, 10vw, 138px);
   line-height: 0.75;
 }
 .material-hero h2 {
@@ -274,7 +274,7 @@
   padding: 16px 18px;
   color: #fff;
   background: #0757e8;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -292,7 +292,7 @@
 .material-facts h2 {
   margin: 0 0 20px;
   color: #0757e8;
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -381,7 +381,7 @@
 .related-materials a span {
   margin-top: 13px;
   color: #68748b;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.5;
 }
 @media (max-width: 800px) {
@@ -396,7 +396,7 @@
     font-size: 20px;
   }
   .materials-cta {
-    font-size: 8px;
+    font-size: 10px;
   }
   .materials-hero,
   .material-hero {
