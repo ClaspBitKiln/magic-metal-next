@@ -12,7 +12,7 @@
   justify-content: space-between;
   background: #fff;
   border-bottom: 2px solid #0757e8;
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.09em;
   text-transform: uppercase;
@@ -51,13 +51,13 @@
 .pipe-spec > div > p {
   margin: 0 0 22px;
   color: #78aaff;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 .pipe-hero h1 {
-  font-size: clamp(48px, 5.9vw, 96px);
+  font-size: clamp(48px, 5.4vw, 82px);
   line-height: 0.94;
 }
 .pipe-hero > div > span {
@@ -80,7 +80,7 @@
 .pipe-hero figcaption {
   margin-top: 10px;
   color: #9fb5e4;
-  font-size: 9px;
+  font-size: 11px;
   line-height: 1.5;
 }
 .pipe-breadcrumb {
@@ -90,7 +90,7 @@
   color: #6b7790;
   background: #fff;
   border-bottom: 1px solid #d5ddea;
-  font-size: 10px;
+  font-size: 12px;
 }
 .pipe-breadcrumb a {
   color: #0757e8;
@@ -121,7 +121,7 @@
   padding: 15px 18px;
   color: #fff;
   background: #0757e8;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -146,7 +146,7 @@
 }
 .pipe-spec dt {
   color: #0757e8;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
 }
@@ -180,7 +180,7 @@
   padding: 12px 0;
   border-bottom: 1px solid #dce2ed;
   color: #46516a;
-  font-size: 12px;
+  font-size: 14px;
 }
 .pipe-standards {
   color: #fff;
@@ -204,7 +204,7 @@
 }
 .pipe-standards small {
   color: #9db2df;
-  font-size: 9px;
+  font-size: 11px;
 }
 .pipe-standards b {
   color: #78aaff;
@@ -226,7 +226,7 @@
 }
 .pipe-request li b {
   color: #0757e8;
-  font-size: 11px;
+  font-size: 12px;
 }
 .pipe-request li span {
   font-size: 15px;
@@ -266,7 +266,7 @@
   color: #bed2ff;
 }
 .pipe-conversion h2 {
-  font-size: clamp(42px, 6vw, 92px);
+  font-size: clamp(42px, 5vw, 74px);
 }
 .pipe-conversion a {
   display: inline-flex;
@@ -274,7 +274,7 @@
   padding: 16px 20px;
   color: #071c62;
   background: #fff;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -303,7 +303,7 @@
     font-size: 0;
   }
   .pipe-nav a:last-child {
-    font-size: 8px;
+    font-size: 10px;
   }
   .pipe-hero {
     padding: 65px 22px;
