@@ -230,13 +230,13 @@
   font-size: 11px;
 }
 .calculator-hero h1 {
-  font-size: clamp(58px, 6.1vw, 90px);
+  font-size: clamp(46px, 4.8vw, 72px);
 }
 .calculator-tabs button,
 .calculator-controls > label,
 .calculator-fields label,
 .calculator-result a {
-  font-size: 11px;
+  font-size: 12px;
 }
 .calculator-result em {
   font-size: 13px;
