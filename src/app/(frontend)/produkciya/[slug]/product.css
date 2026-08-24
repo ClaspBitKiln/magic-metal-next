@@ -13,9 +13,8 @@
   background: #fff;
   border-bottom: 2px solid #0757e8;
   font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 .product-header > a:first-child {
   display: flex;
@@ -50,7 +49,8 @@
 }
 .product-hero h1 {
   max-width: 1050px;
-  font-size: clamp(58px, 6.1vw, 90px);
+  font-size: clamp(48px, 5.15vw, 76px);
+  line-height: 1.02;
 }
 .product-hero > div > span {
   display: block;
@@ -166,14 +166,14 @@
     font-size: 20px;
   }
   .product-cta {
-    font-size: 10px;
+    font-size: 12px;
   }
   .product-hero {
     padding: 72px 22px 65px;
     grid-template-columns: 1fr;
   }
   .product-hero h1 {
-    font-size: clamp(45px, 12vw, 68px);
+    font-size: clamp(40px, 10.5vw, 54px);
   }
   .product-body {
     padding: 65px 22px;
