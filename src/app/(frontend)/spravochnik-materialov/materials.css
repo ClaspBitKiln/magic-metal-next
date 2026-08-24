@@ -1,0 +1,474 @@
+.materials-page {
+  min-height: 100vh;
+  color: #10182f;
+  background: #f5f8fd;
+}
+.materials-header {
+  height: 88px;
+  padding: 0 6vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #071c62;
+  background: #fff;
+  border-bottom: 2px solid #0757e8;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+.materials-header > a:first-child {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+.materials-header > a:first-child b {
+  color: #0757e8;
+  font-size: 18px;
+}
+.materials-cta {
+  padding: 14px 17px;
+  color: #fff;
+  background: #0757e8;
+}
+.materials-hero {
+  padding: 88px 7vw 76px;
+  color: #fff;
+  background: linear-gradient(125deg, #061542, #092779 65%, #0757e8);
+}
+.materials-hero > p,
+.material-hero > p {
+  margin: 0 0 24px;
+  color: #8db7ff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.materials-hero h1 {
+  font-size: clamp(58px, 8vw, 126px);
+  line-height: 0.86;
+}
+.materials-hero h1 em {
+  color: #8db7ff;
+  font-style: normal;
+}
+.materials-hero > span {
+  display: block;
+  max-width: 780px;
+  margin-top: 34px;
+  color: #d7e3fb;
+  font-size: clamp(16px, 1.4vw, 21px);
+  line-height: 1.65;
+}
+.materials-groups {
+  position: sticky;
+  z-index: 2;
+  top: 0;
+  padding: 0 7vw;
+  display: flex;
+  overflow: auto;
+  background: #fff;
+  border-bottom: 1px solid #cbd5e6;
+}
+.materials-groups a {
+  flex: none;
+  padding: 21px 25px;
+  border-left: 1px solid #d9e0ec;
+  color: #536079;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.materials-directory {
+  padding: 25px 7vw 105px;
+}
+.materials-group {
+  padding: 75px 0 25px;
+  scroll-margin-top: 65px;
+}
+.materials-group-title {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  align-items: end;
+  padding-bottom: 24px;
+  border-bottom: 3px solid #071c62;
+}
+.materials-group-title > span {
+  color: #0757e8;
+  font-size: 11px;
+  font-weight: 800;
+}
+.materials-group-title h2 {
+  max-width: 760px;
+  font-size: clamp(34px, 4vw, 64px);
+  line-height: 0.95;
+}
+.materials-group-title p {
+  color: #68748b;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+.materials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+.materials-grid > a {
+  min-height: 310px;
+  padding: 30px 28px;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #cbd5e6;
+  border-bottom: 1px solid #cbd5e6;
+  background: #fff;
+}
+.materials-grid > a:nth-child(3n + 1) {
+  border-left: 1px solid #cbd5e6;
+}
+.materials-grid > a > span {
+  color: #0757e8;
+  font-size: clamp(32px, 3vw, 52px);
+  font-weight: 800;
+}
+.materials-grid h3 {
+  margin: 17px 0;
+  color: #151d33;
+  font-size: 15px;
+  line-height: 1.4;
+}
+.materials-grid p {
+  color: #647087;
+  font-size: 13px;
+  line-height: 1.65;
+}
+.materials-grid b {
+  margin-top: auto;
+  padding-top: 25px;
+  color: #0757e8;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.materials-note {
+  padding: 76px 7vw 86px;
+  color: #fff;
+  background: #0757e8;
+}
+.materials-note > p,
+.material-products > p,
+.related-materials > p,
+.material-analogs > p,
+.material-intro > p {
+  margin: 0 0 22px;
+  color: #bed2ff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+.materials-note h2 {
+  font-size: clamp(42px, 6vw, 88px);
+}
+.materials-note > span {
+  display: block;
+  max-width: 820px;
+  margin: 28px 0;
+  color: #dbe7ff;
+  font-size: 16px;
+  line-height: 1.65;
+}
+.materials-note > a {
+  display: inline-flex;
+  padding: 16px 20px;
+  color: #071c62;
+  background: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.material-hero {
+  padding: 78px 7vw 70px;
+  color: #fff;
+  background: linear-gradient(125deg, #061542, #092779 65%, #0757e8);
+}
+.material-hero-visual {
+  display: grid;
+  grid-template-columns: 1.08fr 0.92fr;
+  gap: 6vw;
+  align-items: center;
+}
+.material-hero-visual > div > p {
+  margin: 0 0 24px;
+  color: #8db7ff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.material-hero-visual > div > span {
+  display: block;
+  max-width: 820px;
+  margin-top: 27px;
+  color: #d7e3fb;
+  font-size: 18px;
+  line-height: 1.65;
+}
+.material-hero-visual figure {
+  margin: 0;
+}
+.material-hero-visual figure img {
+  width: 100%;
+  height: auto;
+  border: 1px solid #5874b5;
+  background: #f7f9fd;
+}
+.material-hero-visual figcaption {
+  margin-top: 10px;
+  color: #9fb5e4;
+  font-size: 9px;
+  line-height: 1.5;
+}
+.material-hero h1 {
+  font-size: clamp(80px, 13vw, 190px);
+  line-height: 0.75;
+}
+.material-hero h2 {
+  margin-top: 32px;
+  color: #8db7ff;
+  font-size: clamp(18px, 2vw, 30px);
+}
+.material-hero > span {
+  display: block;
+  max-width: 820px;
+  margin-top: 27px;
+  color: #d7e3fb;
+  font-size: 18px;
+  line-height: 1.65;
+}
+.material-content {
+  padding: 85px 7vw 105px;
+  display: grid;
+  grid-template-columns: 0.7fr 1.3fr;
+  gap: 8vw;
+}
+.material-intro > p {
+  color: #0757e8;
+}
+.material-intro h2 {
+  font-size: clamp(31px, 3.5vw, 54px);
+  line-height: 1.05;
+}
+.material-intro > span {
+  display: block;
+  margin: 25px 0 34px;
+  color: #546078;
+  font-size: 15px;
+  line-height: 1.7;
+}
+.material-intro > a {
+  display: flex;
+  justify-content: space-between;
+  max-width: 260px;
+  padding: 16px 18px;
+  color: #fff;
+  background: #0757e8;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.material-facts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  border-top: 3px solid #071c62;
+}
+.material-facts section {
+  padding: 28px 24px;
+  border-right: 1px solid #cbd5e6;
+  border-bottom: 1px solid #cbd5e6;
+}
+.material-facts h2 {
+  margin: 0 0 20px;
+  color: #0757e8;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.material-facts span,
+.material-analogs > span {
+  display: block;
+  padding: 9px 0;
+  border-bottom: 1px solid #d5ddea;
+  color: #4b576e;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.material-analogs {
+  padding: 70px 7vw;
+  background: #e7eef9;
+}
+.material-analogs > p {
+  color: #0757e8;
+}
+.material-analogs h2,
+.material-products h2 {
+  margin-bottom: 24px;
+  font-size: clamp(36px, 4.5vw, 68px);
+}
+.material-analogs > span {
+  max-width: 850px;
+}
+.material-analogs small {
+  display: block;
+  max-width: 850px;
+  margin-top: 25px;
+  color: #6f788b;
+  line-height: 1.6;
+}
+.material-products {
+  padding: 80px 7vw 95px;
+  color: #fff;
+  background: #071c62;
+}
+.material-products h2 {
+  max-width: 900px;
+}
+.material-products > div {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin-top: 38px;
+  border-top: 1px solid #4a5985;
+}
+.material-products a {
+  padding: 24px 20px;
+  display: flex;
+  justify-content: space-between;
+  border-right: 1px solid #4a5985;
+  border-bottom: 1px solid #4a5985;
+  color: #dce6ff;
+  font-size: 14px;
+}
+.material-products a b {
+  color: #70a4ff;
+}
+.related-materials {
+  padding: 72px 7vw 85px;
+}
+.related-materials > p {
+  color: #0757e8;
+}
+.related-materials > div {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 3px solid #071c62;
+}
+.related-materials a {
+  min-height: 140px;
+  padding: 25px 20px;
+  border-right: 1px solid #cbd5e6;
+  border-bottom: 1px solid #cbd5e6;
+}
+.related-materials a b,
+.related-materials a span {
+  display: block;
+}
+.related-materials a b {
+  color: #0757e8;
+  font-size: 28px;
+}
+.related-materials a span {
+  margin-top: 13px;
+  color: #68748b;
+  font-size: 12px;
+  line-height: 1.5;
+}
+@media (max-width: 800px) {
+  .materials-header {
+    height: 74px;
+    padding: 0 20px;
+  }
+  .materials-header > a:first-child {
+    font-size: 0;
+  }
+  .materials-header > a:first-child b {
+    font-size: 20px;
+  }
+  .materials-cta {
+    font-size: 8px;
+  }
+  .materials-hero,
+  .material-hero {
+    padding: 68px 22px 62px;
+  }
+  .material-hero-visual {
+    grid-template-columns: 1fr;
+  }
+  .materials-hero h1 {
+    font-size: 51px;
+  }
+  .material-hero h1 {
+    font-size: 76px;
+  }
+  .materials-groups {
+    padding: 0;
+  }
+  .materials-directory {
+    padding: 10px 22px 70px;
+  }
+  .materials-group {
+    padding-top: 55px;
+  }
+  .materials-group-title {
+    grid-template-columns: 35px 1fr;
+  }
+  .materials-group-title p {
+    display: none;
+  }
+  .materials-grid {
+    grid-template-columns: 1fr;
+  }
+  .materials-grid > a,
+  .materials-grid > a:nth-child(3n + 1) {
+    min-height: 260px;
+    border-left: 1px solid #cbd5e6;
+  }
+  .materials-note,
+  .material-analogs,
+  .material-products,
+  .related-materials {
+    padding: 62px 22px;
+  }
+  .material-content {
+    padding: 65px 22px;
+    grid-template-columns: 1fr;
+    gap: 55px;
+  }
+  .material-facts {
+    grid-template-columns: 1fr;
+  }
+  .material-products > div,
+  .related-materials > div {
+    grid-template-columns: 1fr;
+  }
+  .material-products a,
+  .related-materials a {
+    border-left: 1px solid #4a5985;
+  }
+  .related-materials a {
+    min-height: auto;
+  }
+}
+.material-facts .fact-link {
+  display: flex;
+  justify-content: space-between;
+  padding: 9px 0;
+  border-bottom: 1px solid #d5ddea;
+  color: #0757e8;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.material-facts .fact-link b {
+  flex: none;
+}
