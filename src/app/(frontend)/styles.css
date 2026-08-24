@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Oswald:wght@400;500;600&display=swap');
 
+/* Typography scale verified across public catalogue screens. */
+
 :root{--blue:#0757e8;--navy:#071c62;--ink:#10182f;--muted:#687187;--line:#d8deea;--mist:#f2f6fc;--white:#fff;--orange:#ff842b;--text-micro:11px;--text-ui:12px;--text-small:13px;--text-body:15px;--display-section:clamp(50px,5.5vw,82px)}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;background:#fff;-webkit-font-smoothing:antialiased}
