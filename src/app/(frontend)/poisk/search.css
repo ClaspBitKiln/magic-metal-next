@@ -2,4 +2,5 @@
 
 /* Unified readable type scale */
 .search-header{font-size:13px}.search-hero>p,.search-box>label{font-size:11px}.search-hero h1{font-size:clamp(58px,6.1vw,90px)}.search-box>p,.search-summary{font-size:12px}.search-filters button,.search-results small,.search-results b,.search-empty a{font-size:11px}.search-results h3{font-size:14px}.search-results p{font-size:14px}.search-empty h2{font-size:clamp(35px,4.5vw,62px)}
+.search-box input{font-family:Manrope,Arial,sans-serif;font-size:clamp(17px,2vw,25px);font-weight:600;line-height:1.2}
 @media(max-width:760px){.search-header>a:last-child{font-size:10px}}
