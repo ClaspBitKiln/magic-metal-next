@@ -23,7 +23,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 .top-cta:hover:before,.primary-button:hover:before,.request-form button:hover:before{transform:translateX(82%) skewX(-12deg);opacity:1}
 .menu-button{display:none;width:42px;height:42px;padding:10px;border:0;background:transparent}.menu-button span{display:block;height:2px;margin:5px 0;background:var(--navy)}
 .hero{position:relative;isolation:isolate;min-height:clamp(720px,100svh,990px);background:#f7faff;overflow:hidden}
-.hero-visual{z-index:-2;object-fit:cover;object-position:center center}
+.hero-visual{z-index:-2;object-fit:cover;object-position:right center}
 .hero:after{content:"";position:absolute;z-index:-1;inset:0;background:linear-gradient(90deg,rgba(255,255,255,.23),transparent 48%);pointer-events:none}
 .hero-copy{width:min(700px,49vw);padding:clamp(145px,15vh,175px) 0 190px 5.5vw}
 .hero-label{display:inline-flex;margin:0 0 22px;padding:9px 13px;color:#fff;background:var(--navy);border-radius:3px;box-shadow:0 7px 20px rgba(7,28,98,.18);font-size:10px;font-weight:700;letter-spacing:.13em;text-transform:uppercase}
