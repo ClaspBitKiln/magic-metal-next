@@ -2,4 +2,5 @@
 
 /* Unified readable type scale */
 .calculator-header{font-size:13px}.calculator-hero>p,.calculator-info>p,.calculator-result>p{font-size:11px}.calculator-hero h1{font-size:clamp(58px,6.1vw,90px)}.calculator-tabs button,.calculator-controls>label,.calculator-fields label,.calculator-result a{font-size:11px}.calculator-result em{font-size:13px}.calculator-info>div span{font-size:12px}.calculator-info>div p{font-size:14px}
+.calculator-controls select,.calculator-fields input{font-family:Manrope,Arial,sans-serif;font-size:15px;font-weight:600;line-height:1.2}
 @media(max-width:760px){.calculator-header>a:last-child{font-size:10px}}
