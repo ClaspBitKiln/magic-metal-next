@@ -13,9 +13,8 @@
   background: #fff;
   border-bottom: 2px solid #0757e8;
   font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 .materials-header > a:first-child {
   display: flex;
@@ -46,8 +45,8 @@
   text-transform: uppercase;
 }
 .materials-hero h1 {
-  font-size: clamp(58px, 6.1vw, 90px);
-  line-height: 0.86;
+  font-size: clamp(48px, 5.15vw, 76px);
+  line-height: 1.02;
 }
 .materials-hero h1 em {
   color: #8db7ff;
@@ -396,7 +395,7 @@
     font-size: 20px;
   }
   .materials-cta {
-    font-size: 10px;
+    font-size: 12px;
   }
   .materials-hero,
   .material-hero {
