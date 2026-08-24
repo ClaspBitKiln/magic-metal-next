@@ -12,7 +12,7 @@
   color: #071c62;
   background: #fff;
   border-bottom: 2px solid #0757e8;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.09em;
   text-transform: uppercase;
@@ -43,21 +43,21 @@
 .product-hero > div > p {
   margin: 0 0 24px;
   color: #8db7ff;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 .product-hero h1 {
   max-width: 1050px;
-  font-size: clamp(58px, 8vw, 130px);
+  font-size: clamp(58px, 6.1vw, 90px);
 }
 .product-hero > div > span {
   display: block;
   max-width: 760px;
   margin-top: 32px;
   color: #d7e3fb;
-  font-size: clamp(16px, 1.4vw, 22px);
+  font-size: clamp(16px, 1.25vw, 20px);
   line-height: 1.65;
 }
 .product-hero figure {
@@ -72,7 +72,7 @@
 .product-hero figcaption {
   margin-top: 10px;
   color: #9fb5e4;
-  font-size: 9px;
+  font-size: 11px;
   line-height: 1.5;
 }
 .product-body {
@@ -85,14 +85,14 @@
 .product-facts h2 {
   margin: 0 0 24px;
   color: #0757e8;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 .product-body article p {
   margin: 0 0 35px;
-  font-size: clamp(19px, 1.7vw, 28px);
+  font-size: clamp(18px, 1.45vw, 24px);
   line-height: 1.55;
 }
 .product-body article > a {
@@ -102,7 +102,7 @@
   padding: 16px 18px;
   color: #fff;
   background: #0757e8;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -124,7 +124,7 @@
   padding: 10px 0;
   border-bottom: 1px solid #d6ddea;
   color: #46516a;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.45;
 }
 .product-conversion {
@@ -135,13 +135,13 @@
 .product-conversion p {
   margin: 0 0 22px;
   color: #bed2ff;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.13em;
   text-transform: uppercase;
 }
 .product-conversion h2 {
-  font-size: clamp(42px, 6vw, 92px);
+  font-size: clamp(42px, 5vw, 74px);
 }
 .product-conversion a {
   display: inline-flex;
@@ -149,7 +149,7 @@
   padding: 16px 20px;
   color: #071c62;
   background: #fff;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -166,7 +166,7 @@
     font-size: 20px;
   }
   .product-cta {
-    font-size: 8px;
+    font-size: 10px;
   }
   .product-hero {
     padding: 72px 22px 65px;
@@ -202,14 +202,14 @@
 .product-materials > p {
   margin: 0 0 22px;
   color: #8db7ff;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.13em;
   text-transform: uppercase;
 }
 .product-materials h2 {
   max-width: 850px;
-  font-size: clamp(38px, 5vw, 76px);
+  font-size: clamp(38px, 4.5vw, 66px);
 }
 .product-materials > div {
   display: grid;
@@ -234,7 +234,7 @@
 .product-materials a span {
   margin-top: 11px;
   color: #dce6ff;
-  font-size: 11px;
+  font-size: 13px;
   line-height: 1.45;
 }
 @media (max-width: 760px) {
@@ -255,7 +255,7 @@
   padding: 10px 0;
   border-bottom: 1px solid #d6ddea;
   color: #0757e8;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.45;
 }
 .product-facts .fact-link b {
@@ -268,14 +268,14 @@
 .product-subcatalog > p {
   margin: 0 0 20px;
   color: #0757e8;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.13em;
   text-transform: uppercase;
 }
 .product-subcatalog h2 {
   max-width: 900px;
-  font-size: clamp(38px, 5vw, 76px);
+  font-size: clamp(38px, 4.5vw, 66px);
 }
 .product-subcatalog > div {
   display: grid;
@@ -305,7 +305,7 @@
 .product-subcatalog a small {
   margin-top: 18px;
   color: #68748c;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.5;
 }
 .product-subcatalog a b {
