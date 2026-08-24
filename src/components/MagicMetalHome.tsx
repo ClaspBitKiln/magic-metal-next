@@ -105,11 +105,11 @@ export default function MagicMetalHome() {
       <section className="hero" id="top" aria-labelledby="hero-title">
         <Image className="hero-visual" src="/images/hero-approved.webp" alt="Промышленное производство, металлопрокат, трубы, детали трубопроводов, автомобильная и авиационная доставка" fill priority sizes="100vw" />
         <div className="hero-copy" id="content">
-          <motion.p initial="hidden" animate="visible" variants={animation} transition={{ duration: .5 }} className="hero-label">Комплексное снабжение промышленности</motion.p>
+          <motion.p initial="hidden" animate="visible" variants={animation} transition={{ duration: .5 }} className="hero-label">Поставка металла под требования проекта</motion.p>
           <motion.p initial="hidden" animate="visible" variants={animation} transition={{ duration: .55, delay: .08 }} className="eyebrow">Россия · СНГ · Узбекистан</motion.p>
           <motion.h1 initial="hidden" animate="visible" variants={animation} transition={{ duration: .6, delay: .12 }} id="hero-title">Металл<br /><em>для сложных</em><br /><small>промышленных задач</small></motion.h1>
-          <motion.p initial="hidden" animate="visible" variants={animation} transition={{ duration: .6, delay: .18 }} className="hero-lead">Разбираем спецификацию, проверяем технические требования и комплектуем поставку — от электросварных и бесшовных труб до СДТ и изделий в изоляции.</motion.p>
-          <motion.div initial="hidden" animate="visible" variants={animation} transition={{ duration: .6, delay: .22 }} className="hero-actions"><a className="primary-button" href="#request">Отправить заявку на расчёт <span>↗</span></a><span className="file-types">Excel · PDF · Word · фото · чертёж</span></motion.div>
+          <motion.p initial="hidden" animate="visible" variants={animation} transition={{ duration: .6, delay: .18 }} className="hero-lead">Находим редкие и нестандартные позиции, сверяем ГОСТ, ТУ и документы, комплектуем и доставляем металл по России и СНГ.</motion.p>
+          <motion.div initial="hidden" animate="visible" variants={animation} transition={{ duration: .6, delay: .22 }} className="hero-actions"><a className="primary-button" href="#request">Рассчитать поставку <span>↗</span></a><span className="file-types">Excel · PDF · Word · фото · чертёж</span></motion.div>
         </div>
         <div className="hero-strip" id="delivery"><div className="delivery-title"><b>Авто · Ж/Д · Авиа</b><span>Срочная доставка снижает простой оборудования и персонала</span></div><a href="#request">Рассчитать поставку <span>→</span></a></div>
       </section>
@@ -120,14 +120,14 @@ export default function MagicMetalHome() {
       </section>
 
       <section className="section priority-section" id="products">
-        <motion.div className="section-heading" initial="hidden" whileInView="visible" viewport={{ once: true, amount: .3 }} variants={animation} transition={{ duration: .55 }}><p className="section-kicker">01 — Главные направления</p><h2>Трубы, СДТ<br />и <em>изоляция</em></h2><p>Сначала показываем то, за чем к нам обращаются чаще всего. Китай — вариант происхождения внутри заявки, а не отдельный раздел.</p></motion.div>
+        <motion.div className="section-heading" initial="hidden" whileInView="visible" viewport={{ once: true, amount: .3 }} variants={animation} transition={{ duration: .55 }}><p className="section-kicker">01 — Главные направления</p><h2>Трубы, СДТ<br />и <em>изоляция</em></h2><p>Подбираем продукцию по ГОСТ, ТУ, марке стали, геометрии и условиям эксплуатации. Проверяем совместимость требований до расчёта.</p></motion.div>
         <div className="priority-grid">
           {priorityProducts.map((product, index) => <motion.article key={product.slug} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .2 }} variants={animation} transition={{ duration: .48, delay: index * .06 }}><span>{product.index}</span><h3>{product.title}</h3><p>{product.note}</p><small>{product.standards}</small><a href={`/produkciya/${product.slug}`} aria-label={`Подробнее: ${product.title}`}>Подробнее и расчёт <b>↗</b></a></motion.article>)}
         </div>
       </section>
 
       <section className="section catalog-section" id="gost">
-        <div className="catalog-head"><div><p className="section-kicker light">02 — Трубный каталог</p><h2>Сортамент<br /><em>и стандарты</em></h2></div><p>Структура сверена с презентацией «Мэджик Металл» и каталогами «Металлайн», «МетПромУрал» и УМПЦ. Окончательное исполнение подтверждаем по вашей спецификации. <Link href="/spravochnik-materialov">Открыть справочник материалов →</Link></p></div>
+        <div className="catalog-head"><div><p className="section-kicker light">02 — Трубный каталог</p><h2>Сортамент<br /><em>и стандарты</em></h2></div><p>Сверяем сортамент, технические условия, марку стали и требования к контролю. Если стандартной позиции нет — подбираем производство или технически корректную замену. <Link href="/spravochnik-materialov">Открыть справочник материалов →</Link></p></div>
         <div className="catalog-table" role="table" aria-label="Трубная продукция">
           <div className="catalog-row catalog-labels" role="row"><span>Тип продукции</span><span>Размеры</span><span>Стандарты</span><span>Марки / исполнение</span></div>
           {pipeCatalog.map(([title, size, standards, grades], index) => <motion.div className="catalog-row" role="row" key={title} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .35 }} variants={animation} transition={{ duration: .42, delay: Math.min(index * .035, .2) }}><strong><i>{String(index + 1).padStart(2, '0')}</i>{title}</strong><span>{size}</span><span>{standards}</span><span>{grades}</span></motion.div>)}
@@ -135,17 +135,17 @@ export default function MagicMetalHome() {
       </section>
 
       <section className="section about-section" id="about">
-        <div className="about-copy"><p className="section-kicker">03 — Экспертиза заявки</p><h2>Разбираем<br />спецификацию.<br /><em>Находим решение.</em></h2></div>
-        <div className="about-panel"><p>Проверяем марку стали, стандарт, размеры, документы, варианты замены и срок. Собираем сложную заявку у проверенных производителей и поставщиков — от одной позиции до полного проекта.</p><div className="process-list"><span>01 Анализ требований</span><span>02 Подбор и проверка</span><span>03 Комплектация</span><span>04 Доставка на объект</span></div></div>
+        <div className="about-copy"><p className="section-kicker">03 — Экспертиза заявки</p><h2>Проверяем<br />каждое требование.<br /><em>Находим решение.</em></h2></div>
+        <div className="about-panel"><p>Инженерно разбираем заявку: марка стали, стандарт, размеры, контроль, документы, допустимые замены и срок. Затем собираем поставку — от одной позиции до комплектации проекта.</p><div className="process-list"><span>01 Анализ требований</span><span>02 Подбор и проверка</span><span>03 Комплектация</span><span>04 Доставка на объект</span></div></div>
       </section>
 
       <section className="section other-section">
-        <div className="section-heading compact"><p className="section-kicker">04 — Вся номенклатура презентации</p><h2>Полный спектр<br /><em>металлопроката</em></h2></div>
+        <div className="section-heading compact"><p className="section-kicker">04 — Остальная номенклатура</p><h2>Металл для<br /><em>всего проекта</em></h2></div>
         <div className="other-list">{otherProducts.map(([title, text], index) => <motion.article key={title} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .4 }} variants={animation} transition={{ duration: .38, delay: Math.min(index * .02, .14) }}><span>{String(index + 1).padStart(2, '0')}</span><h3>{title}</h3><p>{text}</p><a href={otherSeoLinks[title] || '#request'} aria-label={`Подробнее: ${title}`}>↗</a></motion.article>)}</div>
       </section>
 
       <section className="request-section" id="request">
-        <div className="request-copy" id="contacts"><p className="section-kicker light">05 — Новый проект</p><h2>Пришлите<br /><em>спецификацию</em></h2><p>Подберём исполнение, проверим документы и подготовим предложение.</p><a href="mailto:m1@magicmet.ru">m1@magicmet.ru</a><a href="tel:+79227117363">+7 922 711-73-63</a></div>
+        <div className="request-copy" id="contacts"><p className="section-kicker light">05 — Расчёт поставки</p><h2>Пришлите<br /><em>спецификацию</em></h2><p>Укажите требования и город доставки. Проверим спецификацию, предложим исполнение и подготовим коммерческое предложение.</p><a href="mailto:m1@magicmet.ru">m1@magicmet.ru</a><a href="tel:+79227117363">+7 922 711-73-63</a></div>
         <form className="request-form" onSubmit={submitRequest} encType="multipart/form-data">
           <div className="form-grid"><label>Ваше имя<input name="name" autoComplete="name" required /></label><label>Компания<input name="company" autoComplete="organization" /></label><label>Телефон<input name="phone" type="tel" inputMode="tel" autoComplete="tel" required /></label><label>Email<input name="email" type="email" autoComplete="email" /></label></div>
           <label>Направление<select name="productDirection" defaultValue=""><option value="">Выберите при необходимости</option><option value="electrowelded-pipes">Трубы электросварные</option><option value="seamless-pipes">Трубы бесшовные</option><option value="pipeline-parts">СДТ</option><option value="insulated">Трубы и СДТ в изоляции</option><option value="other">Другая продукция</option></select></label>
@@ -158,7 +158,7 @@ export default function MagicMetalHome() {
         </form>
       </section>
 
-      <footer className="footer"><Image src="/images/logo.png" alt="" width={92} height={68} /><p>ООО «Мэджик Металл» · комплексное снабжение промышленности</p><div><Link href="/poisk">Поиск по каталогу</Link><Link href="/kalkulyator-metalla">Калькулятор</Link><Link href="/postavki/uzbekistan">Поставки в Узбекистан</Link><a href="mailto:m1@magicmet.ru">m1@magicmet.ru</a><a href="https://magicmet.ru">magicmet.ru</a></div></footer>
+      <footer className="footer"><Image src="/images/logo.png" alt="" width={92} height={68} /><p>ООО «Мэджик Металл» · поставки металла для промышленности</p><div><Link href="/poisk">Поиск по каталогу</Link><Link href="/kalkulyator-metalla">Калькулятор</Link><Link href="/postavki/uzbekistan">Поставки в Узбекистан</Link><a href="mailto:m1@magicmet.ru">m1@magicmet.ru</a><a href="https://magicmet.ru">magicmet.ru</a></div></footer>
     </main>
   )
 }
