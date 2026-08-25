@@ -114,6 +114,10 @@
 .materials-search-control input::placeholder {
   color: #7b879d;
 }
+.materials-search-control input::-webkit-search-cancel-button {
+  display: none;
+  appearance: none;
+}
 .materials-search-control > div > button {
   position: absolute;
   top: 0;
