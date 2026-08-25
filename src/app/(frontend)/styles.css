@@ -113,9 +113,6 @@ select:focus-visible {
   color: var(--blue);
   border-color: var(--blue);
 }
-.nav .aviation-link {
-  color: var(--orange);
-}
 .top-actions {
   justify-self: end;
   display: flex;
