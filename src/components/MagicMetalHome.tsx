@@ -103,7 +103,7 @@ export default function MagicMetalHome() {
       </header>
 
       <section className="hero" id="top" aria-labelledby="hero-title">
-        <Image className="hero-visual" src="/images/hero-branded-plane-left.webp" alt="Брендированный грузовой автомобиль Мэджик Металл, промышленное производство, металлопрокат, трубы и детали трубопроводов" fill priority sizes="100vw" />
+        <Image className="hero-visual" src="/images/hero-branded-plane-left-v2.webp" alt="Брендированный грузовой автомобиль Мэджик Металл, промышленное производство, металлопрокат, трубы и детали трубопроводов" fill priority sizes="100vw" />
         <div className="hero-copy" id="content">
           <motion.p initial="hidden" animate="visible" variants={animation} transition={{ duration: .5 }} className="hero-label">Поставка металла под требования проекта</motion.p>
           <motion.p initial="hidden" animate="visible" variants={animation} transition={{ duration: .55, delay: .08 }} className="eyebrow">Россия · СНГ · Узбекистан</motion.p>
