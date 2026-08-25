@@ -29,7 +29,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const organizationJsonLd = {
     '@context': 'https://schema.org', '@type': 'Organization', name: 'ООО «Мэджик Металл»', url: 'https://magicmet.ru',
-    email: 'm1@magicmet.ru', telephone: '+7 922 711-73-63', logo: 'https://magicmet.ru/images/logo-hq.webp',
+    email: 'm1@magicmet.ru', telephone: '+7 922 711-73-63', logo: 'https://magicmet.ru/images/logo-transparent-v2.png',
     areaServed: ['Россия', 'СНГ', 'Узбекистан'],
     knowsAbout: ['электросварные трубы', 'бесшовные трубы', 'соединительные детали трубопроводов', 'металлопрокат', 'нержавеющие стали', 'цветные металлы'],
   }

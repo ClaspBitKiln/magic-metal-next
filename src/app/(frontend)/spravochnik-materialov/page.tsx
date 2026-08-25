@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
+import MaterialsSearch from '@/components/MaterialsSearch'
 import { materialGroups, materials } from '@/data/materials'
 import './materials.css'
 
@@ -19,6 +20,7 @@ export default function MaterialsDirectoryPage() {
         <h1>Марки сталей<br /><em>и сплавов</em></h1>
         <span>Свойства, применение, стандарты и связанные товарные позиции. Подбор материала и аналога подтверждаем по техническому заданию.</span>
       </section>
+      <MaterialsSearch />
       <nav className="materials-groups" aria-label="Группы материалов">
         {materialGroups.map((group) => <a key={group.key} href={`#${group.key}`}>{group.label}</a>)}
       </nav>

@@ -91,7 +91,7 @@ export default function MagicMetalHome() {
     <main>
       <a className="skip-link" href="#content">К содержанию</a>
       <header className="topbar">
-        <a className="brand" href="#top" aria-label="Мэджик Металл — главная"><Image src="/images/logo-hq.webp" alt="Мэджик Металл" width={147} height={109} priority /></a>
+        <a className="brand" href="#top" aria-label="Мэджик Металл — главная"><Image src="/images/logo-transparent-v2.png" alt="Мэджик Металл" width={147} height={109} priority /></a>
         <nav className={menuOpen ? 'nav open' : 'nav'} aria-label="Основная навигация">
           <a href="#about">О компании</a><a href="#products">Продукция</a><Link href="/spravochnik-gost">Справочник ГОСТ</Link><a href="#contacts">Контакты</a>
         </nav>
@@ -158,7 +158,7 @@ export default function MagicMetalHome() {
         </form>
       </section>
 
-      <footer className="footer"><Image src="/images/logo-hq.webp" alt="" width={92} height={68} /><p>ООО «Мэджик Металл» · поставки металла для промышленности</p><div><Link href="/poisk">Поиск по каталогу</Link><Link href="/kalkulyator-metalla">Калькулятор</Link><Link href="/postavki/uzbekistan">Поставки в Узбекистан</Link><a href="mailto:m1@magicmet.ru">m1@magicmet.ru</a><a href="https://magicmet.ru">magicmet.ru</a></div></footer>
+      <footer className="footer"><Image src="/images/logo-transparent-v2.png" alt="" width={92} height={68} /><p>ООО «Мэджик Металл» · поставки металла для промышленности</p><div><Link href="/poisk">Поиск по каталогу</Link><Link href="/kalkulyator-metalla">Калькулятор</Link><Link href="/postavki/uzbekistan">Поставки в Узбекистан</Link><a href="mailto:m1@magicmet.ru">m1@magicmet.ru</a><a href="https://magicmet.ru">magicmet.ru</a></div></footer>
     </main>
   )
 }
