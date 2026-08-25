@@ -27,6 +27,8 @@ export default async function MaterialPage({ params }: { params: Promise<{ slug:
   if (!material) notFound()
   const related = materials.filter((item) => item.group === material.group && item.slug !== material.slug).slice(0, 4)
   const spec = materialSpecs[material.slug]
+  const primaryChemistry = spec?.chemistry.slice(0, 6) ?? []
+  const secondaryChemistry = spec?.chemistry.slice(6) ?? []
   const requestHref = `/?material=${encodeURIComponent(material.designation)}#request`
   const jsonLd = {
     '@context': 'https://schema.org', '@type': 'TechArticle',
@@ -50,22 +52,13 @@ export default async function MaterialPage({ params }: { params: Promise<{ slug:
         </div>
       </section>
       {spec && <section className="material-passport" aria-labelledby="material-passport-title">
-        <header>
-          <div><p>Технический паспорт марки</p><h2 id="material-passport-title">Состав и свойства</h2></div>
-          <span>Значения при 20 °C, если не указано иное</span>
-        </header>
-        <div className="material-passport-grid">
-          <article className="chemistry-card">
-            <div className="passport-card-title"><span>01</span><div><h3>Химический состав</h3><p>{spec.compositionStandard}</p></div></div>
-            <div className="chemistry-grid">{spec.chemistry.map((item) => <div key={item.label}><b>{item.label}</b><span>{item.value}</span></div>)}</div>
-          </article>
-          <article className="mechanics-card">
-            <div className="passport-card-title"><span>02</span><div><h3>Механические свойства</h3><p>{spec.mechanicalStandard}</p></div></div>
-            <div className="material-condition"><b>Состояние</b><span>{spec.condition}</span></div>
-            <div className="mechanics-grid">{spec.mechanics.map((item) => <div key={item.label}><span>{item.label}</span><b>{item.value}</b></div>)}</div>
-          </article>
-        </div>
-        <aside><b>Важно</b><span>{spec.note} Окончательные требования принимают по договорному стандарту и сертификату конкретной партии.</span></aside>
+        <header><div><p>Технический паспорт марки</p><h2 id="material-passport-title">Главное для подбора</h2></div><span>{spec.mechanicalStandard}</span></header>
+        <div className="mechanics-grid">{spec.mechanics.map((item) => <div key={item.label}><span>{item.label}</span><b>{item.value}</b></div>)}</div>
+        <div className="material-condition">{spec.condition}</div>
+        <div className="chemistry-heading"><h3>Химический состав, %</h3><span>{spec.compositionStandard}</span></div>
+        <div className="chemistry-grid">{primaryChemistry.map((item) => <div key={item.label}><b>{item.label}</b><span>{item.value.replace(' %', '')}</span></div>)}</div>
+        {secondaryChemistry.length > 0 && <details className="chemistry-more"><summary>Остальные элементы: {secondaryChemistry.map((item) => item.label).join(', ')}</summary><div>{secondaryChemistry.map((item) => <span key={item.label}><b>{item.label}</b>{item.value}</span>)}</div></details>}
+        <aside><span>{spec.note} Стандарт и сертификат конкретной партии имеют приоритет.</span></aside>
       </section>}
       {material.analogs.length > 0 && <section className="material-analogs"><p>Справочные аналоги</p><h2>Соответствия требуют проверки</h2>{material.analogs.map((item) => <span key={item}>{item}</span>)}<small>Совпадение обозначений или близость химического состава не гарантируют одинаковые механические свойства, коррозионную стойкость и допустимые условия эксплуатации.</small></section>}
       <section className="material-products"><p>Связанные товарные направления</p><h2>Где применяется {material.designation}</h2><div>{material.relatedProducts.map((item) => <Link href={`/produkciya/${item.slug}`} key={item.slug}>{item.label}<b>↗</b></Link>)}</div></section>

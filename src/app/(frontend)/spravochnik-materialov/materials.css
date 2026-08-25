@@ -425,10 +425,10 @@
 }
 .material-passport {
   padding: 76px 7vw 82px;
-  background: #edf2fa;
+  background: #f8faff;
 }
 .material-passport > header {
-  margin-bottom: 30px;
+  margin-bottom: 42px;
   display: flex;
   align-items: end;
   justify-content: space-between;
@@ -443,124 +443,128 @@
   text-transform: uppercase;
 }
 .material-passport > header h2 {
-  font-size: clamp(38px, 4.2vw, 64px);
+  color: #0757e8;
+  font-size: clamp(34px, 3.3vw, 52px);
   line-height: 1;
 }
 .material-passport > header > span {
-  max-width: 280px;
+  max-width: 360px;
   color: #65718a;
   font-size: 12px;
   line-height: 1.5;
   text-align: right;
 }
-.material-passport-grid {
+.mechanics-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-  gap: 2px;
-  background: #bfcbe0;
-  border: 1px solid #bfcbe0;
-}
-.material-passport-grid > article {
-  padding: 30px;
-  background: #fff;
-}
-.passport-card-title {
-  min-height: 56px;
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-}
-.passport-card-title > span {
-  padding-top: 5px;
-  color: #0757e8;
-  font-size: 11px;
-  font-weight: 800;
-}
-.passport-card-title h3 {
-  color: #071c62;
-  font-size: 24px;
-  line-height: 1.15;
-}
-.passport-card-title p {
-  margin-top: 6px;
-  color: #707b90;
-  font-size: 11px;
-}
-.chemistry-grid {
-  margin-top: 24px;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
   border-top: 1px solid #d6deeb;
-  border-left: 1px solid #d6deeb;
+  border-bottom: 1px solid #d6deeb;
 }
-.chemistry-grid > div {
-  min-height: 80px;
-  padding: 13px;
+.mechanics-grid > div {
+  min-height: 150px;
+  padding: 22px 24px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   border-right: 1px solid #d6deeb;
+}
+.mechanics-grid > div:first-child {
+  padding-left: 0;
+}
+.mechanics-grid > div:last-child {
+  border-right: 0;
+}
+.mechanics-grid span {
+  max-width: 230px;
+  color: #1d2942;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.35;
+}
+.mechanics-grid b {
+  color: #0757e8;
+  font-size: clamp(27px, 2.8vw, 43px);
+  line-height: 1;
+  white-space: nowrap;
+}
+.material-condition {
+  padding: 20px 0;
+  color: #29364f;
   border-bottom: 1px solid #d6deeb;
+  font-size: 15px;
+  line-height: 1.5;
+}
+.chemistry-heading {
+  margin: 38px 0 24px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+}
+.chemistry-heading h3 {
+  color: #071c62;
+  font-size: 25px;
+}
+.chemistry-heading span {
+  color: #69758b;
+  font-size: 12px;
+}
+.chemistry-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  border-top: 1px solid #d6deeb;
+  border-bottom: 1px solid #d6deeb;
+}
+.chemistry-grid > div {
+  min-height: 102px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid #d6deeb;
+}
+.chemistry-grid > div:first-child {
+  padding-left: 0;
+}
+.chemistry-grid > div:last-child {
+  border-right: 0;
 }
 .chemistry-grid b {
   color: #0757e8;
-  font-size: 18px;
+  font-size: 19px;
 }
 .chemistry-grid span {
-  color: #354159;
-  font-size: 12px;
+  color: #1d2942;
+  font-size: 15px;
 }
-.material-condition {
-  margin: 24px 0 10px;
-  padding: 14px 16px;
-  display: grid;
-  grid-template-columns: 90px 1fr;
-  gap: 10px;
-  background: #edf3ff;
-  color: #34405a;
-  font-size: 12px;
-  line-height: 1.45;
-}
-.material-condition b {
-  color: #0757e8;
-  text-transform: uppercase;
-}
-.mechanics-grid {
-  border-top: 1px solid #d6deeb;
-}
-.mechanics-grid > div {
-  min-height: 68px;
-  padding: 12px 2px;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 22px;
+.chemistry-more {
   border-bottom: 1px solid #d6deeb;
 }
-.mechanics-grid span {
-  color: #59657b;
-  font-size: 12px;
-  line-height: 1.4;
+.chemistry-more summary {
+  padding: 19px 0;
+  color: #0757e8;
+  cursor: pointer;
+  font-size: 14px;
 }
-.mechanics-grid b {
+.chemistry-more > div {
+  padding: 0 0 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 28px;
+}
+.chemistry-more span {
+  color: #58657b;
+  font-size: 13px;
+}
+.chemistry-more span b {
+  margin-right: 7px;
   color: #071c62;
-  font-size: 18px;
-  text-align: right;
-  white-space: nowrap;
 }
 .material-passport > aside {
-  padding: 18px 22px;
-  display: grid;
-  grid-template-columns: 90px 1fr;
-  gap: 18px;
-  color: #d9e6ff;
-  background: #071c62;
+  padding-top: 26px;
+  color: #6b768b;
   font-size: 12px;
   line-height: 1.55;
-}
-.material-passport > aside b {
-  color: #76a5ff;
-  text-transform: uppercase;
 }
 .material-analogs {
   padding: 70px 7vw;
@@ -724,8 +728,27 @@
   .material-passport > header > span {
     text-align: left;
   }
-  .material-passport-grid {
-    grid-template-columns: 1fr;
+  .mechanics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .mechanics-grid > div,
+  .mechanics-grid > div:first-child {
+    padding: 20px;
+    border-bottom: 1px solid #d6deeb;
+  }
+  .mechanics-grid > div:nth-child(2n) {
+    border-right: 0;
+  }
+  .chemistry-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .chemistry-grid > div,
+  .chemistry-grid > div:first-child {
+    padding: 16px;
+    border-bottom: 1px solid #d6deeb;
+  }
+  .chemistry-grid > div:nth-child(3n) {
+    border-right: 0;
   }
   .material-facts {
     grid-template-columns: 1fr;
@@ -757,22 +780,25 @@
   .materials-search-results > div {
     grid-template-columns: 1fr;
   }
-  .material-passport-grid > article {
-    padding: 24px 18px;
-  }
   .chemistry-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .mechanics-grid > div {
-    grid-template-columns: 1fr;
-    gap: 5px;
+  .chemistry-grid > div:nth-child(3n) {
+    border-right: 1px solid #d6deeb;
+  }
+  .chemistry-grid > div:nth-child(2n) {
+    border-right: 0;
   }
   .mechanics-grid b {
-    text-align: left;
+    font-size: 25px;
   }
-  .material-passport > aside {
-    grid-template-columns: 1fr;
-    gap: 6px;
+  .mechanics-grid span {
+    font-size: 11px;
+  }
+  .chemistry-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 7px;
   }
 }
 .material-facts .fact-link {
