@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
@@ -12,8 +11,7 @@ export function generateStaticParams() { return standards.map(({ slug }) => ({ s
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const standard = getStandard((await params).slug)
   if (!standard) return {}
-  const image = ['gost-30732-2020', 'gost-r-51164-98', 'gost-9-602-2016'].includes(standard.slug) ? '/product/pipes/insulated.svg' : standard.group === 'fittings' ? '/product/sdt/otvody-besshovnye.svg' : standard.group === 'non-ferrous' ? '/product/categories/non-ferrous.svg' : standard.group === 'stainless' ? '/product/categories/stainless.svg' : standard.group === 'steel' ? '/product/categories/sheet.svg' : '/product/pipes/seamless.svg'
-  return { title: `${standard.code} — ${standard.title}`, description: standard.summary, alternates: { canonical: `/spravochnik-gost/${standard.slug}` }, openGraph: { title: `${standard.code} — ${standard.title}`, description: standard.summary, images: [{ url: image, width: 1200, height: 800 }] } }
+  return { title: `${standard.code} — ${standard.title}`, description: standard.summary, alternates: { canonical: `/spravochnik-gost/${standard.slug}` }, openGraph: { title: `${standard.code} — ${standard.title}`, description: standard.summary } }
 }
 
 export default async function StandardPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -21,7 +19,6 @@ export default async function StandardPage({ params }: { params: Promise<{ slug:
   if (!standard) notFound()
   const relatedMaterials = materials.filter((material) => standard.materialSlugs.includes(material.slug))
   const requestHref = `/?standard=${encodeURIComponent(standard.code)}#request`
-  const standardImage = ['gost-30732-2020', 'gost-r-51164-98', 'gost-9-602-2016'].includes(standard.slug) ? '/product/pipes/insulated.svg' : standard.group === 'fittings' ? '/product/sdt/otvody-besshovnye.svg' : standard.group === 'non-ferrous' ? '/product/categories/non-ferrous.svg' : standard.group === 'stainless' ? '/product/categories/stainless.svg' : standard.group === 'steel' ? '/product/categories/sheet.svg' : '/product/pipes/seamless.svg'
   const jsonLd = {
     '@context': 'https://schema.org', '@type': 'TechArticle', headline: `${standard.code} — ${standard.title}`,
     description: standard.summary, about: { '@type': 'Thing', name: standard.code },
@@ -31,7 +28,7 @@ export default async function StandardPage({ params }: { params: Promise<{ slug:
   return <main className="materials-page material-detail">
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
     <header className="materials-header"><Link href="/spravochnik-gost"><b>←</b> Все стандарты</Link><Link className="materials-cta" href={requestHref}>Запросить расчёт ↗</Link></header>
-    <section className="material-hero material-hero-visual"><div><p>{standard.groupLabel} · {standard.status}</p><h1>{standard.code}</h1><h2>{standard.title}</h2><span>{standard.summary}</span></div><figure><Image src={standardImage} alt={`${standard.code}: продукция в области применения стандарта`} width={1200} height={800} priority /><figcaption>Иллюстрация области применения. Полные требования определяются официальным текстом стандарта.</figcaption></figure></section>
+    <section className="material-hero material-hero-visual"><div><p>{standard.groupLabel} · {standard.status}</p><h1>{standard.code}</h1><h2>{standard.title}</h2><span>{standard.summary}</span></div></section>
     <section className="material-content">
       <article className="material-intro"><p>Практическое применение</p><h2>Что регулирует документ</h2><span>Стандарт рассматривается вместе с другими нормативными документами на марку, сортамент и технические условия. Окончательный комплект требований определяется спецификацией и проектом.</span><a href={standard.officialUrl} target="_blank" rel="noreferrer">Карточка Росстандарта <b>↗</b></a></article>
       <div className="material-facts">
