@@ -17,6 +17,9 @@ BASE_TRUST = {
     "mechelservice.ru": 0.88,
     "market.mmk.ru": 0.86,
     "nlmk.shop": 0.86,
+    "pmsmk.ru": 0.84,
+    "uralmpc.ru": 0.84,
+    "metpromural.com": 0.82,
     "mc.ru": 0.85,
     "evraz.market": 0.85,
     "spk.ru": 0.80,
@@ -116,7 +119,7 @@ def evaluate(payload: dict) -> dict:
     low = min(q["normalized_rub_t_vat"] for q in accepted)
     high = max(q["normalized_rub_t_vat"] for q in accepted)
     spread = 0 if benchmark == 0 else (high - low) / benchmark
-    primary = {"market.omk.ru", "market.severstal.com", "mechelservice.ru", "market.mmk.ru", "nlmk.shop", "mc.ru", "evraz.market", "spk.ru"}
+    primary = {"market.omk.ru", "market.severstal.com", "mechelservice.ru", "market.mmk.ru", "nlmk.shop", "pmsmk.ru", "uralmpc.ru", "metpromural.com", "mc.ru", "evraz.market", "spk.ru"}
     primary_count = sum(q["source"].lower().removeprefix("www.") in primary for q in accepted)
     if len(accepted) >= 3 and primary_count >= 2 and spread <= 0.08:
         confidence = "высокий"
