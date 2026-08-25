@@ -194,8 +194,7 @@
 }
 .material-hero-visual {
   display: grid;
-  grid-template-columns: 1.08fr 0.92fr;
-  gap: 6vw;
+  grid-template-columns: minmax(0, 1100px);
   align-items: center;
 }
 .material-hero-visual > div > p {
@@ -213,21 +212,6 @@
   color: #d7e3fb;
   font-size: 18px;
   line-height: 1.65;
-}
-.material-hero-visual figure {
-  margin: 0;
-}
-.material-hero-visual figure img {
-  width: 100%;
-  height: auto;
-  border: 1px solid #5874b5;
-  background: #f7f9fd;
-}
-.material-hero-visual figcaption {
-  margin-top: 10px;
-  color: #9fb5e4;
-  font-size: 11px;
-  line-height: 1.5;
 }
 .material-hero h1 {
   font-size: clamp(72px, 10vw, 138px);
