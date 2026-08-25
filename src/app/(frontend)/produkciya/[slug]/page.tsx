@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
@@ -22,7 +21,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: category.metaTitle,
     description: category.description,
     alternates: { canonical: `/produkciya/${category.slug}` },
-    openGraph: { title: category.metaTitle, description: category.description, images: [{ url: category.image, width: 1200, height: 800 }] },
+    openGraph: { title: category.metaTitle, description: category.description },
   }
 }
 
@@ -35,7 +34,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   return (
     <main className="product-page">
       <header className="product-header"><Link href="/"><b>←</b> Мэджик Металл</Link><Link className="product-cta" href={requestHref}>Отправить спецификацию ↗</Link></header>
-      <section className="product-hero"><div><p>Продукция · подбор по спецификации</p><h1>{category.title}</h1><span>{category.description}</span></div><figure><Image src={category.image} alt={category.imageAlt} width={1200} height={800} priority /><figcaption>Поясняющая техническая иллюстрация. Фактическое исполнение определяется спецификацией.</figcaption></figure></section>
+      <section className="product-hero"><div><p>Продукция · подбор по спецификации</p><h1>{category.title}</h1><span>{category.description}</span></div></section>
       <section className="product-body">
         <article><h2>Комплектуем поставку</h2><p>{category.intro}</p><Link href={requestHref}>Запросить расчёт <b>→</b></Link></article>
         <div className="product-facts"><section><h2>Виды продукции</h2>{category.products.map((item) => <span key={item}>{item}</span>)}</section><section><h2>Стандарты</h2>{category.standards.map((item) => { const standard = findStandard(item); return standard ? <Link className="fact-link" href={`/spravochnik-gost/${standard.slug}`} key={item}>{item} <b>→</b></Link> : <span key={item}>{item}</span> })}</section><section><h2>Марки и материалы</h2>{category.grades.map((item) => <span key={item}>{item}</span>)}</section></div>
