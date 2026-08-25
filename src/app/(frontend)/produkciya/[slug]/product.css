@@ -33,8 +33,7 @@
 .product-hero {
   padding: 90px 7vw 80px;
   display: grid;
-  grid-template-columns: 1.08fr 0.92fr;
-  gap: 6vw;
+  grid-template-columns: minmax(0, 1050px);
   align-items: center;
   color: #fff;
   background: linear-gradient(125deg, #061542, #092779 65%, #0757e8);
@@ -59,21 +58,6 @@
   color: #d7e3fb;
   font-size: clamp(16px, 1.25vw, 20px);
   line-height: 1.65;
-}
-.product-hero figure {
-  margin: 0;
-}
-.product-hero figure img {
-  width: 100%;
-  height: auto;
-  border: 1px solid #5874b5;
-  background: #f7f9fd;
-}
-.product-hero figcaption {
-  margin-top: 10px;
-  color: #9fb5e4;
-  font-size: 11px;
-  line-height: 1.5;
 }
 .product-body {
   padding: 90px 7vw 110px;
