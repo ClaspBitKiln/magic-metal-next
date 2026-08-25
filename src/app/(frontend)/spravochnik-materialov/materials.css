@@ -423,6 +423,145 @@
   font-size: 13px;
   line-height: 1.5;
 }
+.material-passport {
+  padding: 76px 7vw 82px;
+  background: #edf2fa;
+}
+.material-passport > header {
+  margin-bottom: 30px;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 30px;
+}
+.material-passport > header p {
+  margin: 0 0 10px;
+  color: #0757e8;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.material-passport > header h2 {
+  font-size: clamp(38px, 4.2vw, 64px);
+  line-height: 1;
+}
+.material-passport > header > span {
+  max-width: 280px;
+  color: #65718a;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: right;
+}
+.material-passport-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: 2px;
+  background: #bfcbe0;
+  border: 1px solid #bfcbe0;
+}
+.material-passport-grid > article {
+  padding: 30px;
+  background: #fff;
+}
+.passport-card-title {
+  min-height: 56px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+.passport-card-title > span {
+  padding-top: 5px;
+  color: #0757e8;
+  font-size: 11px;
+  font-weight: 800;
+}
+.passport-card-title h3 {
+  color: #071c62;
+  font-size: 24px;
+  line-height: 1.15;
+}
+.passport-card-title p {
+  margin-top: 6px;
+  color: #707b90;
+  font-size: 11px;
+}
+.chemistry-grid {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid #d6deeb;
+  border-left: 1px solid #d6deeb;
+}
+.chemistry-grid > div {
+  min-height: 80px;
+  padding: 13px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid #d6deeb;
+  border-bottom: 1px solid #d6deeb;
+}
+.chemistry-grid b {
+  color: #0757e8;
+  font-size: 18px;
+}
+.chemistry-grid span {
+  color: #354159;
+  font-size: 12px;
+}
+.material-condition {
+  margin: 24px 0 10px;
+  padding: 14px 16px;
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 10px;
+  background: #edf3ff;
+  color: #34405a;
+  font-size: 12px;
+  line-height: 1.45;
+}
+.material-condition b {
+  color: #0757e8;
+  text-transform: uppercase;
+}
+.mechanics-grid {
+  border-top: 1px solid #d6deeb;
+}
+.mechanics-grid > div {
+  min-height: 68px;
+  padding: 12px 2px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 22px;
+  border-bottom: 1px solid #d6deeb;
+}
+.mechanics-grid span {
+  color: #59657b;
+  font-size: 12px;
+  line-height: 1.4;
+}
+.mechanics-grid b {
+  color: #071c62;
+  font-size: 18px;
+  text-align: right;
+  white-space: nowrap;
+}
+.material-passport > aside {
+  padding: 18px 22px;
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 18px;
+  color: #d9e6ff;
+  background: #071c62;
+  font-size: 12px;
+  line-height: 1.55;
+}
+.material-passport > aside b {
+  color: #76a5ff;
+  text-transform: uppercase;
+}
 .material-analogs {
   padding: 70px 7vw;
   background: #e7eef9;
@@ -574,6 +713,20 @@
     grid-template-columns: 1fr;
     gap: 55px;
   }
+  .material-passport {
+    padding: 58px 22px 64px;
+  }
+  .material-passport > header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .material-passport > header > span {
+    text-align: left;
+  }
+  .material-passport-grid {
+    grid-template-columns: 1fr;
+  }
   .material-facts {
     grid-template-columns: 1fr;
   }
@@ -603,6 +756,23 @@
   }
   .materials-search-results > div {
     grid-template-columns: 1fr;
+  }
+  .material-passport-grid > article {
+    padding: 24px 18px;
+  }
+  .chemistry-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .mechanics-grid > div {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+  .mechanics-grid b {
+    text-align: left;
+  }
+  .material-passport > aside {
+    grid-template-columns: 1fr;
+    gap: 6px;
   }
 }
 .material-facts .fact-link {

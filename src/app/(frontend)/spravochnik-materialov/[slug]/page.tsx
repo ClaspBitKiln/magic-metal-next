@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 import { getMaterial, materials } from '@/data/materials'
+import { materialSpecs } from '@/data/materialSpecs'
 import { findStandard } from '@/data/standards'
 import '../materials.css'
 
@@ -25,6 +26,7 @@ export default async function MaterialPage({ params }: { params: Promise<{ slug:
   const material = getMaterial((await params).slug)
   if (!material) notFound()
   const related = materials.filter((item) => item.group === material.group && item.slug !== material.slug).slice(0, 4)
+  const spec = materialSpecs[material.slug]
   const requestHref = `/?material=${encodeURIComponent(material.designation)}#request`
   const jsonLd = {
     '@context': 'https://schema.org', '@type': 'TechArticle',
@@ -47,6 +49,24 @@ export default async function MaterialPage({ params }: { params: Promise<{ slug:
           <section><h2>Формы поставки</h2>{material.forms.map((item) => <span key={item}>{item}</span>)}</section>
         </div>
       </section>
+      {spec && <section className="material-passport" aria-labelledby="material-passport-title">
+        <header>
+          <div><p>Технический паспорт марки</p><h2 id="material-passport-title">Состав и свойства</h2></div>
+          <span>Значения при 20 °C, если не указано иное</span>
+        </header>
+        <div className="material-passport-grid">
+          <article className="chemistry-card">
+            <div className="passport-card-title"><span>01</span><div><h3>Химический состав</h3><p>{spec.compositionStandard}</p></div></div>
+            <div className="chemistry-grid">{spec.chemistry.map((item) => <div key={item.label}><b>{item.label}</b><span>{item.value}</span></div>)}</div>
+          </article>
+          <article className="mechanics-card">
+            <div className="passport-card-title"><span>02</span><div><h3>Механические свойства</h3><p>{spec.mechanicalStandard}</p></div></div>
+            <div className="material-condition"><b>Состояние</b><span>{spec.condition}</span></div>
+            <div className="mechanics-grid">{spec.mechanics.map((item) => <div key={item.label}><span>{item.label}</span><b>{item.value}</b></div>)}</div>
+          </article>
+        </div>
+        <aside><b>Важно</b><span>{spec.note} Окончательные требования принимают по договорному стандарту и сертификату конкретной партии.</span></aside>
+      </section>}
       {material.analogs.length > 0 && <section className="material-analogs"><p>Справочные аналоги</p><h2>Соответствия требуют проверки</h2>{material.analogs.map((item) => <span key={item}>{item}</span>)}<small>Совпадение обозначений или близость химического состава не гарантируют одинаковые механические свойства, коррозионную стойкость и допустимые условия эксплуатации.</small></section>}
       <section className="material-products"><p>Связанные товарные направления</p><h2>Где применяется {material.designation}</h2><div>{material.relatedProducts.map((item) => <Link href={`/produkciya/${item.slug}`} key={item.slug}>{item.label}<b>↗</b></Link>)}</div></section>
       {related.length > 0 && <section className="related-materials"><p>Материалы той же группы</p><div>{related.map((item) => <Link href={`/spravochnik-materialov/${item.slug}`} key={item.slug}><b>{item.designation}</b><span>{item.name}</span></Link>)}</div></section>}
