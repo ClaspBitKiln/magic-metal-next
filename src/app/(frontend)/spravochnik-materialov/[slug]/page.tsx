@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
@@ -14,12 +13,11 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const material = getMaterial((await params).slug)
   if (!material) return {}
-  const image = material.group === 'non-ferrous' ? '/product/categories/non-ferrous.svg' : material.group === 'stainless' || material.group === 'international' ? '/product/categories/stainless.svg' : '/product/categories/forgings.svg'
   return {
     title: material.metaTitle,
     description: material.description,
     alternates: { canonical: `/spravochnik-materialov/${material.slug}` },
-    openGraph: { title: material.metaTitle, description: material.description, images: [{ url: image, width: 1200, height: 800 }] },
+    openGraph: { title: material.metaTitle, description: material.description },
   }
 }
 
@@ -28,7 +26,6 @@ export default async function MaterialPage({ params }: { params: Promise<{ slug:
   if (!material) notFound()
   const related = materials.filter((item) => item.group === material.group && item.slug !== material.slug).slice(0, 4)
   const requestHref = `/?material=${encodeURIComponent(material.designation)}#request`
-  const materialImage = material.group === 'non-ferrous' ? '/product/categories/non-ferrous.svg' : material.group === 'stainless' || material.group === 'international' ? '/product/categories/stainless.svg' : '/product/categories/forgings.svg'
   const jsonLd = {
     '@context': 'https://schema.org', '@type': 'TechArticle',
     headline: material.metaTitle, description: material.description,
@@ -40,7 +37,7 @@ export default async function MaterialPage({ params }: { params: Promise<{ slug:
     <main className="materials-page material-detail">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
       <header className="materials-header"><Link href="/spravochnik-materialov"><b>←</b> Все материалы</Link><Link className="materials-cta" href={requestHref}>Запросить поставку ↗</Link></header>
-      <section className="material-hero material-hero-visual"><div><p>{material.groupLabel}</p><h1>{material.designation}</h1><h2>{material.name}</h2><span>{material.summary}</span></div><figure><Image src={materialImage} alt={`${material.designation}: основные формы металлопродукции`} width={1200} height={800} priority /><figcaption>Формы поставки зависят от марки, стандарта и спецификации.</figcaption></figure></section>
+      <section className="material-hero material-hero-visual"><div><p>{material.groupLabel}</p><h1>{material.designation}</h1><h2>{material.name}</h2><span>{material.summary}</span></div></section>
       <section className="material-content">
         <article className="material-intro"><p>Подбор по спецификации</p><h2>Поставим материал в нужном исполнении</h2><span>Уточним нормативный документ, сортамент, состояние поставки, контроль и документы. Для ответственного применения сверим требования проекта с сертификатом производителя.</span><Link href={requestHref}>Отправить ТЗ <b>→</b></Link></article>
         <div className="material-facts">
