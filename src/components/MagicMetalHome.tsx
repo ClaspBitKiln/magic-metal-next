@@ -93,7 +93,7 @@ export default function MagicMetalHome() {
       <header className="topbar">
         <a className="brand" href="#top" aria-label="Мэджик Металл — главная"><Image src="/images/logo.png" alt="Мэджик Металл" width={147} height={109} priority /></a>
         <nav className={menuOpen ? 'nav open' : 'nav'} aria-label="Основная навигация">
-          <a href="#about">О компании</a><a href="#products">Продукция</a><Link href="/spravochnik-gost">Справочник ГОСТ</Link><a href="#contacts">Контакты</a><a className="aviation-link" href="#delivery">Авиадоставка</a>
+          <a href="#about">О компании</a><a href="#products">Продукция</a><Link href="/spravochnik-gost">Справочник ГОСТ</Link><a href="#contacts">Контакты</a>
         </nav>
         <div className="top-actions">
           <a className="phone" href="tel:+79227117363">+7 922 711-73-63</a>
