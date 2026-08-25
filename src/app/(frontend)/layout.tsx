@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Мэджик Металл — комплексные поставки металла',
     description: 'Находим редкие и нестандартные позиции, проверяем ГОСТ, ТУ и документы, комплектуем поставки металла для промышленности.',
-    images: ['/images/hero-branded-plane-left-v4.webp'],
+    images: ['/images/hero-mercedes-v5.webp'],
     locale: 'ru_RU',
     type: 'website',
   },
