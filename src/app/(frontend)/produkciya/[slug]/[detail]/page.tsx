@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
@@ -28,7 +27,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: item.metaTitle, description: item.description,
     alternates: { canonical: `/produkciya/${item.categorySlug}/${item.slug}` },
-    openGraph: { title: item.metaTitle, description: item.description, images: [{ url: item.image, width: 1200, height: 800 }] },
+    openGraph: { title: item.metaTitle, description: item.description },
   }
 }
 
@@ -42,7 +41,6 @@ export default async function PipeDetailPage({ params }: { params: Promise<{ slu
   const jsonLd = {
     '@context': 'https://schema.org', '@type': 'Product', name: item.title, description: item.description,
     category: categoryLabel, brand: { '@type': 'Brand', name: 'Мэджик Металл' },
-    image: [`https://magicmet.ru${item.image}`],
     additionalProperty: [
       { '@type': 'PropertyValue', name: 'Стандарты', value: item.standards.join('; ') },
       { '@type': 'PropertyValue', name: 'Материалы', value: item.grades.join('; ') },
@@ -51,7 +49,7 @@ export default async function PipeDetailPage({ params }: { params: Promise<{ slu
   return <main className="pipe-detail">
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
     <header className="pipe-nav"><Link href={`/produkciya/${item.categorySlug}`}><b>←</b> {categoryLabel}</Link><Link href={requestHref}>Отправить спецификацию ↗</Link></header>
-    <section className="pipe-hero"><div><p>{categoryLabel}</p><h1>{item.title}</h1><span>{item.description}</span></div><figure><Image src={item.image} alt={`Техническая иллюстрация — ${item.title.toLocaleLowerCase('ru-RU')}`} width={1200} height={800} priority /><figcaption>Поясняющая иллюстрация. Фактические размеры, материал и исполнение определяются стандартом и заявкой.</figcaption></figure></section>
+    <section className="pipe-hero"><div><p>{categoryLabel}</p><h1>{item.title}</h1><span>{item.description}</span></div></section>
     <nav className="pipe-breadcrumb" aria-label="Хлебные крошки"><Link href="/">Главная</Link><b>/</b><Link href={`/produkciya/${item.categorySlug}`}>{categoryLabel}</Link><b>/</b><span>{item.shortTitle}</span></nav>
     <section className="pipe-intro"><h2>Подбор по назначению, а не только по размеру</h2><div><p>{item.intro}</p><Link href={requestHref}>Запросить расчёт →</Link></div></section>
     <section className="pipe-spec"><div><p>Основные параметры</p><h2>Что проверяем</h2></div><dl>{item.range.map((row) => <div key={row.label}><dt>{row.label}</dt><dd>{row.value}</dd></div>)}</dl></section>
