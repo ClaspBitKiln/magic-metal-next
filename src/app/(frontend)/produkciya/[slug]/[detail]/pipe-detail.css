@@ -32,11 +32,10 @@
   background: #0757e8;
 }
 .pipe-hero {
-  min-height: 620px;
+  min-height: 470px;
   padding: 64px 7vw 55px;
   display: grid;
-  grid-template-columns: 1.08fr 0.92fr;
-  gap: 6vw;
+  grid-template-columns: minmax(0, 1050px);
   align-items: center;
   color: #fff;
   background: linear-gradient(125deg, #061542, #092779 67%, #0757e8);
@@ -66,21 +65,6 @@
   color: #d9e5fc;
   font-size: clamp(16px, 1.35vw, 21px);
   line-height: 1.6;
-}
-.pipe-hero figure {
-  margin: 0;
-}
-.pipe-hero figure img {
-  width: 100%;
-  height: auto;
-  border: 1px solid #5874b5;
-  background: #f7f9fd;
-}
-.pipe-hero figcaption {
-  margin-top: 10px;
-  color: #9fb5e4;
-  font-size: 11px;
-  line-height: 1.5;
 }
 .pipe-breadcrumb {
   padding: 16px 7vw;
