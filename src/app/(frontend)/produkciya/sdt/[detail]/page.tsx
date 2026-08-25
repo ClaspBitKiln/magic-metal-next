@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
@@ -14,12 +13,11 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ detail: string }> }): Promise<Metadata> {
   const item = getSdtCatalogItem((await params).detail)
   if (!item) return {}
-  const image = `/product/sdt/${item.slug}.svg`
   return {
     title: item.metaTitle,
     description: item.description,
     alternates: { canonical: `/produkciya/sdt/${item.slug}` },
-    openGraph: { title: item.metaTitle, description: item.description, images: [{ url: image, width: 1200, height: 800 }] },
+    openGraph: { title: item.metaTitle, description: item.description },
   }
 }
 
@@ -30,7 +28,6 @@ export default async function SdtDetailPage({ params }: { params: Promise<{ deta
   const jsonLd = {
     '@context': 'https://schema.org', '@type': 'Product', name: item.title, description: item.description,
     category: 'Соединительные детали трубопроводов', brand: { '@type': 'Brand', name: 'Мэджик Металл' },
-    image: [`https://magicmet.ru/product/sdt/${item.slug}.svg`],
     additionalProperty: [
       { '@type': 'PropertyValue', name: 'Исполнение', value: item.execution.join('; ') },
       { '@type': 'PropertyValue', name: 'Материалы', value: item.materials.join('; ') },
@@ -43,7 +40,6 @@ export default async function SdtDetailPage({ params }: { params: Promise<{ deta
       <header className="sdt-nav"><Link href="/produkciya/sdt"><b>←</b> Все СДТ</Link><Link href={requestHref}>Отправить спецификацию ↗</Link></header>
       <section className="sdt-hero">
         <div><p>Соединительные детали трубопроводов</p><h1>{item.title}</h1><span>{item.description}</span></div>
-        <figure><Image src={`/product/sdt/${item.slug}.svg`} alt={`Техническая схема: ${item.title.toLocaleLowerCase('ru-RU')}`} width={1200} height={800} priority /><figcaption>Схема показывает тип изделия. Размеры определяются стандартом и спецификацией.</figcaption></figure>
       </section>
       <nav className="sdt-breadcrumb" aria-label="Хлебные крошки"><Link href="/">Главная</Link><b>/</b><Link href="/produkciya/sdt">СДТ</Link><b>/</b><span>{item.shortTitle}</span></nav>
       <section className="sdt-intro"><h2>Подбор по проекту и спецификации</h2><p>{item.intro}</p><Link href={requestHref}>Запросить расчёт →</Link></section>
