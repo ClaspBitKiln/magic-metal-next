@@ -1,0 +1,4 @@
+interface:
+  display_name: "Агрегатор цен металлопроката"
+  short_description: "Проверка и расчёт рыночной цены металла"
+  default_prompt: "Используй $metal-price-benchmark для проверки заявки и расчёта ориентировочной цены."
