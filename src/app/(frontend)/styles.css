@@ -94,7 +94,7 @@ select:focus-visible {
 }
 .nav {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   gap: clamp(18px, 2.1vw, 36px);
   font-size: 14px;
@@ -123,6 +123,11 @@ select:focus-visible {
   font: 600 14px var(--font-display);
   white-space: nowrap;
   color: var(--navy);
+  padding: 9px 12px;
+  border: 1px solid rgba(7, 28, 98, 0.12);
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 6px 18px rgba(7, 28, 98, 0.1);
 }
 .top-cta,
 .primary-button {
