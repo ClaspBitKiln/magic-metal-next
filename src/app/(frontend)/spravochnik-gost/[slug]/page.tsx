@@ -38,6 +38,6 @@ export default async function StandardPage({ params }: { params: Promise<{ slug:
     </section>
     {relatedMaterials.length > 0 && <section className="related-materials"><p>Связанные материалы</p><div>{relatedMaterials.map((material) => <Link href={`/spravochnik-materialov/${material.slug}`} key={material.slug}><b>{material.designation}</b><span>{material.name}</span></Link>)}</div></section>}
     <section className="material-products"><p>Связанные товарные направления</p><h2>Поставка по {standard.code}</h2><div>{standard.products.map((item) => <Link href={`/produkciya/${item.slug}`} key={item.slug}>{item.label}<b>↗</b></Link>)}</div></section>
-    <section className="materials-note"><p>Разбор заявки</p><h2>Нужна поставка по этому ГОСТ?</h2><span>Пришлите спецификацию. Проверим совместимость марки, сортамента, технических условий и требований к контролю.</span><Link href={requestHref}>Отправить спецификацию ↗</Link></section>
+    <section className="materials-note"><p>Разбор заявки</p><h2>Нужна поставка по этому ГОСТ?</h2><span>Пришлите спецификацию. Проверим совместимость марки, сортамента, технических условий и требований к контролю.</span><Link href={requestHref}>Отправить заявку ↗</Link></section>
   </main>
 }
