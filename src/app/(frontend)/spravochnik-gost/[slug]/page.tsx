@@ -27,7 +27,7 @@ export default async function StandardPage({ params }: { params: Promise<{ slug:
   }
   return <main className="materials-page material-detail">
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
-    <header className="materials-header"><Link href="/spravochnik-gost"><b>←</b> Все стандарты</Link><Link className="materials-cta" href={requestHref}>Запросить расчёт ↗</Link></header>
+    <header className="materials-header"><Link href="/spravochnik-gost"><b>←</b> Все стандарты</Link><Link className="materials-cta" href={requestHref}>Отправить заявку ↗</Link></header>
     <section className="material-hero material-hero-visual"><div><p>{standard.groupLabel} · {standard.status}</p><h1>{standard.code}</h1><h2>{standard.title}</h2><span>{standard.summary}</span></div></section>
     <section className="material-content">
       <article className="material-intro"><p>Практическое применение</p><h2>Что регулирует документ</h2><span>Стандарт рассматривается вместе с другими нормативными документами на марку, сортамент и технические условия. Окончательный комплект требований определяется спецификацией и проектом.</span></article>
