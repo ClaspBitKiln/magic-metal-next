@@ -46,6 +46,6 @@ export default function CatalogSearch() {
     </div>
     <div className="search-summary"><span>{query ? `Найдено: ${results.length}` : `В индексе: ${searchIndex.length}`}</span>{query && <Link href={`/?material=${encodeURIComponent(query)}#request`}>Не нашли точное исполнение? Отправить заявку →</Link>}</div>
     <div className="search-results">{results.map(({ item }) => <Link href={item.href} key={`${item.type}-${item.href}`}><small>{item.typeLabel}</small><h2>{item.title}</h2><h3>{item.subtitle}</h3><p>{item.description}</p><b>Открыть →</b></Link>)}</div>
-    {results.length === 0 && <div className="search-empty"><h2>Точного совпадения пока нет</h2><p>Попробуйте обозначение без года, размерности или пришлите спецификацию — мы разберём запрос вручную.</p><Link href={`/?material=${encodeURIComponent(query)}#request`}>Отправить спецификацию ↗</Link></div>}
+    {results.length === 0 && <div className="search-empty"><h2>Точного совпадения пока нет</h2><p>Попробуйте обозначение без года, размерности или пришлите спецификацию — мы разберём запрос вручную.</p><Link href={`/?material=${encodeURIComponent(query)}#request`}>Отправить заявку ↗</Link></div>}
   </section>
 }
