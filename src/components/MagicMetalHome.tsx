@@ -151,8 +151,8 @@ export default function MagicMetalHome() {
       </section>
 
       <section className="section about-section" id="about">
-        <div className="about-copy"><p className="section-kicker">03 — Экспертиза заявки</p><h2>Проверяем<br />каждое требование.<br /><em>Находим решение.</em></h2></div>
-        <div className="about-panel"><p>Инженерно разбираем заявку: марка стали, стандарт, размеры, контроль, документы, допустимые замены и срок. Затем собираем поставку — от одной позиции до комплектации проекта.</p><div className="process-list"><span>01 Анализ требований</span><span>02 Подбор и проверка</span><span>03 Комплектация</span><span>04 Доставка на объект</span></div></div>
+        <div className="about-copy"><p className="section-kicker">03 — Как получить предложение</p><h2>Один понятный<br />сценарий.<br /><em>Без лишних действий.</em></h2></div>
+        <div className="about-panel"><p>Выберите товар или найдите ГОСТ, приложите спецификацию и укажите город доставки. Мы разберём требования и подготовим предложение по поставке.</p><div className="process-list"><span>01 Найдите товар или ГОСТ</span><span>02 Приложите спецификацию</span><span>03 Укажите город и срок</span><span>04 Получите предложение</span></div></div>
       </section>
 
       <section className="section other-section">
