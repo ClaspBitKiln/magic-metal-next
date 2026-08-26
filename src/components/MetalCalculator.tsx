@@ -64,6 +64,6 @@ export default function MetalCalculator() {
         <label>Количество, шт.<input inputMode="numeric" value={quantity} onChange={(event) => setQuantity(event.target.value)} /></label>
       </div>
     </div>
-    <aside className="calculator-result"><p>Теоретическая масса</p><strong>{format(result.total)} <small>кг</small></strong><span>{format(result.unit)} {result.unitLabel}</span><em>Расчёт справочный. Фактическая масса зависит от допусков, марки, состояния и стандарта на продукцию.</em><Link href={`/?product=${encodeURIComponent(requestContext)}#request`}>Запросить цену и поставку ↗</Link></aside>
+    <aside className="calculator-result"><p>Теоретическая масса</p><strong>{format(result.total)} <small>кг</small></strong><span>{format(result.unit)} {result.unitLabel}</span><em>Расчёт справочный. Фактическая масса зависит от допусков, марки, состояния и стандарта на продукцию.</em><Link href={`/?product=${encodeURIComponent(requestContext)}#request`}>Отправить заявку ↗</Link></aside>
   </section>
 }
