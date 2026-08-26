@@ -1329,3 +1329,44 @@ h2 {
     font-size: 40px;
   }
 }
+
+
+/* Unified public-site typography scale: desktop, tablet and mobile. */
+main h1 {
+  font-size: clamp(48px, 4.2vw, 64px) !important;
+  line-height: 1.02 !important;
+  letter-spacing: -0.035em !important;
+}
+main h2 {
+  font-size: clamp(36px, 3.5vw, 52px) !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.03em !important;
+}
+main h3 {
+  font-size: clamp(20px, 1.7vw, 28px) !important;
+  line-height: 1.22 !important;
+  letter-spacing: -0.02em !important;
+}
+main p,
+main li,
+main td,
+main th,
+main label,
+main input,
+main textarea,
+main select {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 720px) {
+  main h1 {
+    font-size: clamp(36px, 10vw, 44px) !important;
+    line-height: 1.06 !important;
+  }
+  main h2 {
+    font-size: clamp(28px, 8vw, 36px) !important;
+    line-height: 1.12 !important;
+  }
+  main h3 {
+    font-size: clamp(20px, 6vw, 25px) !important;
+  }
+}
