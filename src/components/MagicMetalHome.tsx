@@ -13,14 +13,14 @@ const priorityProducts = [
 ]
 
 const pipeCatalog = [
-  ['Электросварные прямошовные и спиралешовные', 'Ø 15–1420 мм', 'ГОСТ 10704, 10705, 10706, 20295', 'Ст3, 20, 09Г2С, 17Г1СУ, 10Г2ФБЮ'],
-  ['Водогазопроводные', 'Ду 10–100', 'ГОСТ 3262-75', 'малоуглеродистые стали'],
-  ['Профильные квадратные и прямоугольные', '15×15–400×200 мм', 'ГОСТ 8639, 8645, 30245', 'Ст3, 09Г2С, С245, С255, С355'],
-  ['Бесшовные горячедеформированные', 'по действующему сортаменту', 'ГОСТ 8731-2025, 8732-2025; ГОСТ 550-2020', '10, 20, 35, 45, 09Г2С, 15ХМ, 12Х1МФ'],
-  ['Бесшовные холоднодеформированные', 'Ø 2,5–193 мм', 'ГОСТ 8733, 8734, 9567', '10, 20, 35, 45, 10Г2, 15Х, 20Х, 40Х, 15ХМ'],
-  ['Котельные и крекинговые', 'По спецификации', 'ТУ 14-3Р-55; ГОСТ 550; ASTM A335', '20, 15ХМ, 12Х1МФ, 15Х1М1Ф, P5, P11, P22, P91'],
-  ['Нержавеющие и коррозионностойкие', 'Ø 5–273 мм', 'ГОСТ 9940, 9941; ASTM A312', '08Х18Н10, 12Х18Н10Т, 10Х17Н13М2Т, TP304, TP316, TP321'],
-  ['Нефтяного сортамента', 'По проекту', 'ГОСТ 632, 633; API 5CT', 'НКТ, обсадные, бурильные трубы и муфты'],
+  ['Электросварные прямошовные и спиралешовные', 'Ø 15–1420 мм', 'ГОСТ 10704, 10705, 10706, 20295', 'Ст3, 20, 09Г2С, 17Г1СУ, 10Г2ФБЮ', '/produkciya/truby-elektrosvarnye'],
+  ['Водогазопроводные', 'Ду 10–100', 'ГОСТ 3262-75', 'малоуглеродистые стали', '/produkciya/truby-elektrosvarnye/vodogazoprovodnye'],
+  ['Профильные квадратные и прямоугольные', '15×15–400×200 мм', 'ГОСТ 8639, 8645, 30245', 'Ст3, 09Г2С, С245, С255, С355', '/produkciya/truby-elektrosvarnye/profilnye'],
+  ['Бесшовные горячедеформированные', 'по действующему сортаменту', 'ГОСТ 8731-2025, 8732-2025; ГОСТ 550-2020', '10, 20, 35, 45, 09Г2С, 15ХМ, 12Х1МФ', '/produkciya/truby-besshovnye/goryachedeformirovannye'],
+  ['Бесшовные холоднодеформированные', 'Ø 2,5–193 мм', 'ГОСТ 8733, 8734, 9567', '10, 20, 35, 45, 10Г2, 15Х, 20Х, 40Х, 15ХМ', '/produkciya/truby-besshovnye/holodnodeformirovannye'],
+  ['Котельные и крекинговые', 'По спецификации', 'ТУ 14-3Р-55; ГОСТ 550; ASTM A335', '20, 15ХМ, 12Х1МФ, 15Х1М1Ф, P5, P11, P22, P91', '/produkciya/truby-besshovnye/kotelnye'],
+  ['Нержавеющие и коррозионностойкие', 'Ø 5–273 мм', 'ГОСТ 9940, 9941; ASTM A312', '08Х18Н10, 12Х18Н10Т, 10Х17Н13М2Т, TP304, TP316, TP321', '/produkciya/truby-besshovnye/nerzhaveyushchie'],
+  ['Нефтяного сортамента', 'По проекту', 'ГОСТ 632, 633; API 5CT', 'НКТ, обсадные, бурильные трубы и муфты', '/produkciya/truby-besshovnye'],
 ]
 
 const otherProducts = [
@@ -146,7 +146,7 @@ export default function MagicMetalHome() {
         <div className="catalog-head"><div><p className="section-kicker light">02 — Трубный каталог</p><h2>Сортамент<br /><em>и стандарты</em></h2></div><p>Сверяем сортамент, технические условия, марку стали и требования к контролю. Если стандартной позиции нет — подбираем производство или технически корректную замену. <Link href="/spravochnik-materialov">Открыть справочник материалов →</Link></p></div>
         <div className="catalog-table" role="table" aria-label="Трубная продукция">
           <div className="catalog-row catalog-labels" role="row"><span>Тип продукции</span><span>Размеры</span><span>Стандарты</span><span>Марки / исполнение</span></div>
-          {pipeCatalog.map(([title, size, standards, grades], index) => <motion.div className="catalog-row" role="row" key={title} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .35 }} variants={animation} transition={{ duration: .42, delay: Math.min(index * .035, .2) }}><strong><i>{String(index + 1).padStart(2, '0')}</i>{title}</strong><span>{size}</span><span>{standards}</span><span>{grades}</span></motion.div>)}
+          {pipeCatalog.map(([title, size, standards, grades, href], index) => <motion.div className="catalog-row" role="row" key={title} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .35 }} variants={animation} transition={{ duration: .42, delay: Math.min(index * .035, .2) }}><Link className="catalog-row-link" href={href} aria-label={`Подробнее: ${title}`}><strong><i>{String(index + 1).padStart(2, '0')}</i>{title}</strong><span>{size}</span><span>{standards}</span><span>{grades}</span></Link></motion.div>)}
         </div>
       </section>
 
