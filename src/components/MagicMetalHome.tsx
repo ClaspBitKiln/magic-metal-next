@@ -109,7 +109,7 @@ export default function MagicMetalHome() {
       <header className="topbar">
         <a className="brand" href="#top" aria-label="Мэджик Металл — главная"><Image src="/images/logo-transparent-v2.png" alt="Мэджик Металл" width={147} height={109} priority /></a>
         <nav className={menuOpen ? 'nav open' : 'nav'} aria-label="Основная навигация">
-          <a href="#about">О компании</a><a href="#products">Продукция</a><Link href="/spravochnik-gost">Справочник ГОСТ</Link><a href="#contacts">Контакты</a>
+          <a href="#products">Продукция</a><Link href="/spravochnik-gost">Справочник ГОСТ</Link><a href="#contacts">Контакты</a>
         </nav>
         <div className="top-actions">
           <a className="phone" href="tel:+79227117363">+7 922 711-73-63</a>
@@ -150,18 +150,13 @@ export default function MagicMetalHome() {
         </div>
       </section>
 
-      <section className="section about-section" id="about">
-        <div className="about-copy"><p className="section-kicker">03 — Как получить предложение</p><h2>Один понятный<br />сценарий.<br /><em>Без лишних действий.</em></h2></div>
-        <div className="about-panel"><p>Выберите товар или найдите ГОСТ, приложите спецификацию и укажите город доставки. Мы разберём требования и подготовим предложение по поставке.</p><div className="process-list"><span>01 Найдите товар или ГОСТ</span><span>02 Приложите спецификацию</span><span>03 Укажите город и срок</span><span>04 Получите предложение</span></div></div>
-      </section>
-
       <section className="section other-section">
-        <div className="section-heading compact"><p className="section-kicker">04 — Остальная номенклатура</p><h2>Металл для<br /><em>всего проекта</em></h2></div>
+        <div className="section-heading compact"><p className="section-kicker">03 — Остальная номенклатура</p><h2>Металл для<br /><em>всего проекта</em></h2></div>
         <div className="other-list">{otherProducts.map(([title, text], index) => <motion.article key={title} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .4 }} variants={animation} transition={{ duration: .38, delay: Math.min(index * .02, .14) }}><span>{String(index + 1).padStart(2, '0')}</span><h3>{title}</h3><p>{text}</p><Link href={otherSeoLinks[title]} aria-label={`Подробнее: ${title}`}>↗</Link></motion.article>)}</div>
       </section>
 
       <section className="request-section" id="request">
-        <div className="request-copy" id="contacts"><p className="section-kicker light">05 — Расчёт поставки</p><h2>Пришлите<br /><em>спецификацию</em></h2><p>Укажите требования и город доставки. Проверим спецификацию, предложим исполнение и подготовим коммерческое предложение.</p><a href="mailto:m1@magicmet.ru">m1@magicmet.ru</a><a href="tel:+79227117363">+7 922 711-73-63</a></div>
+        <div className="request-copy" id="contacts"><p className="section-kicker light">04 — Расчёт поставки</p><h2>Пришлите<br /><em>спецификацию</em></h2><p>Укажите требования и город доставки. Проверим спецификацию, предложим исполнение и подготовим коммерческое предложение.</p><a href="mailto:m1@magicmet.ru">m1@magicmet.ru</a><a href="tel:+79227117363">+7 922 711-73-63</a></div>
         <form className="request-form" onSubmit={submitRequest} encType="multipart/form-data">
           <div className="form-grid"><label>Ваше имя<input name="name" autoComplete="name" required /></label><label>Компания<input name="company" autoComplete="organization" /></label><label>Телефон<input name="phone" type="tel" inputMode="tel" autoComplete="tel" required /></label><label>Email<input name="email" type="email" autoComplete="email" /></label></div>
           <label>Направление<select name="productDirection" defaultValue=""><option value="">Выберите при необходимости</option><option value="electrowelded-pipes">Трубы электросварные</option><option value="seamless-pipes">Трубы бесшовные</option><option value="pipeline-parts">СДТ</option><option value="insulated">Трубы и СДТ в изоляции</option><option value="other">Другая продукция</option></select></label>
