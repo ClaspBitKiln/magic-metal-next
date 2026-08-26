@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export default function MaterialsDirectoryPage() {
   return (
     <main className="materials-page">
-      <header className="materials-header"><Link href="/"><b>←</b> Мэджик Металл</Link><Link className="materials-cta" href="/#request">Отправить спецификацию ↗</Link></header>
+      <header className="materials-header"><Link href="/"><b>←</b> Мэджик Металл</Link><Link className="materials-cta" href="/#request">Отправить заявку ↗</Link></header>
       <section className="materials-hero">
         <p>Справочник · материалы и ГОСТ</p>
         <h1>Марки сталей<br /><em>и сплавов</em></h1>
