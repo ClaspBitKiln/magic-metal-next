@@ -42,7 +42,7 @@ export default async function SdtDetailPage({ params }: { params: Promise<{ deta
         <div><p>Соединительные детали трубопроводов</p><h1>{item.title}</h1><span>{item.description}</span></div>
       </section>
       <nav className="sdt-breadcrumb" aria-label="Хлебные крошки"><Link href="/">Главная</Link><b>/</b><Link href="/produkciya/sdt">СДТ</Link><b>/</b><span>{item.shortTitle}</span></nav>
-      <section className="sdt-intro"><h2>Подбор по проекту и спецификации</h2><p>{item.intro}</p><Link href={requestHref}>Запросить расчёт →</Link></section>
+      <section className="sdt-intro"><h2>Подбор по проекту и спецификации</h2><p>{item.intro}</p><Link href={requestHref}>Отправить заявку →</Link></section>
       <section className="sdt-grid">
         <article><p>Исполнения</p><h2>Какие варианты комплектуем</h2>{item.execution.map((value) => <span key={value}>{value}</span>)}</article>
         <article><p>Размерный охват</p><h2>Ориентиры для заявки</h2>{item.range.map((value) => <span key={value}>{value}</span>)}<small>Диапазоны приведены для первичного поиска. Производимость и соответствие проекту подтверждаются до предложения.</small></article>
