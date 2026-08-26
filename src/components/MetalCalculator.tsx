@@ -61,8 +61,8 @@ export default function MetalCalculator() {
         {shape === 'sheet' && <><label>Толщина, мм<input inputMode="decimal" value={thickness} onChange={(event) => setThickness(event.target.value)} /></label><label>Ширина, мм<input inputMode="decimal" value={width} onChange={(event) => setWidth(event.target.value)} /></label><label>Длина листа, мм<input inputMode="decimal" value={pieceLength} onChange={(event) => setPieceLength(event.target.value)} /></label></>}
         {shape === 'round' && <label>Диаметр, мм<input inputMode="decimal" value={diameter} onChange={(event) => setDiameter(event.target.value)} /></label>}
         {shape === 'square' && <label>Сторона, мм<input inputMode="decimal" value={side} onChange={(event) => setSide(event.target.value)} /></label>}
-        {shape !== 'sheet' && <label>Общая длина, м<input inputMode="decimal" value={length} onChange={(event) => setLength(event.target.value)} /></label>}
-        <label>Количество, шт.<input inputMode="numeric" value={quantity} onChange={(event) => setQuantity(event.target.value)} /></label>
+        {shape !== 'sheet' && <label>Длина одной штуки, м<input inputMode="decimal" value={length} onChange={(event) => setLength(event.target.value)} /></label>}
+        <label>{shape === 'sheet' ? 'Количество листов, шт.' : 'Количество одинаковых штук, шт.'}<input inputMode="numeric" value={quantity} onChange={(event) => setQuantity(event.target.value)} /></label>
       </div>
     </div>
     <aside className="calculator-result"><p>Теоретическая масса</p><strong>{formatKilograms(result.total)} <small>кг</small></strong><span>{formatUnit(result.unit)} {result.unitLabel}</span><em>Расчёт справочный. Фактическая масса зависит от допусков, марки, состояния и стандарта на продукцию.</em><Link href={`/?product=${encodeURIComponent(requestContext)}#request`}>Отправить заявку ↗</Link></aside>
