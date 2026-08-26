@@ -43,8 +43,22 @@ const otherProducts = [
 ]
 
 const otherSeoLinks: Record<string, string> = {
-  'Лист нержавеющий 3–200 мм': '/produkciya/nerzhaveyushchaya-stal',
+  'Лист холоднокатаный 0,3–3 мм': '/produkciya/listovoy-prokat/holodnokatanyj',
+  'Лист горячекатаный 2–200 мм': '/produkciya/listovoy-prokat/goryachekatanyj',
+  'Лист нержавеющий 3–200 мм': '/produkciya/nerzhaveyushchaya-stal/list',
+  'Рулонная сталь оцинкованная': '/produkciya/listovoy-prokat/ocinkovannyj',
+  'Круг горячекатаный 8–300 мм': '/produkciya/sortovoy-i-fasonny-prokat/krug-i-kvadrat',
+  'Квадрат 6–200 мм': '/produkciya/sortovoy-i-fasonny-prokat/krug-i-kvadrat',
+  'Поковки Ø 40–1500+ мм': '/produkciya/pokovki-i-zagotovki',
+  'Уголок': '/produkciya/sortovoy-i-fasonny-prokat/balka-shveller-ugolok',
+  'Балка двутавровая': '/produkciya/sortovoy-i-fasonny-prokat/balka-shveller-ugolok',
+  'Швеллер': '/produkciya/sortovoy-i-fasonny-prokat/balka-shveller-ugolok',
+  'Днища и заглушки': '/produkciya/sdt/zaglushki-i-dnishcha',
   'Цветной металлопрокат': '/produkciya/cvetnye-metally',
+  'Сварочные материалы': '/produkciya/metizy-i-svarochnye-materialy/svarochnye-materialy',
+  'Метизная продукция': '/produkciya/metizy-i-svarochnye-materialy/krepezh',
+  'Оборудование': '/?product=oborudovanie#request',
+  'Материалы, детали и комплектующие': '/?product=komplektuyushchie#request',
 }
 
 const reveal = { hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }
@@ -143,7 +157,7 @@ export default function MagicMetalHome() {
 
       <section className="section other-section">
         <div className="section-heading compact"><p className="section-kicker">04 — Остальная номенклатура</p><h2>Металл для<br /><em>всего проекта</em></h2></div>
-        <div className="other-list">{otherProducts.map(([title, text], index) => <motion.article key={title} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .4 }} variants={animation} transition={{ duration: .38, delay: Math.min(index * .02, .14) }}><span>{String(index + 1).padStart(2, '0')}</span><h3>{title}</h3><p>{text}</p><a href={otherSeoLinks[title] || '#request'} aria-label={`Подробнее: ${title}`}>↗</a></motion.article>)}</div>
+        <div className="other-list">{otherProducts.map(([title, text], index) => <motion.article key={title} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .4 }} variants={animation} transition={{ duration: .38, delay: Math.min(index * .02, .14) }}><span>{String(index + 1).padStart(2, '0')}</span><h3>{title}</h3><p>{text}</p><Link href={otherSeoLinks[title]} aria-label={`Подробнее: ${title}`}>↗</Link></motion.article>)}</div>
       </section>
 
       <section className="request-section" id="request">
