@@ -30,10 +30,10 @@ export default async function StandardPage({ params }: { params: Promise<{ slug:
     <header className="materials-header"><Link href="/spravochnik-gost"><b>←</b> Все стандарты</Link><Link className="materials-cta" href={requestHref}>Запросить расчёт ↗</Link></header>
     <section className="material-hero material-hero-visual"><div><p>{standard.groupLabel} · {standard.status}</p><h1>{standard.code}</h1><h2>{standard.title}</h2><span>{standard.summary}</span></div></section>
     <section className="material-content">
-      <article className="material-intro"><p>Практическое применение</p><h2>Что регулирует документ</h2><span>Стандарт рассматривается вместе с другими нормативными документами на марку, сортамент и технические условия. Окончательный комплект требований определяется спецификацией и проектом.</span><a href={standard.officialUrl} target="_blank" rel="noreferrer">Карточка Росстандарта <b>↗</b></a></article>
+      <article className="material-intro"><p>Практическое применение</p><h2>Что регулирует документ</h2><span>Стандарт рассматривается вместе с другими нормативными документами на марку, сортамент и технические условия. Окончательный комплект требований определяется спецификацией и проектом.</span></article>
       <div className="material-facts">
         <section><h2>Область применения</h2>{standard.scope.map((item) => <span key={item}>{item}</span>)}</section>
-        <section><h2>Проверить перед заказом</h2>{standard.checkBeforeOrder.map((item) => <span key={item}>{item}</span>)}</section>
+        <section><h2>Уточнить в заявке</h2>{standard.checkBeforeOrder.map((item) => <span key={item}>{item}</span>)}</section>
       </div>
     </section>
     {relatedMaterials.length > 0 && <section className="related-materials"><p>Связанные материалы</p><div>{relatedMaterials.map((material) => <Link href={`/spravochnik-materialov/${material.slug}`} key={material.slug}><b>{material.designation}</b><span>{material.name}</span></Link>)}</div></section>}
