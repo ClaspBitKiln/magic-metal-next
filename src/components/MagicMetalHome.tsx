@@ -53,6 +53,7 @@ export default function MagicMetalHome() {
   const reducedMotion = useReducedMotion()
   const [menuOpen, setMenuOpen] = useState(false)
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
+  const [selectedFiles, setSelectedFiles] = useState(0)
   const [startedAt] = useState(() => Date.now())
   const animation = useMemo(() => (reducedMotion ? {} : reveal), [reducedMotion])
 
@@ -77,6 +78,7 @@ export default function MagicMetalHome() {
       const response = await fetch('/api/request', { method: 'POST', body: data })
       if (!response.ok) throw new Error('Request failed')
       form.reset()
+      setSelectedFiles(0)
       setStatus('success')
       const analytics = window as Window & { ym?: (id: number, action: string, goal: string) => void; gtag?: (action: string, event: string, params?: Record<string, unknown>) => void }
       const metrikaId = Number(process.env.NEXT_PUBLIC_YANDEX_METRIKA_ID || 0)
@@ -150,7 +152,7 @@ export default function MagicMetalHome() {
           <div className="form-grid"><label>Ваше имя<input name="name" autoComplete="name" required /></label><label>Компания<input name="company" autoComplete="organization" /></label><label>Телефон<input name="phone" type="tel" inputMode="tel" autoComplete="tel" required /></label><label>Email<input name="email" type="email" autoComplete="email" /></label></div>
           <label>Направление<select name="productDirection" defaultValue=""><option value="">Выберите при необходимости</option><option value="electrowelded-pipes">Трубы электросварные</option><option value="seamless-pipes">Трубы бесшовные</option><option value="pipeline-parts">СДТ</option><option value="insulated">Трубы и СДТ в изоляции</option><option value="other">Другая продукция</option></select></label>
           <label>Что требуется<textarea name="message" rows={4} required placeholder="Размеры, марка стали, ГОСТ/ТУ, количество, город доставки" /></label>
-          <label className="file-field"><span>Приложить файлы</span><input name="files" type="file" multiple accept=".xlsx,.xls,.pdf,.doc,.docx,.png,.jpg,.jpeg,.webp,.dwg,.dxf" /><small>Excel, PDF, Word, изображения и чертежи · до 25 МБ суммарно</small></label>
+          <label className="file-field"><span>Приложить файлы</span><span className="file-button">Выбрать файлы</span><input name="files" type="file" multiple accept=".xlsx,.xls,.pdf,.doc,.docx,.png,.jpg,.jpeg,.webp,.dwg,.dxf,.mp3,.m4a,.wav,.ogg,.webm,audio/*" onChange={(event) => setSelectedFiles(event.currentTarget.files?.length || 0)} /><strong>{selectedFiles ? `Выбрано файлов: ${selectedFiles}` : 'Файлы не выбраны'}</strong><small>Excel, PDF, Word, изображения, чертежи и аудио · до 25 МБ суммарно</small></label>
           <label className="honeypot" aria-hidden="true">Ваш сайт<input name="website" tabIndex={-1} autoComplete="off" /></label>
           <label className="consent"><input name="consent" type="checkbox" required /><span>Согласен на обработку данных для подготовки коммерческого предложения</span></label>
           <button type="submit" disabled={status === 'sending'}>{status === 'sending' ? 'Отправляем…' : 'Отправить заявку'} <span>→</span></button>

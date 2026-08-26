@@ -349,8 +349,8 @@
   line-height: 1.65;
 }
 .material-hero h1 {
-  font-size: clamp(72px, 10vw, 138px);
-  line-height: 0.75;
+  font-size: clamp(58px, 7.2vw, 98px);
+  line-height: 0.88;
 }
 .material-hero h2 {
   margin-top: 32px;
@@ -681,7 +681,7 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .material-hero h1 {
-    font-size: 76px;
+    font-size: clamp(48px, 15vw, 64px);
   }
   .materials-groups {
     padding: 0;
