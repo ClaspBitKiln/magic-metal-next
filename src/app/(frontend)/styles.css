@@ -1333,19 +1333,19 @@ h2 {
 
 /* Unified public-site typography scale: desktop, tablet and mobile. */
 main h1 {
-  font-size: clamp(48px, 4.2vw, 64px) !important;
-  line-height: 1.02 !important;
-  letter-spacing: -0.035em !important;
-}
-main h2 {
-  font-size: clamp(36px, 3.5vw, 52px) !important;
+  font-size: clamp(36px, 3.2vw, 48px) !important;
   line-height: 1.08 !important;
   letter-spacing: -0.03em !important;
 }
+main h2 {
+  font-size: clamp(28px, 2.5vw, 38px) !important;
+  line-height: 1.12 !important;
+  letter-spacing: -0.025em !important;
+}
 main h3 {
-  font-size: clamp(20px, 1.7vw, 28px) !important;
-  line-height: 1.22 !important;
-  letter-spacing: -0.02em !important;
+  font-size: clamp(18px, 1.45vw, 24px) !important;
+  line-height: 1.25 !important;
+  letter-spacing: -0.015em !important;
 }
 main p,
 main li,
@@ -1359,15 +1359,15 @@ main select {
 }
 @media (max-width: 720px) {
   main h1 {
-    font-size: clamp(36px, 10vw, 44px) !important;
-    line-height: 1.06 !important;
+    font-size: clamp(32px, 8.5vw, 38px) !important;
+    line-height: 1.1 !important;
   }
   main h2 {
-    font-size: clamp(28px, 8vw, 36px) !important;
-    line-height: 1.12 !important;
+    font-size: clamp(25px, 7vw, 31px) !important;
+    line-height: 1.15 !important;
   }
   main h3 {
-    font-size: clamp(20px, 6vw, 25px) !important;
+    font-size: clamp(18px, 5vw, 22px) !important;
   }
 }
 
