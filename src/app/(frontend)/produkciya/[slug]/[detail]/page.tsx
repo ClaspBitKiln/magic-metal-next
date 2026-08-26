@@ -48,7 +48,7 @@ export default async function PipeDetailPage({ params }: { params: Promise<{ slu
   }
   return <main className="pipe-detail">
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
-    <header className="pipe-nav"><Link href={`/produkciya/${item.categorySlug}`}><b>←</b> {categoryLabel}</Link><Link href={requestHref}>Отправить спецификацию ↗</Link></header>
+    <header className="pipe-nav"><Link href={`/produkciya/${item.categorySlug}`}><b>←</b> {categoryLabel}</Link><Link href={requestHref}>Отправить заявку ↗</Link></header>
     <section className="pipe-hero"><div><p>{categoryLabel}</p><h1>{item.title}</h1><span>{item.description}</span></div></section>
     <nav className="pipe-breadcrumb" aria-label="Хлебные крошки"><Link href="/">Главная</Link><b>/</b><Link href={`/produkciya/${item.categorySlug}`}>{categoryLabel}</Link><b>/</b><span>{item.shortTitle}</span></nav>
     <section className="pipe-intro"><h2>Подбор по назначению, а не только по размеру</h2><div><p>{item.intro}</p><Link href={requestHref}>Отправить заявку →</Link></div></section>

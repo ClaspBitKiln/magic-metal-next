@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function SearchPage() {
   return <main className="search-page">
-    <header className="search-header"><Link href="/"><b>←</b> Мэджик Металл</Link><Link href="/#request">Отправить спецификацию ↗</Link></header>
+    <header className="search-header"><Link href="/"><b>←</b> Мэджик Металл</Link><Link href="/#request">Отправить заявку ↗</Link></header>
     <section className="search-hero"><p>Единый технический поиск</p><h1>Найти<br /><em>точное исполнение</em></h1><span>Ищите по названию продукции, марке стали или сплава, номеру ГОСТ и области применения.</span></section>
     <CatalogSearch />
   </main>

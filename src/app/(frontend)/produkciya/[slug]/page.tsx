@@ -33,7 +33,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const detailItems = [...getPipeItemsByCategory(category.slug), ...getProductDetailsByCategory(category.slug)]
   return (
     <main className="product-page">
-      <header className="product-header"><Link href="/"><b>←</b> Мэджик Металл</Link><Link className="product-cta" href={requestHref}>Отправить спецификацию ↗</Link></header>
+      <header className="product-header"><Link href="/"><b>←</b> Мэджик Металл</Link><Link className="product-cta" href={requestHref}>Отправить заявку ↗</Link></header>
       <section className="product-hero"><div><p>Продукция · подбор по спецификации</p><h1>{category.title}</h1><span>{category.description}</span></div></section>
       <section className="product-body">
         <article><h2>Комплектуем поставку</h2><p>{category.intro}</p><Link href={requestHref}>Отправить заявку <b>→</b></Link></article>

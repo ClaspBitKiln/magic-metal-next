@@ -63,7 +63,7 @@ export default async function MaterialPage({ params }: { params: Promise<{ slug:
       {material.analogs.length > 0 && <section className="material-analogs"><p>Справочные аналоги</p><h2>Соответствия требуют проверки</h2>{material.analogs.map((item) => <span key={item}>{item}</span>)}<small>Совпадение обозначений или близость химического состава не гарантируют одинаковые механические свойства, коррозионную стойкость и допустимые условия эксплуатации.</small></section>}
       <section className="material-products"><p>Связанные товарные направления</p><h2>Где применяется {material.designation}</h2><div>{material.relatedProducts.map((item) => <Link href={`/produkciya/${item.slug}`} key={item.slug}>{item.label}<b>↗</b></Link>)}</div></section>
       {related.length > 0 && <section className="related-materials"><p>Материалы той же группы</p><div>{related.map((item) => <Link href={`/spravochnik-materialov/${item.slug}`} key={item.slug}><b>{item.designation}</b><span>{item.name}</span></Link>)}</div></section>}
-      <section className="materials-note"><p>Заявка</p><h2>Нужен расчёт по этой марке?</h2><span>Пришлите Excel, PDF, Word, фото или чертёж. Проверим требования и подготовим предложение.</span><Link href={requestHref}>Отправить спецификацию ↗</Link></section>
+      <section className="materials-note"><p>Заявка</p><h2>Нужен расчёт по этой марке?</h2><span>Пришлите Excel, PDF, Word, фото или чертёж. Проверим требования и подготовим предложение.</span><Link href={requestHref}>Отправить заявку ↗</Link></section>
     </main>
   )
 }
