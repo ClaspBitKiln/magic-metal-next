@@ -1436,3 +1436,12 @@ main select {
     margin-bottom: 32px;
   }
 }
+
+
+/* Compact labels inside product fact grids must not inherit display heading sizes. */
+.product-body > article > h2,
+.product-facts h2 {
+  font-size: 13px !important;
+  line-height: 1.35 !important;
+  letter-spacing: 0.08em !important;
+}
