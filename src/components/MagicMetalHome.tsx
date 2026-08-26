@@ -174,7 +174,7 @@ export default function MagicMetalHome() {
         </form>
       </section>
 
-      <footer className="footer"><Image src="/images/logo-transparent-v2.png" alt="" width={92} height={68} /><p>ООО «Мэджик Металл» · поставки металла для промышленности</p><div><Link href="/poisk">Поиск по каталогу</Link><Link href="/kalkulyator-metalla">Калькулятор</Link><Link href="/postavki/uzbekistan">Поставки в Узбекистан</Link><a href="mailto:m1@magicmet.ru">m1@magicmet.ru</a><Link href="/politika-konfidencialnosti">Политика конфиденциальности</Link></div></footer>
+      <footer className="footer"><Image src="/images/logo-hq.webp" alt="" width={92} height={68} /><p>ООО «Мэджик Металл» · поставки металла для промышленности</p><div><a href="tel:+79227117363">+7 922 711-73-63</a><a href="mailto:m1@magicmet.ru">m1@magicmet.ru</a><Link href="/politika-konfidencialnosti">Политика</Link></div></footer>
     </main>
   )
 }
