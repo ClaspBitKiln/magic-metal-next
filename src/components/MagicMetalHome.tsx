@@ -166,6 +166,7 @@ export default function MagicMetalHome() {
           <div className="company-brand-wall" aria-label="Компании и проекты, связанные с опытом поставок">
             <span>Газпром<small>подрядные организации</small></span>
             <span>Роснефть<small>подрядные организации</small></span>
+            <span>Атомная промышленность<small>подрядчики на строительных объектах</small></span>
             <span>Роскосмос<small>космодром «Восточный»</small></span>
             <span>АЛРОСА<small>промышленный проект</small></span>
             <span>ENTER Engineering<small>международные проекты</small></span>
