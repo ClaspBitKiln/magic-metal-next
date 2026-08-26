@@ -174,7 +174,10 @@ export default function MagicMetalHome() {
         </div>
         <div className="company-conversion">
           <p><strong>Восточный, Тенгиз, Карабатан, Kulevi Oil Terminal, нефтегазовые и промышленные объекты СНГ.</strong> Команда умеет работать со сложной спецификацией, контролем документов, сроками и доставкой на удалённые площадки.</p>
-          <a href="#request">Отправить спецификацию <span>↗</span></a>
+          <div className="company-actions">
+            <a href="#request">Отправить заявку <span>↗</span></a>
+            <a className="company-phone" href="tel:+79227117363">Позвонить <span>↗</span></a>
+          </div>
         </div>
       </section>
 
