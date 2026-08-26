@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function StandardsDirectoryPage() {
   return <main className="materials-page">
-    <header className="materials-header"><Link href="/"><b>←</b> Мэджик Металл</Link><Link className="materials-cta" href="/#request">Отправить спецификацию ↗</Link></header>
+    <header className="materials-header"><Link href="/"><b>←</b> Мэджик Металл</Link><Link className="materials-cta" href="/#request">Отправить заявку ↗</Link></header>
     <section className="materials-hero"><p>Справочник · нормативные документы</p><h1>ГОСТ<br /><em>и стандарты</em></h1><span>Не просто номера документов: область применения, связь с материалами и продукцией, параметры, которые важно указать для корректного расчёта.</span></section>
     <nav className="materials-groups" aria-label="Группы стандартов">{standardGroups.map(([key, label]) => <a href={`#${key}`} key={key}>{label}</a>)}</nav>
     <section className="materials-directory">
@@ -25,6 +25,6 @@ export default function StandardsDirectoryPage() {
         </section>
       })}
     </section>
-    <section className="materials-note"><p>Подбор по нормативной документации</p><h2>Одного номера ГОСТ недостаточно</h2><span>Для расчёта уточняем стандарт на сортамент и технические условия, марку, размеры, состояние поставки, испытания, контроль и документы.</span><Link href="/#request">Проверить спецификацию ↗</Link></section>
+    <section className="materials-note"><p>Подбор по нормативной документации</p><h2>Одного номера ГОСТ недостаточно</h2><span>Для расчёта уточняем стандарт на сортамент и технические условия, марку, размеры, состояние поставки, испытания, контроль и документы.</span><Link href="/#request">Отправить заявку ↗</Link></section>
   </main>
 }
