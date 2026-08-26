@@ -146,7 +146,7 @@ export default function MagicMetalHome() {
         <div className="catalog-head"><div><p className="section-kicker light">02 — Трубный каталог</p><h2>Сортамент<br /><em>и стандарты</em></h2></div><p>Сверяем сортамент, технические условия, марку стали и требования к контролю. Если стандартной позиции нет — подбираем производство или технически корректную замену. <Link href="/spravochnik-materialov">Открыть справочник материалов →</Link></p></div>
         <div className="catalog-table" role="table" aria-label="Трубная продукция">
           <div className="catalog-row catalog-labels" role="row"><span>Тип продукции</span><span>Размеры</span><span>Стандарты</span><span>Марки / исполнение</span></div>
-          {pipeCatalog.map(([title, size, standards, grades, href], index) => <motion.div className="catalog-row" role="row" key={title} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .35 }} variants={animation} transition={{ duration: .42, delay: Math.min(index * .035, .2) }}><Link className="catalog-row-link" href={href} aria-label={`Подробнее: ${title}`}><strong><i>{String(index + 1).padStart(2, '0')}</i>{title}</strong><span>{size}</span><span>{standards}</span><span>{grades}</span></Link></motion.div>)}
+          {pipeCatalog.map(([title, size, standards, grades, href], index) => <motion.a className="catalog-row" role="row" href={href} aria-label={`Подробнее: ${title}`} key={title} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .35 }} variants={animation} transition={{ duration: .42, delay: Math.min(index * .035, .2) }}><strong><i>{String(index + 1).padStart(2, '0')}</i>{title}</strong><span>{size}</span><span>{standards}</span><span>{grades}</span></motion.a>)}
         </div>
       </section>
 
