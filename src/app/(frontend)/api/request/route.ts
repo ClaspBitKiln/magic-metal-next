@@ -1,6 +1,7 @@
 import { getPayload } from 'payload'
 import { NextResponse } from 'next/server'
 import nodemailer from 'nodemailer'
+import { createHmac } from 'node:crypto'
 
 import config from '@/payload.config'
 
@@ -137,14 +138,25 @@ export async function POST(request: Request) {
   }
 
   let crmDelivered = false
-  if (process.env.CRM_WEBHOOK_URL) {
+  const workflowUrl = process.env.N8N_WEBHOOK_URL || process.env.CRM_WEBHOOK_URL || 'https://cloud.activepieces.com/api/v1/webhooks/fglfaNe3jXxDWgHGKW1cX'
+  if (workflowUrl) {
     try {
-      const crmResponse = await fetch(process.env.CRM_WEBHOOK_URL, {
-        method: 'POST', headers: { 'content-type': 'application/json' }, signal: AbortSignal.timeout(8000),
-        body: JSON.stringify({ id: created.id, name, company, phone, email, message, context, productDirection, source, landingPage }),
+      const workflowPayload = JSON.stringify({
+        event: 'website.request.created',
+        occurredAt: new Date().toISOString(),
+        request: { id: created.id, name, company, phone, email, message, context, productDirection, source, landingPage, fileIds: uploadedIds },
+      })
+      const signature = process.env.N8N_WEBHOOK_SECRET
+        ? createHmac('sha256', process.env.N8N_WEBHOOK_SECRET).update(workflowPayload).digest('hex')
+        : ''
+      const crmResponse = await fetch(workflowUrl, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', ...(signature ? { 'x-magicmet-signature': `sha256=${signature}` } : {}) },
+        signal: AbortSignal.timeout(8000),
+        body: workflowPayload,
       })
       crmDelivered = crmResponse.ok
-    } catch (error) { payload.logger.error({ err: error, msg: 'Заявка сохранена, но CRM-доставка не выполнена' }) }
+    } catch (error) { payload.logger.error({ err: error, msg: 'Заявка сохранена, но доставка в Activepieces/n8n/CRM не выполнена' }) }
   }
 
   if (emailDelivered || crmDelivered) {
