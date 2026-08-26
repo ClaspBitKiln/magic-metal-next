@@ -168,13 +168,13 @@ export default function MagicMetalHome() {
           <label>Что требуется<textarea name="message" rows={4} required placeholder="Размеры, марка стали, ГОСТ/ТУ, количество, город доставки" /></label>
           <label className="file-field"><span>Приложить файлы</span><span className="file-button">Выбрать файлы</span><input name="files" type="file" multiple accept=".xlsx,.xls,.pdf,.doc,.docx,.png,.jpg,.jpeg,.webp,.dwg,.dxf,.mp3,.m4a,.wav,.ogg,.webm,audio/*" onChange={(event) => setSelectedFiles(event.currentTarget.files?.length || 0)} /><strong>{selectedFiles ? `Выбрано файлов: ${selectedFiles}` : 'Файлы не выбраны'}</strong><small>Excel, PDF, Word, изображения, чертежи и аудио · до 25 МБ суммарно</small></label>
           <label className="honeypot" aria-hidden="true">Ваш сайт<input name="website" tabIndex={-1} autoComplete="off" /></label>
-          <label className="consent"><input name="consent" type="checkbox" required /><span>Согласен на обработку данных для подготовки коммерческого предложения</span></label>
+          <label className="consent"><input name="consent" type="checkbox" required /><span>Согласен на <Link href="/politika-konfidencialnosti">обработку персональных данных</Link> для подготовки коммерческого предложения</span></label>
           <button type="submit" disabled={status === 'sending'}>{status === 'sending' ? 'Отправляем…' : 'Отправить заявку'} <span>→</span></button>
           <AnimatePresence mode="wait">{status === 'success' && <motion.p className="form-status success" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>Заявка принята. Мы свяжемся с вами.</motion.p>}{status === 'error' && <motion.p className="form-status error" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>Не удалось отправить. Позвоните нам или напишите на m1@magicmet.ru.</motion.p>}</AnimatePresence>
         </form>
       </section>
 
-      <footer className="footer"><Image src="/images/logo-transparent-v2.png" alt="" width={92} height={68} /><p>ООО «Мэджик Металл» · поставки металла для промышленности</p><div><Link href="/poisk">Поиск по каталогу</Link><Link href="/kalkulyator-metalla">Калькулятор</Link><Link href="/postavki/uzbekistan">Поставки в Узбекистан</Link><a href="mailto:m1@magicmet.ru">m1@magicmet.ru</a><a href="https://magicmet.ru">magicmet.ru</a></div></footer>
+      <footer className="footer"><Image src="/images/logo-transparent-v2.png" alt="" width={92} height={68} /><p>ООО «Мэджик Металл» · поставки металла для промышленности</p><div><Link href="/poisk">Поиск по каталогу</Link><Link href="/kalkulyator-metalla">Калькулятор</Link><Link href="/postavki/uzbekistan">Поставки в Узбекистан</Link><a href="mailto:m1@magicmet.ru">m1@magicmet.ru</a><a href="https://magicmet.ru">magicmet.ru</a><Link href="/politika-konfidencialnosti">Политика конфиденциальности</Link></div></footer>
     </main>
   )
 }
