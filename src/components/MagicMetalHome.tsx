@@ -109,7 +109,7 @@ export default function MagicMetalHome() {
       <header className="topbar">
         <a className="brand" href="#top" aria-label="Мэджик Металл — главная"><Image src="/images/logo-transparent-v2.png" alt="Мэджик Металл" width={147} height={109} priority /></a>
         <nav className={menuOpen ? 'nav open' : 'nav'} aria-label="Основная навигация">
-          <a href="#products">Продукция</a><Link href="/spravochnik-gost">Справочник ГОСТ</Link><a href="#contacts">Контакты</a>
+          <a href="#about">О компании</a><a href="#products">Продукция</a><Link href="/spravochnik-gost">Справочник ГОСТ</Link><a href="#contacts">Контакты</a>
         </nav>
         <div className="top-actions">
           <a className="phone" href="tel:+79227117363">+7 922 711-73-63</a>
@@ -150,13 +150,41 @@ export default function MagicMetalHome() {
         </div>
       </section>
 
+      <section className="section company-trust-section" id="about" aria-labelledby="company-trust-title">
+        <div className="company-trust-head">
+          <div><p className="section-kicker">03 — О компании</p><h2 id="company-trust-title">Опыт, подтверждённый<br /><em>реальными поставками</em></h2></div>
+          <p>«Мэджик Металл» комплектует промышленный металлопрокат, трубную продукцию, СДТ, запорную арматуру и материалы для сложных проектов в России и СНГ.</p>
+        </div>
+        <div className="company-metrics" aria-label="Опыт компании">
+          <article><strong>20+ лет</strong><span>опыт специалистов на рынке металлопроката</span></article>
+          <article><strong>100 000+ т</strong><span>совокупный объём реализованных поставок</span></article>
+          <article><strong>500+</strong><span>позиций в доступном сортаменте</span></article>
+          <article><strong>Россия и СНГ</strong><span>география промышленных проектов и поставок</span></article>
+        </div>
+        <div className="company-proof">
+          <p className="company-proof-label">Опыт поставок для подрядных организаций и крупных промышленных проектов</p>
+          <div className="company-brand-wall" aria-label="Компании и проекты, связанные с опытом поставок">
+            <span>Газпром<small>подрядные организации</small></span>
+            <span>Роснефть<small>подрядные организации</small></span>
+            <span>Роскосмос<small>космодром «Восточный»</small></span>
+            <span>АЛРОСА<small>промышленный проект</small></span>
+            <span>ENTER Engineering<small>международные проекты</small></span>
+            <span>UzGTL<small>OLTIN Y’OL GTL</small></span>
+          </div>
+        </div>
+        <div className="company-conversion">
+          <p><strong>Восточный, Тенгиз, Карабатан, Kulevi Oil Terminal, нефтегазовые и промышленные объекты СНГ.</strong> Команда умеет работать со сложной спецификацией, контролем документов, сроками и доставкой на удалённые площадки.</p>
+          <a href="#request">Отправить спецификацию <span>↗</span></a>
+        </div>
+      </section>
+
       <section className="section other-section">
-        <div className="section-heading compact"><p className="section-kicker">03 — Остальная номенклатура</p><h2>Металл для<br /><em>всего проекта</em></h2></div>
+        <div className="section-heading compact"><p className="section-kicker">04 — Остальная номенклатура</p><h2>Металл для<br /><em>всего проекта</em></h2></div>
         <div className="other-list">{otherProducts.map(([title, text], index) => <motion.article key={title} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .4 }} variants={animation} transition={{ duration: .38, delay: Math.min(index * .02, .14) }}><span>{String(index + 1).padStart(2, '0')}</span><h3>{title}</h3><p>{text}</p><Link href={otherSeoLinks[title]} aria-label={`Подробнее: ${title}`}>↗</Link></motion.article>)}</div>
       </section>
 
       <section className="request-section" id="request">
-        <div className="request-copy" id="contacts"><p className="section-kicker light">04 — Расчёт поставки</p><h2>Пришлите<br /><em>спецификацию</em></h2><p>Укажите требования и город доставки. Проверим спецификацию, предложим исполнение и подготовим коммерческое предложение.</p><a href="mailto:m1@magicmet.ru">m1@magicmet.ru</a><a href="tel:+79227117363">+7 922 711-73-63</a></div>
+        <div className="request-copy" id="contacts"><p className="section-kicker light">05 — Расчёт поставки</p><h2>Пришлите<br /><em>спецификацию</em></h2><p>Укажите требования и город доставки. Проверим спецификацию, предложим исполнение и подготовим коммерческое предложение.</p><a href="mailto:m1@magicmet.ru">m1@magicmet.ru</a><a href="tel:+79227117363">+7 922 711-73-63</a></div>
         <form className="request-form" onSubmit={submitRequest} encType="multipart/form-data">
           <div className="form-grid"><label>Ваше имя<input name="name" autoComplete="name" required /></label><label>Компания<input name="company" autoComplete="organization" /></label><label>Телефон<input name="phone" type="tel" inputMode="tel" autoComplete="tel" required /></label><label>Email<input name="email" type="email" autoComplete="email" /></label></div>
           <label>Направление<select name="productDirection" defaultValue=""><option value="">Выберите при необходимости</option><option value="electrowelded-pipes">Трубы электросварные</option><option value="seamless-pipes">Трубы бесшовные</option><option value="pipeline-parts">СДТ</option><option value="insulated">Трубы и СДТ в изоляции</option><option value="other">Другая продукция</option></select></label>
