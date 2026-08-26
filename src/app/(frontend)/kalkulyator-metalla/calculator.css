@@ -131,7 +131,7 @@
 .calculator-result strong {
   margin-top: 28px;
   color: #fff;
-  font-size: clamp(45px, 6vw, 82px);
+  font-size: clamp(34px, 4.2vw, 58px);
   line-height: 0.9;
 }
 .calculator-result strong small {
@@ -210,7 +210,12 @@
     grid-template-columns: 1fr;
   }
   .calculator-result {
-    min-height: 360px;
+    min-height: 320px;
+    padding: 30px 24px;
+  }
+  .calculator-result strong {
+    font-size: clamp(32px, 11vw, 44px);
+    line-height: 1;
   }
   .calculator-info {
     padding: 62px 22px;
