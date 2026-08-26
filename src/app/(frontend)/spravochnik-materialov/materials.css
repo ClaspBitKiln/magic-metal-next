@@ -348,6 +348,23 @@
   font-size: 18px;
   line-height: 1.65;
 }
+.material-passport-link {
+  width: fit-content;
+  margin-top: 28px;
+  padding: 13px 16px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  color: #071c62;
+  background: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.material-passport-link b {
+  color: #0757e8;
+  font-size: 18px;
+}
 .material-hero h1 {
   font-size: clamp(58px, 7.2vw, 98px);
   line-height: 0.88;
@@ -424,6 +441,7 @@
   line-height: 1.5;
 }
 .material-passport {
+  scroll-margin-top: 20px;
   padding: 76px 7vw 82px;
   background: #f8faff;
 }
