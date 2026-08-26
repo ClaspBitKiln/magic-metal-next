@@ -1560,8 +1560,12 @@ main select {
   color: #fff;
   font-weight: 600;
 }
-.company-conversion a {
+.company-actions {
   min-width: 245px;
+  display: grid;
+  gap: 8px;
+}
+.company-actions a {
   padding: 16px 18px;
   display: flex;
   justify-content: space-between;
@@ -1570,6 +1574,11 @@ main select {
   background: #fff;
   font-size: 13px;
   font-weight: 700;
+}
+.company-actions .company-phone {
+  color: #fff;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.55);
 }
 @media (max-width: 900px) {
   .company-trust-head {
@@ -1592,7 +1601,7 @@ main select {
     grid-template-columns: 1fr;
     gap: 22px;
   }
-  .company-conversion a {
+  .company-actions {
     min-width: 0;
     max-width: 310px;
   }
@@ -1615,7 +1624,7 @@ main select {
   .company-conversion {
     padding: 24px 20px;
   }
-  .company-conversion a {
+  .company-actions {
     max-width: none;
   }
 }
