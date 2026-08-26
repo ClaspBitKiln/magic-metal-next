@@ -40,7 +40,7 @@ export default async function MaterialPage({ params }: { params: Promise<{ slug:
   return (
     <main className="materials-page material-detail">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
-      <header className="materials-header"><Link href="/spravochnik-materialov"><b>←</b> Все материалы</Link><Link className="materials-cta" href={requestHref}>Запросить поставку ↗</Link></header>
+      <header className="materials-header"><Link href="/spravochnik-materialov"><b>←</b> Все материалы</Link><Link className="materials-cta" href={requestHref}>Отправить заявку ↗</Link></header>
       <section className="material-hero material-hero-visual"><div><p>{material.groupLabel}</p><h1>{material.designation}</h1><h2>{material.name}</h2><span>{material.summary}</span>{spec && <a className="material-passport-link" href="#material-passport">Химсостав и свойства <b>↓</b></a>}</div></section>
       {spec && <section className="material-passport" id="material-passport" aria-labelledby="material-passport-title">
         <header><div><p>Технический паспорт марки</p><h2 id="material-passport-title">Главное для подбора</h2></div><span>{spec.mechanicalStandard}</span></header>
@@ -52,7 +52,7 @@ export default async function MaterialPage({ params }: { params: Promise<{ slug:
         <aside><span>{spec.note} Стандарт и сертификат конкретной партии имеют приоритет.</span></aside>
       </section>}
       <section className="material-content">
-        <article className="material-intro"><p>Подбор по спецификации</p><h2>Поставим материал в нужном исполнении</h2><span>Уточним нормативный документ, сортамент, состояние поставки, контроль и документы. Для ответственного применения сверим требования проекта с сертификатом производителя.</span><Link href={requestHref}>Отправить ТЗ <b>→</b></Link></article>
+        <article className="material-intro"><p>Подбор по спецификации</p><h2>Поставим материал в нужном исполнении</h2><span>Уточним нормативный документ, сортамент, состояние поставки, контроль и документы. Для ответственного применения сверим требования проекта с сертификатом производителя.</span><Link href={requestHref}>Отправить заявку <b>→</b></Link></article>
         <div className="material-facts">
           <section><h2>Стандарты</h2>{material.standards.map((item) => { const standard = findStandard(item); return standard ? <Link className="fact-link" href={`/spravochnik-gost/${standard.slug}`} key={item}>{item} <b>→</b></Link> : <span key={item}>{item}</span> })}</section>
           <section><h2>Ключевые свойства</h2>{material.properties.map((item) => <span key={item}>{item}</span>)}</section>
