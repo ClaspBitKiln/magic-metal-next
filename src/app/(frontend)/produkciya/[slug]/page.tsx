@@ -36,7 +36,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       <header className="product-header"><Link href="/"><b>←</b> Мэджик Металл</Link><Link className="product-cta" href={requestHref}>Отправить спецификацию ↗</Link></header>
       <section className="product-hero"><div><p>Продукция · подбор по спецификации</p><h1>{category.title}</h1><span>{category.description}</span></div></section>
       <section className="product-body">
-        <article><h2>Комплектуем поставку</h2><p>{category.intro}</p><Link href={requestHref}>Запросить расчёт <b>→</b></Link></article>
+        <article><h2>Комплектуем поставку</h2><p>{category.intro}</p><Link href={requestHref}>Отправить заявку <b>→</b></Link></article>
         <div className="product-facts"><section><h2>Виды продукции</h2>{category.products.map((item) => <span key={item}>{item}</span>)}</section><section><h2>Стандарты</h2>{category.standards.map((item) => { const standard = findStandard(item); return standard ? <Link className="fact-link" href={`/spravochnik-gost/${standard.slug}`} key={item}>{item} <b>→</b></Link> : <span key={item}>{item}</span> })}</section><section><h2>Марки и материалы</h2>{category.grades.map((item) => <span key={item}>{item}</span>)}</section></div>
       </section>
       {category.slug === 'sdt' && <section className="product-subcatalog"><p>Каталог СДТ</p><h2>Выберите тип и исполнение детали</h2><div>{sdtCatalog.map((item) => <Link href={`/produkciya/sdt/${item.slug}`} key={item.slug}><span>{item.shortTitle}</span><small>{item.standards.slice(0, 2).join(' · ')}</small><b>↗</b></Link>)}</div></section>}
