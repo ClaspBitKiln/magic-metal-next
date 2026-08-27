@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
@@ -163,14 +164,36 @@ export default function MagicMetalHome() {
         </div>
         <div className="company-proof">
           <p className="company-proof-label">Опыт поставок для подрядных организаций и крупных промышленных проектов</p>
-          <div className="company-brand-wall" aria-label="Компании и проекты, связанные с опытом поставок">
-            <span>Газпром<small>подрядные организации</small></span>
-            <span>Роснефть<small>подрядные организации</small></span>
-            <span>Атомная промышленность<small>подрядчики на строительных объектах</small></span>
-            <span>Роскосмос<small>космодром «Восточный»</small></span>
-            <span>АЛРОСА<small>промышленный проект</small></span>
-            <span>ENTER Engineering<small>международные проекты</small></span>
-            <span>UzGTL<small>OLTIN Y’OL GTL</small></span>
+          <div className="company-brand-wall" aria-label="Компании, отрасли и проекты, связанные с опытом поставок">
+            <article className="company-proof-card company-proof-card--gazprom">
+              <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Gazprom_logo_in_russian_languaje.svg" alt="Газпром" loading="lazy" />
+              <small>опыт поставок для подрядных организаций</small>
+            </article>
+            <article className="company-proof-card company-proof-card--rosneft">
+              <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Rosneft_Logo_2016.svg" alt="Роснефть" loading="lazy" />
+              <small>опыт поставок для подрядных организаций</small>
+            </article>
+            <article className="company-proof-card company-proof-card--atomic">
+              <strong>Атомная<br />промышленность</strong>
+              <small>подрядчики на строительных объектах</small>
+            </article>
+            <article className="company-proof-card company-proof-card--roscosmos">
+              <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Roscosmos_logo_ru.svg" alt="Роскосмос" loading="lazy" />
+              <small>космодром «Восточный»</small>
+            </article>
+            <article className="company-proof-card company-proof-card--alrosa">
+              <img src="https://alrosa.ru/local/templates/alrosa/img/decor/logo-alrosa.jpg" alt="АЛРОСА" loading="lazy" />
+              <small>опыт участия в промышленном проекте</small>
+            </article>
+            <article className="company-proof-card company-proof-card--sector company-proof-card--oilgas">
+              <span>01</span><strong>Нефтегазовые<br />компании СНГ</strong>
+            </article>
+            <article className="company-proof-card company-proof-card--sector company-proof-card--industry">
+              <span>02</span><strong>Автомобильная и<br />горнодобывающая промышленность</strong>
+            </article>
+            <article className="company-proof-card company-proof-card--sector company-proof-card--chemical">
+              <span>03</span><strong>Химическая<br />промышленность СНГ</strong>
+            </article>
           </div>
         </div>
         <div className="company-conversion">
