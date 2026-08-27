@@ -182,7 +182,7 @@ export default function MagicMetalHome() {
               <small>космодром «Восточный»</small>
             </article>
             <article className="company-proof-card company-proof-card--alrosa">
-              <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Alrosa_logo.svg" alt="АЛРОСА" loading="lazy" />
+              <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Alrosa.svg" alt="АЛРОСА" loading="lazy" />
               <small>опыт участия в промышленном проекте</small>
             </article>
             <article className="company-proof-card company-proof-card--sector company-proof-card--oilgas">
