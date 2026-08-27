@@ -1713,6 +1713,10 @@ main select {
 .company-proof-card--gazprom {
   background: linear-gradient(145deg, #fff 45%, #edf5ff);
 }
+.company-proof-card--gazprom img {
+  height: 68px;
+  max-width: 230px;
+}
 .company-proof-card--rosneft {
   border-top: 4px solid #f5c400;
   background: #fff;
