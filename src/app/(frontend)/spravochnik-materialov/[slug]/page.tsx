@@ -54,7 +54,7 @@ export default async function MaterialPage({ params }: { params: Promise<{ slug:
       <section className="material-content">
         <article className="material-intro"><p>Подбор по спецификации</p><h2>Поставим материал в нужном исполнении</h2><span>Уточним нормативный документ, сортамент, состояние поставки, контроль и документы. Для ответственного применения сверим требования проекта с сертификатом производителя.</span><Link href={requestHref}>Отправить заявку <b>→</b></Link></article>
         <div className="material-facts">
-          <section><h2>Стандарты</h2>{material.standards.map((item) => { const standard = findStandard(item); return standard ? <Link className="fact-link" href={`/spravochnik-gost/${standard.slug}`} key={item}>{item} <b>→</b></Link> : <span key={item}>{item}</span> })}</section>
+          <section><h2>Стандарты</h2>{material.standards.map((item) => { const standard = findStandard(item); return standard ? <Link className="fact-link standard-code" href={`/spravochnik-gost/${standard.slug}`} key={item}>{item} <b>→</b></Link> : <span className="standard-code" key={item}>{item}</span> })}</section>
           <section><h2>Ключевые свойства</h2>{material.properties.map((item) => <span key={item}>{item}</span>)}</section>
           <section><h2>Применение</h2>{material.applications.map((item) => <span key={item}>{item}</span>)}</section>
           <section><h2>Формы поставки</h2>{material.forms.map((item) => <span key={item}>{item}</span>)}</section>

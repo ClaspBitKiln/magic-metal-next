@@ -21,7 +21,7 @@ export default function StandardsDirectoryPage() {
         if (!items.length) return null
         return <section className="materials-group" id={key} key={key}>
           <div className="materials-group-title"><span>{String(groupIndex + 1).padStart(2, '0')}</span><h2>{label}</h2><p>{items.length} документов</p></div>
-          <div className="materials-grid">{items.map((standard) => <Link href={`/spravochnik-gost/${standard.slug}`} key={standard.slug}><span>{standard.code}</span><h3>{standard.title}</h3><p>{standard.summary}</p><b>Область применения →</b></Link>)}</div>
+          <div className="materials-grid">{items.map((standard) => <Link href={`/spravochnik-gost/${standard.slug}`} key={standard.slug}><span className="standard-code">{standard.code}</span><h3>{standard.title}</h3><p>{standard.summary}</p><b>Область применения →</b></Link>)}</div>
         </section>
       })}
     </section>
