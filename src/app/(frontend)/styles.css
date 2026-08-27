@@ -97,7 +97,7 @@ select:focus-visible {
   justify-content: flex-start;
   align-items: center;
   gap: clamp(18px, 2.1vw, 36px);
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   letter-spacing: -0.01em;
   color: #0b276f;
@@ -1627,4 +1627,19 @@ main select {
   .company-actions {
     max-width: none;
   }
+}
+
+
+/* One typographic system for ГОСТ, ТУ, ОСТ and other normative designations. */
+.standard-code,
+.standard-list {
+  font-family: var(--font-display) !important;
+  font-weight: 600 !important;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.025em !important;
+}
+.standard-code {
+  white-space: nowrap;
+  overflow-wrap: normal;
+  word-break: normal;
 }
