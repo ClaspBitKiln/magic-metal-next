@@ -166,7 +166,7 @@ export default function MagicMetalHome() {
           <p className="company-proof-label">Опыт поставок для подрядных организаций и крупных промышленных проектов</p>
           <div className="company-brand-wall" aria-label="Компании, отрасли и проекты, связанные с опытом поставок">
             <article className="company-proof-card company-proof-card--gazprom">
-              <img src="https://szemi.ru/upload/iblock/537/012sut4l074uvg1u7xs9x5sp5986lrci.png" alt="Газпром" loading="lazy" />
+              <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Gazprom_logo.svg" alt="Газпром" loading="lazy" />
               <small>опыт поставок для подрядных организаций</small>
             </article>
             <article className="company-proof-card company-proof-card--rosneft">
