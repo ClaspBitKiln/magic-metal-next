@@ -126,7 +126,7 @@ export default function MagicMetalHome() {
           <motion.p initial="hidden" animate="visible" variants={animation} transition={{ duration: .55, delay: .08 }} className="eyebrow">Россия · СНГ · Узбекистан</motion.p>
           <motion.h1 initial="hidden" animate="visible" variants={animation} transition={{ duration: .6, delay: .12 }} id="hero-title">Металл<br /><em>для сложных</em><br /><small>промышленных задач</small></motion.h1>
           <motion.p initial="hidden" animate="visible" variants={animation} transition={{ duration: .6, delay: .18 }} className="hero-lead">Находим редкие и нестандартные позиции, сверяем ГОСТ, ТУ и документы, комплектуем и доставляем металл по России и СНГ.</motion.p>
-          <motion.div initial="hidden" animate="visible" variants={animation} transition={{ duration: .6, delay: .22 }} className="hero-actions"><a className="primary-button" href="#request">Отправить заявку <span>↗</span></a><span className="file-types">Excel · PDF · Word · фото · чертёж</span></motion.div>
+          <motion.div initial="hidden" animate="visible" variants={animation} transition={{ duration: .6, delay: .22 }} className="hero-actions"><a className="primary-button" href="#request">Отправить заявку <span>↗</span></a><span className="file-types">Excel · PDF · Word · фото · голосовое сообщение</span></motion.div>
         </div>
         <div className="hero-strip" id="delivery"><div className="delivery-title"><b>Авто · Ж/Д · Авиа</b><span>Срочная доставка снижает простой оборудования и персонала</span></div><a href="#request">Отправить заявку <span>→</span></a></div>
       </section>
