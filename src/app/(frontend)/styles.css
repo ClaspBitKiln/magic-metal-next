@@ -1643,3 +1643,159 @@ main select {
   overflow-wrap: normal;
   word-break: normal;
 }
+
+
+/* Memorable, evidence-led company experience composition. */
+.company-brand-wall {
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 12px;
+  border: 0;
+}
+.company-proof-card {
+  position: relative;
+  isolation: isolate;
+  min-width: 0;
+  min-height: 148px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  border: 1px solid #bcc8da;
+  background: #f6f9fe;
+}
+.company-proof-card::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 112px;
+  height: 112px;
+  right: -44px;
+  bottom: -58px;
+  border-radius: 50%;
+  background: rgba(7, 87, 232, 0.08);
+}
+.company-proof-card img {
+  width: auto;
+  max-width: min(100%, 210px);
+  height: 54px;
+  object-fit: contain;
+  object-position: left center;
+}
+.company-proof-card small {
+  display: block;
+  max-width: 250px;
+  margin-top: 22px;
+  color: #657187;
+  font: 500 12px/1.45 var(--font-body);
+}
+.company-proof-card strong {
+  color: var(--navy);
+  font: 600 clamp(20px, 1.65vw, 27px)/1.04 var(--font-display);
+  letter-spacing: -0.03em;
+}
+.company-proof-card--gazprom,
+.company-proof-card--rosneft,
+.company-proof-card--atomic {
+  grid-column: span 4;
+}
+.company-proof-card--roscosmos,
+.company-proof-card--alrosa,
+.company-proof-card--oilgas {
+  grid-column: span 4;
+}
+.company-proof-card--industry {
+  grid-column: span 7;
+}
+.company-proof-card--chemical {
+  grid-column: span 5;
+}
+.company-proof-card--gazprom {
+  background: linear-gradient(145deg, #fff 45%, #edf5ff);
+}
+.company-proof-card--rosneft {
+  border-top: 4px solid #f5c400;
+  background: #fff;
+}
+.company-proof-card--atomic {
+  color: #fff;
+  border-color: #0757e8;
+  background: linear-gradient(135deg, #071c62, #0757e8);
+}
+.company-proof-card--atomic strong,
+.company-proof-card--atomic small {
+  color: #fff;
+}
+.company-proof-card--atomic small {
+  color: #dbe6ff;
+}
+.company-proof-card--roscosmos img {
+  height: 62px;
+}
+.company-proof-card--alrosa img {
+  height: 58px;
+  mix-blend-mode: multiply;
+}
+.company-proof-card--sector {
+  min-height: 170px;
+  justify-content: flex-end;
+  border: 0;
+}
+.company-proof-card--sector > span {
+  position: absolute;
+  top: 20px;
+  right: 22px;
+  color: currentColor;
+  opacity: 0.52;
+  font: 600 12px/1 var(--font-display);
+  letter-spacing: 0.08em;
+}
+.company-proof-card--oilgas {
+  background: #dceaff;
+}
+.company-proof-card--industry {
+  color: #fff;
+  background:
+    linear-gradient(110deg, rgba(7, 28, 98, 0.98), rgba(7, 87, 232, 0.86)),
+    #071c62;
+}
+.company-proof-card--industry strong {
+  max-width: 560px;
+  color: #fff;
+}
+.company-proof-card--chemical {
+  background: linear-gradient(145deg, #edf3fb, #fff);
+  border: 1px solid #bcc8da;
+}
+@media (max-width: 900px) {
+  .company-brand-wall {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .company-proof-card--gazprom,
+  .company-proof-card--rosneft,
+  .company-proof-card--atomic,
+  .company-proof-card--roscosmos,
+  .company-proof-card--alrosa,
+  .company-proof-card--oilgas,
+  .company-proof-card--industry,
+  .company-proof-card--chemical {
+    grid-column: span 1;
+  }
+}
+@media (max-width: 540px) {
+  .company-brand-wall {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .company-proof-card {
+    min-height: 132px;
+    padding: 20px;
+  }
+  .company-proof-card--sector {
+    min-height: 145px;
+  }
+  .company-proof-card img {
+    max-width: 185px;
+    height: 48px;
+  }
+}
