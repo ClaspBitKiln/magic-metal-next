@@ -166,7 +166,7 @@ export default function MagicMetalHome() {
           <p className="company-proof-label">Опыт поставок для подрядных организаций и крупных промышленных проектов</p>
           <div className="company-brand-wall" aria-label="Компании, отрасли и проекты, связанные с опытом поставок">
             <article className="company-proof-card company-proof-card--gazprom">
-              <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Gazprom_logo_in_russian_languaje.svg" alt="Газпром" loading="lazy" />
+              <img src="https://szemi.ru/upload/iblock/537/012sut4l074uvg1u7xs9x5sp5986lrci.png" alt="Газпром" loading="lazy" />
               <small>опыт поставок для подрядных организаций</small>
             </article>
             <article className="company-proof-card company-proof-card--rosneft">
@@ -182,7 +182,7 @@ export default function MagicMetalHome() {
               <small>космодром «Восточный»</small>
             </article>
             <article className="company-proof-card company-proof-card--alrosa">
-              <img src="https://alrosa.ru/local/templates/alrosa/img/decor/logo-alrosa.jpg" alt="АЛРОСА" loading="lazy" />
+              <img src="https://digital-natt.ru/upload/iblock/e22/cf78ejklw8kl51oi8d49eyn8j8xz8s0a.png" alt="АЛРОСА" loading="lazy" />
               <small>опыт участия в промышленном проекте</small>
             </article>
             <article className="company-proof-card company-proof-card--sector company-proof-card--oilgas">
@@ -211,7 +211,7 @@ export default function MagicMetalHome() {
       </section>
 
       <section className="request-section" id="request">
-        <div className="request-copy" id="contacts"><p className="section-kicker light">05 — Расчёт поставки</p><h2>Пришлите<br /><em>спецификацию</em></h2><p>Укажите требования и город доставки. Проверим спецификацию, предложим исполнение и подготовим коммерческое предложение.</p><a href="mailto:m1@magicmet.ru">m1@magicmet.ru</a><a href="tel:+79227117363">+7 922 711-73-63</a></div>
+        <div className="request-copy" id="contacts"><p className="section-kicker light">05 — Расчёт поставки</p><h2>Отправьте<br /><em>заявку</em></h2><p>Укажите требования и город доставки. Проверим спецификацию, предложим исполнение и подготовим коммерческое предложение.</p><a href="mailto:m1@magicmet.ru">m1@magicmet.ru</a><a href="tel:+79227117363">+7 922 711-73-63</a></div>
         <form className="request-form" onSubmit={submitRequest} encType="multipart/form-data">
           <div className="form-grid"><label>Ваше имя<input name="name" autoComplete="name" required /></label><label>Компания<input name="company" autoComplete="organization" /></label><label>Телефон<input name="phone" type="tel" inputMode="tel" autoComplete="tel" required /></label><label>Email<input name="email" type="email" autoComplete="email" /></label></div>
           <label>Направление<select name="productDirection" defaultValue=""><option value="">Выберите при необходимости</option><option value="electrowelded-pipes">Трубы электросварные</option><option value="seamless-pipes">Трубы бесшовные</option><option value="pipeline-parts">СДТ</option><option value="insulated">Трубы и СДТ в изоляции</option><option value="other">Другая продукция</option></select></label>
