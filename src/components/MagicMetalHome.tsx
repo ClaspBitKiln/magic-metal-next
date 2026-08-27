@@ -138,7 +138,7 @@ export default function MagicMetalHome() {
       <section className="section priority-section" id="products">
         <motion.div className="section-heading" initial="hidden" whileInView="visible" viewport={{ once: true, amount: .3 }} variants={animation} transition={{ duration: .55 }}><p className="section-kicker">01 — Главные направления</p><h2>Трубы, СДТ<br />и <em>изоляция</em></h2><p>Подбираем продукцию по ГОСТ, ТУ, марке стали, геометрии и условиям эксплуатации. Проверяем совместимость требований до расчёта.</p></motion.div>
         <div className="priority-grid">
-          {priorityProducts.map((product, index) => <motion.article key={product.slug} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .2 }} variants={animation} transition={{ duration: .48, delay: index * .06 }}><span>{product.index}</span><h3>{product.title}</h3><p>{product.note}</p><small>{product.standards}</small><a href={`/produkciya/${product.slug}`} aria-label={`Подробнее: ${product.title}`}>Открыть товар <b>↗</b></a></motion.article>)}
+          {priorityProducts.map((product, index) => <motion.article key={product.slug} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .2 }} variants={animation} transition={{ duration: .48, delay: index * .06 }}><span>{product.index}</span><h3>{product.title}</h3><p>{product.note}</p><small className="standard-list">{product.standards.replace(/(ГОСТ|ТУ|ОСТ|СТО) /g, '$1\u00A0')}</small><a href={`/produkciya/${product.slug}`} aria-label={`Подробнее: ${product.title}`}>Открыть товар <b>↗</b></a></motion.article>)}
         </div>
       </section>
 
@@ -146,7 +146,7 @@ export default function MagicMetalHome() {
         <div className="catalog-head"><div><p className="section-kicker light">02 — Трубный каталог</p><h2>Сортамент<br /><em>и стандарты</em></h2></div><p>Сверяем сортамент, технические условия, марку стали и требования к контролю. Если стандартной позиции нет — подбираем производство или технически корректную замену. <Link href="/spravochnik-materialov">Открыть справочник материалов →</Link></p></div>
         <div className="catalog-table" role="table" aria-label="Трубная продукция">
           <div className="catalog-row catalog-labels" role="row"><span>Тип продукции</span><span>Размеры</span><span>Стандарты</span><span>Марки / исполнение</span></div>
-          {pipeCatalog.map(([title, size, standards, grades, href], index) => <motion.a className="catalog-row" role="row" href={href} aria-label={`Подробнее: ${title}`} key={title} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .35 }} variants={animation} transition={{ duration: .42, delay: Math.min(index * .035, .2) }}><strong><i>{String(index + 1).padStart(2, '0')}</i>{title}</strong><span>{size}</span><span>{standards}</span><span>{grades}</span></motion.a>)}
+          {pipeCatalog.map(([title, size, standards, grades, href], index) => <motion.a className="catalog-row" role="row" href={href} aria-label={`Подробнее: ${title}`} key={title} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .35 }} variants={animation} transition={{ duration: .42, delay: Math.min(index * .035, .2) }}><strong><i>{String(index + 1).padStart(2, '0')}</i>{title}</strong><span>{size}</span><span className="standard-list">{standards.replace(/(ГОСТ|ТУ|ОСТ|СТО) /g, '$1\u00A0')}</span><span>{grades}</span></motion.a>)}
         </div>
       </section>
 
