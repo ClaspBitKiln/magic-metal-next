@@ -305,8 +305,9 @@ h2 {
 }
 .hero-actions {
   display: flex;
-  align-items: center;
-  gap: 20px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 9px;
 }
 .primary-button {
   min-width: 270px;
