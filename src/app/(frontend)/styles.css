@@ -303,27 +303,18 @@ h2 {
   font-weight: 500;
   line-height: 1.45;
 }
-.hero-benefits {
+.hero-supply-copy {
   display: grid;
   gap: 8px;
 }
-.hero-benefits span {
-  position: relative;
-  display: block;
-  padding-left: 17px;
+.hero-supply-copy p {
+  margin: 0;
+  padding: 0 0 8px;
+  border-bottom: 1px solid rgba(9, 48, 132, 0.16);
 }
-.hero-benefits span::before {
-  content: '';
-  position: absolute;
-  top: 0.68em;
-  left: 0;
-  width: 7px;
-  height: 2px;
-  background: var(--blue);
-}
-.hero-benefits b {
-  color: var(--navy);
-  font-weight: 700;
+.hero-supply-copy p:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
 }
 .hero-actions {
   display: flex;
