@@ -1716,6 +1716,49 @@ main select {
 
 
 /* Memorable, evidence-led company experience composition. */
+.company-logo-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.company-logo-row .company-proof-card {
+  min-height: 138px;
+}
+.company-logo-row .company-proof-card--gazprom,
+.company-logo-row .company-proof-card--rosneft,
+.company-logo-row .company-proof-card--atomic {
+  grid-column: auto;
+}
+.company-experience-list {
+  margin-top: 12px;
+  border-top: 3px solid var(--navy);
+}
+.company-experience-list article {
+  min-height: 70px;
+  padding: 15px 18px;
+  display: grid;
+  grid-template-columns: 42px minmax(220px, 0.85fr) minmax(260px, 1.15fr);
+  gap: 22px;
+  align-items: center;
+  border-bottom: 1px solid #c8d1df;
+}
+.company-experience-list article:nth-child(even) {
+  background: #f5f8fd;
+}
+.company-experience-list span {
+  color: var(--blue);
+  font: 600 12px/1 var(--font-display);
+}
+.company-experience-list strong {
+  color: var(--navy);
+  font: 600 clamp(17px, 1.3vw, 21px)/1.2 var(--font-display);
+  letter-spacing: -0.025em;
+}
+.company-experience-list small {
+  color: #667187;
+  font-size: 13px;
+  line-height: 1.45;
+}
 .company-brand-wall {
   grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: 12px;
@@ -1867,6 +1910,16 @@ main select {
   display: none;
 }
 @media (max-width: 900px) {
+  .company-logo-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .company-experience-list article {
+    grid-template-columns: 34px 1fr;
+    gap: 8px 14px;
+  }
+  .company-experience-list small {
+    grid-column: 2;
+  }
   .company-brand-wall {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1882,6 +1935,13 @@ main select {
   }
 }
 @media (max-width: 540px) {
+  .company-logo-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .company-logo-row .company-proof-card {
+    min-height: 120px;
+  }
   .company-brand-wall {
     grid-template-columns: 1fr;
     gap: 10px;
