@@ -1786,18 +1786,24 @@ main select {
   background: #fff;
 }
 .company-proof-card--atomic {
-  color: #fff;
-  border-color: #0757e8;
+  color: var(--navy);
+  border-color: #b9cce8;
   background:
-    linear-gradient(115deg, rgba(5, 20, 69, 0.94), rgba(7, 87, 232, 0.68)),
-    url('https://images.pexels.com/photos/3044471/pexels-photo-3044471.jpeg?auto=compress&dpr=1&h=750&w=1260') center / cover;
+    radial-gradient(circle at 88% 18%, rgba(43, 139, 217, 0.18), transparent 35%),
+    linear-gradient(145deg, #ffffff 30%, #edf6ff 100%);
 }
 .company-proof-card--atomic strong,
 .company-proof-card--atomic small {
-  color: #fff;
+  color: var(--navy);
 }
 .company-proof-card--atomic small {
-  color: #dbe6ff;
+  margin-top: 8px;
+  color: #5f6d82;
+}
+.company-proof-card--atomic img {
+  height: 58px;
+  max-width: 180px;
+  margin-bottom: 14px;
 }
 .company-proof-card--roscosmos img {
   height: 62px;
@@ -1809,45 +1815,45 @@ main select {
 .company-proof-card--sector {
   min-height: 170px;
   justify-content: flex-end;
-  border: 0;
+  border: 1px solid #c8d1df;
+  box-shadow: 0 14px 32px rgba(9, 31, 78, 0.08);
 }
 .company-proof-card--sector strong {
   position: relative;
   z-index: 1;
   max-width: 76%;
-  color: #fff;
-  text-shadow: 0 2px 16px rgba(3, 17, 53, 0.42);
+  color: var(--navy);
+  text-shadow: none;
 }
 .company-proof-card--sector > span {
   position: absolute;
   top: 20px;
   right: 22px;
-  color: currentColor;
-  opacity: 0.52;
+  color: var(--navy);
+  opacity: 0.68;
   font: 600 12px/1 var(--font-display);
   letter-spacing: 0.08em;
 }
 .company-proof-card--oilgas {
-  color: #fff;
+  color: var(--navy);
   background:
-    linear-gradient(110deg, rgba(4, 22, 71, 0.94), rgba(7, 87, 232, 0.58)),
+    linear-gradient(0deg, rgba(248, 251, 255, 0.98) 0%, rgba(248, 251, 255, 0.93) 47%, rgba(248, 251, 255, 0.12) 82%),
     url('https://images.pexels.com/photos/5851547/pexels-photo-5851547.jpeg?auto=compress&dpr=1&h=750&w=1260') center / cover;
 }
 .company-proof-card--industry {
-  color: #fff;
+  color: var(--navy);
   background:
-    linear-gradient(110deg, rgba(5, 20, 69, 0.95), rgba(7, 87, 232, 0.5)),
+    linear-gradient(0deg, rgba(255, 250, 241, 0.98) 0%, rgba(255, 250, 241, 0.92) 47%, rgba(255, 250, 241, 0.08) 82%),
     url('https://images.pexels.com/photos/33774180/pexels-photo-33774180/free-photo-of-massive-mining-truck-in-open-pit-quarry.jpeg?auto=compress&dpr=1&h=750&w=1260') center 58% / cover;
 }
 .company-proof-card--industry strong {
   max-width: 560px;
-  color: #fff;
+  color: var(--navy);
 }
 .company-proof-card--chemical {
-  color: #fff;
-  border: 0;
+  color: var(--navy);
   background:
-    linear-gradient(110deg, rgba(4, 22, 71, 0.95), rgba(7, 87, 232, 0.55)),
+    linear-gradient(0deg, rgba(242, 252, 249, 0.98) 0%, rgba(242, 252, 249, 0.92) 47%, rgba(242, 252, 249, 0.08) 82%),
     url('https://images.pexels.com/photos/10666081/pexels-photo-10666081.jpeg?auto=compress&dpr=1&h=750&w=1260') center / cover;
 }
 .company-proof-card--atomic::after,
