@@ -1808,6 +1808,23 @@ main select {
   justify-content: flex-end;
   border: 0;
 }
+.company-proof-card--sector::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 10px 12px 8px auto;
+  width: 48%;
+  background-position: right center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 0.2;
+  filter: saturate(0.65) contrast(1.08);
+}
+.company-proof-card--sector strong {
+  position: relative;
+  z-index: 1;
+  max-width: 76%;
+}
 .company-proof-card--sector > span {
   position: absolute;
   top: 20px;
@@ -1820,11 +1837,19 @@ main select {
 .company-proof-card--oilgas {
   background: #dceaff;
 }
+.company-proof-card--oilgas::before {
+  background-image: url('/product/pipes/insulated.svg');
+}
 .company-proof-card--industry {
   color: #fff;
   background:
     linear-gradient(110deg, rgba(7, 28, 98, 0.98), rgba(7, 87, 232, 0.86)),
     #071c62;
+}
+.company-proof-card--industry::before {
+  background-image: url('/product/categories/forgings.svg');
+  opacity: 0.28;
+  filter: brightness(2.2) saturate(0);
 }
 .company-proof-card--industry strong {
   max-width: 560px;
@@ -1833,6 +1858,9 @@ main select {
 .company-proof-card--chemical {
   background: linear-gradient(145deg, #edf3fb, #fff);
   border: 1px solid #bcc8da;
+}
+.company-proof-card--chemical::before {
+  background-image: url('/product/categories/stainless.svg');
 }
 @media (max-width: 900px) {
   .company-brand-wall {
