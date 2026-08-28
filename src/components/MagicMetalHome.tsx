@@ -68,6 +68,7 @@ export default function MagicMetalHome() {
   const reducedMotion = useReducedMotion()
   const [menuOpen, setMenuOpen] = useState(false)
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
+  const [formError, setFormError] = useState('')
   const [selectedFiles, setSelectedFiles] = useState(0)
   const [startedAt] = useState(() => Date.now())
   const animation = useMemo(() => (reducedMotion ? {} : reveal), [reducedMotion])
@@ -80,9 +81,24 @@ export default function MagicMetalHome() {
 
   async function submitRequest(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    setStatus('sending')
     const form = event.currentTarget
     const data = new FormData(form)
+    const phone = String(data.get('phone') || '').trim()
+    const email = String(data.get('email') || '').trim()
+    const message = String(data.get('message') || '').trim()
+    const hasFiles = data.getAll('files').some((value) => value instanceof File && value.size > 0)
+    setFormError('')
+    if (!phone && !email) {
+      setStatus('error')
+      setFormError('Укажите телефон или email, чтобы мы могли отправить расчёт.')
+      return
+    }
+    if (!message && !hasFiles) {
+      setStatus('error')
+      setFormError('Прикрепите заявку или кратко опишите, что требуется.')
+      return
+    }
+    setStatus('sending')
     data.set('startedAt', String(startedAt))
     data.set('landingPage', window.location.href)
     data.set('referrer', document.referrer)
@@ -91,15 +107,20 @@ export default function MagicMetalHome() {
     for (const key of ['utm_source', 'utm_medium', 'utm_campaign']) data.set(key, params.get(key) || '')
     try {
       const response = await fetch('/api/request', { method: 'POST', body: data })
-      if (!response.ok) throw new Error('Request failed')
+      if (!response.ok) {
+        const result = await response.json().catch(() => null) as { error?: string } | null
+        throw new Error(result?.error || 'Не удалось отправить заявку')
+      }
       form.reset()
       setSelectedFiles(0)
+      setFormError('')
       setStatus('success')
       const analytics = window as Window & { ym?: (id: number, action: string, goal: string) => void; gtag?: (action: string, event: string, params?: Record<string, unknown>) => void }
       const metrikaId = Number(process.env.NEXT_PUBLIC_YANDEX_METRIKA_ID || 0)
       if (metrikaId) analytics.ym?.(metrikaId, 'reachGoal', 'request_sent')
       analytics.gtag?.('event', 'generate_lead', { product_direction: String(data.get('productDirection') || ''), context: String(data.get('context') || '') })
-    } catch {
+    } catch (error) {
+      setFormError(error instanceof Error ? error.message : 'Не удалось отправить заявку. Попробуйте ещё раз или позвоните нам.')
       setStatus('error')
     }
   }
@@ -124,11 +145,7 @@ export default function MagicMetalHome() {
         <div className="hero-copy" id="content">
           <motion.p initial="hidden" animate="visible" variants={animation} transition={{ duration: .5 }} className="hero-label">СРОЧНЫЕ ПОСТАВКИ РОССИЯ — СНГ</motion.p>
           <motion.h1 initial="hidden" animate="visible" variants={animation} transition={{ duration: .6, delay: .12 }} id="hero-title">КОМПЛЕКТУЕМ <em>СЛОЖНЫЕ ПРОМЫШЛЕННЫЕ</em> ЗАЯВКИ</motion.h1>
-          <motion.div initial="hidden" animate="visible" variants={animation} transition={{ duration: .6, delay: .18 }} className="hero-lead hero-supply-copy">
-            <p>Проверяем проектные требования, актуальность ГОСТов и соответствие продукции.</p>
-            <p>Находим редкие позиции или предлагаем технически обоснованную замену.</p>
-            <p>Поставляем металл и сопутствующие материалы с полным комплектом документов — по России и на экспорт.</p>
-          </motion.div>
+          <motion.p initial="hidden" animate="visible" variants={animation} transition={{ duration: .6, delay: .18 }} className="hero-lead">Проверяем требования и актуальность ГОСТов, находим редкие позиции и технически обоснованные аналоги. Комплектуем металл и сопутствующие материалы с полным пакетом документов — для поставок по России и на экспорт.</motion.p>
           <motion.div initial="hidden" animate="visible" variants={animation} transition={{ duration: .6, delay: .22 }} className="hero-actions"><a className="primary-button" href="#request">Отправить заявку <span>↗</span></a><span className="file-types">Excel · PDF · Word · фото · голосовое сообщение</span></motion.div>
         </div>
         <div className="hero-strip" id="delivery"><div className="delivery-title"><b>Авто · Ж/Д · Авиа</b><span>Срочная доставка снижает простой оборудования и персонала</span></div><a href="#request">Отправить заявку <span>→</span></a></div>
@@ -215,15 +232,18 @@ export default function MagicMetalHome() {
 
       <section className="request-section" id="request">
         <div className="request-copy" id="contacts"><p className="section-kicker light">05 — Расчёт поставки</p><h2>Отправьте<br /><em>заявку</em></h2><p>Укажите требования и город доставки. Проверим спецификацию, предложим исполнение и подготовим коммерческое предложение.</p><a href="mailto:m1@magicmet.ru">m1@magicmet.ru</a><a href="tel:+79227117363">+7 922 711-73-63</a></div>
-        <form className="request-form" onSubmit={submitRequest} encType="multipart/form-data">
-          <div className="form-grid"><label>Ваше имя<input name="name" autoComplete="name" required /></label><label>Компания<input name="company" autoComplete="organization" /></label><label>Телефон<input name="phone" type="tel" inputMode="tel" autoComplete="tel" required /></label><label>Email<input name="email" type="email" autoComplete="email" /></label></div>
+        <form className="request-form" onSubmit={submitRequest} encType="multipart/form-data" noValidate>
+          <div className="form-step"><strong>1. Прикрепите заявку или опишите задачу</strong><span>Подойдёт готовый файл, фотография, текст или голосовое сообщение.</span></div>
+          <label className="file-field"><span>Приложить заявку</span><span className="file-button">Выбрать файлы</span><input name="files" type="file" multiple accept=".xlsx,.xls,.pdf,.doc,.docx,.png,.jpg,.jpeg,.webp,.dwg,.dxf,.mp3,.m4a,.wav,.ogg,.webm,audio/*" onChange={(event) => setSelectedFiles(event.currentTarget.files?.length || 0)} /><strong>{selectedFiles ? `Выбрано файлов: ${selectedFiles}` : 'Файлы не выбраны'}</strong><small>Excel, PDF, Word, фото, чертежи и аудио · до 25 МБ суммарно</small></label>
+          <div className="form-or"><span>или</span></div>
+          <label>Краткое описание<textarea name="message" rows={3} placeholder="Что требуется: наименование, размер, ГОСТ/ТУ, количество и город доставки" /></label>
+          <div className="form-step form-step-contact"><strong>2. Куда отправить расчёт?</strong><span>Укажите телефон или email. Остальные поля — по желанию.</span></div>
+          <div className="form-grid"><label>Ваше имя<input name="name" autoComplete="name" /></label><label>Компания<input name="company" autoComplete="organization" /></label><label>Телефон<input name="phone" type="tel" inputMode="tel" autoComplete="tel" /></label><label>Email<input name="email" type="email" autoComplete="email" /></label></div>
           <label>Направление<select name="productDirection" defaultValue=""><option value="">Выберите при необходимости</option><option value="electrowelded-pipes">Трубы электросварные</option><option value="seamless-pipes">Трубы бесшовные</option><option value="pipeline-parts">СДТ</option><option value="insulated">Трубы и СДТ в изоляции</option><option value="other">Другая продукция</option></select></label>
-          <label>Что требуется<textarea name="message" rows={4} required placeholder="Размеры, марка стали, ГОСТ/ТУ, количество, город доставки" /></label>
-          <label className="file-field"><span>Приложить файлы</span><span className="file-button">Выбрать файлы</span><input name="files" type="file" multiple accept=".xlsx,.xls,.pdf,.doc,.docx,.png,.jpg,.jpeg,.webp,.dwg,.dxf,.mp3,.m4a,.wav,.ogg,.webm,audio/*" onChange={(event) => setSelectedFiles(event.currentTarget.files?.length || 0)} /><strong>{selectedFiles ? `Выбрано файлов: ${selectedFiles}` : 'Файлы не выбраны'}</strong><small>Excel, PDF, Word, изображения, чертежи и аудио · до 25 МБ суммарно</small></label>
-          <label className="honeypot" aria-hidden="true">Ваш сайт<input name="website" tabIndex={-1} autoComplete="off" /></label>
+          <label className="honeypot" aria-hidden="true" hidden>Ваш сайт<input name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" /></label>
           <label className="consent"><input name="consent" type="checkbox" required /><span>Согласен на <Link href="/politika-konfidencialnosti">обработку персональных данных</Link> для подготовки коммерческого предложения</span></label>
+          <AnimatePresence mode="wait">{status === 'success' && <motion.p className="form-status success" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>Заявка принята. Мы свяжемся с вами.</motion.p>}{status === 'error' && <motion.p className="form-status error" role="alert" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>{formError || 'Не удалось отправить. Позвоните нам или напишите на m1@magicmet.ru.'}</motion.p>}</AnimatePresence>
           <button type="submit" disabled={status === 'sending'}>{status === 'sending' ? 'Отправляем…' : 'Отправить заявку'} <span>→</span></button>
-          <AnimatePresence mode="wait">{status === 'success' && <motion.p className="form-status success" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>Заявка принята. Мы свяжемся с вами.</motion.p>}{status === 'error' && <motion.p className="form-status error" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>Не удалось отправить. Позвоните нам или напишите на m1@magicmet.ru.</motion.p>}</AnimatePresence>
         </form>
       </section>
 
