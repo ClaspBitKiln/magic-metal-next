@@ -16,7 +16,9 @@
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
     "test": "pnpm run test:int && pnpm run test:e2e",
     "test:e2e": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" playwright test --config=playwright.config.ts",
-    "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts"
+    "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts",
+    "qa:site": "tsx qa/run.ts",
+    "qa:production": "cross-env QA_BASE_URL=https://magic-metal-next.vercel.app tsx qa/run.ts"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "3.88.0",
