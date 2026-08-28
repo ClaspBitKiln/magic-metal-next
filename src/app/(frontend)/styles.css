@@ -317,10 +317,10 @@ h2 {
   display: block;
   width: min(100%, 430px);
   color: #69758b;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
-  line-height: 1.4;
-  letter-spacing: 0.035em;
+  line-height: 1.45;
+  letter-spacing: 0.025em;
   text-transform: none;
   white-space: normal;
 }
@@ -612,6 +612,7 @@ h2 {
   text-transform: uppercase;
 }
 .other-section {
+  padding-bottom: clamp(55px, 6vw, 85px);
   background: var(--mist);
 }
 .section-heading.compact {
@@ -746,6 +747,9 @@ h2 {
   position: relative;
   padding: 0 10px;
   background: #fff;
+}
+.form-stage[hidden] {
+  display: none;
 }
 .form-grid {
   display: grid;
@@ -883,6 +887,21 @@ h2 {
 .request-form button:disabled {
   opacity: 0.65;
   cursor: wait;
+}
+.request-form .form-back {
+  width: auto;
+  margin: 0 0 12px;
+  padding: 8px 0;
+  justify-content: flex-start;
+  color: var(--blue);
+  background: transparent;
+  box-shadow: none;
+  font-size: 12px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.request-form .form-back::before {
+  display: none;
 }
 .request-form button span {
   font-size: 16px;
@@ -1165,7 +1184,7 @@ h2 {
     font-size: 43px;
   }
   .file-types {
-    font-size: 10px;
+    font-size: 11px;
   }
   .form-grid {
     grid-template-columns: 1fr;
