@@ -24,6 +24,6 @@ test.describe('Frontend', () => {
     await page.goto('http://localhost:3000/produkciya/truby-elektrosvarnye/pryamoshovnye')
     await expect(page.getByRole('heading', { name: 'Трубы электросварные прямошовные' })).toBeVisible()
     await expect(page.getByAltText(/Техническая схема/)).toBeVisible()
-    await expect(page.getByRole('link', { name: /Отправить спецификацию/ })).toBeVisible()
+    await expect(page.getByRole('link', { name: /Отправить заявку/ })).toBeVisible()
   })
 })
