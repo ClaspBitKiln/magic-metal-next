@@ -182,8 +182,8 @@ export default function MagicMetalHome() {
           <article><strong>Россия и СНГ</strong><span>география промышленных проектов и поставок</span></article>
         </div>
         <div className="company-proof">
-          <p className="company-proof-label">Опыт поставок для подрядных организаций и крупных промышленных проектов</p>
-          <div className="company-brand-wall" aria-label="Компании, отрасли и проекты, связанные с опытом поставок">
+          <p className="company-proof-label">Опыт в проектах ключевых отраслей</p>
+          <div className="company-logo-row" aria-label="Опыт поставок для подрядных организаций">
             <article className="company-proof-card company-proof-card--gazprom">
               <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Gazprom_logo.svg" alt="Газпром" loading="lazy" />
               <small>опыт поставок для подрядных организаций</small>
@@ -194,33 +194,12 @@ export default function MagicMetalHome() {
             </article>
             <article className="company-proof-card company-proof-card--atomic">
               <img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/ab/Rosatom_logo.png/250px-Rosatom_logo.png" alt="Госкорпорация «Росатом»" loading="lazy" />
-              <strong>Атомная промышленность России</strong>
-              <small>опыт работы с подрядными организациями на строительных объектах отрасли</small>
-            </article>
-            <article className="company-proof-card company-proof-card--roscosmos">
-              <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Roscosmos_logo_ru.svg" alt="Роскосмос" loading="lazy" />
-              <small>космодром «Восточный»</small>
-            </article>
-            <article className="company-proof-card company-proof-card--alrosa">
-              <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Alrosa.svg" alt="АЛРОСА" loading="lazy" />
-              <small>опыт участия в промышленном проекте</small>
-            </article>
-            <article className="company-proof-card company-proof-card--sector company-proof-card--oilgas">
-              <span>01</span><strong>Нефтегазовые<br />компании СНГ</strong>
-            </article>
-            <article className="company-proof-card company-proof-card--sector company-proof-card--industry">
-              <span>02</span><strong>Автомобильная и<br />горнодобывающая промышленность</strong>
-            </article>
-            <article className="company-proof-card company-proof-card--sector company-proof-card--chemical">
-              <span>03</span><strong>Химическая<br />промышленность СНГ</strong>
+              <small>опыт работы с подрядными организациями атомной отрасли</small>
             </article>
           </div>
-        </div>
-        <div className="company-conversion">
-          <p><strong>Восточный, Тенгиз, Карабатан, Kulevi Oil Terminal, нефтегазовые и промышленные объекты СНГ.</strong> Команда умеет работать со сложной спецификацией, контролем документов, сроками и доставкой на удалённые площадки.</p>
-          <div className="company-actions">
-            <a href="#request">Отправить заявку <span>↗</span></a>
-            <a className="company-phone" href="tel:+79227117363">Позвонить <span>↗</span></a>
+          <div className="company-experience-list" aria-label="Проекты и отрасли">
+            <article><span>01</span><strong>Нефтегазовые проекты СНГ</strong><small>опыт комплектации сложных промышленных поставок</small></article>
+            <article><span>02</span><strong>Промышленные предприятия</strong><small>автомобильная · горнодобывающая · химическая отрасли</small></article>
           </div>
         </div>
       </section>
