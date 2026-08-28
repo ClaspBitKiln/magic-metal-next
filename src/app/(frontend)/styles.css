@@ -1512,6 +1512,7 @@ main select {
 
 /* Company proof: compact evidence-led trust block with one conversion action. */
 .company-trust-section {
+  padding-bottom: clamp(54px, 5.5vw, 82px);
   color: var(--ink);
   background:
     radial-gradient(circle at 92% 8%, rgba(7, 87, 232, 0.1), transparent 28%),
