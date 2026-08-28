@@ -1,4 +1,4 @@
-export const pages = [
+export const priorityPages = [
   '/',
   '/produkciya/truby-elektrosvarnye',
   '/produkciya/truby-besshovnye',
@@ -9,6 +9,20 @@ export const pages = [
   '/kalkulyator-metalla',
   '/postavki/uzbekistan',
 ]
+
+export async function loadPages(baseUrl: string) {
+  try {
+    const response = await fetch(new URL('/sitemap.xml', baseUrl))
+    if (!response.ok) throw new Error(`HTTP ${response.status}`)
+    const xml = await response.text()
+    const routes = [...xml.matchAll(/<loc>(.*?)<\/loc>/g)]
+      .map((match) => new URL(match[1]).pathname)
+      .filter((pathname, index, items) => items.indexOf(pathname) === index)
+    return routes.length ? routes : priorityPages
+  } catch {
+    return priorityPages
+  }
+}
 
 export const viewports = [
   { name: 'desktop', width: 1440, height: 1000 },
