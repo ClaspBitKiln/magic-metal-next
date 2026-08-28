@@ -3,13 +3,12 @@ import { absoluteUrl, finding } from '../utils'
 
 export const e2eAgent: QaAgent = {
   name: 'Functional E2E',
-  async run({ baseUrl, page }) {
+  async run({ baseUrl, pages, page }) {
     const results: Finding[] = []
     await page.goto(baseUrl, { waitUntil: 'networkidle' })
-    const links = await page.locator('a[href^="/"]').evaluateAll((elements) => [...new Set(elements.map((element) => (element as HTMLAnchorElement).getAttribute('href')).filter(Boolean))] as string[])
-    for (const href of links.slice(0, 80)) {
+    for (const href of pages) {
       const response = await page.request.get(absoluteUrl(baseUrl, href))
-      if (response.status() >= 400) results.push(finding(this.name, 'critical', '/', 'Неработающая внутренняя ссылка', `${href} → HTTP ${response.status()}`, 'Исправить маршрут или удалить ссылку.'))
+      if (response.status() >= 400) results.push(finding(this.name, 'critical', href, 'Маршрут sitemap недоступен', `HTTP ${response.status()}`, 'Исправить маршрут или исключить его из sitemap.'))
     }
     await page.goto(absoluteUrl(baseUrl, '/poisk?q=12%D0%A51%D0%9C%D0%A4'), { waitUntil: 'networkidle' })
     if ((await page.getByText(/12Х1МФ/i).count()) === 0) results.push(finding(this.name, 'high', '/poisk', 'Поиск не возвращает марку', 'Не найдено 12Х1МФ', 'Проверить индекс поиска.'))
