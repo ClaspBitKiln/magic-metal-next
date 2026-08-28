@@ -76,7 +76,7 @@ select:focus-visible {
   outline-offset: 3px;
 }
 .topbar {
-  position: fixed;
+  position: sticky;
   z-index: 20;
   top: 0;
   left: 0;
@@ -217,16 +217,16 @@ section[id] {
 .hero {
   position: relative;
   isolation: isolate;
-  min-height: clamp(720px, 100svh, 990px);
+  min-height: clamp(720px, calc(100svh - 88px), 902px);
   background: #f7faff;
   overflow: hidden;
 }
 .hero-visual {
   z-index: -2;
-  inset: 88px 0 0 !important;
+  inset: 0 0 94px !important;
   height: auto !important;
   object-fit: cover;
-  object-position: right center;
+  object-position: right bottom;
 }
 .hero:after {
   content: '';
@@ -238,7 +238,7 @@ section[id] {
 }
 .hero-copy {
   width: min(700px, 49vw);
-  padding: clamp(145px, 15vh, 175px) 0 190px 5.5vw;
+  padding: clamp(62px, 8vh, 82px) 0 190px 5.5vw;
 }
 .hero-label {
   display: inline-flex;
@@ -1030,11 +1030,11 @@ h2 {
     display: block;
   }
   .hero {
-    min-height: 890px;
+    min-height: calc(890px - 76px);
   }
   .hero-visual {
-    inset: 76px 0 0 !important;
-    object-position: 66% center;
+    inset: 0 0 125px !important;
+    object-position: 66% bottom;
   }
   .hero:after {
     background: linear-gradient(
@@ -1517,6 +1517,7 @@ main select {
 
 /* Company proof: compact evidence-led trust block with one conversion action. */
 .company-trust-section {
+  padding-top: clamp(44px, 3.5vw, 54px);
   padding-bottom: clamp(52px, 4vw, 64px);
   color: var(--ink);
   background:
