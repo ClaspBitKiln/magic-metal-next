@@ -274,26 +274,18 @@ h2 {
   text-transform: none;
 }
 .hero h1 {
-  max-width: 760px;
+  max-width: 720px;
   color: var(--navy);
-  font-size: clamp(52px, 4.75vw, 76px);
+  font-size: clamp(44px, 3.9vw, 64px);
+  line-height: 1.02;
 }
 .hero h1 em {
-  display: block;
-  margin-top: 8px;
+  display: inline;
+  margin: 0;
   color: var(--blue);
-  font-size: 0.64em;
+  font-size: inherit;
   font-style: normal;
-  line-height: 1.04;
-}
-.hero h1 small {
-  display: block;
-  margin-top: 12px;
-  color: var(--navy);
-  font-size: 0.38em;
-  font-weight: 500;
-  line-height: 1.18;
-  letter-spacing: -0.025em;
+  line-height: inherit;
 }
 .hero-lead {
   max-width: 500px;
@@ -1130,9 +1122,6 @@ h2 {
   }
   .hero h1 {
     font-size: 43px;
-  }
-  .hero h1 small {
-    font-size: 0.39em;
   }
   .file-types {
     font-size: 10px;
