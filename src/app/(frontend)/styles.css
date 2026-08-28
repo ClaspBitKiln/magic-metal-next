@@ -1788,7 +1788,9 @@ main select {
 .company-proof-card--atomic {
   color: #fff;
   border-color: #0757e8;
-  background: linear-gradient(135deg, #071c62, #0757e8);
+  background:
+    linear-gradient(115deg, rgba(5, 20, 69, 0.94), rgba(7, 87, 232, 0.68)),
+    url('https://images.pexels.com/photos/3044471/pexels-photo-3044471.jpeg?auto=compress&dpr=1&h=750&w=1260') center / cover;
 }
 .company-proof-card--atomic strong,
 .company-proof-card--atomic small {
@@ -1809,22 +1811,12 @@ main select {
   justify-content: flex-end;
   border: 0;
 }
-.company-proof-card--sector::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  inset: 10px 12px 8px auto;
-  width: 48%;
-  background-position: right center;
-  background-repeat: no-repeat;
-  background-size: contain;
-  opacity: 0.2;
-  filter: saturate(0.65) contrast(1.08);
-}
 .company-proof-card--sector strong {
   position: relative;
   z-index: 1;
   max-width: 76%;
+  color: #fff;
+  text-shadow: 0 2px 16px rgba(3, 17, 53, 0.42);
 }
 .company-proof-card--sector > span {
   position: absolute;
@@ -1836,32 +1828,31 @@ main select {
   letter-spacing: 0.08em;
 }
 .company-proof-card--oilgas {
-  background: #dceaff;
-}
-.company-proof-card--oilgas::before {
-  background-image: url('/product/pipes/insulated.svg');
+  color: #fff;
+  background:
+    linear-gradient(110deg, rgba(4, 22, 71, 0.94), rgba(7, 87, 232, 0.58)),
+    url('https://images.pexels.com/photos/5851547/pexels-photo-5851547.jpeg?auto=compress&dpr=1&h=750&w=1260') center / cover;
 }
 .company-proof-card--industry {
   color: #fff;
   background:
-    linear-gradient(110deg, rgba(7, 28, 98, 0.98), rgba(7, 87, 232, 0.86)),
-    #071c62;
-}
-.company-proof-card--industry::before {
-  background-image: url('/product/categories/forgings.svg');
-  opacity: 0.28;
-  filter: brightness(2.2) saturate(0);
+    linear-gradient(110deg, rgba(5, 20, 69, 0.95), rgba(7, 87, 232, 0.5)),
+    url('https://images.pexels.com/photos/33774180/pexels-photo-33774180/free-photo-of-massive-mining-truck-in-open-pit-quarry.jpeg?auto=compress&dpr=1&h=750&w=1260') center 58% / cover;
 }
 .company-proof-card--industry strong {
   max-width: 560px;
   color: #fff;
 }
 .company-proof-card--chemical {
-  background: linear-gradient(145deg, #edf3fb, #fff);
-  border: 1px solid #bcc8da;
+  color: #fff;
+  border: 0;
+  background:
+    linear-gradient(110deg, rgba(4, 22, 71, 0.95), rgba(7, 87, 232, 0.55)),
+    url('https://images.pexels.com/photos/10666081/pexels-photo-10666081.jpeg?auto=compress&dpr=1&h=750&w=1260') center / cover;
 }
-.company-proof-card--chemical::before {
-  background-image: url('/product/categories/stainless.svg');
+.company-proof-card--atomic::after,
+.company-proof-card--sector::after {
+  display: none;
 }
 @media (max-width: 900px) {
   .company-brand-wall {
