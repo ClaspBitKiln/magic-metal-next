@@ -6,6 +6,7 @@ export type AuditContext = {
   baseUrl: string
   outputDir: string
   pages: string[]
+  visualPages: string[]
   page: Page
   viewport: { name: string; width: number; height: number }
 }
