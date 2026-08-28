@@ -296,12 +296,34 @@ h2 {
   letter-spacing: -0.025em;
 }
 .hero-lead {
-  max-width: 430px;
+  max-width: 500px;
   margin: 27px 0 27px;
   color: #25324e;
-  font-size: clamp(16px, 1.05vw, 18px);
+  font-size: clamp(15px, 0.95vw, 17px);
   font-weight: 500;
-  line-height: 1.58;
+  line-height: 1.45;
+}
+.hero-benefits {
+  display: grid;
+  gap: 8px;
+}
+.hero-benefits span {
+  position: relative;
+  display: block;
+  padding-left: 17px;
+}
+.hero-benefits span::before {
+  content: '';
+  position: absolute;
+  top: 0.68em;
+  left: 0;
+  width: 7px;
+  height: 2px;
+  background: var(--blue);
+}
+.hero-benefits b {
+  color: var(--navy);
+  font-weight: 700;
 }
 .hero-actions {
   display: flex;
