@@ -1,0 +1,51 @@
+name: Site QA
+
+on:
+  workflow_dispatch:
+  deployment_status:
+
+concurrency:
+  group: site-qa-production
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    if: github.event_name == 'workflow_dispatch' || github.event.deployment_status.state == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run production QA agents
+        id: qa
+        continue-on-error: true
+        run: npm run qa:production
+
+      - name: Upload QA report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: magic-metal-qa-${{ github.run_number }}
+          path: qa-results/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Fail on blocking findings
+        if: steps.qa.outcome == 'failure'
+        run: exit 1
