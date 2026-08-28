@@ -33,7 +33,11 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const detailItems = [...getPipeItemsByCategory(category.slug), ...getProductDetailsByCategory(category.slug)]
   return (
     <main className="product-page">
-      <header className="product-header"><Link href="/"><b>←</b> Мэджик Металл</Link><Link className="product-cta" href={requestHref}>Отправить заявку ↗</Link></header>
+      <header className="product-header">
+        <Link className="product-brand" href="/"><b>←</b> Мэджик Металл</Link>
+        <nav aria-label="Основная навигация"><Link href="/#products">Продукция</Link><Link href="/spravochnik-gost">Справочник ГОСТ</Link><Link href="/#about">О компании</Link></nav>
+        <div className="product-header-actions"><a href="tel:+79227117363">+7 922 711-73-63</a><Link className="product-cta" href={requestHref}>Отправить заявку ↗</Link></div>
+      </header>
       <section className="product-hero"><div><p>Продукция · подбор по спецификации</p><h1>{category.title}</h1><span>{category.description}</span></div></section>
       <section className="product-body">
         <article><h2>Комплектуем поставку</h2><p>{category.intro}</p><Link href={requestHref}>Отправить заявку <b>→</b></Link></article>
