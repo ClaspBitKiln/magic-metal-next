@@ -123,12 +123,11 @@ export default function MagicMetalHome() {
         <Image className="hero-visual" src="/images/hero-mercedes-v5.webp" alt="Брендированный грузовой автомобиль Mercedes-Benz Мэджик Металл, промышленное производство, металлопрокат, трубы и детали трубопроводов" fill priority sizes="100vw" />
         <div className="hero-copy" id="content">
           <motion.p initial="hidden" animate="visible" variants={animation} transition={{ duration: .5 }} className="hero-label">СРОЧНЫЕ ПОСТАВКИ РОССИЯ — СНГ</motion.p>
-          <motion.p initial="hidden" animate="visible" variants={animation} transition={{ duration: .55, delay: .08 }} className="eyebrow">Россия · СНГ · Узбекистан</motion.p>
-          <motion.h1 initial="hidden" animate="visible" variants={animation} transition={{ duration: .6, delay: .12 }} id="hero-title">Комплектуем<br /><em>сложные промышленные</em><br /><small>заявки</small></motion.h1>
-          <motion.div initial="hidden" animate="visible" variants={animation} transition={{ duration: .6, delay: .18 }} className="hero-lead hero-benefits">
-            <span><b>Проверяем</b> спецификации, актуальность ГОСТов и требования к качеству.</span>
-            <span><b>Находим</b> редкие позиции; при невозможности поставки подбираем технически обоснованные аналоги.</span>
-            <span><b>Комплектуем</b> металл и сопутствующие материалы с полным пакетом документов — по России и на экспорт.</span>
+          <motion.h1 initial="hidden" animate="visible" variants={animation} transition={{ duration: .6, delay: .12 }} id="hero-title">Комплектуем<br /><em>сложные промышленные</em><br /><small>поставки</small></motion.h1>
+          <motion.div initial="hidden" animate="visible" variants={animation} transition={{ duration: .6, delay: .18 }} className="hero-lead hero-supply-copy">
+            <p>Проверяем проектные требования, актуальность ГОСТов и соответствие продукции.</p>
+            <p>Находим редкие позиции или предлагаем технически обоснованную замену.</p>
+            <p>Поставляем металл и сопутствующие материалы с полным комплектом документов — по России и на экспорт.</p>
           </motion.div>
           <motion.div initial="hidden" animate="visible" variants={animation} transition={{ duration: .6, delay: .22 }} className="hero-actions"><a className="primary-button" href="#request">Отправить заявку <span>↗</span></a><span className="file-types">Excel · PDF · Word · фото · голосовое сообщение</span></motion.div>
         </div>
