@@ -70,9 +70,13 @@ export async function POST(request: Request) {
   const message = text(form, 'message', 8000)
   const context = text(form, 'context', 300)
   const productDirection = text(form, 'productDirection', 80)
-  if (!name || !phone || !message) return NextResponse.json({ error: 'Заполните обязательные поля' }, { status: 400 })
-
   const files = form.getAll('files').filter((value): value is File => value instanceof File && value.size > 0)
+  if (!phone && !email) return NextResponse.json({ error: 'Укажите телефон или email' }, { status: 400 })
+  if (!message && files.length === 0) return NextResponse.json({ error: 'Прикрепите заявку или опишите задачу' }, { status: 400 })
+  const requestName = name || company || 'Клиент сайта'
+  const requestPhone = phone || email
+  const requestMessage = message || 'Требования приложены в файлах.'
+
   const totalSize = files.reduce((sum, file) => sum + file.size, 0)
   if (totalSize > MAX_TOTAL_FILE_SIZE) return NextResponse.json({ error: 'Файлы превышают 25 МБ' }, { status: 413 })
   if (files.some((file) => !ALLOWED_EXTENSIONS.has(file.name.split('.').pop()?.toLowerCase() || ''))) return NextResponse.json({ error: 'Недопустимый тип файла' }, { status: 415 })
@@ -92,7 +96,7 @@ export async function POST(request: Request) {
   for (const { file, buffer, filename } of preparedFiles) {
     const uploaded = await payload.create({
       collection: 'request-files',
-      data: { description: `Заявка: ${company || name}` },
+      data: { description: `Заявка: ${company || requestName}` },
       file: { data: buffer, mimetype: file.type || 'application/octet-stream', name: filename, size: file.size },
       overrideAccess: true,
     })
@@ -105,7 +109,7 @@ export async function POST(request: Request) {
   const created = await payload.create({
     collection: 'requests',
     data: {
-      name, company, phone, email: email || null, message, context,
+      name: requestName, company, phone: requestPhone, email: email || null, message: requestMessage, context,
       productDirection: (productDirection || null) as 'electrowelded-pipes' | 'seamless-pipes' | 'pipeline-parts' | 'insulated' | 'other' | null,
       originPreference: 'any',
       files: uploadedIds,
@@ -129,8 +133,8 @@ export async function POST(request: Request) {
       })
       await transporter.sendMail({
         from: process.env.SMTP_USER, to: process.env.REQUEST_TO_EMAIL || 'm1@magicmet.ru', replyTo: email || undefined,
-        subject: `Заявка с сайта: ${company || name}`,
-        html: `<h2>Новая заявка с сайта</h2><p><b>Имя:</b> ${escapeHtml(name)}</p><p><b>Компания:</b> ${escapeHtml(company || '—')}</p><p><b>Телефон:</b> ${escapeHtml(phone)}</p><p><b>Email:</b> ${escapeHtml(email || '—')}</p><p><b>Направление:</b> ${escapeHtml(productDirection || 'не выбрано')}</p><p><b>Контекст:</b> ${escapeHtml(context || 'не указан')}</p><p><b>Запрос:</b><br>${escapeHtml(message).replace(/\n/g, '<br>')}</p><hr><p>Источник: ${escapeHtml(source)}<br>Страница: ${escapeHtml(landingPage)}</p>`,
+        subject: `Заявка с сайта: ${company || name || phone || email}`,
+        html: `<h2>Новая заявка с сайта</h2><p><b>Имя:</b> ${escapeHtml(name || '—')}</p><p><b>Компания:</b> ${escapeHtml(company || '—')}</p><p><b>Телефон:</b> ${escapeHtml(phone || '—')}</p><p><b>Email:</b> ${escapeHtml(email || '—')}</p><p><b>Направление:</b> ${escapeHtml(productDirection || 'не выбрано')}</p><p><b>Контекст:</b> ${escapeHtml(context || 'не указан')}</p><p><b>Запрос:</b><br>${escapeHtml(requestMessage).replace(/\n/g, '<br>')}</p><hr><p>Источник: ${escapeHtml(source)}<br>Страница: ${escapeHtml(landingPage)}</p>`,
         attachments,
       })
       emailDelivered = true
