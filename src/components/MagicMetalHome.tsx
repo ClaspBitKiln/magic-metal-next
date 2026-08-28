@@ -193,7 +193,7 @@ export default function MagicMetalHome() {
               <small>опыт поставок для подрядных организаций</small>
             </article>
             <article className="company-proof-card company-proof-card--atomic">
-              <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Rosatom_logo.png" alt="Госкорпорация «Росатом»" loading="lazy" />
+              <img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/ab/Rosatom_logo.png/250px-Rosatom_logo.png" alt="Госкорпорация «Росатом»" loading="lazy" />
               <strong>Атомная промышленность России</strong>
               <small>опыт работы с подрядными организациями на строительных объектах отрасли</small>
             </article>
