@@ -378,7 +378,7 @@ h2 {
 }
 .section {
   position: relative;
-  padding: clamp(64px, 7vw, 100px) 7vw;
+  padding: clamp(56px, 5vw, 76px) 7vw;
 }
 .section-kicker {
   margin: 0 0 18px;
@@ -663,7 +663,7 @@ h2 {
   font-size: 19px;
 }
 .request-section {
-  padding: clamp(72px, 7vw, 105px) 7vw;
+  padding: clamp(58px, 5vw, 76px) 7vw;
   display: grid;
   grid-template-columns: 0.82fr 1.18fr;
   gap: clamp(50px, 7vw, 105px);
@@ -1093,7 +1093,7 @@ h2 {
     padding: 5px 0;
   }
   .section {
-    padding: 80px 22px;
+    padding: 58px 22px;
   }
   .section-heading,
   .catalog-head,
@@ -1213,7 +1213,7 @@ h2 {
   }
 }
 .quick-search {
-  padding: 58px 7vw;
+  padding: 52px 7vw;
   display: grid;
   grid-template-columns: 0.8fr 1.2fr;
   gap: 8vw;
@@ -1282,7 +1282,7 @@ h2 {
 }
 @media (max-width: 760px) {
   .quick-search {
-    padding: 55px 22px;
+    padding: 48px 22px;
     grid-template-columns: 1fr;
     gap: 35px;
   }
@@ -1517,7 +1517,7 @@ main select {
 
 /* Company proof: compact evidence-led trust block with one conversion action. */
 .company-trust-section {
-  padding-bottom: clamp(54px, 5.5vw, 82px);
+  padding-bottom: clamp(52px, 4vw, 64px);
   color: var(--ink);
   background:
     radial-gradient(circle at 92% 8%, rgba(7, 87, 232, 0.1), transparent 28%),
