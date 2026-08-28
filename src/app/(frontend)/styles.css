@@ -96,8 +96,9 @@ section[id] {
   scroll-margin-top: 96px;
 }
 .brand img {
-  width: 117px;
+  width: 105px;
   height: auto;
+  transform: translateY(-2px);
 }
 .nav {
   display: flex;
@@ -222,6 +223,8 @@ section[id] {
 }
 .hero-visual {
   z-index: -2;
+  inset: 88px 0 0 !important;
+  height: auto !important;
   object-fit: cover;
   object-position: right center;
 }
@@ -375,10 +378,10 @@ h2 {
 }
 .section {
   position: relative;
-  padding: clamp(90px, 10vw, 150px) 7vw;
+  padding: clamp(64px, 7vw, 100px) 7vw;
 }
 .section-kicker {
-  margin: 0 0 30px;
+  margin: 0 0 18px;
   color: var(--blue);
   font-size: 11px;
   font-weight: 700;
@@ -393,7 +396,7 @@ h2 {
   grid-template-columns: 1.1fr 0.7fr;
   column-gap: 10vw;
   align-items: end;
-  margin-bottom: 60px;
+  margin-bottom: 44px;
 }
 .section-heading .section-kicker {
   grid-column: 1/-1;
@@ -994,7 +997,8 @@ h2 {
     gap: 8px;
   }
   .brand img {
-    width: 86px;
+    width: 82px;
+    transform: translateY(-2px);
   }
   .nav {
     display: none;
@@ -1029,6 +1033,7 @@ h2 {
     min-height: 890px;
   }
   .hero-visual {
+    inset: 76px 0 0 !important;
     object-position: 66% center;
   }
   .hero:after {
@@ -1208,7 +1213,7 @@ h2 {
   }
 }
 .quick-search {
-  padding: 72px 7vw;
+  padding: 58px 7vw;
   display: grid;
   grid-template-columns: 0.8fr 1.2fr;
   gap: 8vw;
@@ -1523,7 +1528,7 @@ main select {
   grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.7fr);
   gap: 8vw;
   align-items: end;
-  margin-bottom: 48px;
+  margin-bottom: 34px;
 }
 .company-trust-head h2 {
   color: var(--navy);
@@ -1547,7 +1552,7 @@ main select {
 }
 .company-metrics article {
   min-width: 0;
-  padding: 28px 22px;
+  padding: 22px;
   border-left: 1px solid #c7d0df;
 }
 .company-metrics article:first-child {
@@ -1567,10 +1572,10 @@ main select {
   line-height: 1.5;
 }
 .company-proof {
-  margin-top: 54px;
+  margin-top: 38px;
 }
 .company-proof-label {
-  margin: 0 0 18px;
+  margin: 0 0 14px;
   color: var(--navy);
   font-size: 12px;
   font-weight: 700;
@@ -1604,7 +1609,7 @@ main select {
   letter-spacing: 0;
 }
 .company-conversion {
-  margin-top: 34px;
+  margin-top: 24px;
   padding: 28px 30px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
