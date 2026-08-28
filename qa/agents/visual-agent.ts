@@ -4,11 +4,11 @@ import { absoluteUrl, ensureDir, finding } from '../utils'
 
 export const visualAgent: QaAgent = {
   name: 'Visual QA',
-  async run({ baseUrl, outputDir, pages, page, viewport }) {
+  async run({ baseUrl, outputDir, visualPages, page, viewport }) {
     const results: Finding[] = []
     const screenshots = path.join(outputDir, 'screenshots', viewport.name)
     await ensureDir(screenshots)
-    for (const pathname of pages) {
+    for (const pathname of visualPages) {
       await page.goto(absoluteUrl(baseUrl, pathname), { waitUntil: 'networkidle' })
       const slug = pathname === '/' ? 'home' : pathname.replace(/[?&#=/]+/g, '-').replace(/^-|-$/g, '')
       await page.screenshot({ path: path.join(screenshots, `${slug}.png`), fullPage: true })
