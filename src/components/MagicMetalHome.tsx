@@ -123,7 +123,7 @@ export default function MagicMetalHome() {
         <Image className="hero-visual" src="/images/hero-mercedes-v5.webp" alt="Брендированный грузовой автомобиль Mercedes-Benz Мэджик Металл, промышленное производство, металлопрокат, трубы и детали трубопроводов" fill priority sizes="100vw" />
         <div className="hero-copy" id="content">
           <motion.p initial="hidden" animate="visible" variants={animation} transition={{ duration: .5 }} className="hero-label">СРОЧНЫЕ ПОСТАВКИ РОССИЯ — СНГ</motion.p>
-          <motion.h1 initial="hidden" animate="visible" variants={animation} transition={{ duration: .6, delay: .12 }} id="hero-title">КОМПЛЕКТУЕМ<br /><em>СЛОЖНЫЕ ПРОМЫШЛЕННЫЕ</em><br /><small>ЗАЯВКИ</small></motion.h1>
+          <motion.h1 initial="hidden" animate="visible" variants={animation} transition={{ duration: .6, delay: .12 }} id="hero-title">КОМПЛЕКТУЕМ <em>СЛОЖНЫЕ ПРОМЫШЛЕННЫЕ</em> ЗАЯВКИ</motion.h1>
           <motion.div initial="hidden" animate="visible" variants={animation} transition={{ duration: .6, delay: .18 }} className="hero-lead hero-supply-copy">
             <p>Проверяем проектные требования, актуальность ГОСТов и соответствие продукции.</p>
             <p>Находим редкие позиции или предлагаем технически обоснованную замену.</p>
