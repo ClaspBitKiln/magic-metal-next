@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
+import DirectoryGroupNav from '@/components/DirectoryGroupNav'
 import MaterialsSearch from '@/components/MaterialsSearch'
 import { materialGroups, materials } from '@/data/materials'
 import './materials.css'
@@ -14,16 +15,14 @@ export const metadata: Metadata = {
 export default function MaterialsDirectoryPage() {
   return (
     <main className="materials-page">
-      <header className="materials-header"><Link href="/"><b>←</b> Мэджик Металл</Link><Link className="materials-cta" href="/#request">Отправить заявку ↗</Link></header>
+      <header className="materials-header"><Link href="/"><b>←</b> На главную</Link><Link className="materials-cta" href="/#request">Отправить заявку ↗</Link></header>
       <section className="materials-hero">
         <p>Справочник · материалы и ГОСТ</p>
         <h1>Марки сталей<br /><em>и сплавов</em></h1>
         <span>Свойства, применение, стандарты и связанные товарные позиции. Подбор материала и аналога подтверждаем по техническому заданию.</span>
       </section>
       <MaterialsSearch />
-      <nav className="materials-groups" aria-label="Группы материалов">
-        {materialGroups.map((group) => <a key={group.key} href={`#${group.key}`}>{group.label}</a>)}
-      </nav>
+      <DirectoryGroupNav groups={materialGroups.map((group) => [group.key, group.label] as const)} label="Группы материалов" />
       <section className="materials-directory">
         {materialGroups.map((group, groupIndex) => {
           const groupMaterials = materials.filter((material) => material.group === group.key)

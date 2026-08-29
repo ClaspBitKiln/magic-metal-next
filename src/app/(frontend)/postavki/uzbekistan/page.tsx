@@ -20,7 +20,7 @@ const directions = [
 
 export default function UzbekistanSupplyPage() {
   return <main className="materials-page material-detail">
-    <header className="materials-header"><Link href="/"><b>←</b> Мэджик Металл</Link><Link className="materials-cta" href="/?region=uzbekistan#request">Отправить заявку ↗</Link></header>
+    <header className="materials-header"><Link href="/"><b>←</b> На главную</Link><Link className="materials-cta" href="/?region=uzbekistan#request">Отправить заявку ↗</Link></header>
     <section className="materials-hero"><p>Россия · СНГ · приоритетный рынок</p><h1>Поставки<br /><em>в Узбекистан</em></h1><span>Комплектуем промышленную заявку, проверяем стандарты и документы, согласовываем маршрут и поставляем металлопрокат в Узбекистан.</span></section>
     <section className="material-content">
       <article className="material-intro"><p>Работа по спецификации</p><h2>Одна заявка — комплексная поставка</h2><span>Подбираем российское, стран СНГ или импортное исполнение внутри товарного направления. Уточняем город назначения, сроки, вид транспорта, требования к упаковке и комплекту документов до расчёта.</span><Link href="/?region=uzbekistan#request">Отправить заявку <b>→</b></Link></article>

@@ -220,6 +220,17 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
+.materials-groups a:hover,
+.materials-groups a:focus-visible {
+  color: #0757e8;
+  background: #eef4ff;
+  outline: none;
+}
+.materials-groups a.active,
+.materials-groups a[aria-current='location'] {
+  color: #fff;
+  background: #0757e8;
+}
 .materials-directory {
   padding: 25px 7vw 105px;
 }
