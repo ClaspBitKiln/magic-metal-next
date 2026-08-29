@@ -208,9 +208,18 @@ export default function MagicMetalHome() {
         </div>
       </section>
 
-      <section className="quick-search" aria-labelledby="quick-search-title">
-        <div><p className="section-kicker">Технический поиск</p><h2 id="quick-search-title">Найти товар,<br /><em>марку или ГОСТ</em></h2></div>
-        <div className="quick-search-tools"><form action="/poisk" method="get"><label htmlFor="home-search">Введите обозначение или название</label><div><input id="home-search" name="q" placeholder="12Х1МФ, ГОСТ 8732, труба 219×8" /><button type="submit">Найти →</button></div></form><nav aria-label="Инженерные инструменты"><Link href="/spravochnik-materialov">Материалы</Link><Link href="/spravochnik-gost">ГОСТ</Link><Link href="/kalkulyator-metalla">Калькулятор массы</Link></nav></div>
+      <section className="reference-hub" id="gost" aria-labelledby="quick-search-title">
+        <div className="quick-search">
+          <div><p className="section-kicker">Единый технический справочник</p><h2 id="quick-search-title">Справочник<br /><em>по металлопрокату</em></h2></div>
+          <div className="quick-search-tools"><form action="/poisk" method="get"><label htmlFor="home-search">Товар, размер, марка или ГОСТ</label><div><input id="home-search" name="q" placeholder="12Х1МФ, ГОСТ 8732, труба 219×8" /><button type="submit">Найти →</button></div></form><nav aria-label="Разделы справочника"><Link href="#products">Продукция</Link><Link href="/spravochnik-gost">ГОСТ и размеры</Link><Link href="/spravochnik-materialov">Марки материалов</Link><Link href="/kalkulyator-metalla">Калькулятор массы</Link></nav></div>
+        </div>
+        <div className="section catalog-section reference-catalog">
+          <div className="catalog-head"><div><h2>Трубный<br /><em>сортамент</em></h2></div><p>Основные виды труб, диапазоны размеров, стандарты и марки собраны в одной таблице. Нажмите на любую строку, чтобы открыть подробное направление.</p></div>
+          <div className="catalog-table" role="table" aria-label="Трубная продукция">
+            <div className="catalog-row catalog-labels" role="row"><span>Тип продукции</span><span>Размеры</span><span>Стандарты</span><span>Марки / исполнение</span></div>
+            {pipeCatalog.map(([title, size, standards, grades, href], index) => <motion.a className="catalog-row" role="row" href={href} aria-label={`Подробнее: ${title}`} key={title} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .35 }} variants={animation} transition={{ duration: .42, delay: Math.min(index * .035, .2) }}><strong><i>{String(index + 1).padStart(2, '0')}</i>{title}</strong><span>{size}</span><span className="standard-list">{standards.replace(/(ГОСТ|ТУ|ОСТ|СТО) /g, '$1\u00A0')}</span><span>{grades}</span></motion.a>)}
+          </div>
+        </div>
       </section>
 
       <section className="section priority-section" id="products">
@@ -218,14 +227,6 @@ export default function MagicMetalHome() {
         <div className="priority-grid" role="table" aria-label="Главные направления продукции">
           <div className="priority-grid-head" role="row"><span role="columnheader">Направление</span><span role="columnheader">Что поставляем</span><span role="columnheader">Стандарты</span><span aria-hidden="true" /></div>
           {priorityProducts.map((product, index) => <motion.a className="priority-card" href={`/produkciya/${product.slug}`} aria-label={`Подробнее: ${product.title}`} key={product.slug} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .2 }} variants={animation} transition={{ duration: .48, delay: index * .06 }}><span>{product.index}</span><h3>{product.title}</h3><p>{product.note}</p><small className="standard-list">{product.standards.replace(/(ГОСТ|ТУ|ОСТ|СТО) /g, '$1\u00A0')}</small><span className="priority-card-action">Открыть товар <b>↗</b></span></motion.a>)}
-        </div>
-      </section>
-
-      <section className="section catalog-section" id="gost">
-        <div className="catalog-head"><div><h2>Сортамент<br /><em>и стандарты</em></h2></div><p>Сверяем сортамент, технические условия, марку стали и требования к контролю. Если стандартной позиции нет — подбираем производство или технически корректную замену. <Link href="/spravochnik-materialov">Открыть справочник материалов →</Link></p></div>
-        <div className="catalog-table" role="table" aria-label="Трубная продукция">
-          <div className="catalog-row catalog-labels" role="row"><span>Тип продукции</span><span>Размеры</span><span>Стандарты</span><span>Марки / исполнение</span></div>
-          {pipeCatalog.map(([title, size, standards, grades, href], index) => <motion.a className="catalog-row" role="row" href={href} aria-label={`Подробнее: ${title}`} key={title} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .35 }} variants={animation} transition={{ duration: .42, delay: Math.min(index * .035, .2) }}><strong><i>{String(index + 1).padStart(2, '0')}</i>{title}</strong><span>{size}</span><span className="standard-list">{standards.replace(/(ГОСТ|ТУ|ОСТ|СТО) /g, '$1\u00A0')}</span><span>{grades}</span></motion.a>)}
         </div>
       </section>
 
