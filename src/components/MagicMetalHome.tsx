@@ -6,13 +6,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { FormEvent, useEffect, useMemo, useState } from 'react'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
-
-const priorityProducts = [
-  { index: '01', title: 'Трубы электросварные', note: 'Ø 15–1420 мм · обечайки до 3500 мм', standards: 'ГОСТ 3262 · 10704 · 10705 · 10706 · 20295', slug: 'truby-elektrosvarnye' },
-  { index: '02', title: 'Трубы бесшовные', note: 'Горяче-, холодно- и теплодеформированные', standards: 'ГОСТ 8731-2025 · 8732-2025 · 8733-74 · 8734-75 · 550-2020 · 9941-2022', slug: 'truby-besshovnye' },
-  { index: '03', title: 'СДТ', note: 'Отводы · переходы · тройники · фланцы', standards: 'ГОСТ 17375 · 17376 · 17378 · 30753 · 12820–12822', slug: 'sdt' },
-  { index: '04', title: 'Трубы и СДТ в изоляции', note: 'ППУ · ВУС · ЦПП · эпоксидные покрытия', standards: 'Заводское нанесение · комплектная поставка', slug: 'truby-i-sdt-v-izolyacii' },
-]
+import { productDetailCatalog } from '@/data/productDetailCatalog'
+import { standardAssortments, type MarketSignal } from '@/data/standardAssortment'
 
 const pipeCatalog = [
   ['Электросварные прямошовные и спиралешовные', 'Ø 15–1420 мм', 'ГОСТ 10704, 10705, 10706, 20295', 'Ст3, 20, 09Г2С, 17Г1СУ, 10Г2ФБЮ', '/produkciya/truby-elektrosvarnye'],
@@ -35,53 +30,27 @@ const catalogGroups = [
   { title: 'СДТ', note: 'Отводы, тройники, переходы, фланцы, заглушки и днища', items: pipeCatalog.slice(8) },
 ]
 
-const otherProducts = [
-  ['Лист холоднокатаный 0,3–3 мм', 'ГОСТ 19904-90 · ГОСТ 16523-89 · Ст08пс/кп'],
-  ['Лист горячекатаный 2–200 мм', 'ГОСТ 19903-2015 · 14637-89 · 19281-89 · 5520-2017'],
-  ['Лист нержавеющий 3–200 мм', 'ГОСТ 5582-75 · 5632-2014 · 7350-77 · ASTM'],
-  ['Рулонная сталь оцинкованная', 'ГОСТ 14918-2020 · 08пс/сп'],
-  ['Круг горячекатаный 8–300 мм', 'ГОСТ 2590-88 · 535-88 · конструкционные, инструментальные и специальные стали'],
-  ['Квадрат 6–200 мм', 'ГОСТ 2591-2006 · 8559-75 · Ст3 · 20 · 09Г2С · 45'],
-  ['Поковки Ø 40–1500+ мм', 'ГОСТ 8479-70 · 7829-70 · 25054-81 · 1133-71 · 4400-85 · 19200-80'],
-  ['Уголок', 'Равнополочный, неравнополочный и гнутый · ГОСТ 8509-93 · 8510-86 · 19771-93 · 19772-93'],
-  ['Балка двутавровая', 'ГОСТ 8239-89 · 57837-2017 · СТО АСЧМ 20-93 · С235–С375 · 09Г2С'],
-  ['Швеллер', 'ГОСТ 8240-97 · С235–С375 · Ст3 · 09Г2С'],
-  ['Днища и заглушки', 'ГОСТ 6533-78 · углеродистые, низколегированные, жаропрочные и нержавеющие стали'],
-  ['Цветной металлопрокат', 'Титан · олово · латунь · медь · бронза · алюминий и другие материалы'],
-  ['Сварочные материалы', 'Сварочная проволока · электроды · подбор по основному металлу · ГОСТ и ТУ'],
-  ['Метизная продукция', 'Крепёж · болты · гайки · шайбы по ГОСТ, ТУ и DIN'],
-  ['Оборудование', 'Промышленное оборудование по техническому заданию'],
-  ['Материалы, детали и комплектующие', 'Поставка нестандартных позиций и грузов по запросу'],
-]
+const assortmentByProduct: Record<string, string[]> = {
+  'Электросварные прямошовные и спиралешовные': ['gost-10704-91'],
+  'Бесшовные горячедеформированные': ['gost-8732-2025'],
+  'Бесшовные холоднодеформированные': ['gost-8734-75'],
+  'Отводы бесшовные': ['gost-17375-2001', 'gost-30753-2001'],
+  'Тройники бесшовные': ['gost-17376-2001'],
+  'Переходы бесшовные': ['gost-17378-2001'],
+  'Фланцы': ['gost-33259-2015'],
+  'Заглушки и днища': ['gost-17379-2001'],
+}
+
+const signalLabels: Record<MarketSignal, string> = { green: 'Ходовая', yellow: 'Ограниченное наличие', red: 'Редкая / под заказ' }
 
 const otherCatalogGroups = [
-  { title: 'Листовой и рулонный прокат', note: 'Горячекатаный, холоднокатаный, оцинкованный и прокат с покрытиями', titles: ['Лист холоднокатаный 0,3–3 мм', 'Лист горячекатаный 2–200 мм', 'Рулонная сталь оцинкованная'] },
-  { title: 'Сортовой и фасонный прокат', note: 'Круг, квадрат, уголок, балка и швеллер', titles: ['Круг горячекатаный 8–300 мм', 'Квадрат 6–200 мм', 'Уголок', 'Балка двутавровая', 'Швеллер'] },
-  { title: 'Нержавеющие и специальные стали', note: 'Коррозионностойкие, жаропрочные и специальные марки', titles: ['Лист нержавеющий 3–200 мм'] },
-  { title: 'Поковки и заготовки', note: 'Кованые заготовки и детали специальных исполнений', titles: ['Поковки Ø 40–1500+ мм'] },
-  { title: 'Цветной металлопрокат', note: 'Титан, олово, латунь, медь, бронза и алюминий', titles: ['Цветной металлопрокат'] },
-  { title: 'Метизы и сварочные материалы', note: 'Крепёж, проволока, электроды и расходные материалы', titles: ['Сварочные материалы', 'Метизная продукция'] },
-  { title: 'Оборудование и комплектующие', note: 'Промышленное оборудование и нестандартные позиции по заданию', titles: ['Оборудование', 'Материалы, детали и комплектующие'] },
+  { title: 'Листовой и рулонный прокат', note: 'Горячекатаный, холоднокатаный, оцинкованный и прокат с покрытиями', categorySlug: 'listovoy-prokat' },
+  { title: 'Сортовой и фасонный прокат', note: 'Арматура, круг, квадрат, полоса, уголок, балка и швеллер', categorySlug: 'sortovoy-i-fasonny-prokat' },
+  { title: 'Нержавеющие и специальные стали', note: 'Лист, трубы, сортовой прокат и специальные марки', categorySlug: 'nerzhaveyushchaya-stal' },
+  { title: 'Поковки и заготовки', note: 'Кольца, диски, валы, оси и поковки по чертежу', categorySlug: 'pokovki-i-zagotovki' },
+  { title: 'Цветной металлопрокат', note: 'Алюминий и дюраль; медь, бронза и латунь; титан; олово и другие цветные металлы', categorySlug: 'cvetnye-metally' },
+  { title: 'Метизы и сварочные материалы', note: 'Крепёж, сетка, лента, проволока, электроды и расходные материалы', categorySlug: 'metizy-i-svarochnye-materialy' },
 ]
-
-const otherSeoLinks: Record<string, string> = {
-  'Лист холоднокатаный 0,3–3 мм': '/produkciya/listovoy-prokat/holodnokatanyj',
-  'Лист горячекатаный 2–200 мм': '/produkciya/listovoy-prokat/goryachekatanyj',
-  'Лист нержавеющий 3–200 мм': '/produkciya/nerzhaveyushchaya-stal/list',
-  'Рулонная сталь оцинкованная': '/produkciya/listovoy-prokat/ocinkovannyj',
-  'Круг горячекатаный 8–300 мм': '/produkciya/sortovoy-i-fasonny-prokat/krug-i-kvadrat',
-  'Квадрат 6–200 мм': '/produkciya/sortovoy-i-fasonny-prokat/krug-i-kvadrat',
-  'Поковки Ø 40–1500+ мм': '/produkciya/pokovki-i-zagotovki',
-  'Уголок': '/produkciya/sortovoy-i-fasonny-prokat/balka-shveller-ugolok',
-  'Балка двутавровая': '/produkciya/sortovoy-i-fasonny-prokat/balka-shveller-ugolok',
-  'Швеллер': '/produkciya/sortovoy-i-fasonny-prokat/balka-shveller-ugolok',
-  'Днища и заглушки': '/produkciya/sdt/zaglushki-i-dnishcha',
-  'Цветной металлопрокат': '/produkciya/cvetnye-metally',
-  'Сварочные материалы': '/produkciya/metizy-i-svarochnye-materialy/svarochnye-materialy',
-  'Метизная продукция': '/produkciya/metizy-i-svarochnye-materialy/krepezh',
-  'Оборудование': '/?product=oborudovanie#request',
-  'Материалы, детали и комплектующие': '/?product=komplektuyushchie#request',
-}
 
 const reveal = { hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }
 
@@ -234,16 +203,8 @@ export default function MagicMetalHome() {
           <div className="quick-search-tools"><form action="/poisk" method="get"><label htmlFor="home-search">Товар, размер, марка или ГОСТ</label><div><input id="home-search" name="q" placeholder="12Х1МФ, ГОСТ 8732, труба 219×8" /><button type="submit">Найти →</button></div></form><nav aria-label="Разделы справочника"><Link href="#products">Все разделы</Link><Link href="/spravochnik-gost">ГОСТ и размеры</Link><Link href="/spravochnik-materialov">Марки материалов</Link><Link href="/kalkulyator-metalla">Калькулятор массы</Link></nav></div>
         </div>
       <div className="product-unified" id="products" aria-labelledby="products-title">
-      <div className="section priority-section product-subsection">
-        <motion.div className="section-heading" initial="hidden" whileInView="visible" viewport={{ once: true, amount: .3 }} variants={animation} transition={{ duration: .55 }}><h2>Трубы, СДТ<br />и <em>изоляция</em></h2><p>Подбираем продукцию по ГОСТ, ТУ, марке стали, геометрии и условиям эксплуатации. Проверяем совместимость требований до расчёта.</p></motion.div>
-        <div className="priority-grid" role="table" aria-label="Главные направления продукции">
-          <div className="priority-grid-head" role="row"><span role="columnheader">Направление</span><span role="columnheader">Что поставляем</span><span role="columnheader">Стандарты</span><span aria-hidden="true" /></div>
-          {priorityProducts.map((product, index) => <motion.a className="priority-card" href={`/produkciya/${product.slug}`} aria-label={`Подробнее: ${product.title}`} key={product.slug} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .2 }} variants={animation} transition={{ duration: .48, delay: index * .06 }}><span>{product.index}</span><h3>{product.title}</h3><p>{product.note}</p><small className="standard-list">{product.standards.replace(/(ГОСТ|ТУ|ОСТ|СТО) /g, '$1\u00A0')}</small><span className="priority-card-action">Открыть товар <b>↗</b></span></motion.a>)}
-        </div>
-      </div>
-
       <div className="section catalog-section product-subsection">
-        <div className="catalog-head"><div><p className="product-subsection-label">Общий справочник</p><h2 id="products-title">Категории<br /><em>и номенклатура</em></h2></div><p>Справочник устроен как дерево Excel: откройте категорию, затем нужную номенклатуру. Размеры, ГОСТ и исполнения раскрываются по «+» и скрываются по «−».</p></div>
+        <div className="catalog-head"><div><p className="product-subsection-label">Общий справочник по металлопрокату</p><h2 id="products-title">Категории<br /><em>и номенклатура</em></h2></div><p>Все виды продукции собраны в одном дереве. Откройте категорию, затем нужную номенклатуру: размеры, ГОСТ и исполнения раскрываются по «+» и скрываются по «−».</p></div>
         {catalogGroups.map((group, groupIndex) => <details className="catalog-group" key={group.title} open={groupIndex === 0}>
           <summary><i className="catalog-toggle" aria-hidden="true" /><span><strong>{group.title}</strong><small>{group.note}</small></span></summary>
           <div className="catalog-table" aria-label={group.title}>
@@ -255,20 +216,35 @@ export default function MagicMetalHome() {
               <span className="standard-list">{standards.replace(/(ГОСТ|ТУ|ОСТ|СТО) /g, '$1\u00A0')}</span>
               <span>{grades}</span>
             </summary>
+            {assortmentByProduct[title]?.map((slug) => {
+              const assortment = standardAssortments[slug]
+              return assortment ? <div className="home-size-series" key={slug}>
+                <b>{slug.replace('gost-', 'ГОСТ ').replaceAll('-', '–')} · {assortment.dimensionLabel}</b>
+                {assortment.rows.map((row) => <div className={`home-size-row signal-${row.signal}`} key={row.size}><span><i />{row.size}</span><small>{signalLabels[row.signal]} · {row.note}</small></div>)}
+              </div> : null
+            })}
             <Link className="catalog-item-link" href={href} aria-label={`Открыть направление: ${title}`}>
               <span>Открыть направление и размерный ряд</span><b aria-hidden="true">→</b>
             </Link>
           </motion.details>)}
           </div>
         </details>)}
-      </div>
-
-      <div className="section other-section product-subsection">
-        <p className="product-subsection-label">Остальные разделы общего справочника</p>
+        <details className="catalog-group" key="insulation">
+          <summary><i className="catalog-toggle" aria-hidden="true" /><span><strong>Трубы и СДТ в изоляции</strong><small>ППУ, ВУС, ЦПП и эпоксидные покрытия заводского нанесения</small></span></summary>
+          <Link className="catalog-item-link catalog-category-link" href="/produkciya/truby-i-sdt-v-izolyacii"><span>Открыть номенклатуру, стандарты и размерный ряд</span><b aria-hidden="true">→</b></Link>
+        </details>
         {otherCatalogGroups.map((group) => <details className="catalog-group catalog-group-light" key={group.title}>
           <summary><i className="catalog-toggle" aria-hidden="true" /><span><strong>{group.title}</strong><small>{group.note}</small></span></summary>
-          <div className="other-list">{otherProducts.filter(([title]) => group.titles.includes(title)).map(([title, text], index) => <motion.a href={otherSeoLinks[title]} aria-label={`Подробнее: ${title}`} key={title} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .4 }} variants={animation} transition={{ duration: .38, delay: Math.min(index * .02, .14) }}><span>{String(index + 1).padStart(2, '0')}</span><h3>{title}</h3><p>{text}</p><b aria-hidden="true">↗</b></motion.a>)}</div>
+          <div className="directory-sublist">{productDetailCatalog.filter((item) => item.categorySlug === group.categorySlug).map((item) => <details className="directory-subitem" key={item.slug}>
+            <summary><i className="catalog-toggle" aria-hidden="true" /><strong>{item.shortTitle}</strong><span>{item.range.map((entry) => entry.value).join(' · ')}</span></summary>
+            <div><p><b>Формы и размеры:</b> {item.range.map((entry) => `${entry.label}: ${entry.value}`).join(' · ')}</p><p><b>Стандарты:</b> {item.standards.join(' · ')}</p><p><b>Марки:</b> {item.grades.join(' · ')}</p></div>
+            <Link href={`/produkciya/${item.categorySlug}/${item.slug}`}><span>Открыть номенклатуру</span><b aria-hidden="true">→</b></Link>
+          </details>)}</div>
         </details>)}
+        <details className="catalog-group catalog-group-light">
+          <summary><i className="catalog-toggle" aria-hidden="true" /><span><strong>Оборудование и комплектующие</strong><small>Промышленное оборудование, детали и нестандартные позиции по техническому заданию</small></span></summary>
+          <Link className="catalog-item-link catalog-category-link" href="/?product=komplektuyushchie#request"><span>Отправить техническое задание</span><b aria-hidden="true">→</b></Link>
+        </details>
       </div>
       </div>
       </section>
