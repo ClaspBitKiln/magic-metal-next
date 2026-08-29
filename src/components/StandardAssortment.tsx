@@ -1,10 +1,10 @@
-import { assortmentCheckedAt, marketSources, referenceSources, standardAssortments, type MarketSignal } from '@/data/standardAssortment'
+import { assortmentCheckedAt, expandAndSortAssortmentRows, marketSources, referenceSources, standardAssortments, type MarketSignal } from '@/data/standardAssortment'
 import type { Standard } from '@/data/standards'
 
 const signalCopy: Record<MarketSignal, string> = {
-  green: 'Ходовая',
-  yellow: 'Ограниченное наличие',
-  red: 'В открытом наличии не найдено',
+  green: 'На складе у поставщиков',
+  yellow: 'Наличие уточняется',
+  red: 'Под заказ',
 }
 
 export default function StandardAssortment({ standard }: { standard: Standard }) {
@@ -23,7 +23,7 @@ export default function StandardAssortment({ standard }: { standard: Standard })
     </div>
     {assortment ? <div className="assortment-table" role="table" aria-label={`Размерный ряд ${standard.code}`}>
       <div className="assortment-table-head" role="row"><span role="columnheader">{assortment.dimensionLabel}</span><span role="columnheader">Рыночный сигнал</span><span role="columnheader">Комментарий</span></div>
-      {assortment.rows.map((row) => <div className={`assortment-row signal-${row.signal}`} role="row" key={row.size}>
+      {expandAndSortAssortmentRows(assortment.rows).map((row) => <div className={`assortment-row signal-${row.signal}`} role="row" key={row.size}>
         <strong role="cell">{row.size}</strong><span role="cell"><i />{signalCopy[row.signal]}</span><small role="cell">{row.note}</small>
       </div>)}
     </div> : <div className="assortment-empty">
@@ -31,7 +31,7 @@ export default function StandardAssortment({ standard }: { standard: Standard })
       <span>{isDimensionalStandard ? 'Полный ряд будет показан после сверки таблиц стандарта и открытого предложения поставщиков.' : 'Размеры определяются связанным стандартом на сортамент, конструкцию изделия или спецификацией проекта.'}</span>
     </div>}
       <div className="assortment-method">
-      <p>Зелёный — позиция найдена минимум у трёх независимых продавцов; жёлтый — у одного–двух; красный — не найдена. Сигнал не гарантирует текущий остаток и требует подтверждения перед расчётом.</p>
+      <p>Зелёный — позиция опубликована минимум у трёх независимых поставщиков; жёлтый — у одного–двух; красный — открытое складское предложение не найдено, поставка рассчитывается под заказ. Остаток и срок всегда подтверждаются перед расчётом.</p>
       <div className="assortment-sources"><nav aria-label="Источники проверки наличия"><b>Наличие:</b>{marketSources.map((source) => <a href={source.href} target="_blank" rel="noreferrer" key={source.label}>{source.label}</a>)}</nav><nav aria-label="Источники сортамента и технических данных"><b>Сортамент:</b>{referenceSources.map((source) => <a href={source.href} target="_blank" rel="noreferrer" key={source.label}>{source.label}</a>)}</nav></div>
       </div>
       </div>

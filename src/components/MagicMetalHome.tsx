@@ -7,7 +7,7 @@ import Link from 'next/link'
 import { FormEvent, useEffect, useMemo, useState } from 'react'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
 import { productDetailCatalog } from '@/data/productDetailCatalog'
-import { standardAssortments, type MarketSignal } from '@/data/standardAssortment'
+import { expandAndSortAssortmentRows, standardAssortments, type MarketSignal } from '@/data/standardAssortment'
 
 const pipeCatalog = [
   ['Электросварные прямошовные и спиралешовные', 'Ø 15–1420 мм', 'ГОСТ 10704, 10705, 10706, 20295', 'Ст3, 20, 09Г2С, 17Г1СУ, 10Г2ФБЮ', '/produkciya/truby-elektrosvarnye'],
@@ -41,7 +41,7 @@ const assortmentByProduct: Record<string, string[]> = {
   'Заглушки и днища': ['gost-17379-2001'],
 }
 
-const signalLabels: Record<MarketSignal, string> = { green: 'Ходовая', yellow: 'Ограниченное наличие', red: 'Редкая / под заказ' }
+const signalLabels: Record<MarketSignal, string> = { green: 'На складе у поставщиков', yellow: 'Наличие уточняется', red: 'Под заказ' }
 const hiddenDirectorySlugs = new Set(['krug-i-kvadrat', 'balka-shveller-ugolok'])
 
 const otherCatalogGroups = [
@@ -221,7 +221,7 @@ export default function MagicMetalHome() {
               const assortment = standardAssortments[slug]
               return assortment ? <div className="home-size-series" key={slug}>
                 <b>{slug.replace('gost-', 'ГОСТ ').replaceAll('-', '–')} · {assortment.dimensionLabel}</b>
-                {assortment.rows.map((row) => <div className={`home-size-row signal-${row.signal}`} key={row.size}><span><i />{row.size}</span><small>{signalLabels[row.signal]} · {row.note}</small></div>)}
+                {expandAndSortAssortmentRows(assortment.rows).map((row) => <div className={`home-size-row signal-${row.signal}`} key={row.size}><span><i />{row.size}</span><small>{signalLabels[row.signal]} · {row.note}</small></div>)}
               </div> : null
             })}
             <Link className="catalog-item-link" href={href} aria-label={`Открыть направление: ${title}`}>

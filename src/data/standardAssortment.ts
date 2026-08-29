@@ -11,6 +11,25 @@ export type StandardAssortment = {
   rows: AssortmentRow[]
 }
 
+const numericParts = (size: string) =>
+  [...size.matchAll(/\d+(?:[,.]\d+)?/g)].map((match) => Number(match[0].replace(',', '.')))
+
+export const expandAndSortAssortmentRows = (rows: AssortmentRow[]) =>
+  rows
+    .flatMap((row) => row.size.split('·').map((size) => ({ ...row, size: size.trim() })))
+    .sort((left, right) => {
+      const leftParts = numericParts(left.size)
+      const rightParts = numericParts(right.size)
+      const width = Math.max(leftParts.length, rightParts.length)
+
+      for (let index = 0; index < width; index += 1) {
+        const difference = (leftParts[index] ?? -1) - (rightParts[index] ?? -1)
+        if (difference !== 0) return difference
+      }
+
+      return left.size.localeCompare(right.size, 'ru', { numeric: true })
+    })
+
 export const marketSources = [
   { label: 'МЕТАЛЛСЕРВИС', href: 'https://mc.ru/' },
   { label: 'ЕВРАЗ Маркет', href: 'https://evraz.market/metalloprokat/' },
