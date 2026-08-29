@@ -13,5 +13,6 @@ export default function Analytics() {
       <Script src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} strategy="afterInteractive" />
       <Script id="ga4" strategy="afterInteractive">{`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${gaId}');`}</Script>
     </>}
+    <Script id="funnel-events" strategy="afterInteractive">{`document.addEventListener('click',function(e){var a=e.target&&e.target.closest?e.target.closest('a'):null;if(!a)return;var href=a.getAttribute('href')||'';var goal=href.indexOf('tel:')===0?'phone_click':href.indexOf('#request')>=0?'request_click':'';if(!goal)return;if(window.ym&&${metrikaId || 0})window.ym(${metrikaId || 0},'reachGoal',goal);if(window.gtag)window.gtag('event',goal,{link_url:a.href});});`}</Script>
   </>
 }
