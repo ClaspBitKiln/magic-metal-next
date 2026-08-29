@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 import DirectoryGroupNav from '@/components/DirectoryGroupNav'
+import LanguageSwitcher from '@/components/LanguageSwitcher'
 import { standardGroups, standards } from '@/data/standards'
 import '../spravochnik-materialov/materials.css'
 
@@ -13,15 +14,15 @@ export const metadata: Metadata = {
 
 export default function StandardsDirectoryPage() {
   return <main className="materials-page">
-    <header className="materials-header"><Link href="/"><b>←</b> На главную</Link><Link className="materials-cta" href="/#request">Отправить заявку ↗</Link></header>
+    <header className="materials-header"><Link href="/"><b>←</b> На главную</Link><LanguageSwitcher /><Link className="materials-cta" href="/#request">Отправить заявку ↗</Link></header>
     <section className="materials-hero"><p>Справочник · нормативные документы</p><h1>ГОСТ<br /><em>и стандарты</em></h1><span>Не просто номера документов: область применения, связь с материалами и продукцией, параметры, которые важно указать для корректного расчёта.</span></section>
     <DirectoryGroupNav groups={standardGroups} label="Группы стандартов" />
     <section className="materials-directory">
       {standardGroups.map(([key, label], groupIndex) => {
         const items = standards.filter((standard) => standard.group === key)
         if (!items.length) return null
-        return <section className="materials-group" id={key} key={key}>
-          <div className="materials-group-title"><span>{String(groupIndex + 1).padStart(2, '0')}</span><h2>{label}</h2><p>{items.length} документов</p></div>
+        return <details className="materials-group" id={key} open={groupIndex === 0} key={key}>
+          <summary className="materials-group-title"><span>{String(groupIndex + 1).padStart(2, '0')}</span><h2>{label}</h2><p>{items.length} документов</p><b aria-hidden="true" /></summary>
           <div className="standards-table" role="table" aria-label={`Стандарты: ${label}`}>
             <div className="standards-table-head" role="row">
               <span role="columnheader">Документ</span>
@@ -36,7 +37,7 @@ export default function StandardsDirectoryPage() {
               <b aria-hidden="true">→</b>
             </Link>)}
           </div>
-        </section>
+        </details>
       })}
     </section>
     <section className="materials-note"><p>Подбор по нормативной документации</p><h2>Одного номера ГОСТ недостаточно</h2><span>Для расчёта уточняем стандарт на сортамент и технические условия, марку, размеры, состояние поставки, испытания, контроль и документы.</span><Link href="/#request">Отправить заявку ↗</Link></section>

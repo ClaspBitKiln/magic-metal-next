@@ -12,15 +12,21 @@ export default function DirectoryGroupNav({ groups, label }: { groups: readonly 
       .map(([key]) => document.getElementById(key))
       .filter((section): section is HTMLElement => Boolean(section))
 
-    const observer = new IntersectionObserver((entries) => {
-      const visible = entries
-        .filter((entry) => entry.isIntersecting)
-        .sort((first, second) => first.boundingClientRect.top - second.boundingClientRect.top)
-      if (visible[0]?.target.id) setActiveGroup(visible[0].target.id)
-    }, { rootMargin: '-66px 0px -68% 0px', threshold: 0 })
+    const updateActiveGroup = () => {
+      const current = sections.reduce((active, section) => (
+        section.getBoundingClientRect().top <= 90 ? section.id : active
+      ), sections[0]?.id || '')
+      setActiveGroup(current)
+    }
 
-    sections.forEach((section) => observer.observe(section))
-    return () => observer.disconnect()
+    const frame = window.requestAnimationFrame(updateActiveGroup)
+    window.addEventListener('scroll', updateActiveGroup, { passive: true })
+    window.addEventListener('hashchange', updateActiveGroup)
+    return () => {
+      window.cancelAnimationFrame(frame)
+      window.removeEventListener('scroll', updateActiveGroup)
+      window.removeEventListener('hashchange', updateActiveGroup)
+    }
   }, [groups])
 
   return <nav className="materials-groups" aria-label={label}>
@@ -28,7 +34,11 @@ export default function DirectoryGroupNav({ groups, label }: { groups: readonly 
       className={activeGroup === key ? 'active' : undefined}
       href={`#${key}`}
       aria-current={activeGroup === key ? 'location' : undefined}
-      onClick={() => setActiveGroup(key)}
+      onClick={() => {
+        const section = document.getElementById(key)
+        if (section instanceof HTMLDetailsElement) section.open = true
+        setActiveGroup(key)
+      }}
       key={key}
     >{itemLabel}</a>)}
   </nav>

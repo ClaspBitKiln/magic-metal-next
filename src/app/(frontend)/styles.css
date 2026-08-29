@@ -127,6 +127,49 @@ section[id] {
   align-items: center;
   gap: 20px;
 }
+.language-switcher {
+  position: relative;
+  flex: 0 0 auto;
+}
+.language-switcher select {
+  width: 64px;
+  height: 38px;
+  padding: 0 22px 0 9px;
+  border: 1px solid rgba(7, 28, 98, 0.18);
+  border-radius: 3px;
+  color: #071c62;
+  background: #fff;
+  font: 700 11px var(--font-display);
+  cursor: pointer;
+}
+.language-switcher select:focus-visible {
+  outline: 2px solid #0757e8;
+  outline-offset: 2px;
+}
+.language-switcher #google_translate_element {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+.goog-te-banner-frame,
+.skiptranslate iframe {
+  display: none !important;
+}
+body { top: 0 !important; }
 .phone {
   font: 600 14px var(--font-display);
   white-space: nowrap;

@@ -30,7 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const organizationJsonLd = {
     '@context': 'https://schema.org', '@type': 'Organization', name: 'ООО «Мэджик Металл»', url: 'https://magicmet.ru',
     email: 'm1@magicmet.ru', telephone: '+7 922 711-73-63', logo: 'https://magicmet.ru/images/logo-transparent-v2.png',
-    contactPoint: [{ '@type': 'ContactPoint', telephone: '+7 922 711-73-63', contactType: 'sales', areaServed: ['RU', 'CIS'], availableLanguage: ['Russian'] }],
+    contactPoint: [{ '@type': 'ContactPoint', telephone: '+7 922 711-73-63', contactType: 'sales', areaServed: ['RU', 'UZ', 'KZ', 'KG', 'BY', 'TR'], availableLanguage: ['Russian', 'Uzbek', 'Kazakh', 'Kyrgyz', 'Belarusian', 'Turkish', 'English'] }],
     areaServed: ['Россия', 'СНГ', 'Узбекистан'],
     knowsAbout: ['электросварные трубы', 'бесшовные трубы', 'соединительные детали трубопроводов', 'металлопрокат', 'нержавеющие стали', 'цветные металлы'],
   }

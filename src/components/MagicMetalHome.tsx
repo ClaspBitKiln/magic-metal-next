@@ -5,6 +5,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { FormEvent, useEffect, useMemo, useState } from 'react'
+import LanguageSwitcher from '@/components/LanguageSwitcher'
 
 const priorityProducts = [
   { index: '01', title: 'Трубы электросварные', note: 'Ø 15–1420 мм · обечайки до 3500 мм', standards: 'ГОСТ 3262 · 10704 · 10705 · 10706 · 20295', slug: 'truby-elektrosvarnye' },
@@ -154,6 +155,7 @@ export default function MagicMetalHome() {
         </nav>
         <div className="top-actions">
           <a className="phone" href="tel:+79227117363">+7 922 711-73-63</a>
+          <LanguageSwitcher />
           <a className="top-cta" href="#request">Отправить заявку <span>↗</span></a>
           <button className="menu-button" type="button" aria-label="Открыть меню" aria-expanded={menuOpen} onClick={() => setMenuOpen((value) => !value)}><span /><span /><span /></button>
         </div>

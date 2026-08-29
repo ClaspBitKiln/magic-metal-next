@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 
 import { findStandard } from '@/data/standards'
 import { getSdtCatalogItem, sdtCatalog } from '@/data/sdtCatalog'
+import LanguageSwitcher from '@/components/LanguageSwitcher'
 import './sdt-detail.css'
 
 export function generateStaticParams() {
@@ -37,7 +38,7 @@ export default async function SdtDetailPage({ params }: { params: Promise<{ deta
   return (
     <main className="sdt-detail">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
-      <header className="sdt-nav"><Link href="/produkciya/sdt"><b>←</b> Все СДТ</Link><Link href={requestHref}>Отправить заявку ↗</Link></header>
+      <header className="sdt-nav"><Link href="/produkciya/sdt"><b>←</b> Все СДТ</Link><LanguageSwitcher /><Link href={requestHref}>Отправить заявку ↗</Link></header>
       <section className="sdt-hero">
         <div><p>Соединительные детали трубопроводов</p><h1>{item.title}</h1><span>{item.description}</span></div>
       </section>
