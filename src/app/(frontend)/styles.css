@@ -482,6 +482,25 @@ h2 {
 .priority-section {
   background: linear-gradient(135deg, #fff 0%, #f2f7ff 100%);
 }
+.product-unified {
+  background: #f8faff;
+  border-top: 1px solid #c8d2e3;
+  border-bottom: 1px solid #c8d2e3;
+}
+.product-subsection {
+  position: relative;
+}
+.product-subsection + .product-subsection {
+  border-top: 1px solid rgba(133, 157, 202, .35);
+}
+.product-subsection-label {
+  margin: 0 0 14px;
+  color: #87b4ff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
 .priority-grid {
   border-top: 4px solid var(--navy);
   border-bottom: 1px solid #b9c5db;
