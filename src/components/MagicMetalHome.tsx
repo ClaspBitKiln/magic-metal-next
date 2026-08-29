@@ -173,7 +173,7 @@ export default function MagicMetalHome() {
       <section className="section company-trust-section" id="about" aria-labelledby="company-trust-title">
         <div className="company-trust-head">
           <div><p className="section-kicker">01 — О компании</p><h2 id="company-trust-title">Опыт <em>промышленных поставок</em></h2></div>
-          <p>Более 20 лет комплектуем металл, трубную продукцию, СДТ, запорную арматуру и сопутствующие материалы для подрядных организаций и промышленных предприятий.</p>
+          <p>Более 20 лет комплектуем металл, трубную продукцию, СДТ, запорную арматуру и сопутствующие материалы для крупных промышленных проектов.</p>
         </div>
         <div className="company-metrics" aria-label="Опыт компании">
           <article><strong>20+ лет</strong><span>опыт специалистов на рынке металлопроката</span></article>
@@ -186,15 +186,15 @@ export default function MagicMetalHome() {
           <ul className="company-client-list" aria-label="Отраслевой опыт компании">
             <li>
               <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Gazprom_logo.svg" alt="Газпром" loading="lazy" />
-              <span>Поставки для подрядных организаций нефтегазовой отрасли</span>
+              <span>Нефтегазовая промышленность</span>
             </li>
             <li>
               <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Rosneft_Logo_2016.svg" alt="Роснефть" loading="lazy" />
-              <span>Комплектация металла и сопутствующих материалов для промышленных объектов</span>
+              <span>Нефтегазовая промышленность</span>
             </li>
             <li>
               <img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/ab/Rosatom_logo.png/250px-Rosatom_logo.png" alt="Госкорпорация «Росатом»" loading="lazy" />
-              <span>Опыт работы с подрядчиками на объектах атомной промышленности</span>
+              <span>Атомная промышленность</span>
             </li>
           </ul>
           <p className="company-sector-note">Также комплектуем поставки для нефтегазовой, автомобильной, горнодобывающей и химической промышленности.</p>
