@@ -241,7 +241,10 @@ section[id] {
   padding: clamp(62px, 8vh, 82px) 0 190px 5.5vw;
 }
 .hero-label {
-  display: inline-block;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
   max-width: 100%;
   margin: 0 0 22px;
   padding: 9px 13px;
@@ -254,6 +257,18 @@ section[id] {
   line-height: 1.35;
   letter-spacing: 0.11em;
   text-transform: uppercase;
+}
+.hero-label span,
+.hero-label strong {
+  display: block;
+}
+.hero-label span {
+  color: #aecaFF;
+  font-size: 10px;
+}
+.hero-label strong {
+  color: #fff;
+  font-weight: 700;
 }
 .eyebrow {
   display: flex;
@@ -430,7 +445,7 @@ h2 {
   border-top: 4px solid var(--navy);
   border-bottom: 1px solid #b9c5db;
 }
-.priority-grid article {
+.priority-grid .priority-card {
   position: relative;
   isolation: isolate;
   overflow: hidden;
@@ -445,7 +460,7 @@ h2 {
     transform 0.24s ease,
     box-shadow 0.24s ease;
 }
-.priority-grid article:after {
+.priority-grid .priority-card:after {
   content: '';
   position: absolute;
   z-index: -1;
@@ -456,19 +471,19 @@ h2 {
   opacity: 0;
   transition: opacity 0.28s ease;
 }
-.priority-grid article:first-child {
+.priority-grid .priority-card:first-child {
   border-left: 0;
 }
-.priority-grid article:hover {
+.priority-grid .priority-card:hover {
   z-index: 2;
   background: #fff;
   transform: translateY(-5px);
   box-shadow: 0 22px 55px rgba(6, 42, 119, 0.12);
 }
-.priority-grid article:hover:after {
+.priority-grid .priority-card:hover:after {
   opacity: 1;
 }
-.priority-grid article > span {
+.priority-grid .priority-card > span:first-child {
   color: var(--blue);
   font: 600 13px var(--font-display);
 }
@@ -490,7 +505,7 @@ h2 {
   font-size: 13px;
   line-height: 1.6;
 }
-.priority-grid a {
+.priority-card-action {
   margin-top: auto;
   padding-top: 20px;
   display: flex;
@@ -501,7 +516,7 @@ h2 {
   font-weight: 600;
   letter-spacing: 0;
 }
-.priority-grid a b {
+.priority-card-action b {
   font-size: 16px;
 }
 .catalog-section {
@@ -629,7 +644,7 @@ h2 {
 .other-list {
   border-top: 3px solid var(--navy);
 }
-.other-list article {
+.other-list > a {
   min-height: 86px;
   display: grid;
   grid-template-columns: 50px 1fr 1.2fr 30px;
@@ -640,7 +655,7 @@ h2 {
     background 0.2s,
     padding 0.2s;
 }
-.other-list article:hover {
+.other-list > a:hover {
   padding: 0 14px;
   background: #fff;
 }
@@ -660,7 +675,7 @@ h2 {
   font-size: 14px;
   line-height: 1.55;
 }
-.other-list a {
+.other-list > a > b {
   color: var(--blue);
   font-size: 19px;
 }
@@ -954,15 +969,15 @@ h2 {
   .top-cta,
   .primary-button,
   .request-form button,
-  .priority-grid article,
+  .priority-grid .priority-card,
   .catalog-row,
-  .other-list article {
+  .other-list > a {
     transition: none;
   }
   .top-cta:before,
   .primary-button:before,
   .request-form button:before,
-  .priority-grid article:after {
+  .priority-grid .priority-card:after {
     display: none;
   }
 }
@@ -982,11 +997,11 @@ h2 {
   .priority-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  .priority-grid article:nth-child(3) {
+  .priority-grid .priority-card:nth-child(3) {
     border-left: 0;
     border-top: 1px solid #c4cee0;
   }
-  .priority-grid article:nth-child(4) {
+  .priority-grid .priority-card:nth-child(4) {
     border-top: 1px solid #c4cee0;
   }
 }
@@ -1117,12 +1132,12 @@ h2 {
   .priority-grid {
     grid-template-columns: 1fr;
   }
-  .priority-grid article {
+  .priority-grid .priority-card {
     min-height: 245px;
     border-left: 0;
     border-top: 1px solid #c4cee0;
   }
-  .priority-grid article:first-child {
+  .priority-grid .priority-card:first-child {
     border-top: 0;
   }
   .priority-grid h3 {
@@ -1152,7 +1167,7 @@ h2 {
   .about-panel {
     padding: 26px 22px;
   }
-  .other-list article {
+  .other-list > a {
     grid-template-columns: 34px 1fr 24px;
     padding: 14px 0;
   }
@@ -1989,8 +2004,14 @@ main select {
   object-fit: contain;
   object-position: left center;
 }
-.company-client-list li:last-child img {
+.company-client-list li:nth-child(3) img {
   height: 58px;
+}
+.company-client-list li:nth-child(4) img {
+  height: 60px;
+}
+.company-client-list li:nth-child(5) img {
+  height: 64px;
 }
 .company-client-list span {
   color: #4f5c72;

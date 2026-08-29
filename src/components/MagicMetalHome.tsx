@@ -162,7 +162,10 @@ export default function MagicMetalHome() {
       <section className="hero" id="top" aria-labelledby="hero-title">
         <Image className="hero-visual" src="/images/hero-mercedes-v5.webp" alt="Брендированный грузовой автомобиль Mercedes-Benz Мэджик Металл, промышленное производство, металлопрокат, трубы и детали трубопроводов" fill priority sizes="100vw" />
         <div className="hero-copy" id="content">
-          <motion.p initial="hidden" animate="visible" variants={animation} transition={{ duration: .24 }} className="hero-label">СРОЧНЫЕ ПОСТАВКИ: РОССИЯ · УЗБЕКИСТАН · КАЗАХСТАН · КЫРГЫЗСТАН · БЕЛАРУСЬ · ТУРЦИЯ</motion.p>
+          <motion.p initial="hidden" animate="visible" variants={animation} transition={{ duration: .24 }} className="hero-label">
+            <span>СРОЧНЫЕ ПОСТАВКИ:</span>
+            <strong>РОССИЯ · УЗБЕКИСТАН · КАЗАХСТАН · КЫРГЫЗСТАН · БЕЛАРУСЬ · ТУРЦИЯ</strong>
+          </motion.p>
           <motion.h1 initial="hidden" animate="visible" variants={animation} transition={{ duration: .28, delay: .04 }} id="hero-title">КОМПЛЕКТУЕМ <em>СЛОЖНЫЕ ПРОМЫШЛЕННЫЕ</em> ЗАЯВКИ</motion.h1>
           <motion.p initial="hidden" animate="visible" variants={animation} transition={{ duration: .28, delay: .08 }} className="hero-lead">Проверяем требования и актуальность ГОСТов, находим редкие позиции и технически обоснованные аналоги. Комплектуем металл и сопутствующие материалы с полным пакетом документов — для поставок по России и на экспорт.</motion.p>
           <motion.div initial="hidden" animate="visible" variants={animation} transition={{ duration: .28, delay: .12 }} className="hero-actions"><a className="primary-button" href="#request">Отправить заявку <span>↗</span></a><span className="file-types">Excel · PDF · Word · фото · голосовое сообщение</span></motion.div>
@@ -196,6 +199,14 @@ export default function MagicMetalHome() {
               <img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/ab/Rosatom_logo.png/250px-Rosatom_logo.png" alt="Госкорпорация «Росатом»" loading="lazy" />
               <span>Атомная промышленность</span>
             </li>
+            <li>
+              <img src="/images/clients/uztransgaz.svg" alt="АО «Узтрансгаз»" loading="lazy" />
+              <span>Газотранспортная инфраструктура Узбекистана</span>
+            </li>
+            <li>
+              <img src="/images/clients/uzbekneftegaz.png" alt="АО «Узбекнефтегаз»" loading="lazy" />
+              <span>Нефтегазовая промышленность Узбекистана</span>
+            </li>
           </ul>
           <p className="company-sector-note">Также комплектуем поставки для нефтегазовой, автомобильной, горнодобывающей и химической промышленности.</p>
         </div>
@@ -209,7 +220,7 @@ export default function MagicMetalHome() {
       <section className="section priority-section" id="products">
         <motion.div className="section-heading" initial="hidden" whileInView="visible" viewport={{ once: true, amount: .3 }} variants={animation} transition={{ duration: .55 }}><p className="section-kicker">02 — Главные направления</p><h2>Трубы, СДТ<br />и <em>изоляция</em></h2><p>Подбираем продукцию по ГОСТ, ТУ, марке стали, геометрии и условиям эксплуатации. Проверяем совместимость требований до расчёта.</p></motion.div>
         <div className="priority-grid">
-          {priorityProducts.map((product, index) => <motion.article key={product.slug} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .2 }} variants={animation} transition={{ duration: .48, delay: index * .06 }}><span>{product.index}</span><h3>{product.title}</h3><p>{product.note}</p><small className="standard-list">{product.standards.replace(/(ГОСТ|ТУ|ОСТ|СТО) /g, '$1\u00A0')}</small><a href={`/produkciya/${product.slug}`} aria-label={`Подробнее: ${product.title}`}>Открыть товар <b>↗</b></a></motion.article>)}
+          {priorityProducts.map((product, index) => <motion.a className="priority-card" href={`/produkciya/${product.slug}`} aria-label={`Подробнее: ${product.title}`} key={product.slug} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .2 }} variants={animation} transition={{ duration: .48, delay: index * .06 }}><span>{product.index}</span><h3>{product.title}</h3><p>{product.note}</p><small className="standard-list">{product.standards.replace(/(ГОСТ|ТУ|ОСТ|СТО) /g, '$1\u00A0')}</small><span className="priority-card-action">Открыть товар <b>↗</b></span></motion.a>)}
         </div>
       </section>
 
@@ -223,7 +234,7 @@ export default function MagicMetalHome() {
 
       <section className="section other-section">
         <div className="section-heading compact"><p className="section-kicker">04 — Остальная номенклатура</p><h2>Металл для<br /><em>всего проекта</em></h2></div>
-        <div className="other-list">{otherProducts.map(([title, text], index) => <motion.article key={title} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .4 }} variants={animation} transition={{ duration: .38, delay: Math.min(index * .02, .14) }}><span>{String(index + 1).padStart(2, '0')}</span><h3>{title}</h3><p>{text}</p><Link href={otherSeoLinks[title]} aria-label={`Подробнее: ${title}`}>↗</Link></motion.article>)}</div>
+        <div className="other-list">{otherProducts.map(([title, text], index) => <motion.a href={otherSeoLinks[title]} aria-label={`Подробнее: ${title}`} key={title} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .4 }} variants={animation} transition={{ duration: .38, delay: Math.min(index * .02, .14) }}><span>{String(index + 1).padStart(2, '0')}</span><h3>{title}</h3><p>{text}</p><b aria-hidden="true">↗</b></motion.a>)}</div>
       </section>
 
       <section className="request-section" id="request">
