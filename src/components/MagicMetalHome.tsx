@@ -162,7 +162,7 @@ export default function MagicMetalHome() {
       <section className="hero" id="top" aria-labelledby="hero-title">
         <Image className="hero-visual" src="/images/hero-mercedes-v5.webp" alt="Брендированный грузовой автомобиль Mercedes-Benz Мэджик Металл, промышленное производство, металлопрокат, трубы и детали трубопроводов" fill priority sizes="100vw" />
         <div className="hero-copy" id="content">
-          <motion.p initial="hidden" animate="visible" variants={animation} transition={{ duration: .24 }} className="hero-label">СРОЧНЫЕ ПОСТАВКИ РОССИЯ — СНГ</motion.p>
+          <motion.p initial="hidden" animate="visible" variants={animation} transition={{ duration: .24 }} className="hero-label">СРОЧНЫЕ ПОСТАВКИ: РОССИЯ · УЗБЕКИСТАН · КАЗАХСТАН · КЫРГЫЗСТАН · БЕЛАРУСЬ · ТУРЦИЯ</motion.p>
           <motion.h1 initial="hidden" animate="visible" variants={animation} transition={{ duration: .28, delay: .04 }} id="hero-title">КОМПЛЕКТУЕМ <em>СЛОЖНЫЕ ПРОМЫШЛЕННЫЕ</em> ЗАЯВКИ</motion.h1>
           <motion.p initial="hidden" animate="visible" variants={animation} transition={{ duration: .28, delay: .08 }} className="hero-lead">Проверяем требования и актуальность ГОСТов, находим редкие позиции и технически обоснованные аналоги. Комплектуем металл и сопутствующие материалы с полным пакетом документов — для поставок по России и на экспорт.</motion.p>
           <motion.div initial="hidden" animate="visible" variants={animation} transition={{ duration: .28, delay: .12 }} className="hero-actions"><a className="primary-button" href="#request">Отправить заявку <span>↗</span></a><span className="file-types">Excel · PDF · Word · фото · голосовое сообщение</span></motion.div>
