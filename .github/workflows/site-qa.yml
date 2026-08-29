@@ -1,21 +1,66 @@
-node:fs:484
-    return binding.readFileUtf8(path, stringToFlags(options.flag));
-                   ^
+name: Site QA
 
-Error: ENOENT: no such file or directory, open '.github/workflows/site-qa.yml'
-    at Object.readFileSync (node:fs:484:20)
-    at [eval]:1:36
-    at runScriptInThisContext (node:internal/vm:219:10)
-    at node:internal/process/execution:451:12
-    at [eval]-wrapper:6:24
-    at runScriptInContext (node:internal/process/execution:449:60)
-    at evalFunction (node:internal/process/execution:283:30)
-    at evalTypeScript (node:internal/process/execution:295:3)
-    at node:internal/main/eval_string:71:3 {
-  errno: -2,
-  code: 'ENOENT',
-  syscall: 'open',
-  path: '.github/workflows/site-qa.yml'
-}
+on:
+  workflow_dispatch:
+  deployment_status:
+  push:
+    branches:
+      - main
 
-Node.js v24.19.0
+concurrency:
+  group: site-qa-production
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    if: github.event_name != 'deployment_status' || github.event.deployment_status.state == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Wait for production
+        if: github.event_name == 'push'
+        run: |
+          for attempt in {1..12}; do
+            if curl --fail --silent --show-error https://magic-metal-next.vercel.app/ > /dev/null; then
+              sleep 20
+              exit 0
+            fi
+            sleep 10
+          done
+          exit 1
+
+      - name: Run production QA agents
+        id: qa
+        continue-on-error: true
+        run: npm run qa:production
+
+      - name: Upload QA report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: magic-metal-qa-${{ github.run_number }}
+          path: qa-results/
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Fail on blocking findings
+        if: steps.qa.outcome == 'failure'
+        run: exit 1
