@@ -189,26 +189,20 @@ export default function MagicMetalHome() {
           <ul className="company-client-list" aria-label="Отраслевой опыт компании">
             <li>
               <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Gazprom_logo.svg" alt="Газпром" loading="lazy" />
-              <span>Нефтегазовая промышленность</span>
             </li>
             <li>
               <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Rosneft_Logo_2016.svg" alt="Роснефть" loading="lazy" />
-              <span>Нефтегазовая промышленность</span>
             </li>
             <li>
               <img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/ab/Rosatom_logo.png/250px-Rosatom_logo.png" alt="Госкорпорация «Росатом»" loading="lazy" />
-              <span>Атомная промышленность</span>
             </li>
             <li>
               <img src="/images/clients/uztransgaz.svg" alt="АО «Узтрансгаз»" loading="lazy" />
-              <span>Газотранспортная инфраструктура Узбекистана</span>
             </li>
             <li>
               <img src="/images/clients/uzbekneftegaz.png" alt="АО «Узбекнефтегаз»" loading="lazy" />
-              <span>Нефтегазовая промышленность Узбекистана</span>
             </li>
           </ul>
-          <p className="company-sector-note">Также комплектуем поставки для нефтегазовой, автомобильной, горнодобывающей и химической промышленности.</p>
         </div>
       </section>
 
