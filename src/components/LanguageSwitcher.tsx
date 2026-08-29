@@ -1,10 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const languages = [
-  ['ru', 'RU · Русский'], ['uz', 'UZ · O‘zbek'], ['kk', 'KZ · Қазақша'],
-  ['ky', 'KG · Кыргызча'], ['be', 'BY · Беларуская'], ['tr', 'TR · Türkçe'], ['en', 'EN · English'],
+  ['ru', 'RU', 'Русский'], ['uz', 'UZ', 'O‘zbek'], ['kk', 'KZ', 'Қазақша'],
+  ['ky', 'KG', 'Кыргызча'], ['be', 'BY', 'Беларуская'], ['tr', 'TR', 'Türkçe'], ['en', 'EN', 'English'],
 ] as const
 
 type LanguageCode = typeof languages[number][0]
@@ -23,6 +23,7 @@ function setTranslationCookie(language: LanguageCode) {
 
 export default function LanguageSwitcher() {
   const [language, setLanguage] = useState<LanguageCode>('ru')
+  const detailsRef = useRef<HTMLDetailsElement>(null)
 
   useEffect(() => {
     const saved = window.localStorage.getItem('magicmet-language') as LanguageCode | null
@@ -60,10 +61,13 @@ export default function LanguageSwitcher() {
     window.location.reload()
   }
 
-  return <div className="language-switcher">
-    <label><span className="visually-hidden">Язык сайта</span><select aria-label="Язык сайта" value={language} onChange={(event) => changeLanguage(event.target.value as LanguageCode)}>
-      {languages.map(([code, label]) => <option value={code} key={code}>{label}</option>)}
-    </select></label>
+  const current = languages.find(([code]) => code === language) || languages[0]
+
+  return <details className="language-switcher" ref={detailsRef}>
+    <summary aria-label={`Язык сайта: ${current[2]}`}><span>{current[1]}</span><b aria-hidden="true" /></summary>
+    <div className="language-menu" role="menu" aria-label="Выбор языка">
+      {languages.map(([code, short, name]) => <button type="button" role="menuitem" aria-current={language === code ? 'true' : undefined} onClick={() => { if (detailsRef.current) detailsRef.current.open = false; changeLanguage(code) }} key={code}><span>{short}</span><small>{name}</small></button>)}
+    </div>
     <div id="google_translate_element" aria-hidden="true" />
-  </div>
+  </details>
 }

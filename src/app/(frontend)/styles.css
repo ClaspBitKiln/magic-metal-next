@@ -82,7 +82,7 @@ select:focus-visible {
   left: 0;
   width: 100%;
   height: 88px;
-  padding: 8px 4.2vw;
+  padding: 8px 12px 8px 4.2vw;
   display: grid;
   grid-template-columns: 160px minmax(450px, 1fr) auto;
   gap: 24px;
@@ -125,27 +125,73 @@ section[id] {
   justify-self: end;
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 14px;
 }
 .language-switcher {
   position: relative;
+  z-index: 25;
+  order: 10;
   flex: 0 0 auto;
 }
-.language-switcher select {
-  width: 64px;
-  height: 38px;
-  padding: 0 22px 0 9px;
+.language-switcher > summary {
+  width: 48px;
+  height: 34px;
+  padding: 0 9px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   border: 1px solid rgba(7, 28, 98, 0.18);
-  border-radius: 3px;
+  border-radius: 4px;
   color: #071c62;
   background: #fff;
-  font: 700 11px var(--font-display);
+  font: 700 11px/1 var(--font-body);
+  letter-spacing: 0.02em;
   cursor: pointer;
+  list-style: none;
 }
-.language-switcher select:focus-visible {
+.language-switcher > summary::-webkit-details-marker { display: none; }
+.language-switcher > summary b {
+  width: 6px;
+  height: 6px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+}
+.language-switcher[open] > summary b { transform: translateY(2px) rotate(225deg); }
+.language-switcher > summary:focus-visible {
   outline: 2px solid #0757e8;
   outline-offset: 2px;
 }
+.language-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 174px;
+  padding: 6px;
+  display: grid;
+  border: 1px solid #ccd6e8;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 16px 42px rgba(7, 28, 98, 0.2);
+}
+.language-menu button {
+  min-height: 38px;
+  padding: 7px 9px;
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  gap: 8px;
+  align-items: center;
+  border: 0;
+  border-radius: 3px;
+  color: #152344;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+.language-menu button:hover,
+.language-menu button[aria-current='true'] { color: #0757e8; background: #eef4ff; }
+.language-menu button span { font: 700 11px/1 var(--font-body); }
+.language-menu button small { font: 500 12px/1.2 var(--font-body); }
 .language-switcher #google_translate_element {
   position: absolute;
   width: 1px;
@@ -613,12 +659,12 @@ h2 {
 .catalog-group > summary small { color: #aebfde; line-height: 1.45; }
 .catalog-group[open] > summary .catalog-toggle::after { display: none; }
 .catalog-group .catalog-table { border-top-color: rgba(255, 255, 255, 0.2); }
-.catalog-group-light { border-color: rgba(8, 38, 102, 0.24); }
-.catalog-group-light > summary { color: var(--navy); }
-.catalog-group-light > summary small { color: #53627f; }
-.catalog-group-light .catalog-toggle { border-color: var(--blue); }
+.catalog-group-light { border-color: rgba(255, 255, 255, 0.4); }
+.catalog-group-light > summary { color: #fff; }
+.catalog-group-light > summary small { color: #c4d1e9; }
+.catalog-group-light .catalog-toggle { border-color: #82adff; }
 .catalog-group-light .catalog-toggle::before,
-.catalog-group-light .catalog-toggle::after { background: var(--blue); }
+.catalog-group-light .catalog-toggle::after { background: #fff; }
 .catalog-item {
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
@@ -760,7 +806,7 @@ h2 {
   font-weight: 600;
 }
 .catalog-row span {
-  color: #c6d2eb;
+  color: #dce5f5;
 }
 .catalog-labels {
   min-height: 44px;
@@ -1508,6 +1554,8 @@ h2 {
 .sdt-nav,
 .calculator-header,
 .search-header {
+  position: relative;
+  padding-right: 12px !important;
   font-size: 13px;
   line-height: 1.3;
   font-weight: 600;
