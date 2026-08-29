@@ -175,7 +175,7 @@ export default function MagicMetalHome() {
 
       <section className="section company-trust-section" id="about" aria-labelledby="company-trust-title">
         <div className="company-trust-head">
-          <div><p className="section-kicker">01 — О компании</p><h2 id="company-trust-title">Опыт <em>промышленных поставок</em></h2></div>
+          <div><h2 id="company-trust-title">Опыт <em>промышленных поставок</em></h2></div>
           <p>Более 20 лет комплектуем металл, трубную продукцию, СДТ, запорную арматуру и сопутствующие материалы для крупных промышленных проектов.</p>
         </div>
         <div className="company-metrics" aria-label="Опыт компании">
@@ -212,14 +212,14 @@ export default function MagicMetalHome() {
       </section>
 
       <section className="section priority-section" id="products">
-        <motion.div className="section-heading" initial="hidden" whileInView="visible" viewport={{ once: true, amount: .3 }} variants={animation} transition={{ duration: .55 }}><p className="section-kicker">02 — Главные направления</p><h2>Трубы, СДТ<br />и <em>изоляция</em></h2><p>Подбираем продукцию по ГОСТ, ТУ, марке стали, геометрии и условиям эксплуатации. Проверяем совместимость требований до расчёта.</p></motion.div>
+        <motion.div className="section-heading" initial="hidden" whileInView="visible" viewport={{ once: true, amount: .3 }} variants={animation} transition={{ duration: .55 }}><h2>Трубы, СДТ<br />и <em>изоляция</em></h2><p>Подбираем продукцию по ГОСТ, ТУ, марке стали, геометрии и условиям эксплуатации. Проверяем совместимость требований до расчёта.</p></motion.div>
         <div className="priority-grid">
           {priorityProducts.map((product, index) => <motion.a className="priority-card" href={`/produkciya/${product.slug}`} aria-label={`Подробнее: ${product.title}`} key={product.slug} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .2 }} variants={animation} transition={{ duration: .48, delay: index * .06 }}><span>{product.index}</span><h3>{product.title}</h3><p>{product.note}</p><small className="standard-list">{product.standards.replace(/(ГОСТ|ТУ|ОСТ|СТО) /g, '$1\u00A0')}</small><span className="priority-card-action">Открыть товар <b>↗</b></span></motion.a>)}
         </div>
       </section>
 
       <section className="section catalog-section" id="gost">
-        <div className="catalog-head"><div><p className="section-kicker light">03 — Трубный каталог</p><h2>Сортамент<br /><em>и стандарты</em></h2></div><p>Сверяем сортамент, технические условия, марку стали и требования к контролю. Если стандартной позиции нет — подбираем производство или технически корректную замену. <Link href="/spravochnik-materialov">Открыть справочник материалов →</Link></p></div>
+        <div className="catalog-head"><div><h2>Сортамент<br /><em>и стандарты</em></h2></div><p>Сверяем сортамент, технические условия, марку стали и требования к контролю. Если стандартной позиции нет — подбираем производство или технически корректную замену. <Link href="/spravochnik-materialov">Открыть справочник материалов →</Link></p></div>
         <div className="catalog-table" role="table" aria-label="Трубная продукция">
           <div className="catalog-row catalog-labels" role="row"><span>Тип продукции</span><span>Размеры</span><span>Стандарты</span><span>Марки / исполнение</span></div>
           {pipeCatalog.map(([title, size, standards, grades, href], index) => <motion.a className="catalog-row" role="row" href={href} aria-label={`Подробнее: ${title}`} key={title} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .35 }} variants={animation} transition={{ duration: .42, delay: Math.min(index * .035, .2) }}><strong><i>{String(index + 1).padStart(2, '0')}</i>{title}</strong><span>{size}</span><span className="standard-list">{standards.replace(/(ГОСТ|ТУ|ОСТ|СТО) /g, '$1\u00A0')}</span><span>{grades}</span></motion.a>)}
@@ -227,12 +227,12 @@ export default function MagicMetalHome() {
       </section>
 
       <section className="section other-section">
-        <div className="section-heading compact"><p className="section-kicker">04 — Остальная номенклатура</p><h2>Металл для<br /><em>всего проекта</em></h2></div>
+        <div className="section-heading compact"><h2>Металл для<br /><em>всего проекта</em></h2></div>
         <div className="other-list">{otherProducts.map(([title, text], index) => <motion.a href={otherSeoLinks[title]} aria-label={`Подробнее: ${title}`} key={title} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .4 }} variants={animation} transition={{ duration: .38, delay: Math.min(index * .02, .14) }}><span>{String(index + 1).padStart(2, '0')}</span><h3>{title}</h3><p>{text}</p><b aria-hidden="true">↗</b></motion.a>)}</div>
       </section>
 
       <section className="request-section" id="request">
-        <div className="request-copy" id="contacts"><p className="section-kicker light">05 — Расчёт поставки</p><h2>Отправьте<br /><em>заявку</em></h2><p>Укажите требования и город доставки. Проверим спецификацию, предложим исполнение и подготовим коммерческое предложение.</p><a href="mailto:m1@magicmet.ru">m1@magicmet.ru</a><a href="tel:+79227117363">+7 922 711-73-63</a></div>
+        <div className="request-copy" id="contacts"><h2>Отправьте<br /><em>заявку</em></h2><p>Укажите требования и город доставки. Проверим спецификацию, предложим исполнение и подготовим коммерческое предложение.</p><a href="mailto:m1@magicmet.ru">m1@magicmet.ru</a><a href="tel:+79227117363">+7 922 711-73-63</a></div>
         <form className="request-form" onSubmit={submitRequest} encType="multipart/form-data" noValidate>
           <div className="form-stage" hidden={formStep !== 1}>
             <div className="form-step"><strong>1. Прикрепите заявку или опишите задачу</strong><span>Подойдёт готовый файл, фотография, текст или голосовое сообщение.</span></div>
