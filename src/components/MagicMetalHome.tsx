@@ -172,35 +172,32 @@ export default function MagicMetalHome() {
 
       <section className="section company-trust-section" id="about" aria-labelledby="company-trust-title">
         <div className="company-trust-head">
-          <div><p className="section-kicker">01 — О компании</p><h2 id="company-trust-title">Опыт, подтверждённый<br /><em>реальными поставками</em></h2></div>
-          <p>«Мэджик Металл» комплектует промышленный металлопрокат, трубную продукцию, СДТ, запорную арматуру и материалы для сложных проектов в России и СНГ.</p>
+          <div><p className="section-kicker">01 — О компании</p><h2 id="company-trust-title">Опыт <em>промышленных поставок</em></h2></div>
+          <p>Более 20 лет комплектуем металл, трубную продукцию, СДТ, запорную арматуру и сопутствующие материалы для подрядных организаций и промышленных предприятий.</p>
         </div>
         <div className="company-metrics" aria-label="Опыт компании">
           <article><strong>20+ лет</strong><span>опыт специалистов на рынке металлопроката</span></article>
           <article><strong>100 000+ т</strong><span>совокупный объём реализованных поставок</span></article>
           <article><strong>500+</strong><span>позиций в доступном сортаменте</span></article>
-          <article><strong>Россия и СНГ</strong><span>география промышленных проектов и поставок</span></article>
+          <article><strong>Россия и СНГ</strong><span>география промышленных поставок</span></article>
         </div>
         <div className="company-proof">
-          <p className="company-proof-label">Опыт в проектах ключевых отраслей</p>
-          <div className="company-logo-row" aria-label="Опыт поставок для подрядных организаций">
-            <article className="company-proof-card company-proof-card--gazprom">
+          <p className="company-proof-label">Опыт работы с подрядными организациями</p>
+          <ul className="company-client-list" aria-label="Отраслевой опыт компании">
+            <li>
               <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Gazprom_logo.svg" alt="Газпром" loading="lazy" />
-              <small>опыт поставок для подрядных организаций</small>
-            </article>
-            <article className="company-proof-card company-proof-card--rosneft">
+              <span>Поставки для подрядных организаций нефтегазовой отрасли</span>
+            </li>
+            <li>
               <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Rosneft_Logo_2016.svg" alt="Роснефть" loading="lazy" />
-              <small>опыт поставок для подрядных организаций</small>
-            </article>
-            <article className="company-proof-card company-proof-card--atomic">
+              <span>Комплектация металла и сопутствующих материалов для промышленных объектов</span>
+            </li>
+            <li>
               <img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/ab/Rosatom_logo.png/250px-Rosatom_logo.png" alt="Госкорпорация «Росатом»" loading="lazy" />
-              <small>опыт работы с подрядными организациями атомной отрасли</small>
-            </article>
-          </div>
-          <div className="company-experience-list" aria-label="Проекты и отрасли">
-            <article><span>01</span><strong>Нефтегазовые проекты СНГ</strong><small>опыт комплектации сложных промышленных поставок</small></article>
-            <article><span>02</span><strong>Промышленные предприятия</strong><small>автомобильная · горнодобывающая · химическая отрасли</small></article>
-          </div>
+              <span>Опыт работы с подрядчиками на объектах атомной промышленности</span>
+            </li>
+          </ul>
+          <p className="company-sector-note">Также комплектуем поставки для нефтегазовой, автомобильной, горнодобывающей и химической промышленности.</p>
         </div>
       </section>
 
