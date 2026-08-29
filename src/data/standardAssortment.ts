@@ -13,11 +13,21 @@ export type StandardAssortment = {
 
 export const marketSources = [
   { label: 'МЕТАЛЛСЕРВИС', href: 'https://mc.ru/' },
-  { label: 'ЕВРАЗ Маркет', href: 'https://evraz.market/' },
+  { label: 'ЕВРАЗ Маркет', href: 'https://evraz.market/metalloprokat/' },
   { label: 'Металлоторг', href: 'https://www.metallotorg.ru/' },
-  { label: 'СПК', href: 'https://spk.ru/' },
-  { label: 'Северсталь', href: 'https://baza.severstal.com/product/' },
-  { label: 'ММК', href: 'https://market.mmk.ru/' },
+  { label: 'СПК', href: 'https://www.spk.ru/catalog/catalog/' },
+  { label: 'Северсталь Маркет', href: 'https://market.severstal.com/ru/ru' },
+  { label: 'ММК Маркет', href: 'https://market.mmk.ru/catalog/' },
+  { label: '23met', href: 'https://www.23met.ru/' },
+  { label: 'e-metall', href: 'https://e-metall.ru/' },
+  { label: 'УМПЦ', href: 'https://uralmpc.ru/' },
+] as const
+
+export const referenceSources = [
+  { label: 'ФГИС Росстандарта', href: 'https://protect.gost.ru/' },
+  { label: 'MetalLine', href: 'https://metalline.ru/catalog/' },
+  { label: 'ПМ СМК', href: 'https://www.pmsmk.ru/' },
+  { label: 'УАЗ-74', href: 'https://uaz74.ru/' },
 ] as const
 
 export const standardAssortments: Record<string, StandardAssortment> = {
@@ -102,4 +112,4 @@ export const standardAssortments: Record<string, StandardAssortment> = {
   },
 }
 
-export const assortmentCheckedAt = '29 августа 2026'
+export const assortmentCheckedAt = 'пилотная проверка · 29 августа 2026'

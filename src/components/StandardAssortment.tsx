@@ -1,4 +1,4 @@
-import { assortmentCheckedAt, marketSources, standardAssortments, type MarketSignal } from '@/data/standardAssortment'
+import { assortmentCheckedAt, marketSources, referenceSources, standardAssortments, type MarketSignal } from '@/data/standardAssortment'
 import type { Standard } from '@/data/standards'
 
 const signalCopy: Record<MarketSignal, string> = {
@@ -31,8 +31,8 @@ export default function StandardAssortment({ standard }: { standard: Standard })
       <span>{isDimensionalStandard ? 'Полный ряд будет показан после сверки таблиц стандарта и открытого предложения поставщиков.' : 'Размеры определяются связанным стандартом на сортамент, конструкцию изделия или спецификацией проекта.'}</span>
     </div>}
       <div className="assortment-method">
-      <p>Сигнал показывает встречаемость позиции в открытых каталогах и прайс-листах, а не гарантированный остаток. Красный статус означает только, что позиция не найдена в открытом наличии на дату проверки.</p>
-      <nav aria-label="Источники оценки">{marketSources.map((source) => <a href={source.href} target="_blank" rel="noreferrer" key={source.label}>{source.label}</a>)}</nav>
+      <p>Зелёный — позиция найдена минимум у трёх независимых продавцов; жёлтый — у одного–двух; красный — не найдена. Сигнал не гарантирует текущий остаток и требует подтверждения перед расчётом.</p>
+      <div className="assortment-sources"><nav aria-label="Источники проверки наличия"><b>Наличие:</b>{marketSources.map((source) => <a href={source.href} target="_blank" rel="noreferrer" key={source.label}>{source.label}</a>)}</nav><nav aria-label="Источники сортамента и технических данных"><b>Сортамент:</b>{referenceSources.map((source) => <a href={source.href} target="_blank" rel="noreferrer" key={source.label}>{source.label}</a>)}</nav></div>
       </div>
       </div>
     </details>

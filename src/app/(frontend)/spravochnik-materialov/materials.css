@@ -177,12 +177,18 @@
   font-size: 12px;
   line-height: 1.55;
 }
+.assortment-sources {
+  display: grid;
+  gap: 8px;
+}
 .assortment-method nav {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
+  align-items: center;
   gap: 8px;
 }
+.assortment-method nav > b { color: #34415c; font-size: 11px; }
 .assortment-method a {
   padding: 7px 9px;
   color: #0757e8;
