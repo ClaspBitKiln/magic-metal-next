@@ -30,9 +30,14 @@ export default function MaterialsDirectoryPage() {
           if (!groupMaterials.length) return null
           return <section className="materials-group" id={group.key} key={group.key}>
             <div className="materials-group-title"><span>{String(groupIndex + 1).padStart(2, '0')}</span><h2>{group.label}</h2><p>{groupMaterials.length} {groupMaterials.length === 1 ? 'материал' : 'материалов'}</p></div>
-            <div className="materials-grid">{groupMaterials.map((material) => <Link href={`/spravochnik-materialov/${material.slug}`} key={material.slug}>
-              <span>{material.designation}</span><h3>{material.name}</h3><p>{material.summary}</p><b>Характеристики и применение →</b>
-            </Link>)}</div>
+            <div className="standards-table materials-data-table" role="table" aria-label={`Материалы: ${group.label}`}>
+              <div className="standards-table-head" role="row"><span role="columnheader">Марка</span><span role="columnheader">Наименование и применение</span><span role="columnheader">Группа</span><span aria-hidden="true" /></div>
+              {groupMaterials.map((material) => <Link href={`/spravochnik-materialov/${material.slug}`} role="row" aria-label={`${material.designation}: ${material.name}`} key={material.slug}>
+                <span className="standard-code" role="cell">{material.designation}</span>
+                <span className="standards-table-description" role="cell"><h3>{material.name}</h3><p>{material.summary}</p></span>
+                <small role="cell">{material.groupLabel}</small><b aria-hidden="true">→</b>
+              </Link>)}
+            </div>
           </section>
         })}
       </section>

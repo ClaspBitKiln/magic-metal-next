@@ -21,7 +21,20 @@ export default function StandardsDirectoryPage() {
         if (!items.length) return null
         return <section className="materials-group" id={key} key={key}>
           <div className="materials-group-title"><span>{String(groupIndex + 1).padStart(2, '0')}</span><h2>{label}</h2><p>{items.length} документов</p></div>
-          <div className="materials-grid">{items.map((standard) => <Link href={`/spravochnik-gost/${standard.slug}`} key={standard.slug}><span className="standard-code">{standard.code}</span><h3>{standard.title}</h3><p>{standard.summary}</p><b>Область применения →</b></Link>)}</div>
+          <div className="standards-table" role="table" aria-label={`Стандарты: ${label}`}>
+            <div className="standards-table-head" role="row">
+              <span role="columnheader">Документ</span>
+              <span role="columnheader">Наименование и область применения</span>
+              <span role="columnheader">Статус</span>
+              <span aria-hidden="true" />
+            </div>
+            {items.map((standard) => <Link href={`/spravochnik-gost/${standard.slug}`} role="row" aria-label={`${standard.code}: ${standard.title}`} key={standard.slug}>
+              <span className="standard-code" role="cell">{standard.code}</span>
+              <span className="standards-table-description" role="cell"><h3>{standard.title}</h3><p>{standard.summary}</p></span>
+              <small role="cell">{standard.status}</small>
+              <b aria-hidden="true">→</b>
+            </Link>)}
+          </div>
         </section>
       })}
     </section>

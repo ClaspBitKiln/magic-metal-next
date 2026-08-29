@@ -56,10 +56,11 @@ export default function MaterialsSearch() {
       {normalizedQuery && <div className="materials-search-results" aria-live="polite">
         <p>{results.length ? `Найдено: ${results.length}` : 'Точного совпадения пока нет'}</p>
         {results.length > 0
-          ? <div>{results.map((material) => <Link href={`/spravochnik-materialov/${material.slug}`} key={material.slug}>
+          ? <div className="materials-search-table">{results.map((material) => <Link href={`/spravochnik-materialov/${material.slug}`} key={material.slug}>
             <b>{material.designation}</b>
             <span>{material.name}</span>
             <small>{material.groupLabel}</small>
+            <i aria-hidden="true">→</i>
           </Link>)}</div>
           : <span>Попробуйте другое обозначение или отправьте техническое задание — проверим материал вручную.</span>}
       </div>}

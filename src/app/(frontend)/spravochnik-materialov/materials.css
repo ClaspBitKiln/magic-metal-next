@@ -162,34 +162,39 @@
   text-transform: uppercase;
 }
 .materials-search-results > div {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  background: rgba(255, 255, 255, 0.16);
+  border-top: 1px solid rgba(255, 255, 255, 0.22);
 }
 .materials-search-results a {
-  min-height: 116px;
-  padding: 18px;
-  display: flex;
-  flex-direction: column;
+  min-height: 64px;
+  padding: 13px 16px;
+  display: grid;
+  grid-template-columns: minmax(130px, .55fr) minmax(220px, 1.5fr) minmax(130px, .55fr) 20px;
+  gap: 18px;
+  align-items: center;
   color: #071c62;
   background: #fff;
+  border-bottom: 1px solid #d5ddea;
 }
 .materials-search-results a b {
   color: #0757e8;
-  font-size: 21px;
+  font-size: 18px;
 }
 .materials-search-results a span {
-  margin: 8px 0 14px;
+  margin: 0;
   color: #34405a;
   font-size: 13px;
 }
 .materials-search-results a small {
-  margin-top: auto;
   color: #7b879d;
   font-size: 10px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+.materials-search-results a i {
+  color: #0757e8;
+  font-size: 18px;
+  font-style: normal;
+  text-align: right;
 }
 .materials-search-results > span {
   color: #dbe7ff;
@@ -287,6 +292,79 @@
   font-size: 11px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+}
+.standards-table {
+  border-bottom: 1px solid #cbd5e6;
+}
+.standards-table-head,
+.standards-table > a {
+  display: grid;
+  grid-template-columns: minmax(190px, 0.72fr) minmax(360px, 2fr) minmax(125px, 0.45fr) 28px;
+  gap: 24px;
+  align-items: center;
+}
+.standards-table-head {
+  min-height: 48px;
+  padding: 0 20px;
+  color: #68748b;
+  background: #eaf0f9;
+  border-right: 1px solid #cbd5e6;
+  border-left: 1px solid #cbd5e6;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.standards-table > a {
+  min-height: 132px;
+  padding: 22px 20px;
+  background: #fff;
+  border-top: 1px solid #cbd5e6;
+  border-right: 1px solid #cbd5e6;
+  border-left: 1px solid #cbd5e6;
+  transition: background-color .18s ease, border-left-color .18s ease;
+}
+.standards-table > a:hover,
+.standards-table > a:focus-visible {
+  background: #f1f6ff;
+  border-left-color: #0757e8;
+  outline: none;
+}
+.standards-table > a > .standard-code {
+  color: #0757e8;
+  font-size: clamp(20px, 1.8vw, 29px);
+  font-weight: 800;
+  line-height: 1.05;
+}
+.standards-table-description h3 {
+  margin: 0 0 7px;
+  color: #151d33;
+  font-size: 15px;
+  line-height: 1.35;
+}
+.standards-table-description p {
+  margin: 0;
+  display: -webkit-box;
+  overflow: hidden;
+  color: #647087;
+  font-size: 12px;
+  line-height: 1.5;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.standards-table > a > small {
+  color: #526079;
+  font-size: 11px;
+  line-height: 1.4;
+}
+.standards-table > a > b {
+  color: #0757e8;
+  font-size: 20px;
+  text-align: right;
+}
+.materials-data-table .standards-table-head,
+.materials-data-table > a {
+  grid-template-columns: minmax(170px, .62fr) minmax(360px, 2fr) minmax(150px, .55fr) 28px;
 }
 .materials-note {
   padding: 76px 7vw 86px;
@@ -623,16 +701,15 @@
   max-width: 900px;
 }
 .material-products > div {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
   margin-top: 38px;
   border-top: 1px solid #4a5985;
 }
 .material-products a {
-  padding: 24px 20px;
+  min-height: 62px;
+  padding: 14px 4px;
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  border-right: 1px solid #4a5985;
   border-bottom: 1px solid #4a5985;
   color: #dce6ff;
   font-size: 14px;
@@ -647,14 +724,15 @@
   color: #0757e8;
 }
 .related-materials > div {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
   border-top: 3px solid #071c62;
 }
 .related-materials a {
-  min-height: 140px;
-  padding: 25px 20px;
-  border-right: 1px solid #cbd5e6;
+  min-height: 68px;
+  padding: 14px 18px;
+  display: grid;
+  grid-template-columns: minmax(150px, .55fr) minmax(280px, 1.45fr) 22px;
+  gap: 20px;
+  align-items: center;
   border-bottom: 1px solid #cbd5e6;
 }
 .related-materials a b,
@@ -663,13 +741,19 @@
 }
 .related-materials a b {
   color: #0757e8;
-  font-size: 28px;
+  font-size: 22px;
 }
 .related-materials a span {
-  margin-top: 13px;
+  margin-top: 0;
   color: #68748b;
   font-size: 14px;
   line-height: 1.5;
+}
+.related-materials a::after {
+  color: #0757e8;
+  content: '→';
+  font-size: 18px;
+  text-align: right;
 }
 @media (max-width: 800px) {
   .materials-header {
@@ -703,8 +787,16 @@
   .materials-search-results {
     padding-top: 0;
   }
-  .materials-search-results > div {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .materials-search-results a {
+    grid-template-columns: minmax(105px, .65fr) 1.35fr 18px;
+    gap: 10px 14px;
+  }
+  .materials-search-results a small {
+    grid-column: 1 / 3;
+  }
+  .materials-search-results a i {
+    grid-column: 3;
+    grid-row: 1 / 3;
   }
   .material-hero h1 {
     font-size: clamp(48px, 15vw, 64px);
@@ -734,6 +826,28 @@
   .materials-grid > a:nth-child(3n + 1) {
     min-height: 260px;
     border-left: 1px solid #cbd5e6;
+  }
+  .standards-table-head {
+    display: none;
+  }
+  .standards-table > a {
+    min-height: 0;
+    padding: 20px 18px;
+    grid-template-columns: 1fr auto;
+    gap: 9px 18px;
+  }
+  .standards-table > a > .standard-code,
+  .standards-table-description {
+    grid-column: 1;
+  }
+  .standards-table > a > small {
+    grid-column: 1;
+    color: #68748b;
+  }
+  .standards-table > a > b {
+    grid-column: 2;
+    grid-row: 1 / 4;
+    align-self: center;
   }
   .materials-note,
   .material-analogs,
@@ -782,13 +896,9 @@
   .material-facts {
     grid-template-columns: 1fr;
   }
-  .material-products > div,
-  .related-materials > div {
-    grid-template-columns: 1fr;
-  }
-  .material-products a,
   .related-materials a {
-    border-left: 1px solid #4a5985;
+    grid-template-columns: minmax(90px, .65fr) 1.35fr 18px;
+    gap: 12px;
   }
   .related-materials a {
     min-height: auto;

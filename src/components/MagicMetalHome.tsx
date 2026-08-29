@@ -213,7 +213,8 @@ export default function MagicMetalHome() {
 
       <section className="section priority-section" id="products">
         <motion.div className="section-heading" initial="hidden" whileInView="visible" viewport={{ once: true, amount: .3 }} variants={animation} transition={{ duration: .55 }}><h2>Трубы, СДТ<br />и <em>изоляция</em></h2><p>Подбираем продукцию по ГОСТ, ТУ, марке стали, геометрии и условиям эксплуатации. Проверяем совместимость требований до расчёта.</p></motion.div>
-        <div className="priority-grid">
+        <div className="priority-grid" role="table" aria-label="Главные направления продукции">
+          <div className="priority-grid-head" role="row"><span role="columnheader">Направление</span><span role="columnheader">Что поставляем</span><span role="columnheader">Стандарты</span><span aria-hidden="true" /></div>
           {priorityProducts.map((product, index) => <motion.a className="priority-card" href={`/produkciya/${product.slug}`} aria-label={`Подробнее: ${product.title}`} key={product.slug} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .2 }} variants={animation} transition={{ duration: .48, delay: index * .06 }}><span>{product.index}</span><h3>{product.title}</h3><p>{product.note}</p><small className="standard-list">{product.standards.replace(/(ГОСТ|ТУ|ОСТ|СТО) /g, '$1\u00A0')}</small><span className="priority-card-action">Открыть товар <b>↗</b></span></motion.a>)}
         </div>
       </section>

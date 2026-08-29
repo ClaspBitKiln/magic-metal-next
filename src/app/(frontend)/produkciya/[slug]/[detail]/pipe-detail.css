@@ -222,17 +222,14 @@
   color: #0757e8;
 }
 .pipe-more > div {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
   border-top: 2px solid #071c62;
-  border-left: 1px solid #c4cedf;
 }
 .pipe-more a {
-  min-height: 110px;
-  padding: 22px;
+  min-height: 62px;
+  padding: 14px 4px;
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  border-right: 1px solid #c4cedf;
   border-bottom: 1px solid #c4cedf;
   font-size: 15px;
   font-weight: 700;
@@ -273,9 +270,6 @@
   .pipe-facts {
     grid-template-columns: 1fr;
   }
-  .pipe-more > div {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 @media (max-width: 560px) {
   .pipe-nav {
@@ -303,9 +297,6 @@
   .pipe-conversion {
     padding-left: 22px;
     padding-right: 22px;
-  }
-  .pipe-more > div {
-    grid-template-columns: 1fr;
   }
   .pipe-spec dl > div {
     grid-template-columns: 1fr;
