@@ -23,6 +23,16 @@ const pipeCatalog = [
   ['Котельные и крекинговые', 'По спецификации', 'ТУ 14-3Р-55; ГОСТ 550; ASTM A335', '20, 15ХМ, 12Х1МФ, 15Х1М1Ф, P5, P11, P22, P91', '/produkciya/truby-besshovnye/kotelnye'],
   ['Нержавеющие и коррозионностойкие', 'Ø 5–273 мм', 'ГОСТ 9940, 9941; ASTM A312', '08Х18Н10, 12Х18Н10Т, 10Х17Н13М2Т, TP304, TP316, TP321', '/produkciya/truby-besshovnye/nerzhaveyushchie'],
   ['Нефтяного сортамента', 'По проекту', 'ГОСТ 632, 633; API 5CT', 'НКТ, обсадные, бурильные трубы и муфты', '/produkciya/truby-besshovnye'],
+  ['Отводы бесшовные', 'DN 15–1000', 'ГОСТ 17375, 30753, 17380', '2D и 3D · углеродистые, низколегированные и нержавеющие стали', '/produkciya/sdt/otvody-besshovnye'],
+  ['Тройники бесшовные', 'DN 15–500', 'ГОСТ 17376, 17380', 'равнопроходные и переходные исполнения', '/produkciya/sdt/troyniki-besshovnye'],
+  ['Переходы бесшовные', 'DN 20–500', 'ГОСТ 17378, 17380', 'концентрические и эксцентрические исполнения', '/produkciya/sdt/perekhody-besshovnye'],
+  ['Фланцы', 'DN 10–4000', 'ГОСТ 33259', 'плоские, воротниковые, свободные · PN 1–250', '/produkciya/sdt/flantsy'],
+  ['Заглушки и днища', 'По стандарту и чертежу', 'ГОСТ 17379, 6533; ОСТ, АТК', 'эллиптические, плоские и специальные исполнения', '/produkciya/sdt/zaglushki-i-dnishcha'],
+]
+
+const catalogGroups = [
+  { title: 'Трубы', note: 'Электросварные, бесшовные, профильные, котельные, нержавеющие и нефтяного сортамента', items: pipeCatalog.slice(0, 8) },
+  { title: 'СДТ', note: 'Отводы, тройники, переходы, фланцы, заглушки и днища', items: pipeCatalog.slice(8) },
 ]
 
 const otherProducts = [
@@ -42,6 +52,16 @@ const otherProducts = [
   ['Метизная продукция', 'Крепёж · болты · гайки · шайбы по ГОСТ, ТУ и DIN'],
   ['Оборудование', 'Промышленное оборудование по техническому заданию'],
   ['Материалы, детали и комплектующие', 'Поставка нестандартных позиций и грузов по запросу'],
+]
+
+const otherCatalogGroups = [
+  { title: 'Листовой и рулонный прокат', note: 'Горячекатаный, холоднокатаный, оцинкованный и прокат с покрытиями', titles: ['Лист холоднокатаный 0,3–3 мм', 'Лист горячекатаный 2–200 мм', 'Рулонная сталь оцинкованная'] },
+  { title: 'Сортовой и фасонный прокат', note: 'Круг, квадрат, уголок, балка и швеллер', titles: ['Круг горячекатаный 8–300 мм', 'Квадрат 6–200 мм', 'Уголок', 'Балка двутавровая', 'Швеллер'] },
+  { title: 'Нержавеющие и специальные стали', note: 'Коррозионностойкие, жаропрочные и специальные марки', titles: ['Лист нержавеющий 3–200 мм'] },
+  { title: 'Поковки и заготовки', note: 'Кованые заготовки и детали специальных исполнений', titles: ['Поковки Ø 40–1500+ мм'] },
+  { title: 'Цветной металлопрокат', note: 'Титан, олово, латунь, медь, бронза и алюминий', titles: ['Цветной металлопрокат'] },
+  { title: 'Метизы и сварочные материалы', note: 'Крепёж, проволока, электроды и расходные материалы', titles: ['Сварочные материалы', 'Метизная продукция'] },
+  { title: 'Оборудование и комплектующие', note: 'Промышленное оборудование и нестандартные позиции по заданию', titles: ['Оборудование', 'Материалы, детали и комплектующие'] },
 ]
 
 const otherSeoLinks: Record<string, string> = {
@@ -211,11 +231,9 @@ export default function MagicMetalHome() {
       <section className="reference-hub" id="gost" aria-labelledby="quick-search-title">
         <div className="quick-search">
           <div><p className="section-kicker">Единый технический справочник</p><h2 id="quick-search-title">Справочник<br /><em>по металлопрокату</em></h2></div>
-          <div className="quick-search-tools"><form action="/poisk" method="get"><label htmlFor="home-search">Товар, размер, марка или ГОСТ</label><div><input id="home-search" name="q" placeholder="12Х1МФ, ГОСТ 8732, труба 219×8" /><button type="submit">Найти →</button></div></form><nav aria-label="Разделы справочника"><Link href="#products">Продукция</Link><Link href="/spravochnik-gost">ГОСТ и размеры</Link><Link href="/spravochnik-materialov">Марки материалов</Link><Link href="/kalkulyator-metalla">Калькулятор массы</Link></nav></div>
+          <div className="quick-search-tools"><form action="/poisk" method="get"><label htmlFor="home-search">Товар, размер, марка или ГОСТ</label><div><input id="home-search" name="q" placeholder="12Х1МФ, ГОСТ 8732, труба 219×8" /><button type="submit">Найти →</button></div></form><nav aria-label="Разделы справочника"><Link href="#products">Все разделы</Link><Link href="/spravochnik-gost">ГОСТ и размеры</Link><Link href="/spravochnik-materialov">Марки материалов</Link><Link href="/kalkulyator-metalla">Калькулятор массы</Link></nav></div>
         </div>
-      </section>
-
-      <section className="product-unified" id="products" aria-labelledby="products-title">
+      <div className="product-unified" id="products" aria-labelledby="products-title">
       <div className="section priority-section product-subsection">
         <motion.div className="section-heading" initial="hidden" whileInView="visible" viewport={{ once: true, amount: .3 }} variants={animation} transition={{ duration: .55 }}><h2>Трубы, СДТ<br />и <em>изоляция</em></h2><p>Подбираем продукцию по ГОСТ, ТУ, марке стали, геометрии и условиям эксплуатации. Проверяем совместимость требований до расчёта.</p></motion.div>
         <div className="priority-grid" role="table" aria-label="Главные направления продукции">
@@ -225,16 +243,33 @@ export default function MagicMetalHome() {
       </div>
 
       <div className="section catalog-section product-subsection">
-        <div className="catalog-head"><div><p className="product-subsection-label">Трубы, СДТ и изоляция</p><h2 id="products-title">Трубный<br /><em>ассортимент</em></h2></div><p>Основные виды труб, диапазоны размеров, стандарты и марки собраны в одной таблице. Нажмите на любую строку, чтобы открыть подробное направление.</p></div>
-        <div className="catalog-table" role="table" aria-label="Трубная продукция">
-          <div className="catalog-row catalog-labels" role="row"><span>Тип продукции</span><span>Размеры</span><span>Стандарты</span><span>Марки / исполнение</span></div>
-          {pipeCatalog.map(([title, size, standards, grades, href], index) => <motion.a className="catalog-row" role="row" href={href} aria-label={`Подробнее: ${title}`} key={title} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .35 }} variants={animation} transition={{ duration: .42, delay: Math.min(index * .035, .2) }}><strong><i>{String(index + 1).padStart(2, '0')}</i>{title}</strong><span>{size}</span><span className="standard-list">{standards.replace(/(ГОСТ|ТУ|ОСТ|СТО) /g, '$1\u00A0')}</span><span>{grades}</span></motion.a>)}
-        </div>
+        <div className="catalog-head"><div><p className="product-subsection-label">Общий справочник</p><h2 id="products-title">Категории<br /><em>и номенклатура</em></h2></div><p>Справочник устроен как дерево Excel: откройте категорию, затем нужную номенклатуру. Размеры, ГОСТ и исполнения раскрываются по «+» и скрываются по «−».</p></div>
+        {catalogGroups.map((group, groupIndex) => <details className="catalog-group" key={group.title} open={groupIndex === 0}>
+          <summary><i className="catalog-toggle" aria-hidden="true" /><span><strong>{group.title}</strong><small>{group.note}</small></span></summary>
+          <div className="catalog-table" aria-label={group.title}>
+            <div className="catalog-row catalog-labels" role="row"><span>Номенклатура</span><span>Размеры</span><span>Стандарты</span><span>Марки / исполнение</span></div>
+          {group.items.map(([title, size, standards, grades, href], index) => <motion.details className="catalog-item" key={title} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .35 }} variants={animation} transition={{ duration: .42, delay: Math.min(index * .035, .2) }}>
+            <summary className="catalog-row">
+              <strong><i className="catalog-toggle" aria-hidden="true" /><span>{title}</span></strong>
+              <span>{size}</span>
+              <span className="standard-list">{standards.replace(/(ГОСТ|ТУ|ОСТ|СТО) /g, '$1\u00A0')}</span>
+              <span>{grades}</span>
+            </summary>
+            <Link className="catalog-item-link" href={href} aria-label={`Открыть направление: ${title}`}>
+              <span>Открыть направление и размерный ряд</span><b aria-hidden="true">→</b>
+            </Link>
+          </motion.details>)}
+          </div>
+        </details>)}
       </div>
 
       <div className="section other-section product-subsection">
-        <div className="section-heading compact"><h2>Металл для<br /><em>всего проекта</em></h2></div>
-        <div className="other-list">{otherProducts.map(([title, text], index) => <motion.a href={otherSeoLinks[title]} aria-label={`Подробнее: ${title}`} key={title} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .4 }} variants={animation} transition={{ duration: .38, delay: Math.min(index * .02, .14) }}><span>{String(index + 1).padStart(2, '0')}</span><h3>{title}</h3><p>{text}</p><b aria-hidden="true">↗</b></motion.a>)}</div>
+        <p className="product-subsection-label">Остальные разделы общего справочника</p>
+        {otherCatalogGroups.map((group) => <details className="catalog-group catalog-group-light" key={group.title}>
+          <summary><i className="catalog-toggle" aria-hidden="true" /><span><strong>{group.title}</strong><small>{group.note}</small></span></summary>
+          <div className="other-list">{otherProducts.filter(([title]) => group.titles.includes(title)).map(([title, text], index) => <motion.a href={otherSeoLinks[title]} aria-label={`Подробнее: ${title}`} key={title} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .4 }} variants={animation} transition={{ duration: .38, delay: Math.min(index * .02, .14) }}><span>{String(index + 1).padStart(2, '0')}</span><h3>{title}</h3><p>{text}</p><b aria-hidden="true">↗</b></motion.a>)}</div>
+        </details>)}
+      </div>
       </div>
       </section>
 
