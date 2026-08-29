@@ -13,8 +13,8 @@ const pipeCatalog = [
   ['Электросварные прямошовные и спиралешовные', 'Ø 15–1420 мм', 'ГОСТ 10704, 10705, 10706, 20295', 'Ст3, 20, 09Г2С, 17Г1СУ, 10Г2ФБЮ', '/produkciya/truby-elektrosvarnye'],
   ['Водогазопроводные', 'Ду 10–100', 'ГОСТ 3262-75', 'малоуглеродистые стали', '/produkciya/truby-elektrosvarnye/vodogazoprovodnye'],
   ['Профильные квадратные и прямоугольные', '15×15–400×200 мм', 'ГОСТ 8639, 8645, 30245', 'Ст3, 09Г2С, С245, С255, С355', '/produkciya/truby-elektrosvarnye/profilnye'],
-  ['Бесшовные горячедеформированные', 'по действующему сортаменту', 'ГОСТ 8731-2025, 8732-2025; ГОСТ 550-2020', '10, 20, 35, 45, 09Г2С, 15ХМ, 12Х1МФ', '/produkciya/truby-besshovnye/goryachedeformirovannye'],
-  ['Бесшовные холоднодеформированные', 'Ø 2,5–193 мм', 'ГОСТ 8733, 8734, 9567', '10, 20, 35, 45, 10Г2, 15Х, 20Х, 40Х, 15ХМ', '/produkciya/truby-besshovnye/holodnodeformirovannye'],
+  ['Бесшовные горячедеформированные', 'Ø 57–550 мм', 'ГОСТ 8732, ГОСТ 550; ТУ 14-3Р-55, 460, 1128', '10, 20, 35, 45, 09Г2С, 15ХМ, 12Х1МФ, 15Х1М1Ф, 10Х9МФБ', '/produkciya/truby-besshovnye/goryachedeformirovannye'],
+  ['Бесшовные холоднодеформированные', 'Ø 5–53 мм', 'ГОСТ 8734', '10, 20, 35, 45, 10Г2, 15Х, 20Х, 40Х, 30ХГСА, 15ХМ', '/produkciya/truby-besshovnye/holodnodeformirovannye'],
   ['Котельные и крекинговые', 'По спецификации', 'ТУ 14-3Р-55; ГОСТ 550; ASTM A335', '20, 15ХМ, 12Х1МФ, 15Х1М1Ф, P5, P11, P22, P91', '/produkciya/truby-besshovnye/kotelnye'],
   ['Нержавеющие и коррозионностойкие', 'Ø 5–273 мм', 'ГОСТ 9940, 9941; ASTM A312', '08Х18Н10, 12Х18Н10Т, 10Х17Н13М2Т, TP304, TP316, TP321', '/produkciya/truby-besshovnye/nerzhaveyushchie'],
   ['Нефтяного сортамента', 'По проекту', 'ГОСТ 632, 633; API 5CT', 'НКТ, обсадные, бурильные трубы и муфты', '/produkciya/truby-besshovnye'],
@@ -42,13 +42,14 @@ const assortmentByProduct: Record<string, string[]> = {
 }
 
 const signalLabels: Record<MarketSignal, string> = { green: 'Ходовая', yellow: 'Ограниченное наличие', red: 'Редкая / под заказ' }
+const hiddenDirectorySlugs = new Set(['krug-i-kvadrat', 'balka-shveller-ugolok'])
 
 const otherCatalogGroups = [
   { title: 'Листовой и рулонный прокат', note: 'Горячекатаный, холоднокатаный, оцинкованный и прокат с покрытиями', categorySlug: 'listovoy-prokat' },
   { title: 'Сортовой и фасонный прокат', note: 'Арматура, круг, квадрат, полоса, уголок, балка и швеллер', categorySlug: 'sortovoy-i-fasonny-prokat' },
   { title: 'Нержавеющие и специальные стали', note: 'Лист, трубы, сортовой прокат и специальные марки', categorySlug: 'nerzhaveyushchaya-stal' },
   { title: 'Поковки и заготовки', note: 'Кольца, диски, валы, оси и поковки по чертежу', categorySlug: 'pokovki-i-zagotovki' },
-  { title: 'Цветной металлопрокат', note: 'Алюминий и дюраль; медь, бронза и латунь; титан; олово и другие цветные металлы', categorySlug: 'cvetnye-metally' },
+  { title: 'Цветной металлопрокат', note: 'Алюминий и дюраль; медь, бронза и латунь; титан; олово; свинец; цинк; нихром; баббит', categorySlug: 'cvetnye-metally' },
   { title: 'Метизы и сварочные материалы', note: 'Крепёж, сетка, лента, проволока, электроды и расходные материалы', categorySlug: 'metizy-i-svarochnye-materialy' },
 ]
 
@@ -235,7 +236,7 @@ export default function MagicMetalHome() {
         </details>
         {otherCatalogGroups.map((group) => <details className="catalog-group catalog-group-light" key={group.title}>
           <summary><i className="catalog-toggle" aria-hidden="true" /><span><strong>{group.title}</strong><small>{group.note}</small></span></summary>
-          <div className="directory-sublist">{productDetailCatalog.filter((item) => item.categorySlug === group.categorySlug).map((item) => <details className="directory-subitem" key={item.slug}>
+          <div className="directory-sublist">{productDetailCatalog.filter((item) => item.categorySlug === group.categorySlug && !hiddenDirectorySlugs.has(item.slug)).map((item) => <details className="directory-subitem" key={item.slug}>
             <summary><i className="catalog-toggle" aria-hidden="true" /><strong>{item.shortTitle}</strong><span>{item.range.map((entry) => entry.value).join(' · ')}</span></summary>
             <div><p><b>Формы и размеры:</b> {item.range.map((entry) => `${entry.label}: ${entry.value}`).join(' · ')}</p><p><b>Стандарты:</b> {item.standards.join(' · ')}</p><p><b>Марки:</b> {item.grades.join(' · ')}</p></div>
             <Link href={`/produkciya/${item.categorySlug}/${item.slug}`}><span>Открыть номенклатуру</span><b aria-hidden="true">→</b></Link>
