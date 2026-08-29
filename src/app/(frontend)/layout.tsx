@@ -30,12 +30,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const organizationJsonLd = {
     '@context': 'https://schema.org', '@type': 'Organization', name: 'ООО «Мэджик Металл»', url: 'https://magicmet.ru',
     email: 'm1@magicmet.ru', telephone: '+7 922 711-73-63', logo: 'https://magicmet.ru/images/logo-transparent-v2.png',
+    contactPoint: [{ '@type': 'ContactPoint', telephone: '+7 922 711-73-63', contactType: 'sales', areaServed: ['RU', 'CIS'], availableLanguage: ['Russian'] }],
     areaServed: ['Россия', 'СНГ', 'Узбекистан'],
     knowsAbout: ['электросварные трубы', 'бесшовные трубы', 'соединительные детали трубопроводов', 'металлопрокат', 'нержавеющие стали', 'цветные металлы'],
   }
+  const websiteJsonLd = {
+    '@context': 'https://schema.org', '@type': 'WebSite', name: 'Мэджик Металл', url: 'https://magicmet.ru',
+    potentialAction: { '@type': 'SearchAction', target: 'https://magicmet.ru/poisk?q={search_term_string}', 'query-input': 'required name=search_term_string' },
+  }
   return (
     <html lang="ru">
-      <body><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd).replace(/</g, '\\u003c') }} />{children}<Analytics /></body>
+      <body><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([organizationJsonLd, websiteJsonLd]).replace(/</g, '\\u003c') }} />{children}<Analytics /></body>
     </html>
   )
 }
