@@ -7,8 +7,9 @@ type PriceRow = {
   product: string
   designation: string
   size: string
-  unit: string
   standard: string
+  diameter?: string
+  wall?: string
   status: 'green'
   checkedAt: string
 }
@@ -67,8 +68,8 @@ export default function MarketDirectory() {
     <div className="market-groups">
       {groups.map(([product, rows], index) => <details className="market-group" key={product} open={Boolean(query) && index < 8}>
         <summary><i aria-hidden="true" /><span><small>Подраздел</small><b>{formatProductTitle(product)}</b><small>{rows.length} {positionWord(rows.length)}</small></span><em><i />На складе</em></summary>
-        <div className="market-table-wrap"><table><thead><tr><th>Размер</th><th>Марка / исполнение</th><th>ГОСТ / ТУ</th><th>Наличие</th></tr></thead><tbody>
-          {rows.map((row, rowIndex) => <tr key={`${row.designation}-${row.size}-${rowIndex}`}><td>{row.size}</td><td>{row.designation || '—'}</td><td>{row.standard || 'По прайсу'}</td><td><span className="stock-green"><i />На складе</span></td></tr>)}
+        <div className="market-table-wrap"><table><thead><tr>{category === 'Трубы' ? <><th>Диаметр / профиль</th><th>Толщина стенки</th></> : <th>Размер</th>}<th>Марка / исполнение</th><th>ГОСТ / ТУ</th><th>Наличие</th></tr></thead><tbody>
+          {rows.map((row, rowIndex) => <tr key={`${row.designation}-${row.size}-${rowIndex}`}>{category === 'Трубы' ? <><td>{row.diameter}</td><td>{row.wall}</td></> : <td>{row.size}</td>}<td>{row.designation || '—'}</td><td>{row.standard || 'По прайсу'}</td><td><span className="stock-green"><i />На складе</span></td></tr>)}
         </tbody></table></div>
       </details>)}
       {!groups.length && <div className="market-empty">По вашему запросу позиций не найдено.</div>}

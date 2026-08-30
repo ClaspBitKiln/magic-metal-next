@@ -171,7 +171,7 @@ export default function MagicMetalHome() {
         <div className="company-metrics" aria-label="Опыт компании">
           <article><strong>20+ лет</strong><span>опыт специалистов на рынке металлопроката</span></article>
           <article><strong>100 000+ т</strong><span>совокупный объём реализованных поставок</span></article>
-          <article><strong>500+</strong><span>позиций в доступном сортаменте</span></article>
+          <article><strong>10 000+</strong><span>позиций в доступном ассортименте</span></article>
           <article><strong>Россия и СНГ</strong><span>география промышленных поставок</span></article>
         </div>
         <div className="company-proof">
@@ -215,10 +215,7 @@ export default function MagicMetalHome() {
               <span className="standard-list">{standards.replace(/(ГОСТ|ТУ|ОСТ|СТО) /g, '$1\u00A0')}</span>
               <span>{grades}</span>
             </summary>
-            <div className="home-size-series"><b>{assortmentByProduct[title]?.map((slug) => slug.replace('gost-', 'ГОСТ ').replaceAll('-', '–')).join(' · ') || 'Размерный ряд'}</b><Link className="verified-range-link" href={`/spravochnik-nalichiya?q=${encodeURIComponent(title)}`}>Открыть таблицу подтверждённых размеров →</Link></div>
-            <Link className="catalog-item-link" href={href} aria-label={`Открыть направление: ${title}`}>
-              <span>Открыть направление и размерный ряд</span><b aria-hidden="true">→</b>
-            </Link>
+            <div className="home-size-series"><span>{assortmentByProduct[title]?.map((slug) => slug.replace('gost-', 'ГОСТ ').replaceAll('-', '–')).join(' · ') || 'Размеры по действующим стандартам'}</span><Link className="verified-range-link" href={`/spravochnik-nalichiya?q=${encodeURIComponent(title)}`}>Показать размеры и наличие <b aria-hidden="true">→</b></Link><Link className="catalog-detail-link" href={href}>Характеристики продукции</Link></div>
           </motion.details>)}
           </div>
         </details>)}
