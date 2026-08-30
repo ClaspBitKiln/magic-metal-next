@@ -53,6 +53,8 @@ def normalize_designation(value: str) -> str:
     value = re.sub(r"\b(?:пр-?во|производство)\s+[А-ЯA-ZЁ0-9«»\"._-]+", "", value, flags=re.I)
     value = re.sub(r"\b(?:ММК|НЛМК|ОМК|ТМК|Северсталь|ЕВРАЗ|ЗСМК|ЧМК|АМЗ)\b", "", value, flags=re.I)
     value = re.sub(r"\s+", " ", value).strip(" ,;/")
+    if value.upper() in {"ГОСТ", "ТУ", "ОСТ", "СТО"}:
+        return ""
     match = re.match(r"^(.+?)\s+\1$", value, flags=re.I)
     return match.group(1) if match else value
 
@@ -87,6 +89,54 @@ def split_pipe_primary(value: str) -> tuple[str, str]:
         return value, ""
     primary = match.group(1).replace("x", "×").replace("х", "×")
     return primary, normalize_designation(match.group(2).strip())
+
+
+def normalize_primary_size(value: str) -> tuple[str, str]:
+    """Return the technical size plus a separate length/execution note."""
+    notes: list[str] = []
+    if re.search(r"\bн\s*/\s*д\b", value, flags=re.I):
+        notes.append("НД")
+        value = re.sub(r"\bн\s*/\s*д\b", "", value, flags=re.I)
+    length = re.search(r"\b(\d+(?:[.,]\d+)?)\s*м\b", value, flags=re.I)
+    if length:
+        notes.append(f"длина {length.group(1)} м")
+        value = re.sub(r"\b\d+(?:[.,]\d+)?\s*м\b", "", value, flags=re.I)
+    value = normalize_designation(value).replace("x", "×").replace("х", "×").strip()
+    return value, " · ".join(notes)
+
+
+def join_profile_size(primary: str, secondary: str) -> str:
+    secondary = secondary.lstrip("; ")
+    if not secondary:
+        return primary
+    # Profile series are written as 20Б1/25Ш2/30К3, never as 20×Б1.
+    if re.match(r"^[А-ЯA-ZЁ]", secondary, flags=re.I):
+        return f"{primary}{secondary}"
+    return f"{primary}×{secondary}" if re.search(r"\d", secondary) else f"{primary}{secondary}"
+
+
+def normalize_profile_product(product: str, size: str) -> str:
+    compact = re.sub(r"\s+", "", size.upper())
+    if "ШВЕЛЛЕР" in product.upper() and re.fullmatch(r"\d+(?:(?:Б|Ш|К)\d+|[МУ])", compact):
+        return "БАЛКИ ДВУТАВРОВЫЕ"
+    if product.upper() == "ШВЕЛЛЕР" and re.fullmatch(r"\d+(?:[.,]\d+)?×\d+(?:[.,]\d+)?×\d+(?:[.,]\d+)?", compact):
+        return "ШВЕЛЛЕР ГНУТЫЙ"
+    if "БАЛКИ ДВУТАВРОВЫЕ" in product.upper() and re.fullmatch(r"\d+(?:[.,]\d+)?×\d+(?:[.,]\d+)?×\d+(?:[.,]\d+)?", compact):
+        return "ШВЕЛЛЕР ГНУТЫЙ"
+    return product
+
+
+def profile_standard(product: str, size: str, current: str) -> str:
+    compact = re.sub(r"\s+", "", size.upper())
+    if product == "БАЛКИ ДВУТАВРОВЫЕ" and re.fullmatch(r"\d+(?:Б|Ш|К)\d+", compact):
+        return "ГОСТ Р 57837-2017"
+    if product == "БАЛКИ ДВУТАВРОВЫЕ" and re.fullmatch(r"\d+М", compact):
+        return "ГОСТ 19425-74"
+    if product == "ШВЕЛЛЕР" and re.fullmatch(r"\d+(?:[ПУ])?", compact):
+        return "ГОСТ 8240-97"
+    if product == "ШВЕЛЛЕР ГНУТЫЙ" and compact.count("×") == 2:
+        return "ГОСТ 8278-83"
+    return current
 
 
 def parse_half(df: pd.DataFrame, cols: tuple[int, int, int, int], source_file: str, root: str, initial_section: str | None = None, peer_context: dict[int, dict] | None = None) -> list[dict]:
@@ -139,18 +189,25 @@ def parse_half(df: pd.DataFrame, cols: tuple[int, int, int, int], source_file: s
         header0 = clean(headers[0]).lower()
         combine_dimensions = any(token in header0 for token in ("диаметр", "номер профиля", "полка", "наим.,диаметр", "размер"))
         dimension_base, pipe_designation = split_pipe_primary(name) if root == "Трубы" and combine_dimensions else (normalize_designation(name), "")
+        dimension_base, size_note = normalize_primary_size(dimension_base)
         display_designation = pipe_designation if root == "Трубы" and combine_dimensions else ("" if combine_dimensions else normalize_designation(name))
         standard = standard_from(product + " " + name)
         for one_size in split_sizes(size):
+            one_size = normalize_designation(one_size)
             wall = one_size if root == "Трубы" and combine_dimensions else ""
             if combine_dimensions:
-                one_size = f"{dimension_base}×{one_size}" if re.search(r"\d", one_size) else f"{dimension_base}{one_size}"
+                one_size = join_profile_size(dimension_base, one_size)
+            normalized_product = normalize_profile_product(product, one_size)
+            normalized_standard = profile_standard(normalized_product, one_size, standard)
+            normalized_designation = normalize_designation(display_designation)
+            if size_note:
+                normalized_designation = " · ".join(filter(None, (normalized_designation, size_note)))
             row = {
                 "category": root,
-                "product": product,
-                "designation": normalize_designation(display_designation),
+                "product": normalized_product,
+                "designation": normalized_designation,
                 "size": one_size,
-                "standard": standard,
+                "standard": normalized_standard,
                 "status": "green",
                 "checkedAt": "28.08.2026",
             }

@@ -23,6 +23,7 @@ assert all(r['category'] and r['product'] and r['size'] and r['checkedAt'] for r
 assert all(r['product'] != r['category'] for r in rows), 'unclassified root product remains'
 assert not any({'price', 'unit', 'sourceFile', 'region'} & set(r) for r in rows), 'private/source fields leaked'
 assert not any(re.search(r'уценка|неконд|\bимп(?:орт)?\b|\b(?:ММК|НЛМК|ОМК|ТМК|Северсталь|ЕВРАЗ|ЗСМК|ЧМК|АМЗ)\b', f"{r['designation']} {r['size']}", re.I) for r in rows), 'sales or plant note leaked'
+assert not any(re.search(r'×\s*[БШКМУП]\d*$', r['size'], re.I) for r in rows), 'profile number incorrectly uses multiplication sign before series'
 
 pipes = [r for r in rows if r['category'] == 'Трубы']
 assert pipes, 'pipe rows missing'
@@ -40,4 +41,11 @@ for product in {(r['category'], r['product']) for r in rows}:
     sizes = [r['size'] for r in rows if (r['category'], r['product']) == product]
     assert [numeric_key(s) for s in sizes] == sorted([numeric_key(s) for s in sizes]), f"size order failed: {product}"
 
-print(json.dumps({'rows': len(rows), 'pipes': len(pipes), 'checks': 11, 'status': 'passed'}, ensure_ascii=False))
+beams = [r for r in rows if r['product'] == 'БАЛКИ ДВУТАВРОВЫЕ']
+assert beams, 'beam rows missing'
+assert not any('×' in r['size'] for r in beams), 'dimensional product leaked into beam section'
+assert all(r['standard'] == 'ГОСТ Р 57837-2017' for r in beams if re.fullmatch(r'\d+(?:Б|Ш|К)\d+', r['size'])), 'beam series standard is missing or wrong'
+assert not any(re.search(r'[БШК]\d+$', r['size']) for r in rows if r['product'] == 'ШВЕЛЛЕР'), 'beam profile leaked into channel section'
+assert not any(r['size'].count('×') == 2 for r in rows if r['product'] == 'ШВЕЛЛЕР'), 'bent channel geometry leaked into hot-rolled channel section'
+
+print(json.dumps({'rows': len(rows), 'pipes': len(pipes), 'beams': len(beams), 'checks': 15, 'status': 'passed'}, ensure_ascii=False))
