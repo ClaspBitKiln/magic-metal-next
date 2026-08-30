@@ -14,6 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/kalkulyator-metalla`, changeFrequency: 'monthly', priority: .8 },
     { url: `${base}/spravochnik-materialov`, changeFrequency: 'weekly', priority: .9 },
     { url: `${base}/spravochnik-gost`, changeFrequency: 'weekly', priority: .9 },
+    { url: `${base}/spravochnik-nalichiya`, changeFrequency: 'weekly', priority: .95 },
     { url: `${base}/postavki/uzbekistan`, changeFrequency: 'monthly', priority: .85 },
     ...seoCatalog.map(({ slug }) => ({ url: `${base}/produkciya/${slug}`, changeFrequency: 'monthly' as const, priority: .8 })),
     ...sdtCatalog.map(({ slug }) => ({ url: `${base}/produkciya/sdt/${slug}`, changeFrequency: 'monthly' as const, priority: .82 })),

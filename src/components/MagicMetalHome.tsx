@@ -7,7 +7,6 @@ import Link from 'next/link'
 import { FormEvent, useEffect, useMemo, useState } from 'react'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
 import { productDetailCatalog } from '@/data/productDetailCatalog'
-import { availabilityLabels, expandAndSortAssortmentRows, standardAssortments, type MarketSignal } from '@/data/standardAssortment'
 
 const pipeCatalog = [
   ['Электросварные прямошовные и спиралешовные', 'Ø 15–1420 мм', 'ГОСТ 10704, 10705, 10706, 20295', 'Ст3, 20, 09Г2С, 17Г1СУ, 10Г2ФБЮ', '/produkciya/truby-elektrosvarnye'],
@@ -39,36 +38,6 @@ const assortmentByProduct: Record<string, string[]> = {
   'Переходы бесшовные': ['gost-17378-2001'],
   'Фланцы': ['gost-33259-2015'],
   'Заглушки и днища': ['gost-17379-2001'],
-}
-
-const pipeAvailabilityByProduct: Record<string, MarketSignal> = {
-  'Электросварные прямошовные и спиралешовные': 'yellow',
-  'Водогазопроводные': 'yellow',
-  'Профильные квадратные и прямоугольные': 'yellow',
-  'Бесшовные горячедеформированные': 'yellow',
-  'Бесшовные холоднодеформированные': 'yellow',
-  'Котельные и крекинговые': 'yellow',
-  'Нержавеющие и коррозионностойкие': 'yellow',
-  'Нефтяного сортамента': 'yellow',
-  'Отводы бесшовные': 'yellow',
-  'Тройники бесшовные': 'yellow',
-  'Переходы бесшовные': 'yellow',
-  'Фланцы': 'yellow',
-  'Заглушки и днища': 'yellow',
-}
-
-const directoryAvailabilityByCategory: Record<string, MarketSignal> = {
-  'listovoy-prokat': 'yellow',
-  'sortovoy-i-fasonny-prokat': 'yellow',
-  'nerzhaveyushchaya-stal': 'yellow',
-  'pokovki-i-zagotovki': 'yellow',
-  'cvetnye-metally': 'yellow',
-  'metizy-i-svarochnye-materialy': 'yellow',
-}
-
-const getDirectorySignal = (categorySlug: string, slug: string): MarketSignal => {
-  if (categorySlug === 'pokovki-i-zagotovki' && slug !== 'po-chertezhu') return 'yellow'
-  return directoryAvailabilityByCategory[categorySlug] || 'yellow'
 }
 
 const hiddenDirectorySlugs = new Set(['krug-i-kvadrat', 'balka-shveller-ugolok'])
@@ -230,7 +199,7 @@ export default function MagicMetalHome() {
       <section className="reference-hub" id="gost" aria-labelledby="quick-search-title">
         <div className="quick-search">
           <div><p className="section-kicker">Единый технический справочник</p><h2 id="quick-search-title">Справочник<br /><em>по металлопрокату</em></h2></div>
-          <div className="quick-search-tools"><p className="reference-purpose">Рабочий инструмент для снабжения и проектировщиков: основные параметры продукции, полный сортамент по ГОСТ, ориентир по наличию на рынке и варианты замены для последующей проверки на соответствие проекту.</p><form action="/poisk" method="get"><label htmlFor="home-search">Товар, размер, марка или ГОСТ</label><div><input id="home-search" name="q" placeholder="12Х1МФ, ГОСТ 8732, труба 219×8" /><button type="submit">Найти →</button></div></form><nav aria-label="Разделы справочника"><Link href="#products">Все разделы</Link><Link href="/spravochnik-gost">ГОСТ и размеры</Link><Link href="/spravochnik-materialov">Материалы и аналоги</Link><Link href="/kalkulyator-metalla">Калькулятор массы</Link></nav></div>
+          <div className="quick-search-tools"><p className="reference-purpose">Рабочий инструмент для снабжения и проектировщиков: основные параметры продукции, полный сортамент по ГОСТ, ориентир по наличию на рынке и варианты замены для последующей проверки на соответствие проекту.</p><form action="/poisk" method="get"><label htmlFor="home-search">Товар, размер, марка или ГОСТ</label><div><input id="home-search" name="q" placeholder="12Х1МФ, ГОСТ 8732, труба 219×8" /><button type="submit">Найти →</button></div></form><nav aria-label="Разделы справочника"><Link href="/spravochnik-nalichiya">Размеры и наличие</Link><Link href="#products">Все разделы</Link><Link href="/spravochnik-gost">ГОСТ и размеры</Link><Link href="/spravochnik-materialov">Материалы и аналоги</Link><Link href="/kalkulyator-metalla">Калькулятор массы</Link></nav></div>
         </div>
       <div className="product-unified" id="products" aria-labelledby="products-title">
       <div className="section catalog-section product-subsection">
@@ -241,22 +210,12 @@ export default function MagicMetalHome() {
             <div className="catalog-row catalog-labels" role="row"><span>Номенклатура</span><span>Размеры</span><span>Стандарты</span><span>Марки / исполнение</span></div>
           {group.items.map(([title, size, standards, grades, href], index) => <motion.details className="catalog-item" key={title} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .35 }} variants={animation} transition={{ duration: .42, delay: Math.min(index * .035, .2) }}>
             <summary className="catalog-row">
-              <strong><i className="catalog-toggle" aria-hidden="true" /><span>{title}</span><small className={`catalog-status signal-${pipeAvailabilityByProduct[title] || 'yellow'}`}><i />{availabilityLabels[pipeAvailabilityByProduct[title] || 'yellow']}</small></strong>
+              <strong><i className="catalog-toggle" aria-hidden="true" /><span>{title}</span></strong>
               <span>{size}</span>
               <span className="standard-list">{standards.replace(/(ГОСТ|ТУ|ОСТ|СТО) /g, '$1\u00A0')}</span>
               <span>{grades}</span>
             </summary>
-            {assortmentByProduct[title]?.map((slug) => {
-              const assortment = standardAssortments[slug]
-              return assortment ? <div className="home-size-series" key={slug}>
-                <b>{slug.replace('gost-', 'ГОСТ ').replaceAll('-', '–')} · {assortment.dimensionLabel}</b>
-                {expandAndSortAssortmentRows(assortment.rows).map((row) => <div className={`home-size-row signal-${row.signal}`} key={row.size}><span><i />{row.size}</span><small>{availabilityLabels[row.signal]}</small></div>)}
-              </div> : null
-            })}
-            {!assortmentByProduct[title] && <div className="home-size-series">
-              <b>Размерный ряд</b>
-              <div className={`home-size-row signal-${pipeAvailabilityByProduct[title] || 'yellow'}`}><span><i />{size}</span><small>{availabilityLabels[pipeAvailabilityByProduct[title] || 'yellow']}</small></div>
-            </div>}
+            <div className="home-size-series"><b>{assortmentByProduct[title]?.map((slug) => slug.replace('gost-', 'ГОСТ ').replaceAll('-', '–')).join(' · ') || 'Размерный ряд'}</b><Link className="verified-range-link" href={`/spravochnik-nalichiya?q=${encodeURIComponent(title)}`}>Открыть таблицу подтверждённых размеров →</Link></div>
             <Link className="catalog-item-link" href={href} aria-label={`Открыть направление: ${title}`}>
               <span>Открыть направление и размерный ряд</span><b aria-hidden="true">→</b>
             </Link>
@@ -270,8 +229,8 @@ export default function MagicMetalHome() {
         {otherCatalogGroups.map((group) => <details className="catalog-group catalog-group-light" key={group.title}>
           <summary><i className="catalog-toggle" aria-hidden="true" /><span><strong>{group.title}</strong><small>{group.note}</small></span></summary>
           <div className="directory-sublist">{productDetailCatalog.filter((item) => item.categorySlug === group.categorySlug && !hiddenDirectorySlugs.has(item.slug)).map((item) => <details className="directory-subitem" key={item.slug}>
-            <summary><i className="catalog-toggle" aria-hidden="true" /><strong>{item.shortTitle}</strong><span>{item.range.map((entry) => entry.value).join(' · ')}</span><small className={`catalog-status signal-${getDirectorySignal(item.categorySlug, item.slug)}`}><i />{availabilityLabels[getDirectorySignal(item.categorySlug, item.slug)]}</small></summary>
-            <div><div className="directory-size-series"><b>Размерный ряд</b>{item.range.map((entry) => <div className={`directory-size-row signal-${getDirectorySignal(item.categorySlug, item.slug)}`} key={entry.label}><span>{entry.label}</span><strong>{entry.value}</strong><small><i />{availabilityLabels[getDirectorySignal(item.categorySlug, item.slug)]}</small></div>)}</div><p><b>Стандарты:</b> {item.standards.join(' · ')}</p><p><b>Марки:</b> {item.grades.join(' · ')}</p></div>
+            <summary><i className="catalog-toggle" aria-hidden="true" /><strong>{item.shortTitle}</strong><span>{item.range.map((entry) => entry.value).join(' · ')}</span></summary>
+            <div><div className="directory-size-series"><b>Размерный ряд</b><Link className="verified-range-link" href={`/spravochnik-nalichiya?q=${encodeURIComponent(item.shortTitle)}`}>Открыть таблицу подтверждённых размеров →</Link></div><p><b>Стандарты:</b> {item.standards.join(' · ')}</p><p><b>Марки:</b> {item.grades.join(' · ')}</p></div>
             <Link href={`/produkciya/${item.categorySlug}/${item.slug}`}><span>Открыть номенклатуру</span><b aria-hidden="true">→</b></Link>
           </details>)}</div>
         </details>)}
