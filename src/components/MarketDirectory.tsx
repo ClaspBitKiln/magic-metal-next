@@ -19,10 +19,16 @@ const preferredCategories = ['Трубы', 'Сортовой прокат (це�
 
 const formatProductTitle = (value: string) => {
   const lower = value.toLocaleLowerCase('ru')
-  return `${lower.charAt(0).toLocaleUpperCase('ru')}${lower.slice(1)}`
-    .replace(/\bгост\b/giu, 'ГОСТ')
-    .replace(/\bту\b/giu, 'ТУ')
-    .replace(/\bвгп\b/giu, 'ВГП')
+  let title = `${lower.charAt(0).toLocaleUpperCase('ru')}${lower.slice(1)}`
+    .replace(/гост/giu, 'ГОСТ')
+    .replace(/ГОСТ(?=\d)/g, 'ГОСТ ')
+    .replace(/(^|[^а-яё])ту(?=[^а-яё]|$)/giu, '$1ТУ')
+    .replace(/вгп/giu, 'ВГП')
+  if (title.includes('Трубы г/д (катаные, нефтепров)')) title = title.replace('Трубы г/д (катаные, нефтепров)', 'Трубы бесшовные горячедеформированные ·')
+  if (title.includes('Трубы х/д (тянутые,бесшовные)')) title = title.replace('Трубы х/д (тянутые,бесшовные)', 'Трубы бесшовные холоднодеформированные ·')
+  if (title === 'Трубы электросварные квадрат') title = 'Трубы профильные квадратные'
+  if (title === 'Трубы электросварные прямоуг') title = 'Трубы профильные прямоугольные'
+  return title
 }
 
 const positionWord = (count: number) => count % 10 === 1 && count % 100 !== 11 ? 'позиция' : [2, 3, 4].includes(count % 10) && ![12, 13, 14].includes(count % 100) ? 'позиции' : 'позиций'
