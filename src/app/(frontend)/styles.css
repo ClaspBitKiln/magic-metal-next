@@ -1478,6 +1478,13 @@ h2 {
   color: #0757e8;
   font-style: normal;
 }
+.reference-purpose {
+  max-width: 720px;
+  margin: 0 0 24px;
+  color: #3f4e69;
+  font-size: 15px;
+  line-height: 1.65;
+}
 .quick-search-tools form > label {
   display: block;
   margin-bottom: 10px;
