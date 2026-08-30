@@ -220,7 +220,7 @@ export default function MagicMetalHome() {
               const assortment = standardAssortments[slug]
               return assortment ? <div className="home-size-series" key={slug}>
                 <b>{slug.replace('gost-', 'ГОСТ ').replaceAll('-', '–')} · {assortment.dimensionLabel}</b>
-                {expandAndSortAssortmentRows(assortment.rows).map((row) => <div className={`home-size-row signal-${row.signal}`} key={row.size}><span><i />{row.size}</span><small>{availabilityLabels[row.signal]} · {row.note}</small></div>)}
+                {expandAndSortAssortmentRows(assortment.rows).map((row) => <div className={`home-size-row signal-${row.signal}`} key={row.size}><span><i />{row.size}</span><small>{availabilityLabels[row.signal]}</small></div>)}
               </div> : null
             })}
             <Link className="catalog-item-link" href={href} aria-label={`Открыть направление: ${title}`}>

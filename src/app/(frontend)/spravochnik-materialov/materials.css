@@ -126,7 +126,7 @@
 .assortment-table-head,
 .assortment-row {
   display: grid;
-  grid-template-columns: minmax(250px, 1fr) minmax(190px, .55fr) minmax(250px, 1fr);
+  grid-template-columns: minmax(250px, 1fr) minmax(190px, .55fr);
   gap: 24px;
   align-items: center;
   padding: 17px 20px;
