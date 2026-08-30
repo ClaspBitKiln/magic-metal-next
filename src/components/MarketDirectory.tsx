@@ -1,8 +1,10 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 type PriceRow = {
+  id: string
   category: string
   product: string
   designation: string
@@ -35,6 +37,7 @@ const formatProductTitle = (value: string) => {
 const positionWord = (count: number) => count % 10 === 1 && count % 100 !== 11 ? 'позиция' : [2, 3, 4].includes(count % 10) && ![12, 13, 14].includes(count % 100) ? 'позиции' : 'позиций'
 
 export default function MarketDirectory() {
+  const router = useRouter()
   const [snapshot, setSnapshot] = useState<Snapshot | null>(null)
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState('Трубы')
@@ -66,12 +69,14 @@ export default function MarketDirectory() {
     <nav className="market-tabs" aria-label="Разделы прайса">{categories.map((item) => <button className={item === category ? 'active' : ''} onClick={() => { setCategory(item); setQuery('') }} key={item}>{item}</button>)}</nav>
     <div className="market-category-title"><span>Раздел</span><h2>{category}</h2></div>
     <div className="market-groups">
-      {groups.map(([product, rows], index) => <details className="market-group" key={product} open={Boolean(query) && index < 8}>
+      {groups.map(([product, rows], index) => {
+        const hasPipeDimensions = rows.every((row) => row.diameter && row.wall)
+        return <details className="market-group" key={product} open={Boolean(query) && index < 8}>
         <summary><i aria-hidden="true" /><span><small>Подраздел</small><b>{formatProductTitle(product)}</b><small>{rows.length} {positionWord(rows.length)}</small></span><em><i />На складе</em></summary>
-        <div className="market-table-wrap"><table><thead><tr>{category === 'Трубы' ? <><th>Диаметр / профиль</th><th>Толщина стенки</th></> : <th>Размер</th>}<th>Марка / исполнение</th><th>ГОСТ / ТУ</th><th>Наличие</th></tr></thead><tbody>
-          {rows.map((row, rowIndex) => <tr key={`${row.designation}-${row.size}-${rowIndex}`}>{category === 'Трубы' ? <><td>{row.diameter}</td><td>{row.wall}</td></> : <td>{row.size}</td>}<td>{row.designation || '—'}</td><td>{row.standard || 'По прайсу'}</td><td><span className="stock-green"><i />На складе</span></td></tr>)}
+        <div className="market-table-wrap"><table><thead><tr>{hasPipeDimensions ? <><th>Диаметр / профиль</th><th>Толщина стенки</th></> : <th>Размер</th>}<th>Марка / исполнение</th><th>ГОСТ / ТУ</th><th>Наличие</th></tr></thead><tbody>
+          {rows.map((row, rowIndex) => <tr className="market-position-row" tabIndex={0} role="link" aria-label={`Открыть ${formatProductTitle(row.product)}, ${row.size}`} onClick={() => router.push(`/poziciya?id=${row.id}`)} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') router.push(`/poziciya?id=${row.id}`) }} key={`${row.designation}-${row.size}-${rowIndex}`}>{hasPipeDimensions ? <><td>{row.diameter}</td><td>{row.wall}</td></> : <td>{row.size}</td>}<td>{row.designation || '—'}</td><td>{row.standard || 'По прайсу'}</td><td><span className="stock-green"><i />На складе</span></td></tr>)}
         </tbody></table></div>
-      </details>)}
+      </details>})}
       {!groups.length && <div className="market-empty">По вашему запросу позиций не найдено.</div>}
     </div>
   </>
