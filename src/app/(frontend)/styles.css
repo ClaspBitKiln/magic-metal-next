@@ -775,6 +775,29 @@ h2 {
 .home-size-row.signal-green span { color: #51d18a; }
 .home-size-row.signal-yellow span { color: #ffd34d; }
 .home-size-row.signal-red span { color: #ff6868; }
+.catalog-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.catalog-status i,
+.directory-size-row small i {
+  width: 9px;
+  height: 9px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: currentColor;
+}
+.catalog-status.signal-green,
+.directory-size-row.signal-green small { color: #08783f; }
+.catalog-status.signal-yellow,
+.directory-size-row.signal-yellow small { color: #9a6500; }
+.catalog-status.signal-red,
+.directory-size-row.signal-red small { color: #c12d32; }
+.catalog-row strong > .catalog-status { grid-column: 2; }
 .directory-sublist {
   border-top: 1px solid #ccd5e5;
   background: #fff;
@@ -782,7 +805,7 @@ h2 {
 .directory-subitem { border-bottom: 1px solid #d7deea; }
 .directory-subitem > summary {
   display: grid;
-  grid-template-columns: 22px minmax(190px, 0.55fr) 1.45fr;
+  grid-template-columns: 22px minmax(190px, 0.55fr) 1.45fr auto;
   gap: 16px;
   align-items: center;
   min-height: 68px;
@@ -796,6 +819,29 @@ h2 {
 .directory-subitem[open] > summary .catalog-toggle::after { display: none; }
 .directory-subitem > div { padding: 4px 22px 16px 54px; color: #4f5e77; }
 .directory-subitem > div p { margin: 7px 0; font-size: 13px; line-height: 1.55; }
+.directory-size-series {
+  margin: 12px 0 18px;
+  border-top: 2px solid #17377f;
+  border-bottom: 1px solid #d7deea;
+}
+.directory-size-series > b {
+  display: block;
+  padding: 12px 14px;
+  color: #102359;
+  background: #eef3fb;
+  font-size: 12px;
+}
+.directory-size-row {
+  display: grid;
+  grid-template-columns: minmax(130px, .5fr) minmax(260px, 1.2fr) auto;
+  gap: 18px;
+  align-items: center;
+  padding: 12px 14px;
+  border-top: 1px solid #d7deea;
+}
+.directory-size-row > span { color: #60708d; font-size: 12px; }
+.directory-size-row > strong { color: #142348; font-size: 13px; }
+.directory-size-row > small { display: inline-flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 700; white-space: nowrap; }
 .directory-subitem > a {
   display: flex;
   justify-content: space-between;
@@ -1382,6 +1428,8 @@ h2 {
   .home-size-row { grid-template-columns: 1fr; gap: 4px; }
   .directory-subitem > summary { grid-template-columns: 22px 1fr; }
   .directory-subitem > summary > span { grid-column: 2; }
+  .directory-subitem > summary > small { grid-column: 2; }
+  .directory-size-row { grid-template-columns: 1fr; gap: 5px; }
   .directory-subitem > div,
   .directory-subitem > a { padding-left: 54px; }
   .catalog-row strong {
