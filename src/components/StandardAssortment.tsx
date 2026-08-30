@@ -1,11 +1,5 @@
-import { assortmentCheckedAt, expandAndSortAssortmentRows, marketSources, referenceSources, standardAssortments, type MarketSignal } from '@/data/standardAssortment'
+import { assortmentCheckedAt, availabilityLabels, expandAndSortAssortmentRows, marketSources, referenceSources, standardAssortments, type MarketSignal } from '@/data/standardAssortment'
 import type { Standard } from '@/data/standards'
-
-const signalCopy: Record<MarketSignal, string> = {
-  green: 'На складе у поставщиков',
-  yellow: 'Наличие уточняется',
-  red: 'Под заказ',
-}
 
 export default function StandardAssortment({ standard }: { standard: Standard }) {
   const assortment = standardAssortments[standard.slug]
@@ -19,12 +13,12 @@ export default function StandardAssortment({ standard }: { standard: Standard })
       </summary>
       <div className="standard-assortment-content">
       <div className="assortment-legend" aria-label="Шкала доступности">
-      {(Object.keys(signalCopy) as MarketSignal[]).map((signal) => <span className={`signal-${signal}`} key={signal}><i />{signalCopy[signal]}</span>)}
+      {(Object.keys(availabilityLabels) as MarketSignal[]).map((signal) => <span className={`signal-${signal}`} key={signal}><i />{availabilityLabels[signal]}</span>)}
     </div>
     {assortment ? <div className="assortment-table" role="table" aria-label={`Размерный ряд ${standard.code}`}>
       <div className="assortment-table-head" role="row"><span role="columnheader">{assortment.dimensionLabel}</span><span role="columnheader">Рыночный сигнал</span><span role="columnheader">Комментарий</span></div>
       {expandAndSortAssortmentRows(assortment.rows).map((row) => <div className={`assortment-row signal-${row.signal}`} role="row" key={row.size}>
-        <strong role="cell">{row.size}</strong><span role="cell"><i />{signalCopy[row.signal]}</span><small role="cell">{row.note}</small>
+        <strong role="cell">{row.size}</strong><span role="cell"><i />{availabilityLabels[row.signal]}</span><small role="cell">{row.note}</small>
       </div>)}
     </div> : <div className="assortment-empty">
       <b>{isDimensionalStandard ? 'Матрица размеров готовится к публикации' : 'Этот ГОСТ не задаёт самостоятельный размерный ряд'}</b>
