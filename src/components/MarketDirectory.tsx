@@ -17,6 +17,16 @@ type Snapshot = { snapshotDate: string; rowCount: number; rows: PriceRow[] }
 
 const preferredCategories = ['Трубы', 'Сортовой прокат (цена от 5 т.)', 'Листовой прокат', 'Качественный прокат', 'Нержавейка', 'Цветной прокат', 'Метизы метсырьё', 'Крепеж', 'Инженерные системы', 'Профнастил']
 
+const formatProductTitle = (value: string) => {
+  const lower = value.toLocaleLowerCase('ru')
+  return `${lower.charAt(0).toLocaleUpperCase('ru')}${lower.slice(1)}`
+    .replace(/\bгост\b/giu, 'ГОСТ')
+    .replace(/\bту\b/giu, 'ТУ')
+    .replace(/\bвгп\b/giu, 'ВГП')
+}
+
+const positionWord = (count: number) => count % 10 === 1 && count % 100 !== 11 ? 'позиция' : [2, 3, 4].includes(count % 10) && ![12, 13, 14].includes(count % 100) ? 'позиции' : 'позиций'
+
 export default function MarketDirectory() {
   const [snapshot, setSnapshot] = useState<Snapshot | null>(null)
   const [query, setQuery] = useState('')
@@ -50,7 +60,7 @@ export default function MarketDirectory() {
     <div className="market-category-title"><span>Раздел</span><h2>{category}</h2></div>
     <div className="market-groups">
       {groups.map(([product, rows], index) => <details className="market-group" key={product} open={Boolean(query) && index < 8}>
-        <summary><i aria-hidden="true" /><span><small>Подраздел</small><b>{product}</b><small>{rows.length} позиций</small></span><em><i />На складе</em></summary>
+        <summary><i aria-hidden="true" /><span><small>Подраздел</small><b>{formatProductTitle(product)}</b><small>{rows.length} {positionWord(rows.length)}</small></span><em><i />На складе</em></summary>
         <div className="market-table-wrap"><table><thead><tr><th>Размер</th><th>Марка / исполнение</th><th>ГОСТ / ТУ</th><th>Наличие</th></tr></thead><tbody>
           {rows.map((row, rowIndex) => <tr key={`${row.designation}-${row.size}-${rowIndex}`}><td>{row.size}</td><td>{row.designation || '—'}</td><td>{row.standard || 'По прайсу'}</td><td><span className="stock-green"><i />На складе</span></td></tr>)}
         </tbody></table></div>
