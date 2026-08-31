@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { materialSpecs } from '@/data/materialSpecs'
 import { materials } from '@/data/materials'
 import AddToQuoteButton from '@/components/AddToQuoteButton'
+import { formatProductTitle } from '@/lib/catalogSearch'
 
 type PriceRow = {
   id: string
@@ -64,16 +65,21 @@ function materialFor(row: PriceRow) {
 
 export default function CatalogPosition() {
   const [row, setRow] = useState<PriceRow | null | undefined>(undefined)
+  const [loadError, setLoadError] = useState(false)
 
   useEffect(() => {
     const id = new URLSearchParams(window.location.search).get('id')
-    fetch('/data/mc-price-snapshot.json').then((response) => response.json()).then((data) => setRow(data.rows.find((item: PriceRow) => item.id === id) || null))
+    fetch('/data/mc-price-snapshot.json').then((response) => {
+      if (!response.ok) throw new Error('catalog load failed')
+      return response.json()
+    }).then((data) => setRow(data.rows.find((item: PriceRow) => item.id === id) || null)).catch(() => setLoadError(true))
   }, [])
 
   const mass = useMemo(() => row ? unitMass(row) : null, [row])
   const material = useMemo(() => row ? materialFor(row) : undefined, [row])
   const spec = material ? materialSpecs[material.slug] : undefined
 
+  if (loadError) return <div className="position-state"><h1>Не удалось загрузить карточку</h1><button onClick={() => window.location.reload()}>Повторить</button></div>
   if (row === undefined) return <div className="position-state">Загружаем карточку позиции…</div>
   if (row === null) return <div className="position-state"><h1>Позиция не найдена</h1><Link href="/spravochnik-nalichiya">Вернуться в справочник</Link></div>
 
@@ -81,11 +87,11 @@ export default function CatalogPosition() {
   return <>
     <section className="position-hero">
       <p>{row.category} · подтверждено {row.checkedAt}</p>
-      <h1>{row.product}</h1>
+      <h1>{formatProductTitle(row.product)}</h1>
       <div><span className="stock-green"><i />На складе</span><AddToQuoteButton item={{ id: row.id, product: row.product, size: row.size, designation: row.designation, standard: row.standard }} /></div>
     </section>
     <section className="position-spec-grid">
-      <div><span>Размер</span><b>{row.size} мм</b></div>
+      <div><span>Размер / обозначение</span><b>{row.size}</b></div>
       {row.diameter && <div><span>Диаметр / профиль</span><b>{row.diameter} мм</b></div>}
       {row.wall && <div><span>Толщина стенки</span><b>{row.wall} мм</b></div>}
       <div><span>Марка / исполнение</span><b>{row.designation || 'Уточняется по заявке'}</b></div>

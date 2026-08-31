@@ -26,6 +26,9 @@ assert all(r['product'] != r['category'] for r in rows), 'unclassified root prod
 assert not any({'price', 'unit', 'sourceFile', 'region'} & set(r) for r in rows), 'private/source fields leaked'
 assert not any(re.search(r'уценка|неконд|\bимп(?:орт)?\b|РТ-Те(?:х)?приемка|\b(?:ММК|НЛМК|ОМК|ТМК|Северсталь|ЕВРАЗ|ЗСМК|ЧМК|АМЗ|Тагмет|HALSEN|OASIS|THERMA|Temper|MZTA)\b', f"{r['designation']} {r['size']}", re.I) for r in rows), 'sales, brand, or plant note leaked'
 assert not any(re.search(r'×\s*[БШКМУП]\d*$', r['size'], re.I) for r in rows), 'profile number incorrectly uses multiplication sign before series'
+assert not any(re.fullmatch(r'0+(?:[.,]0+)?', r['size']) for r in rows), 'zero placeholder leaked as a sellable size'
+assert not any(re.search(r'\+?7\s*\(?\d{3}\)?\s*\d{3}[-\s]\d{2}[-\s]\d{2}', f"{r['designation']} {r['size']}") for r in rows), 'phone number leaked into technical fields'
+assert all(re.fullmatch(r'(?:М\s*)?\d+(?:[.,]\d+)?(?:×\d+(?:[.,]\d+)?)?', r['size'], re.I) for r in rows if r['category'] == 'Крепеж'), 'fastener name or coating leaked into the size field'
 
 pipes = [r for r in rows if r['category'] == 'Трубы']
 assert pipes, 'pipe rows missing'
@@ -48,7 +51,8 @@ for product in {(r['category'], r['product']) for r in rows}:
 beams = [r for r in rows if r['product'] == 'БАЛКИ ДВУТАВРОВЫЕ']
 assert beams, 'beam rows missing'
 assert not any('×' in r['size'] for r in beams), 'dimensional product leaked into beam section'
-assert all(r['standard'] == 'ГОСТ Р 57837-2017' for r in beams if re.fullmatch(r'\d+(?:Б|Ш|К)\d+', r['size'])), 'beam series standard is missing or wrong'
+assert all(r['standard'] == 'ГОСТ 35087-2024' for r in beams if re.fullmatch(r'\d+(?:Б|Ш|К)\d+', r['size'])), 'beam series standard is missing or wrong'
+assert all(r.get('standardBasis') == 'reference' for r in beams if re.fullmatch(r'\d+(?:Б|Ш|К)\d+', r['size'])), 'reference standard must be labelled as inferred from the current standard register'
 assert all(r['standard'] == 'ГОСТ 8239-89' for r in beams if re.fullmatch(r'\d+(?:[.,]\d+)?', r['size'])), 'classic I-beam standard is missing or wrong'
 assert all(r['standard'] == 'ГОСТ 8240-97' for r in rows if r['product'] == 'ШВЕЛЛЕР' and re.fullmatch(r'\d+(?:[.,]\d+)?(?:[ПУ])?', r['size'])), 'channel standard is missing or wrong'
 assert not any(re.search(r'[БШК]\d+$', r['size']) for r in rows if r['product'] == 'ШВЕЛЛЕР'), 'beam profile leaked into channel section'
@@ -64,4 +68,4 @@ semantic_rules = {
 for product, forbidden in semantic_rules.items():
     assert not any(re.search(forbidden, f"{r['designation']} {r['size']}", re.I) for r in rows if r['product'] == product), f'semantic contamination: {product}'
 
-print(json.dumps({'rows': len(rows), 'pipes': len(pipes), 'beams': len(beams), 'checks': 24, 'status': 'passed'}, ensure_ascii=False))
+print(json.dumps({'rows': len(rows), 'pipes': len(pipes), 'beams': len(beams), 'checks': 27, 'status': 'passed'}, ensure_ascii=False))

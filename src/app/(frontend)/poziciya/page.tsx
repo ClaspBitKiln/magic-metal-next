@@ -9,9 +9,11 @@ export const metadata: Metadata = {
   description: 'Размер, наличие, теоретическая масса и характеристики позиции металлопроката.',
 }
 
-export default function PositionPage() {
+export default async function PositionPage({ searchParams }: { searchParams: Promise<{ returnTo?: string }> }) {
+  const { returnTo } = await searchParams
+  const backHref = returnTo?.startsWith('/spravochnik-nalichiya') ? returnTo : '/spravochnik-nalichiya'
   return <main className="position-page">
-    <header className="position-header"><Link href="/spravochnik-nalichiya">← К справочнику</Link><Link href="/">Главная</Link><CartLink /></header>
+    <header className="position-header"><Link href={backHref}>← К результатам</Link><Link href="/">Главная</Link><CartLink /></header>
     <CatalogPosition />
   </main>
 }

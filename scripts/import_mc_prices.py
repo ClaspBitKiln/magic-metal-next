@@ -53,7 +53,7 @@ def normalize_designation(value: str) -> str:
     value = re.sub(r"\b(?:неконд(?:иция)?)\b", "", value, flags=re.I)
     value = re.sub(r"\b(?:пр-?во|производство)\s+[А-ЯA-ZЁ0-9«»\"._-]+", "", value, flags=re.I)
     value = re.sub(
-        r"\b(?:ММК|НЛМК|ОМК|ТМК|Северсталь|ЕВРАЗ|ЗСМК|ЧМК|АМЗ|Тагмет|HALSEN|OASIS(?:\s+ECO)?|THERMA|Temper|MZTA)\b",
+        r"\b(?:ММК|НЛМК|ОМК|ТМК|Северсталь|ЕВРАЗ|ЗСМК|ЧМК|АМЗ|Тагмет|МЗТА|HALSEN|OASIS(?:\s+ECO)?|THERMA|Temper|MZTA)\b",
         "",
         value,
         flags=re.I,
@@ -98,6 +98,18 @@ def split_pipe_primary(value: str) -> tuple[str, str]:
     return primary, normalize_designation(match.group(2).strip())
 
 
+def split_fastener_primary(value: str) -> tuple[str, str]:
+    """Split supplier text into a fastener name/coating and nominal diameter."""
+    value = normalize_designation(value)
+    match = re.match(r"^(.*?)(\d+(?:[.,]\d+)?)(?:\s+(.*))?$", value)
+    if not match:
+        return "", value
+    before = match.group(1).strip(" ,.;-")
+    after = (match.group(3) or "").strip(" ,.;-")
+    designation = normalize_designation(" · ".join(filter(None, (before, after))))
+    return match.group(2), designation
+
+
 def normalize_primary_size(value: str) -> tuple[str, str]:
     """Return the technical size plus a separate length/execution note."""
     notes: list[str] = []
@@ -114,6 +126,8 @@ def normalize_primary_size(value: str) -> tuple[str, str]:
 
 def join_profile_size(primary: str, secondary: str) -> str:
     secondary = secondary.lstrip("; ")
+    if not primary:
+        return secondary
     if not secondary:
         return primary
     # Profile series are written as 20Б1/25Ш2/30К3, never as 20×Б1.
@@ -136,7 +150,7 @@ def normalize_profile_product(product: str, size: str) -> str:
 def profile_standard(product: str, size: str, current: str) -> str:
     compact = re.sub(r"\s+", "", size.upper())
     if product == "БАЛКИ ДВУТАВРОВЫЕ" and re.fullmatch(r"\d+(?:Б|Ш|К)\d+", compact):
-        return "ГОСТ Р 57837-2017"
+        return "ГОСТ 35087-2024"
     if product == "БАЛКИ ДВУТАВРОВЫЕ" and re.fullmatch(r"\d+М", compact):
         return "ГОСТ 19425-74"
     if product == "БАЛКИ ДВУТАВРОВЫЕ" and re.fullmatch(r"\d+(?:[.,]\d+)?", compact):
@@ -193,12 +207,23 @@ def parse_sheet(df: pd.DataFrame, root: str) -> list[dict]:
         previous_name, previous_unit, previous_price = name, unit, price
         product = normalize_section(section)
         is_pipe = "ТРУБ" in product.upper() and any(token in header1 for token in ("стен", "толщ"))
-        dimension_base, pipe_designation = split_pipe_primary(name) if is_pipe and combine_dimensions else (normalize_designation(name), "")
+        if is_pipe and combine_dimensions:
+            dimension_base, pipe_designation = split_pipe_primary(name)
+        elif root == "Крепеж" and combine_dimensions:
+            dimension_base, pipe_designation = split_fastener_primary(name)
+        else:
+            dimension_base, pipe_designation = normalize_designation(name), ""
         dimension_base, size_note = normalize_primary_size(dimension_base)
-        display_designation = pipe_designation if is_pipe and combine_dimensions else ("" if combine_dimensions else normalize_designation(name))
+        display_designation = pipe_designation if (is_pipe or root == "Крепеж") and combine_dimensions else ("" if combine_dimensions else normalize_designation(name))
         standard = standard_from(product + " " + name)
         for one_size in split_sizes(size):
             one_size = normalize_designation(one_size)
+            # Printed price exports occasionally contain a technical zero placeholder,
+            # not a sellable size. It must never appear in the public assortment.
+            if re.fullmatch(r"0+(?:[.,]0+)?", one_size):
+                continue
+            if re.search(r"\+?7\s*\(?\d{3}\)?\s*\d{3}[-\s]\d{2}[-\s]\d{2}", one_size):
+                continue
             wall = one_size if is_pipe and combine_dimensions else ""
             if combine_dimensions:
                 one_size = join_profile_size(dimension_base, one_size)
@@ -231,6 +256,8 @@ def parse_sheet(df: pd.DataFrame, root: str) -> list[dict]:
                 "status": "green",
                 "checkedAt": "30.08.2026",
             }
+            if normalized_standard and not standard:
+                row["standardBasis"] = "reference"
             if wall:
                 row["diameter"] = dimension_base
                 row["wall"] = wall
