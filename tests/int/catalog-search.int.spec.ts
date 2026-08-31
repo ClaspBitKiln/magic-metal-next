@@ -3,7 +3,7 @@ import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { matchesCatalogQuery, type CatalogSearchRow } from '@/lib/catalogSearch'
 import { decodeCatalogSnapshot } from '@/lib/catalogSnapshot'
-import { catalogTreePipeQueries, requestOnlyDirectoryQueries } from '@/data/catalogAvailability'
+import { catalogTreeDirectRequestQueries, catalogTreePipeQueries, requestOnlyDirectoryQueries } from '@/data/catalogAvailability'
 import { productDetailCatalog } from '@/data/productDetailCatalog'
 
 const snapshot = decodeCatalogSnapshot(JSON.parse(fs.readFileSync(path.join(process.cwd(), 'public/data/mc-price-snapshot.json'), 'utf8'))) as { rows: CatalogSearchRow[] }
@@ -45,7 +45,7 @@ describe('catalog search links', () => {
   it('covers every public catalog leaf with stock rows or an explicit RFQ route', () => {
     const hiddenSlugs = new Set(['krug-i-kvadrat', 'balka-shveller-ugolok'])
     const detailQueries = productDetailCatalog.filter((item) => !hiddenSlugs.has(item.slug)).map((item) => item.shortTitle)
-    const queries = [...catalogTreePipeQueries, ...detailQueries]
+    const queries = [...catalogTreePipeQueries, ...detailQueries, ...catalogTreeDirectRequestQueries]
 
     expect(new Set(queries).size).toBe(queries.length)
     for (const query of queries) {

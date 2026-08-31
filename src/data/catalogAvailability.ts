@@ -14,6 +14,11 @@ export const catalogTreePipeQueries = [
   'Заглушки и днища',
 ] as const
 
+export const catalogTreeDirectRequestQueries = [
+  'Трубы и СДТ с заводской изоляцией',
+  'Промышленное оборудование и комплектующие',
+] as const
+
 export const requestOnlyDirectoryQueryList = [
   'Котельные и крекинговые',
   'Нефтяного сортамента',
@@ -27,6 +32,7 @@ export const requestOnlyDirectoryQueryList = [
   'Валы и оси',
   'Поковки по чертежу',
   'Проволока и электроды',
+  ...catalogTreeDirectRequestQueries,
 ] as const
 
 export const requestOnlyDirectoryQueries = new Set<string>(requestOnlyDirectoryQueryList)

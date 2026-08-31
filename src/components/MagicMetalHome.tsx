@@ -52,6 +52,19 @@ const otherCatalogGroups = [
   { title: 'Метизы и сварочные материалы', note: 'Крепёж, сетка, лента, проволока, электроды и расходные материалы', categorySlug: 'metizy-i-svarochnye-materialy' },
 ]
 
+const directRequestCatalogGroups = [
+  {
+    title: 'Трубы и СДТ в изоляции',
+    note: 'ППУ, ВУС, ЦПП и эпоксидные покрытия заводского нанесения',
+    item: ['Трубы и СДТ с заводской изоляцией', 'по базовой трубе или детали', 'ГОСТ 30732 · ГОСТ 9.602 · ГОСТ Р 51164 · ТУ проекта', 'ППУ, ВУС, ЦПП и эпоксидные покрытия', '/produkciya/truby-i-sdt-v-izolyacii', '/#request'],
+  },
+  {
+    title: 'Оборудование и комплектующие',
+    note: 'Промышленное оборудование, детали и нестандартные позиции по техническому заданию',
+    item: ['Промышленное оборудование и комплектующие', 'по техническому заданию или чертежу', 'ГОСТ · ТУ · ОСТ · требования проекта', 'по назначению и условиям эксплуатации', '/?product=komplektuyushchie#request', '/?product=komplektuyushchie#request'],
+  },
+] as const
+
 const reveal = { hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }
 
 export default function MagicMetalHome() {
@@ -215,10 +228,6 @@ export default function MagicMetalHome() {
             </motion.details>)}
           </div>
         </details>)}
-        <details className="catalog-group" key="insulation">
-          <summary><i className="catalog-toggle" aria-hidden="true" /><span><strong>Трубы и СДТ в изоляции</strong><small>ППУ, ВУС, ЦПП и эпоксидные покрытия заводского нанесения</small></span></summary>
-          <Link className="catalog-item-link catalog-category-link" href="/produkciya/truby-i-sdt-v-izolyacii"><span>Открыть номенклатуру, стандарты и размерный ряд</span><b aria-hidden="true">→</b></Link>
-        </details>
         {otherCatalogGroups.map((group) => <details className="catalog-group" key={group.title}>
           <summary><i className="catalog-toggle" aria-hidden="true" /><span><strong>{group.title}</strong><small>{group.note}</small></span></summary>
           <div className="catalog-table" aria-label={group.title}>
@@ -229,10 +238,19 @@ export default function MagicMetalHome() {
             </motion.details>)}
           </div>
         </details>)}
-        <details className="catalog-group">
-          <summary><i className="catalog-toggle" aria-hidden="true" /><span><strong>Оборудование и комплектующие</strong><small>Промышленное оборудование, детали и нестандартные позиции по техническому заданию</small></span></summary>
-          <Link className="catalog-item-link catalog-category-link" href="/?product=komplektuyushchie#request"><span>Отправить техническое задание</span><b aria-hidden="true">→</b></Link>
-        </details>
+        {directRequestCatalogGroups.map((group) => {
+          const [title, size, standards, grades, detailHref, requestHref] = group.item
+          return <details className="catalog-group" key={group.title}>
+            <summary><i className="catalog-toggle" aria-hidden="true" /><span><strong>{group.title}</strong><small>{group.note}</small></span></summary>
+            <div className="catalog-table" aria-label={group.title}>
+              <div className="catalog-row catalog-labels" role="row"><span>Номенклатура</span><span>Размеры</span><span>Стандарты</span><span>Марки / исполнение</span></div>
+              <details className="catalog-item">
+                <summary className="catalog-row"><strong><i className="catalog-toggle" aria-hidden="true" /><span>{title}</span></strong><span>{size}</span><span className="standard-list">{standards.replace(/(ГОСТ|ТУ|ОСТ|СТО) /g, '$1\u00A0')}</span><span>{grades}</span></summary>
+                <div className="home-size-series"><span>Комплектация по требованиям проекта и условиям эксплуатации</span><Link className="verified-range-link" href={requestHref}>Запросить наличие и КП <b aria-hidden="true">→</b></Link><Link className="catalog-detail-link" href={detailHref}>Характеристики продукции</Link></div>
+              </details>
+            </div>
+          </details>
+        })}
       </div>
       </div>
       </section>
