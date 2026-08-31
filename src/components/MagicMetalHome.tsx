@@ -6,6 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { FormEvent, useEffect, useMemo, useState } from 'react'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
+import { requestOnlyDirectoryQueries } from '@/data/catalogAvailability'
 import { productDetailCatalog } from '@/data/productDetailCatalog'
 
 const pipeCatalog = [
@@ -203,35 +204,32 @@ export default function MagicMetalHome() {
         </div>
       <div className="product-unified" id="products" aria-labelledby="products-title">
       <div className="section catalog-section product-subsection">
-        <div className="catalog-head"><div><p className="product-subsection-label">Общий справочник по металлопрокату</p><h2 id="products-title">Категории<br /><em>и номенклатура</em></h2></div><p>Все виды продукции собраны в одном дереве. Откройте категорию, затем нужную номенклатуру: размеры, ГОСТ и исполнения раскрываются по «+» и скрываются по «−».</p></div>
+        <div className="catalog-head"><div><p className="product-subsection-label">Единый каталог металлопроката</p><h2 id="products-title">Категории<br /><em>и номенклатура</em></h2></div><p>Все виды продукции собраны в одном непрерывном дереве без отдельных каталогов. СДТ — такой же раздел общей номенклатуры, как трубы, листовой и сортовой прокат.</p></div>
         {catalogGroups.map((group, groupIndex) => <details className="catalog-group" key={group.title} open={groupIndex === 0}>
           <summary><i className="catalog-toggle" aria-hidden="true" /><span><strong>{group.title}</strong><small>{group.note}</small></span></summary>
           <div className="catalog-table" aria-label={group.title}>
             <div className="catalog-row catalog-labels" role="row"><span>Номенклатура</span><span>Размеры</span><span>Стандарты</span><span>Марки / исполнение</span></div>
-          {group.items.map(([title, size, standards, grades, href], index) => <motion.details className="catalog-item" key={title} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .35 }} variants={animation} transition={{ duration: .42, delay: Math.min(index * .035, .2) }}>
-            <summary className="catalog-row">
-              <strong><i className="catalog-toggle" aria-hidden="true" /><span>{title}</span></strong>
-              <span>{size}</span>
-              <span className="standard-list">{standards.replace(/(ГОСТ|ТУ|ОСТ|СТО) /g, '$1\u00A0')}</span>
-              <span>{grades}</span>
-            </summary>
-            <div className="home-size-series"><span>{assortmentByProduct[title]?.map((slug) => slug.replace('gost-', 'ГОСТ ').replaceAll('-', '–')).join(' · ') || 'Размеры по действующим стандартам'}</span><Link className="verified-range-link" href={`/spravochnik-nalichiya?q=${encodeURIComponent(title)}`}>Показать размеры и наличие <b aria-hidden="true">→</b></Link><Link className="catalog-detail-link" href={href}>Характеристики продукции</Link></div>
-          </motion.details>)}
+            {group.items.map(([title, size, standards, grades, href], index) => <motion.details className="catalog-item" key={title} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .35 }} variants={animation} transition={{ duration: .42, delay: Math.min(index * .035, .2) }}>
+              <summary className="catalog-row"><strong><i className="catalog-toggle" aria-hidden="true" /><span>{title}</span></strong><span>{size}</span><span className="standard-list">{standards.replace(/(ГОСТ|ТУ|ОСТ|СТО) /g, '$1\u00A0')}</span><span>{grades}</span></summary>
+              <div className="home-size-series"><span>{assortmentByProduct[title]?.map((slug) => slug.replace('gost-', 'ГОСТ ').replaceAll('-', '–')).join(' · ') || 'Размеры по действующим стандартам'}</span>{requestOnlyDirectoryQueries.has(title) ? <Link className="verified-range-link" href="/#request">Запросить наличие и КП <b aria-hidden="true">→</b></Link> : <Link className="verified-range-link" href={`/spravochnik-nalichiya?q=${encodeURIComponent(title)}`}>Показать размеры и наличие <b aria-hidden="true">→</b></Link>}<Link className="catalog-detail-link" href={href}>Характеристики продукции</Link></div>
+            </motion.details>)}
           </div>
         </details>)}
         <details className="catalog-group" key="insulation">
           <summary><i className="catalog-toggle" aria-hidden="true" /><span><strong>Трубы и СДТ в изоляции</strong><small>ППУ, ВУС, ЦПП и эпоксидные покрытия заводского нанесения</small></span></summary>
           <Link className="catalog-item-link catalog-category-link" href="/produkciya/truby-i-sdt-v-izolyacii"><span>Открыть номенклатуру, стандарты и размерный ряд</span><b aria-hidden="true">→</b></Link>
         </details>
-        {otherCatalogGroups.map((group) => <details className="catalog-group catalog-group-light" key={group.title}>
+        {otherCatalogGroups.map((group) => <details className="catalog-group" key={group.title}>
           <summary><i className="catalog-toggle" aria-hidden="true" /><span><strong>{group.title}</strong><small>{group.note}</small></span></summary>
-          <div className="directory-sublist">{productDetailCatalog.filter((item) => item.categorySlug === group.categorySlug && !hiddenDirectorySlugs.has(item.slug)).map((item) => <details className="directory-subitem" key={item.slug}>
-            <summary><i className="catalog-toggle" aria-hidden="true" /><strong>{item.shortTitle}</strong><span>{item.range.map((entry) => entry.value).join(' · ')}</span></summary>
-            <div><div className="directory-size-series"><b>Размерный ряд</b><Link className="verified-range-link" href={`/spravochnik-nalichiya?q=${encodeURIComponent(item.shortTitle)}`}>Открыть таблицу подтверждённых размеров →</Link></div><p><b>Стандарты:</b> {item.standards.join(' · ')}</p><p><b>Марки:</b> {item.grades.join(' · ')}</p></div>
-            <Link href={`/produkciya/${item.categorySlug}/${item.slug}`}><span>Открыть номенклатуру</span><b aria-hidden="true">→</b></Link>
-          </details>)}</div>
+          <div className="catalog-table" aria-label={group.title}>
+            <div className="catalog-row catalog-labels" role="row"><span>Номенклатура</span><span>Размеры</span><span>Стандарты</span><span>Марки / исполнение</span></div>
+            {productDetailCatalog.filter((item) => item.categorySlug === group.categorySlug && !hiddenDirectorySlugs.has(item.slug)).map((item, index) => <motion.details className="catalog-item" key={item.slug} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .35 }} variants={animation} transition={{ duration: .42, delay: Math.min(index * .035, .2) }}>
+              <summary className="catalog-row"><strong><i className="catalog-toggle" aria-hidden="true" /><span>{item.shortTitle}</span></strong><span>{item.range.map((entry) => entry.value).join(' · ')}</span><span className="standard-list">{item.standards.join(' · ').replace(/(ГОСТ|ТУ|ОСТ|СТО) /g, '$1\u00A0')}</span><span>{item.grades.join(' · ')}</span></summary>
+              <div className="home-size-series"><span>{item.range.map((entry) => `${entry.label}: ${entry.value}`).join(' · ')}</span>{requestOnlyDirectoryQueries.has(item.shortTitle) ? <Link className="verified-range-link" href="/#request">Запросить наличие и КП <b aria-hidden="true">→</b></Link> : <Link className="verified-range-link" href={`/spravochnik-nalichiya?q=${encodeURIComponent(item.shortTitle)}`}>Показать размеры и наличие <b aria-hidden="true">→</b></Link>}<Link className="catalog-detail-link" href={`/produkciya/${item.categorySlug}/${item.slug}`}>Характеристики продукции</Link></div>
+            </motion.details>)}
+          </div>
         </details>)}
-        <details className="catalog-group catalog-group-light">
+        <details className="catalog-group">
           <summary><i className="catalog-toggle" aria-hidden="true" /><span><strong>Оборудование и комплектующие</strong><small>Промышленное оборудование, детали и нестандартные позиции по техническому заданию</small></span></summary>
           <Link className="catalog-item-link catalog-category-link" href="/?product=komplektuyushchie#request"><span>Отправить техническое задание</span><b aria-hidden="true">→</b></Link>
         </details>

@@ -14,7 +14,30 @@ def numeric_key(value: str) -> list[float]:
 
 
 data = json.loads(Path(sys.argv[1]).read_text(encoding='utf-8'))
-rows = data['rows']
+if data.get('version') == 1:
+    strings = data['strings']
+    decoded_rows = []
+    for encoded in data['rows']:
+        row = {
+            'id': encoded[0],
+            'category': strings[encoded[1]],
+            'product': strings[encoded[2]],
+            'designation': strings[encoded[3]],
+            'size': strings[encoded[4]],
+            'standard': strings[encoded[5]],
+            'status': 'green',
+            'checkedAt': data['snapshotDate'],
+        }
+        if encoded[6] >= 0:
+            row['diameter'] = strings[encoded[6]]
+        if encoded[7] >= 0:
+            row['wall'] = strings[encoded[7]]
+        if encoded[8]:
+            row['standardBasis'] = 'reference'
+        decoded_rows.append(row)
+    rows = decoded_rows
+else:
+    rows = data['rows']
 keys = [(r['category'].casefold(), r['product'].casefold(), r['designation'].casefold(), r['size'].casefold(), r['standard'].casefold()) for r in rows]
 assert data['rowCount'] == len(rows), 'rowCount does not match rows'
 assert len(keys) == len(set(keys)), 'duplicate public rows'
@@ -29,6 +52,8 @@ assert not any(re.search(r'×\s*[БШКМУП]\d*$', r['size'], re.I) for r in r
 assert not any(re.fullmatch(r'0+(?:[.,]0+)?', r['size']) for r in rows), 'zero placeholder leaked as a sellable size'
 assert not any(re.search(r'\+?7\s*\(?\d{3}\)?\s*\d{3}[-\s]\d{2}[-\s]\d{2}', f"{r['designation']} {r['size']}") for r in rows), 'phone number leaked into technical fields'
 assert all(re.fullmatch(r'(?:М\s*)?\d+(?:[.,]\d+)?(?:×\d+(?:[.,]\d+)?)?', r['size'], re.I) for r in rows if r['category'] == 'Крепеж'), 'fastener name or coating leaked into the size field'
+assert not any(re.search(r'[A-Za-zА-Яа-яЁё]', r['size']) for r in rows if r['category'] == 'Метизы метсырьё'), 'metiz name leaked into the size field'
+assert all(re.fullmatch(r'\d+(?:[.,]\d+)?×\d+(?:[.,]\d+)?×\d+(?:[.,]\d+)?', r['size']) for r in rows if r['product'] == 'УГОЛОК'), 'steel angle size contains a grade, coating, or service marker'
 
 pipes = [r for r in rows if r['category'] == 'Трубы']
 assert pipes, 'pipe rows missing'
@@ -68,4 +93,4 @@ semantic_rules = {
 for product, forbidden in semantic_rules.items():
     assert not any(re.search(forbidden, f"{r['designation']} {r['size']}", re.I) for r in rows if r['product'] == product), f'semantic contamination: {product}'
 
-print(json.dumps({'rows': len(rows), 'pipes': len(pipes), 'beams': len(beams), 'checks': 27, 'status': 'passed'}, ensure_ascii=False))
+print(json.dumps({'rows': len(rows), 'pipes': len(pipes), 'beams': len(beams), 'checks': 29, 'status': 'passed'}, ensure_ascii=False))

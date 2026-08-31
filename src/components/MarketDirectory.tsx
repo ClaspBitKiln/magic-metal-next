@@ -4,21 +4,7 @@ import { useDeferredValue, useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { formatProductTitle, matchesCatalogQuery } from '@/lib/catalogSearch'
-
-type PriceRow = {
-  id: string
-  category: string
-  product: string
-  designation: string
-  size: string
-  standard: string
-  diameter?: string
-  wall?: string
-  status: 'green'
-  checkedAt: string
-}
-
-type Snapshot = { snapshotDate: string; rowCount: number; rows: PriceRow[] }
+import { decodeCatalogSnapshot, type CatalogPriceRow as PriceRow, type CatalogSnapshot as Snapshot } from '@/lib/catalogSnapshot'
 
 const preferredCategories = ['Трубы', 'Сортовой прокат (цена от 5 т.)', 'Листовой прокат', 'Качественный прокат', 'Нержавейка', 'Цветной прокат', 'Метизы метсырьё', 'Крепеж', 'Инженерные системы', 'Профнастил']
 const categoryLabel = (value: string) => ({
@@ -43,7 +29,8 @@ export default function MarketDirectory() {
     fetch('/data/mc-price-snapshot.json').then((response) => {
       if (!response.ok) throw new Error('catalog load failed')
       return response.json()
-    }).then((data) => {
+    }).then((payload) => {
+      const data = decodeCatalogSnapshot(payload)
       const params = new URLSearchParams(window.location.search)
       const initialQuery = params.get('q') || ''
       const initialCategory = params.get('category')

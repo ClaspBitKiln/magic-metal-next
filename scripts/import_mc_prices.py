@@ -228,6 +228,15 @@ def parse_sheet(df: pd.DataFrame, root: str) -> list[dict]:
             if combine_dimensions:
                 one_size = join_profile_size(dimension_base, one_size)
             normalized_product = normalize_profile_product(product, one_size)
+            # Some cells in the printed export join a product description to a
+            # neighbouring numeric size. Keep only structurally valid public rows;
+            # do not guess how the supplier intended to split those cells.
+            if root == "Метизы метсырьё" and re.search(r"[A-Za-zА-Яа-яЁё]", one_size):
+                continue
+            if normalized_product == "УГОЛОК" and not re.fullmatch(
+                r"\d+(?:[.,]\d+)?×\d+(?:[.,]\d+)?×\d+(?:[.,]\d+)?", one_size
+            ):
+                continue
             # In the welded stainless export, rectangular profiles are encoded as
             # side A / side B under the generic "size / wall" heading.
             primary_number = re.fullmatch(r"\d+(?:[.,]\d+)?", dimension_base)
@@ -279,11 +288,36 @@ def main(price_dir: Path, output: Path) -> None:
         key = tuple(row[k].casefold() for k in ("category", "product", "designation", "size", "standard"))
         unique[key] = row
     normalized = sorted(unique.values(), key=lambda r: (r["category"], r["product"], number_key(r["size"]), r["designation"]))
+    strings: list[str] = []
+    string_indexes: dict[str, int] = {}
+
+    def string_index(value: str) -> int:
+        if value not in string_indexes:
+            string_indexes[value] = len(strings)
+            strings.append(value)
+        return string_indexes[value]
+
+    encoded_rows = [
+        [
+            row["id"],
+            string_index(row["category"]),
+            string_index(row["product"]),
+            string_index(row["designation"]),
+            string_index(row["size"]),
+            string_index(row["standard"]),
+            string_index(row["diameter"]) if row.get("diameter") else -1,
+            string_index(row["wall"]) if row.get("wall") else -1,
+            1 if row.get("standardBasis") == "reference" else 0,
+        ]
+        for row in normalized
+    ]
     payload = {
+        "version": 1,
         "snapshotDate": "30.08.2026",
         "statusRule": "Строка официального прайса МЕТАЛЛСЕРВИС — На складе",
-        "rowCount": len(normalized),
-        "rows": normalized,
+        "rowCount": len(encoded_rows),
+        "strings": strings,
+        "rows": encoded_rows,
     }
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")

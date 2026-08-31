@@ -6,18 +6,7 @@ import { materialSpecs } from '@/data/materialSpecs'
 import { materials } from '@/data/materials'
 import AddToQuoteButton from '@/components/AddToQuoteButton'
 import { formatProductTitle } from '@/lib/catalogSearch'
-
-type PriceRow = {
-  id: string
-  category: string
-  product: string
-  designation: string
-  size: string
-  standard: string
-  diameter?: string
-  wall?: string
-  checkedAt: string
-}
+import { decodeCatalogSnapshot, type CatalogPriceRow as PriceRow } from '@/lib/catalogSnapshot'
 
 const n = (value = '') => Number(value.replace(',', '.'))
 const fmt = (value: number) => new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 3 }).format(value)
@@ -72,7 +61,7 @@ export default function CatalogPosition() {
     fetch('/data/mc-price-snapshot.json').then((response) => {
       if (!response.ok) throw new Error('catalog load failed')
       return response.json()
-    }).then((data) => setRow(data.rows.find((item: PriceRow) => item.id === id) || null)).catch(() => setLoadError(true))
+    }).then((payload) => decodeCatalogSnapshot(payload)).then((data) => setRow(data.rows.find((item) => item.id === id) || null)).catch(() => setLoadError(true))
   }, [])
 
   const mass = useMemo(() => row ? unitMass(row) : null, [row])
