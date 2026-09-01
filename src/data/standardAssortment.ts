@@ -2,7 +2,7 @@ export type MarketSignal = 'green' | 'yellow' | 'red'
 
 export const availabilityLabels: Record<MarketSignal, string> = {
   green: 'На складе',
-  yellow: 'Наличие уточняется',
+  yellow: 'Под заказ',
   red: 'Под заказ',
 }
 
