@@ -3,6 +3,7 @@
 import { useDeferredValue, useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import AddToQuoteButton from '@/components/AddToQuoteButton'
 import { formatProductTitle, matchesCatalogQuery } from '@/lib/catalogSearch'
 import { decodeCatalogSnapshot, type CatalogPriceRow as PriceRow, type CatalogSnapshot as Snapshot } from '@/lib/catalogSnapshot'
 
@@ -66,13 +67,13 @@ function MarketProductGroup({ group, globalSearch, openByDefault }: { group: Dir
     <summary><i aria-hidden="true" /><span><small>{globalSearch ? categoryLabel(category) : 'Подраздел'}</small><b>{product}</b><small>{group.rows.length} {positionWord(group.rows.length)} на складе{group.practical ? ` · ${group.practical.sizes.length.toLocaleString('ru-RU')} в практическом ряду` : ''}</small></span><em className={practicalSizes.length ? 'stock-yellow' : 'stock-green'}><i />{practicalSizes.length ? 'Склад + под заказ' : 'На складе'}</em></summary>
     {opened && <>
       {group.practical && <div className="market-practical-note"><b>Практический размерный ряд</b><span>Размер присутствует в отраслевом предложении, но не означает текущий остаток. Зелёным отмечены только позиции из подтверждённого складского прайса.</span></div>}
-      <div className="market-table-wrap"><table><thead><tr>{pipeDimensions ? <><th>Диаметр / профиль</th><th>Толщина стенки</th></> : <th>Размер</th>}<th>Марка / исполнение</th><th>ГОСТ / ТУ</th><th>Наличие</th></tr></thead><tbody>
+      <div className="market-table-wrap"><table><thead><tr>{pipeDimensions ? <><th>Диаметр / профиль</th><th>Толщина стенки</th></> : <th>Размер</th>}<th>Марка / исполнение</th><th>ГОСТ / ТУ</th><th>Наличие</th><th><span className="visually-hidden">Действие</span></th></tr></thead><tbody>
         {visibleRows.map((entry, rowIndex) => {
           if (entry.kind === 'stock') {
             const row = entry.row
             const positionUrl = `/poziciya?id=${row.id}&returnTo=${encodeURIComponent(window.location.pathname + window.location.search)}`
             const openPosition = () => router.push(positionUrl)
-            return <tr className="market-position-row" tabIndex={0} role="link" aria-label={`Открыть ${formatProductTitle(row.product)}, ${row.size}`} onClick={openPosition} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openPosition() } }} key={`${row.id}-${rowIndex}`}>{pipeDimensions ? <><td data-label="Диаметр / профиль">{row.diameter || row.size}</td><td data-label="Толщина стенки">{row.wall || '—'}</td></> : <td data-label="Размер">{row.size}</td>}<td data-label="Марка / исполнение">{row.designation || '—'}</td><td data-label="ГОСТ / ТУ">{row.standard || 'По прайсу'}</td><td data-label="Наличие"><span className="stock-green"><i />На складе</span></td></tr>
+            return <tr className="market-position-row" tabIndex={0} role="link" aria-label={`Открыть ${formatProductTitle(row.product)}, ${row.size}`} onClick={openPosition} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openPosition() } }} key={`${row.id}-${rowIndex}`}>{pipeDimensions ? <><td data-label="Диаметр / профиль">{row.diameter || row.size}</td><td data-label="Толщина стенки">{row.wall || '—'}</td></> : <td data-label="Размер">{row.size}</td>}<td data-label="Марка / исполнение">{row.designation || '—'}</td><td data-label="ГОСТ / ТУ">{row.standard || 'По прайсу'}</td><td data-label="Наличие"><span className="stock-green"><i />На складе</span></td><td data-label="Действие" className="market-row-action" onClick={(event) => event.stopPropagation()} onKeyDown={(event) => event.stopPropagation()}><AddToQuoteButton compact item={{ id: row.id, product: row.product, size: row.size, designation: row.designation, standard: row.standard }} /></td></tr>
           }
           const size = entry.size
           const parts = size.split('×')
@@ -80,7 +81,7 @@ function MarketProductGroup({ group, globalSearch, openByDefault }: { group: Dir
           const diameter = isProfile && parts.length > 2 ? parts.slice(0, -1).join('×') : parts[0]
           const wall = parts.length > 1 ? parts.at(-1) : '—'
           const requestUrl = `/?product=${encodeURIComponent(product)}&size=${encodeURIComponent(size)}#request`
-          return <tr className="market-position-row market-practical-row" tabIndex={0} role="link" aria-label={`Запросить ${product}, ${size}`} onClick={() => router.push(requestUrl)} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); router.push(requestUrl) } }} key={`practical-${size}-${rowIndex}`}>{pipeDimensions ? <><td data-label="Диаметр / профиль">{diameter}</td><td data-label="Толщина стенки">{wall}</td></> : <td data-label="Размер">{size}</td>}<td data-label="Марка / исполнение">По заявке</td><td data-label="ГОСТ / ТУ">Проверим по спецификации</td><td data-label="Наличие"><span className="stock-yellow"><i />Наличие уточняется</span></td></tr>
+          return <tr className="market-position-row market-practical-row" tabIndex={0} role="link" aria-label={`Запросить ${product}, ${size}`} onClick={() => router.push(requestUrl)} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); router.push(requestUrl) } }} key={`practical-${size}-${rowIndex}`}>{pipeDimensions ? <><td data-label="Диаметр / профиль">{diameter}</td><td data-label="Толщина стенки">{wall}</td></> : <td data-label="Размер">{size}</td>}<td data-label="Марка / исполнение">По заявке</td><td data-label="ГОСТ / ТУ">Проверим по спецификации</td><td data-label="Наличие"><span className="stock-yellow"><i />Наличие уточняется</span></td><td data-label="Действие" className="market-row-action"><span>Открыть заявку →</span></td></tr>
         })}
       </tbody></table></div>
       {visibleCount < combinedRows.length && <button className="market-show-more" type="button" onClick={() => setVisibleCount((count) => count + 50)}>Показать ещё 50 <span>{visibleCount.toLocaleString('ru-RU')} из {combinedRows.length.toLocaleString('ru-RU')}</span></button>}
@@ -170,6 +171,7 @@ export default function MarketDirectory() {
       <label><span>Поиск сразу по всему справочнику</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Номенклатура, размер, марка или ГОСТ" /></label>
       <p><b>{snapshot.rowCount.toLocaleString('ru-RU')}</b> на складе · <b>{practicalSnapshot.sizeCount.toLocaleString('ru-RU')}</b> типоразмеров в практическом ряду</p>
     </div>
+    <ol className="market-flow" aria-label="Как запросить коммерческое предложение"><li><b>01</b><span>Найдите размер</span></li><li><b>02</b><span>Добавьте позиции</span></li><li><b>03</b><span>Укажите объём и получите КП</span></li></ol>
     <label className="market-category-select"><span>Раздел справочника</span><select value={category} onChange={(event) => selectCategory(event.target.value)}>{categories.map((item) => <option value={item} key={item}>{categoryLabel(item)} — {categoryCounts.get(item)?.toLocaleString('ru-RU')}</option>)}</select></label>
     <div className="market-browser">
       <nav className="market-tabs" aria-label="Разделы справочника">{categories.map((item) => <button className={!query && item === category ? 'active' : ''} onClick={() => selectCategory(item)} key={item}><span>{categoryLabel(item)}</span><b>{categoryCounts.get(item)?.toLocaleString('ru-RU')}</b></button>)}</nav>
