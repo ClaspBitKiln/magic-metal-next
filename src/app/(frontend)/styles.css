@@ -2589,8 +2589,8 @@ main select {
 /* Harmonized status palette: green = available/action, yellow = pending, red = unavailable/error. */
 :root {
   --state-green: #35b978;
-  --state-green-dark: #19764e;
-  --state-green-soft: #edf8f2;
+  --state-green-dark: #4d6f63;
+  --state-green-soft: #f2f6f4;
   --state-yellow: #b79a3e;
   --state-yellow-dark: #80691f;
   --state-yellow-soft: #faf6e8;
@@ -2606,12 +2606,12 @@ main select {
   background: var(--state-green-dark);
   color: #fff;
 }
-.add-to-quote button:hover,.quote-form button:hover { background: #125f3e; }
-.add-to-quote .quote-secondary { border-color: #78b99a; background: var(--state-green-soft); color: #155f42; }
-.quote-dock { border-color: #69b18e; background: #155f42; box-shadow: 0 14px 42px rgba(18,91,62,.22); }
+.add-to-quote button:hover,.quote-form button:hover { background: #405e54; }
+.add-to-quote .quote-secondary { border-color: #a7b9b2; background: var(--state-green-soft); color: #405f54; }
+.quote-dock { border-color: #82958f; background: #435c55; box-shadow: 0 14px 42px rgba(35,61,54,.18); }
 .quote-dock div b { color: var(--state-green-dark); }
-.quote-dock a { background: #278f60; }
-.quote-dock a:hover { background: #1f784f; }
+.quote-dock a { background: #5a796e; }
+.quote-dock a:hover { background: #4b685e; }
 .cart-link b { background: var(--state-green-dark); }
 .quote-success { border-top: 4px solid var(--state-green); }
 .quote-success a { background: var(--state-green-dark); }
