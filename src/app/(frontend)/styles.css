@@ -2549,3 +2549,26 @@ main select {
   .position-buy { margin-bottom: 56px; padding: 28px 30px; }
   .quote-layout { margin-top: 40px; margin-bottom: 62px; }
 }
+
+/* Restrained industrial palette for the market directory. */
+.market-page { background: #eef2f6; }
+.market-tabs { border-color: #c8d1de; box-shadow: 0 4px 16px rgba(17,38,67,.05); }
+.market-tabs button { color: #2f435d; }
+.market-tabs button:hover { background: #edf2f7; }
+.market-tabs button.active { color: #fff; background: #123a68; box-shadow: inset 4px 0 #6f9cc9; }
+.market-tabs button.active b { color: #d6e3f1; opacity: 1; }
+.market-category-title { background: #123a68; border-left-color: #6f9cc9; }
+.market-category-title span { color: #b9d0e7; }
+.market-group { border-color: #c8d2df; border-left-color: #86a4c2; }
+.market-group > summary,.market-group[open] > summary { background: #e8eef4; }
+.market-table-wrap th { color: #4a5e75; background: #edf1f5; }
+.market-table-wrap td { color: #293c52; }
+.market-practical-row { background: #f8f9fa; }
+.market-position-row:hover { background: #e8f0f8; box-shadow: inset 3px 0 #527faa; }
+.stock-green { color: #4f8f78; }
+.stock-yellow { color: #66717f; }
+.add-to-quote.compact button { border-color: #315f8c; background: #315f8c; }
+.market-row-action > span { color: #315f8c; }
+.market-show-more { color: #315f8c; background: #edf2f7; }.market-show-more:hover { background: #e1e8f0; }
+.quote-dock { border-color: #587fa5; background: #102f52; }.quote-dock a { background: #315f8c; }
+.market-filters { background: #f4f6f8; }.market-filters select { border-color: #b7c3d0; }.market-filters button { border-color: #315f8c; color: #315f8c; }
