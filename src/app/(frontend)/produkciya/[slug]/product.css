@@ -219,6 +219,15 @@
     font-size: 43px;
   }
 }
+
+/* Dense category table: one readable row per attribute group. */
+.product-facts { display: block; margin: 0; border-top: 2px solid #071c62; }
+.product-facts > div { display: grid; grid-template-columns: minmax(150px,.55fr) 1.45fr; gap: 24px; padding: 17px 4px; border-bottom: 1px solid #c5cedf; }
+.product-facts dt { color: #0757e8; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.product-facts dd { margin: 0; display: flex; flex-wrap: wrap; gap: 6px 16px; color: #46516a; font-size: 14px; line-height: 1.45; }
+.product-facts dd span { display: inline; padding: 0; border: 0; color: inherit; font-size: inherit; }
+.product-facts dd span:not(:last-child)::after { content: '·'; margin-left: 16px; color: #9aa8bf; }
+@media (max-width: 760px) { .product-facts > div { grid-template-columns: 1fr; gap: 8px; } }
 .product-materials {
   padding: 75px 7vw 90px;
   color: #fff;

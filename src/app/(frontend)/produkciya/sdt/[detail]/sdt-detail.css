@@ -294,6 +294,20 @@
   }
 }
 
+/* Dense specification table: replaces oversized information cards. */
+.sdt-grid { display: grid; grid-template-columns: .55fr 1.45fr; gap: 6vw; margin: 0; padding: 56px 7vw 70px; border: 0; background: #fff; }
+.sdt-grid-heading > p { margin: 0 0 22px; color: #0757e8; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.sdt-grid h2 { min-height: 0; margin: 0; font-size: clamp(28px,3vw,44px); }
+.sdt-grid dl { margin: 0; border-top: 2px solid #071c62; }
+.sdt-grid dl > div { display: grid; grid-template-columns: minmax(160px,.6fr) 1.4fr; gap: 28px; padding: 18px 4px; border-bottom: 1px solid #c4cedf; }
+.sdt-grid dt { color: #0757e8; font-size: 12px; font-weight: 700; text-transform: uppercase; }
+.sdt-grid dd { margin: 0; display: flex; flex-wrap: wrap; gap: 6px 18px; color: #34415d; font-size: 14px; line-height: 1.5; }
+.sdt-grid dd span { display: inline; padding: 0; border: 0; color: inherit; font-size: inherit; }
+.sdt-grid dd span:not(:last-of-type)::after { content: '·'; margin-left: 18px; color: #9aa8bf; }
+.sdt-grid small { flex-basis: 100%; margin: 6px 0 0; color: #7b8497; font-size: 11px; line-height: 1.5; }
+@media (max-width: 850px) { .sdt-grid { grid-template-columns: 1fr; margin: 0; padding: 50px 22px 65px; } }
+@media (max-width: 560px) { .sdt-grid dl > div { grid-template-columns: 1fr; gap: 8px; } }
+
 /* Unified readable type scale */
 .sdt-nav {
   font-size: 13px;

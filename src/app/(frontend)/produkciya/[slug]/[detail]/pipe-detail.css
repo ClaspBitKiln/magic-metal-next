@@ -313,3 +313,15 @@
     grid-row: 1;
   }
 }
+
+/* Dense specification table: replaces oversized information cards. */
+.pipe-facts { padding: 56px 7vw 70px; grid-template-columns: .55fr 1.45fr; gap: 6vw; background: #fff; }
+.pipe-facts-heading > p { margin: 0 0 22px; color: #0757e8; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.pipe-facts h2 { margin: 0; font-size: clamp(28px,3vw,44px); }
+.pipe-facts dl { margin: 0; border-top: 2px solid #071c62; }
+.pipe-facts dl > div { display: grid; grid-template-columns: minmax(160px,.6fr) 1.4fr; gap: 28px; padding: 18px 4px; border-bottom: 1px solid #c4cedf; }
+.pipe-facts dt { color: #0757e8; font-size: 12px; font-weight: 700; text-transform: uppercase; }
+.pipe-facts dd { margin: 0; display: flex; flex-wrap: wrap; gap: 6px 18px; color: #34415d; font-size: 14px; line-height: 1.5; }
+.pipe-facts dd span:not(:last-child)::after { content: '·'; margin-left: 18px; color: #9aa8bf; }
+@media (max-width: 900px) { .pipe-facts { grid-template-columns: 1fr; } }
+@media (max-width: 560px) { .pipe-facts { padding: 50px 22px 65px; }.pipe-facts dl > div { grid-template-columns: 1fr; gap: 8px; } }
