@@ -325,3 +325,18 @@
 .pipe-facts dd span:not(:last-child)::after { content: '·'; margin-left: 18px; color: #9aa8bf; }
 @media (max-width: 900px) { .pipe-facts { grid-template-columns: 1fr; } }
 @media (max-width: 560px) { .pipe-facts { padding: 50px 22px 65px; }.pipe-facts dl > div { grid-template-columns: 1fr; gap: 8px; } }
+
+/* Medium-density product layout: headings above full-width tables. */
+@media (min-width: 901px) {
+  .pipe-hero { min-height: 340px; padding-top: 44px; padding-bottom: 44px; }
+  .pipe-intro,.pipe-spec,.pipe-standards,.pipe-request { padding-top: 46px; padding-bottom: 50px; grid-template-columns: 1fr; gap: 24px; }
+  .pipe-intro h2,.pipe-spec h2,.pipe-standards h2,.pipe-request h2 { max-width: 900px; }
+  .pipe-intro > div:last-child { display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: start; }
+  .pipe-intro > div:last-child a { margin-top: 0; white-space: nowrap; }
+  .pipe-spec dl,.pipe-standards > div:last-child,.pipe-request ol { width: 100%; }
+  .pipe-facts { padding-top: 46px; padding-bottom: 50px; grid-template-columns: 1fr; gap: 24px; }
+  .pipe-facts-heading { display: flex; align-items: end; justify-content: space-between; gap: 28px; }
+  .pipe-facts-heading > p { margin-bottom: 7px; }
+  .pipe-more { padding-top: 44px; padding-bottom: 50px; }
+  .pipe-conversion { padding-top: 48px; padding-bottom: 54px; }
+}
