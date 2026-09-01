@@ -25,6 +25,21 @@ type PracticalSnapshot = {
 }
 
 type DirectoryGroup = { rows: PriceRow[]; practical?: PracticalGroup }
+type MarketFilterControls = {
+  mainSize: string
+  wall: string
+  designation: string
+  standard: string
+  sizes: string[]
+  walls: string[]
+  designations: string[]
+  standards: string[]
+  setMainSize: (value: string) => void
+  setWall: (value: string) => void
+  setDesignation: (value: string) => void
+  setStandard: (value: string) => void
+  reset: () => void
+}
 
 const preferredCategories = ['Трубы', 'Сортовой прокат (цена от 5 т.)', 'Листовой прокат', 'Качественный прокат', 'Нержавейка', 'Цветной прокат', 'Метизы метсырьё', 'Крепеж', 'Инженерные системы', 'Профнастил']
 const categoryLabel = (value: string) => ({
@@ -48,7 +63,7 @@ const compareSizes = (left: string, right: string) => {
   return left.localeCompare(right, 'ru', { numeric: true })
 }
 
-function MarketProductGroup({ group, globalSearch, openByDefault, filtersActive }: { group: DirectoryGroup; globalSearch: boolean; openByDefault: boolean; filtersActive: boolean }) {
+function MarketProductGroup({ group, globalSearch, openByDefault, filtersActive, filterControls }: { group: DirectoryGroup; globalSearch: boolean; openByDefault: boolean; filtersActive: boolean; filterControls: MarketFilterControls }) {
   const router = useRouter()
   const [opened, setOpened] = useState(openByDefault)
   const [visibleCount, setVisibleCount] = useState(50)
@@ -67,7 +82,17 @@ function MarketProductGroup({ group, globalSearch, openByDefault, filtersActive 
     <summary><i aria-hidden="true" /><span><small>{globalSearch ? categoryLabel(category) : 'Подраздел'}</small><b>{product}</b><small>{group.rows.length} {positionWord(group.rows.length)} на складе{group.practical ? ` · ${group.practical.sizes.length.toLocaleString('ru-RU')} в практическом ряду` : ''}</small></span><em className={practicalSizes.length ? 'stock-yellow' : 'stock-green'}><i />{practicalSizes.length ? 'Склад + под заказ' : 'На складе'}</em></summary>
     {opened && <>
       {group.practical && <div className="market-practical-note"><b>Практический размерный ряд</b><span>Размер присутствует в отраслевом предложении, но не означает текущий остаток. Зелёным отмечены только позиции из подтверждённого складского прайса.</span></div>}
-      <div className="market-table-wrap"><table><thead><tr>{pipeDimensions ? <><th>Диаметр / профиль</th><th>Толщина стенки</th></> : <th>Размер</th>}<th>Марка / исполнение</th><th>ГОСТ / ТУ</th><th>Наличие</th><th><span className="visually-hidden">Действие</span></th></tr></thead><tbody>
+      <div className="market-table-wrap"><table><thead>
+        <tr className="market-table-headings">{pipeDimensions ? <><th>Диаметр / профиль</th><th>Толщина стенки</th></> : <th>Размер</th>}<th>Марка / исполнение</th><th>ГОСТ / ТУ</th><th>Наличие</th><th><span className="visually-hidden">Действие</span></th></tr>
+        <tr className="market-table-filter-row">
+          <th><select aria-label={pipeDimensions ? 'Фильтр по диаметру или профилю' : 'Фильтр по размеру'} value={filterControls.mainSize} onChange={(event) => filterControls.setMainSize(event.target.value)}><option value="">Все размеры</option>{filterControls.sizes.map((value) => <option value={value} key={value}>{value} мм</option>)}</select></th>
+          {pipeDimensions && <th><select aria-label="Фильтр по толщине стенки" value={filterControls.wall} onChange={(event) => filterControls.setWall(event.target.value)}><option value="">Все толщины</option>{filterControls.walls.map((value) => <option value={value} key={value}>{value} мм</option>)}</select></th>}
+          <th><select aria-label="Фильтр по марке или исполнению" value={filterControls.designation} onChange={(event) => filterControls.setDesignation(event.target.value)}><option value="">Все марки</option>{filterControls.designations.map((value) => <option value={value} key={value}>{value}</option>)}</select></th>
+          <th><select aria-label="Фильтр по ГОСТ или ТУ" value={filterControls.standard} onChange={(event) => filterControls.setStandard(event.target.value)}><option value="">Все стандарты</option>{filterControls.standards.map((value) => <option value={value} key={value}>{value}</option>)}</select></th>
+          <th><span className="market-filter-hint">Все статусы</span></th>
+          <th><button type="button" onClick={filterControls.reset} disabled={!filtersActive}>Сбросить</button></th>
+        </tr>
+      </thead><tbody>
         {visibleRows.map((entry, rowIndex) => {
           if (entry.kind === 'stock') {
             const row = entry.row
@@ -189,20 +214,13 @@ export default function MarketDirectory() {
       <p><b>{snapshot.rowCount.toLocaleString('ru-RU')}</b> на складе · <b>{practicalSnapshot.sizeCount.toLocaleString('ru-RU')}</b> типоразмеров в практическом ряду</p>
     </div>
     <ol className="market-flow" aria-label="Как запросить коммерческое предложение"><li><b>01</b><span>Найдите размер</span></li><li><b>02</b><span>Добавьте позиции</span></li><li><b>03</b><span>Укажите объём и получите КП</span></li></ol>
-    <div className="market-filters" aria-label="Фильтры каталога">
-      <label><span>Основной размер</span><select value={mainSize} onChange={(event) => setMainSize(event.target.value)}><option value="">Все размеры</option>{filterOptions.sizes.map((value) => <option value={value} key={value}>{value} мм</option>)}</select></label>
-      <label><span>Толщина</span><select value={wall} onChange={(event) => setWall(event.target.value)}><option value="">Все толщины</option>{filterOptions.walls.map((value) => <option value={value} key={value}>{value} мм</option>)}</select></label>
-      <label><span>Марка / исполнение</span><select value={designation} onChange={(event) => setDesignation(event.target.value)}><option value="">Все марки</option>{filterOptions.designations.map((value) => <option value={value} key={value}>{value}</option>)}</select></label>
-      <label><span>ГОСТ / ТУ</span><select value={standard} onChange={(event) => setStandard(event.target.value)}><option value="">Все стандарты</option>{filterOptions.standards.map((value) => <option value={value} key={value}>{value}</option>)}</select></label>
-      <button type="button" onClick={resetFilters} disabled={!filtersActive}>Сбросить</button>
-    </div>
     <label className="market-category-select"><span>Раздел справочника</span><select value={category} onChange={(event) => selectCategory(event.target.value)}>{categories.map((item) => <option value={item} key={item}>{categoryLabel(item)} — {categoryCounts.get(item)?.toLocaleString('ru-RU')}</option>)}</select></label>
     <div className="market-browser">
       <nav className="market-tabs" aria-label="Разделы справочника">{categories.map((item) => <button className={!query && item === category ? 'active' : ''} onClick={() => selectCategory(item)} key={item}><span>{categoryLabel(item)}</span><b>{categoryCounts.get(item)?.toLocaleString('ru-RU')}</b></button>)}</nav>
       <section className="market-results">
         <div className="market-category-title"><span>{query ? 'Поиск по всем разделам' : 'Раздел'}</span><h2>{query ? `Результаты: «${query}»` : categoryLabel(category)}</h2>{query && <button onClick={() => setQuery('')}>Сбросить поиск</button>}</div>
         <div className="market-groups">
-          {groups.map((group, index) => <MarketProductGroup group={group} globalSearch={Boolean(query)} openByDefault={(Boolean(query) || filtersActive) && groups.length === 1 && index === 0} filtersActive={filtersActive} key={`${group.practical?.id || group.rows[0].product}-${query}-${mainSize}-${wall}-${designation}-${standard}`} />)}
+          {groups.map((group, index) => <MarketProductGroup group={group} globalSearch={Boolean(query)} openByDefault={(Boolean(query) || filtersActive) && groups.length === 1 && index === 0} filtersActive={filtersActive} filterControls={{ mainSize, wall, designation, standard, sizes: filterOptions.sizes, walls: filterOptions.walls, designations: filterOptions.designations, standards: filterOptions.standards, setMainSize, setWall, setDesignation, setStandard, reset: resetFilters }} key={`${group.practical?.id || group.rows[0].product}-${query}-${mainSize}-${wall}-${designation}-${standard}`} />)}
           {!groups.length && <div className="market-empty"><b>Позиции не найдены</b><span>Типоразмер может быть изготовлен по ГОСТ или ТУ после проверки спецификации.</span><Link href="/#request">Запросить изготовление и КП →</Link></div>}
         </div>
       </section>
