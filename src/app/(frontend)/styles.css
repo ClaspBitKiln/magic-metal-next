@@ -2562,13 +2562,26 @@ main select {
 .market-group { border-color: #c8d2df; border-left-color: #86a4c2; }
 .market-group > summary,.market-group[open] > summary { background: #e8eef4; }
 .market-table-wrap th { color: #4a5e75; background: #edf1f5; }
+.market-table-filter-row th { top: 43px; padding: 8px 10px; background: #f6f8fa; text-transform: none; letter-spacing: 0; }
+.market-table-filter-row select { width: 100%; min-width: 110px; min-height: 34px; padding: 0 28px 0 9px; border: 1px solid #b7c3d0; border-radius: 3px; color: #33475d; background: #fff; font: 600 11px/1.2 var(--font-body); }
+.market-table-filter-row button { min-height: 34px; padding: 0 10px; border: 1px solid #315f8c; border-radius: 3px; color: #315f8c; background: #fff; font: 700 11px/1 var(--font-body); cursor: pointer; white-space: nowrap; }
+.market-table-filter-row button:disabled { opacity: .35; cursor: default; }
+.market-filter-hint { color: #718094; font-size: 11px; font-weight: 600; white-space: nowrap; }
 .market-table-wrap td { color: #293c52; }
 .market-practical-row { background: #f8f9fa; }
 .market-position-row:hover { background: #e8f0f8; box-shadow: inset 3px 0 #527faa; }
-.stock-green { color: #4f8f78; }
+.stock-green { color: #2fbf71; }
 .stock-yellow { color: #a88b32; }
 .add-to-quote.compact button { border-color: #315f8c; background: #315f8c; }
 .market-row-action > span { color: #315f8c; }
 .market-show-more { color: #315f8c; background: #edf2f7; }.market-show-more:hover { background: #e1e8f0; }
 .quote-dock { border-color: #587fa5; background: #102f52; }.quote-dock a { background: #315f8c; }
 .market-filters { background: #f4f6f8; }.market-filters select { border-color: #b7c3d0; }.market-filters button { border-color: #315f8c; color: #315f8c; }
+@media (max-width: 760px) {
+  .market-table-wrap thead { position: static; width: auto; height: auto; overflow: visible; clip: auto; }
+  .market-table-headings { display: none !important; }
+  .market-table-filter-row { padding: 10px; display: grid !important; grid-template-columns: 1fr 1fr; gap: 8px; background: #f6f8fa; border-bottom: 1px solid #d5ddea; }
+  .market-table-filter-row th { position: static; padding: 0; display: block; border: 0; }
+  .market-table-filter-row th:has(.market-filter-hint) { display: none; }
+  .market-table-filter-row select,.market-table-filter-row button { width: 100%; min-height: 40px; }
+}
