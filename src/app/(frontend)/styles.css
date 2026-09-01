@@ -2589,8 +2589,11 @@ main select {
 /* Harmonized status palette: green = available/action, yellow = pending, red = unavailable/error. */
 :root {
   --state-green: #35b978;
-  --state-green-dark: #4d6f63;
-  --state-green-soft: #f2f6f4;
+  --state-green-dark: #4f7f76;
+  --state-green-soft: #f1f8f6;
+  --state-lime: #dcefeb;
+  --state-lime-border: #b8d9d2;
+  --state-lime-text: #315b55;
   --state-yellow: #b79a3e;
   --state-yellow-dark: #80691f;
   --state-yellow-soft: #faf6e8;
@@ -2602,19 +2605,19 @@ main select {
 .stock-yellow { color: var(--state-yellow); }
 .stock-red,.quote-error,.quote-items article > button { color: var(--state-red-dark); }
 .add-to-quote button,.add-to-quote.compact button,.quote-form button {
-  border-color: var(--state-green-dark);
-  background: var(--state-green-dark);
-  color: #fff;
+  border-color: var(--state-lime-border);
+  background: var(--state-lime);
+  color: var(--state-lime-text);
 }
-.add-to-quote button:hover,.quote-form button:hover { background: #405e54; }
-.add-to-quote .quote-secondary { border-color: #a7b9b2; background: var(--state-green-soft); color: #405f54; }
-.quote-dock { border-color: #82958f; background: #435c55; box-shadow: 0 14px 42px rgba(35,61,54,.18); }
+.add-to-quote button:hover,.quote-form button:hover { background: #cae6e0; }
+.add-to-quote .quote-secondary { border-color: #cddfdb; background: var(--state-green-soft); color: var(--state-lime-text); }
+.quote-dock { border-color: #bddbd5; background: #e7f4f1; color: var(--state-lime-text); box-shadow: 0 14px 42px rgba(38,75,68,.13); }
 .quote-dock div b { color: var(--state-green-dark); }
-.quote-dock a { background: #5a796e; }
-.quote-dock a:hover { background: #4b685e; }
+.quote-dock a { background: #d4ebe6; color: var(--state-lime-text); }
+.quote-dock a:hover { background: #c5e3dd; }
 .cart-link b { background: var(--state-green-dark); }
 .quote-success { border-top: 4px solid var(--state-green); }
-.quote-success a { background: var(--state-green-dark); }
+.quote-success a { background: var(--state-lime); color: var(--state-lime-text); }
 .market-practical-row { background: var(--state-yellow-soft); }
 .market-practical-row .market-row-action > span { color: var(--state-yellow-dark); }
 .market-table-wrap table { min-width: 1040px; }
