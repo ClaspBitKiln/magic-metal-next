@@ -1161,3 +1161,16 @@
 .material-facts .fact-link b {
   flex: none;
 }
+
+@media (min-width: 761px) {
+  .standard-assortment { padding-top: 50px; padding-bottom: 50px; }
+  .materials-hero,.material-hero { padding-top: 56px; padding-bottom: 54px; }
+  .materials-directory { padding-bottom: 62px; }
+  .materials-group { padding-top: 46px; }
+  .materials-note { padding-top: 52px; padding-bottom: 58px; }
+  .material-content { padding-top: 56px; padding-bottom: 62px; gap: 6vw; }
+  .material-passport { padding-top: 52px; padding-bottom: 58px; }
+  .material-passport > header { margin-bottom: 28px; }
+  .material-analogs { padding-top: 46px; padding-bottom: 50px; }
+  .material-products,.related-materials { padding-top: 52px; padding-bottom: 58px; }
+}

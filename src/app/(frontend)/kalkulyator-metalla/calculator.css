@@ -225,6 +225,12 @@
   }
 }
 
+@media (min-width: 761px) {
+  .calculator-hero { padding-top: 54px; padding-bottom: 52px; }
+  .calculator-workspace { padding-top: 56px; padding-bottom: 62px; }
+  .calculator-info { padding-top: 52px; padding-bottom: 58px; }
+}
+
 /* Unified readable type scale */
 .calculator-header {
   font-size: 13px;

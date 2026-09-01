@@ -233,6 +233,13 @@
 .sdt-conversion h2 {
   font-size: clamp(42px, 6vw, 92px);
 }
+@media (min-width: 851px) {
+  .sdt-hero { min-height: 340px; padding-top: 44px; padding-bottom: 44px; }
+  .sdt-intro,.sdt-standards,.sdt-request { padding-top: 48px; padding-bottom: 52px; gap: 6vw; }
+  .sdt-grid { padding-top: 46px; padding-bottom: 50px; }
+  .sdt-more { padding-top: 44px; padding-bottom: 50px; }
+  .sdt-conversion { padding-top: 48px; padding-bottom: 54px; }
+}
 .sdt-conversion a {
   display: inline-flex;
   margin-top: 35px;
@@ -292,6 +299,14 @@
     grid-column: 2;
     grid-row: 1;
   }
+}
+
+@media (min-width: 851px) {
+  .sdt-hero { min-height: 340px; padding-top: 44px; padding-bottom: 44px; }
+  .sdt-intro,.sdt-standards,.sdt-request { padding-top: 48px; padding-bottom: 52px; gap: 6vw; }
+  .sdt-grid { padding-top: 46px; padding-bottom: 50px; }
+  .sdt-more { padding-top: 44px; padding-bottom: 50px; }
+  .sdt-conversion { padding-top: 48px; padding-bottom: 54px; }
 }
 
 /* Dense specification table: replaces oversized information cards. */

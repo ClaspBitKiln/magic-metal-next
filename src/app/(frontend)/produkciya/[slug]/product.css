@@ -3,6 +3,7 @@
   color: #10182f;
   background: #f5f8fd;
 }
+
 .product-header {
   position: sticky;
   z-index: 20;
@@ -369,6 +370,14 @@
   color: #0757e8;
   font-size: 19px;
   text-align: right;
+}
+
+@media (min-width: 761px) {
+  .product-hero { padding-top: 58px; padding-bottom: 56px; }
+  .product-body { padding-top: 56px; padding-bottom: 62px; gap: 6vw; }
+  .product-conversion { padding-top: 52px; padding-bottom: 58px; }
+  .product-materials,.product-subcatalog { padding-top: 54px; padding-bottom: 60px; }
+  .product-materials > div,.product-subcatalog > div { margin-top: 28px; }
 }
 @media (max-width: 560px) {
   .product-subcatalog {

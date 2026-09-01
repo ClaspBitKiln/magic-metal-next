@@ -272,6 +272,11 @@
   }
 }
 
+@media (min-width: 761px) {
+  .search-hero { padding-top: 54px; padding-bottom: 52px; }
+  .search-workspace { padding-top: 52px; padding-bottom: 62px; }
+}
+
 /* Unified readable type scale */
 .search-header {
   font-size: 13px;

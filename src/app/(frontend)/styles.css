@@ -1589,6 +1589,10 @@ h2 {
 .market-flow { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); margin: 0; padding: 0; border: 1px solid #d5ddeb; border-top: 0; background: #fff; list-style: none; }
 .market-flow li { display: flex; align-items: center; gap: 12px; min-height: 58px; padding: 12px 18px; border-right: 1px solid #d5ddeb; color: #314566; font-size: 12px; font-weight: 750; }
 .market-flow li:last-child { border-right: 0; }.market-flow b { color: #0757e8; font-size: 11px; }
+.market-filters { display: grid; grid-template-columns: repeat(4,minmax(150px,1fr)) auto; gap: 10px; align-items: end; padding: 16px; border: 1px solid #d5ddeb; border-top: 0; background: #f8faff; }
+.market-filters label { display: grid; gap: 6px; min-width: 0; }.market-filters label span { color: #536481; font-size: 10px; font-weight: 800; text-transform: uppercase; }
+.market-filters select { width: 100%; min-height: 42px; padding: 0 10px; border: 1px solid #b9c6da; color: #102359; background: #fff; font: 12px/1.2 inherit; }
+.market-filters button { min-height: 42px; padding: 0 13px; border: 1px solid #0757e8; color: #0757e8; background: #fff; font: 750 12px/1 inherit; cursor: pointer; }.market-filters button:disabled { opacity: .4; cursor: default; }
 .market-browser { display: grid; grid-template-columns: 270px minmax(0, 1fr); gap: 22px; align-items: start; margin-top: 20px; }
 .market-results { min-width: 0; }
 .market-tabs { position: sticky; top: 92px; display: grid; gap: 2px; margin: 0; padding: 6px; overflow: visible; border: 1px solid #ccd6e6; border-radius: 7px; background: #fff; }
@@ -1636,6 +1640,7 @@ h2 {
 @media (max-width: 760px) {
   .market-toolbar { grid-template-columns: 1fr; }
   .market-flow { grid-template-columns: 1fr; }.market-flow li { min-height: 44px; border-right: 0; border-bottom: 1px solid #d5ddeb; }.market-flow li:last-child { border-bottom: 0; }
+  .market-filters { grid-template-columns: 1fr 1fr; }.market-filters button { grid-column: 1 / -1; }
   .market-intro { padding-top: 52px; padding-bottom: 52px; }
   .market-browser { display: block; margin-top: 12px; }
   .market-tabs { display: none; }
@@ -2522,4 +2527,25 @@ main select {
   .quote-form { position: static; }
   .quote-items article { grid-template-columns: 1fr 1fr; }
   .quote-item-main, .quote-note { grid-column: 1 / -1; }
+}
+
+/* Consistent medium density across shared site sections. */
+@media (min-width: 901px) {
+  .hero { min-height: clamp(640px, calc(86svh - 70px), 760px); }
+  .hero-copy { padding-top: 54px; padding-bottom: 140px; }
+  .section { padding-top: 52px; padding-bottom: 52px; }
+  .section-heading { margin-bottom: 30px; }
+  .about-panel { padding: 30px; }
+  .other-section { padding-bottom: 54px; }
+  .other-list > a { min-height: 70px; }
+  .request-section { padding-top: 52px; padding-bottom: 56px; gap: 5vw; }
+  .request-form { padding: 30px; }
+  .market-intro { padding-top: 52px; padding-bottom: 52px; }
+  .market-content { padding-top: 28px; padding-bottom: 56px; }
+  .legal-page { padding-top: 48px; padding-bottom: 64px; }
+  .legal-shell { padding: 40px; }
+  .legal-back { margin-bottom: 28px; }.legal-updated { margin-bottom: 34px; }
+  .position-hero { padding-top: 52px; padding-bottom: 32px; }
+  .position-buy { margin-bottom: 56px; padding: 28px 30px; }
+  .quote-layout { margin-top: 40px; margin-bottom: 62px; }
 }
