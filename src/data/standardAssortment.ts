@@ -36,17 +36,6 @@ export const expandAndSortAssortmentRows = (rows: AssortmentRow[]) =>
       return left.size.localeCompare(right.size, 'ru', { numeric: true })
     })
 
-export const marketSources = [
-  { label: 'МЕТАЛЛСЕРВИС · Москва и МО — основной источник', href: 'https://mc.ru/products/msk' },
-  { label: 'ЕВРАЗ Маркет · Москва и МО', href: 'https://evraz.market/metalloprokat/' },
-  { label: 'Металлоторг · Москва и МО', href: 'https://www.metallotorg.ru/' },
-  { label: 'Северсталь Маркет · Москва и МО', href: 'https://market.severstal.com/ru/ru' },
-  { label: 'ММК Маркет · Москва и МО', href: 'https://market.mmk.ru/catalog/' },
-  { label: 'СПК · Москва и МО', href: 'https://www.spk.ru/catalog/catalog/' },
-  { label: '23met · Москва и МО', href: 'https://www.23met.ru/' },
-  { label: 'e-metall · предложения Москвы и МО', href: 'https://e-metall.ru/' },
-] as const
-
 export const referenceSources = [
   { label: 'ФГИС Росстандарта', href: 'https://protect.gost.ru/' },
   { label: 'MetalLine', href: 'https://metalline.ru/catalog/' },

@@ -50,3 +50,7 @@ node_modules/
 /playwright/.cache/
 /qa-results/
 .firecrawl/
+
+# Supplier source snapshots are for one-time private SaaS imports only.
+# Never publish them with the public website repository.
+/private/data/

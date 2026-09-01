@@ -72,6 +72,8 @@ export interface Config {
     products: Product;
     'request-files': RequestFile;
     requests: Request;
+    'supplier-sources': SupplierSource;
+    'supplier-offers': SupplierOffer;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -84,6 +86,8 @@ export interface Config {
     products: ProductsSelect<false> | ProductsSelect<true>;
     'request-files': RequestFilesSelect<false> | RequestFilesSelect<true>;
     requests: RequestsSelect<false> | RequestsSelect<true>;
+    'supplier-sources': SupplierSourcesSelect<false> | SupplierSourcesSelect<true>;
+    'supplier-offers': SupplierOffersSelect<false> | SupplierOffersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -276,6 +280,58 @@ export interface Request {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "supplier-sources".
+ */
+export interface SupplierSource {
+  id: number;
+  name: string;
+  code: string;
+  website: string;
+  sourceType: 'price-file' | 'public-catalog' | 'marketplace' | 'api';
+  enabled?: boolean | null;
+  publicVisible?: boolean | null;
+  lastCheckedAt?: string | null;
+  lastImportStatus?: ('pending' | 'success' | 'partial' | 'error') | null;
+  notes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "supplier-offers".
+ */
+export interface SupplierOffer {
+  id: number;
+  supplier: number | SupplierSource;
+  externalKey: string;
+  category?: string | null;
+  product: string;
+  designation?: string | null;
+  size: string;
+  diameter?: string | null;
+  wall?: string | null;
+  standard?: string | null;
+  price?: number | null;
+  currency?: ('RUB' | 'USD' | 'EUR' | 'UZS' | 'KZT' | 'CNY') | null;
+  unit?: string | null;
+  availability: 'price-confirmed' | 'market-listed' | 'on-request' | 'inactive';
+  sourceUrl?: string | null;
+  observedAt: string;
+  raw?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  active?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -317,6 +373,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'requests';
         value: number | Request;
+      } | null)
+    | ({
+        relationTo: 'supplier-sources';
+        value: number | SupplierSource;
+      } | null)
+    | ({
+        relationTo: 'supplier-offers';
+        value: number | SupplierOffer;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -492,6 +556,48 @@ export interface RequestsSelect<T extends boolean = true> {
   utmCampaign?: T;
   emailDelivered?: T;
   crmDelivered?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "supplier-sources_select".
+ */
+export interface SupplierSourcesSelect<T extends boolean = true> {
+  name?: T;
+  code?: T;
+  website?: T;
+  sourceType?: T;
+  enabled?: T;
+  publicVisible?: T;
+  lastCheckedAt?: T;
+  lastImportStatus?: T;
+  notes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "supplier-offers_select".
+ */
+export interface SupplierOffersSelect<T extends boolean = true> {
+  supplier?: T;
+  externalKey?: T;
+  category?: T;
+  product?: T;
+  designation?: T;
+  size?: T;
+  diameter?: T;
+  wall?: T;
+  standard?: T;
+  price?: T;
+  currency?: T;
+  unit?: T;
+  availability?: T;
+  sourceUrl?: T;
+  observedAt?: T;
+  raw?: T;
+  active?: T;
   updatedAt?: T;
   createdAt?: T;
 }

@@ -6,6 +6,25 @@ import Link from 'next/link'
 import { formatProductTitle, matchesCatalogQuery } from '@/lib/catalogSearch'
 import { decodeCatalogSnapshot, type CatalogPriceRow as PriceRow, type CatalogSnapshot as Snapshot } from '@/lib/catalogSnapshot'
 
+type PracticalGroup = {
+  id: string
+  title: string
+  stockProducts: string[]
+  queries: string[]
+  sizes: string[]
+}
+
+type PracticalSnapshot = {
+  snapshotDate: string
+  checkedAt: string
+  statusRule: string
+  groupCount: number
+  sizeCount: number
+  groups: PracticalGroup[]
+}
+
+type DirectoryGroup = { rows: PriceRow[]; practical?: PracticalGroup }
+
 const preferredCategories = ['Трубы', 'Сортовой прокат (цена от 5 т.)', 'Листовой прокат', 'Качественный прокат', 'Нержавейка', 'Цветной прокат', 'Метизы метсырьё', 'Крепеж', 'Инженерные системы', 'Профнастил']
 const categoryLabel = (value: string) => ({
   'Сортовой прокат (цена от 5 т.)': 'Сортовой прокат',
@@ -16,27 +35,87 @@ const categoryLabel = (value: string) => ({
 } as Record<string, string>)[value] || value
 
 const positionWord = (count: number) => count % 10 === 1 && count % 100 !== 11 ? 'позиция' : [2, 3, 4].includes(count % 10) && ![12, 13, 14].includes(count % 100) ? 'позиции' : 'позиций'
+const normalizeSize = (value: string) => value.toLocaleLowerCase('ru').replace(/[×хx]/g, 'x').replace(/\s+/g, '').replaceAll(',', '.')
+const numericParts = (value: string) => [...value.matchAll(/\d+(?:[,.]\d+)?/g)].map((match) => Number(match[0].replace(',', '.')))
+const compareSizes = (left: string, right: string) => {
+  const leftParts = numericParts(left)
+  const rightParts = numericParts(right)
+  for (let index = 0; index < Math.max(leftParts.length, rightParts.length); index += 1) {
+    const difference = (leftParts[index] ?? -1) - (rightParts[index] ?? -1)
+    if (difference) return difference
+  }
+  return left.localeCompare(right, 'ru', { numeric: true })
+}
+
+function MarketProductGroup({ group, globalSearch, openByDefault }: { group: DirectoryGroup; globalSearch: boolean; openByDefault: boolean }) {
+  const router = useRouter()
+  const [opened, setOpened] = useState(openByDefault)
+  const [visibleCount, setVisibleCount] = useState(50)
+  const product = group.practical?.title || formatProductTitle(group.rows[0].product)
+  const category = group.rows[0].category
+  const stockSizeKeys = useMemo(() => new Set(group.rows.map((row) => normalizeSize(row.size))), [group.rows])
+  const practicalSizes = useMemo(() => (group.practical?.sizes || []).filter((size) => !stockSizeKeys.has(normalizeSize(size))).sort(compareSizes), [group.practical, stockSizeKeys])
+  const pipeDimensions = Boolean(group.practical?.id.startsWith('pipe-')) || group.rows.every((row) => row.diameter && row.wall)
+  const combinedRows = useMemo(() => [
+    ...group.rows.map((row) => ({ kind: 'stock' as const, size: row.size, row })),
+    ...practicalSizes.map((size) => ({ kind: 'practical' as const, size })),
+  ].sort((left, right) => compareSizes(left.size, right.size)), [group.rows, practicalSizes])
+  const visibleRows = combinedRows.slice(0, visibleCount)
+
+  return <details className="market-group" open={opened} onToggle={(event) => setOpened(event.currentTarget.open)}>
+    <summary><i aria-hidden="true" /><span><small>{globalSearch ? categoryLabel(category) : 'Подраздел'}</small><b>{product}</b><small>{group.rows.length} {positionWord(group.rows.length)} на складе{group.practical ? ` · ${group.practical.sizes.length.toLocaleString('ru-RU')} в практическом ряду` : ''}</small></span><em className={practicalSizes.length ? 'stock-yellow' : 'stock-green'}><i />{practicalSizes.length ? 'Склад + под заказ' : 'На складе'}</em></summary>
+    {opened && <>
+      {group.practical && <div className="market-practical-note"><b>Практический размерный ряд</b><span>Размер присутствует в отраслевом предложении, но не означает текущий остаток. Зелёным отмечены только позиции из подтверждённого складского прайса.</span></div>}
+      <div className="market-table-wrap"><table><thead><tr>{pipeDimensions ? <><th>Диаметр / профиль</th><th>Толщина стенки</th></> : <th>Размер</th>}<th>Марка / исполнение</th><th>ГОСТ / ТУ</th><th>Наличие</th></tr></thead><tbody>
+        {visibleRows.map((entry, rowIndex) => {
+          if (entry.kind === 'stock') {
+            const row = entry.row
+            const positionUrl = `/poziciya?id=${row.id}&returnTo=${encodeURIComponent(window.location.pathname + window.location.search)}`
+            const openPosition = () => router.push(positionUrl)
+            return <tr className="market-position-row" tabIndex={0} role="link" aria-label={`Открыть ${formatProductTitle(row.product)}, ${row.size}`} onClick={openPosition} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openPosition() } }} key={`${row.id}-${rowIndex}`}>{pipeDimensions ? <><td data-label="Диаметр / профиль">{row.diameter || row.size}</td><td data-label="Толщина стенки">{row.wall || '—'}</td></> : <td data-label="Размер">{row.size}</td>}<td data-label="Марка / исполнение">{row.designation || '—'}</td><td data-label="ГОСТ / ТУ">{row.standard || 'По прайсу'}</td><td data-label="Наличие"><span className="stock-green"><i />На складе</span></td></tr>
+          }
+          const size = entry.size
+          const parts = size.split('×')
+          const isProfile = group.practical?.id === 'pipe-profile-rectangle' || group.practical?.id === 'pipe-profile-square'
+          const diameter = isProfile && parts.length > 2 ? parts.slice(0, -1).join('×') : parts[0]
+          const wall = parts.length > 1 ? parts.at(-1) : '—'
+          const requestUrl = `/?product=${encodeURIComponent(product)}&size=${encodeURIComponent(size)}#request`
+          return <tr className="market-position-row market-practical-row" tabIndex={0} role="link" aria-label={`Запросить ${product}, ${size}`} onClick={() => router.push(requestUrl)} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); router.push(requestUrl) } }} key={`practical-${size}-${rowIndex}`}>{pipeDimensions ? <><td data-label="Диаметр / профиль">{diameter}</td><td data-label="Толщина стенки">{wall}</td></> : <td data-label="Размер">{size}</td>}<td data-label="Марка / исполнение">По заявке</td><td data-label="ГОСТ / ТУ">Проверим по спецификации</td><td data-label="Наличие"><span className="stock-yellow"><i />Наличие уточняется</span></td></tr>
+        })}
+      </tbody></table></div>
+      {visibleCount < combinedRows.length && <button className="market-show-more" type="button" onClick={() => setVisibleCount((count) => count + 50)}>Показать ещё 50 <span>{visibleCount.toLocaleString('ru-RU')} из {combinedRows.length.toLocaleString('ru-RU')}</span></button>}
+    </>}
+  </details>
+}
 
 export default function MarketDirectory() {
   const router = useRouter()
   const [snapshot, setSnapshot] = useState<Snapshot | null>(null)
+  const [practicalSnapshot, setPracticalSnapshot] = useState<PracticalSnapshot | null>(null)
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState('Трубы')
   const [loadError, setLoadError] = useState(false)
   const deferredQuery = useDeferredValue(query)
 
   useEffect(() => {
-    fetch('/data/mc-price-snapshot.json').then((response) => {
-      if (!response.ok) throw new Error('catalog load failed')
-      return response.json()
-    }).then((payload) => {
-      const data = decodeCatalogSnapshot(payload)
+    Promise.all([
+      fetch('/data/mc-price-snapshot.json').then((response) => {
+        if (!response.ok) throw new Error('stock catalog load failed')
+        return response.json()
+      }),
+      fetch('/data/practical-size-snapshot.json').then((response) => {
+        if (!response.ok) throw new Error('practical catalog load failed')
+        return response.json() as Promise<PracticalSnapshot>
+      }),
+    ]).then(([stockPayload, practicalData]) => {
+      const stockData = decodeCatalogSnapshot(stockPayload)
       const params = new URLSearchParams(window.location.search)
       const initialQuery = params.get('q') || ''
       const initialCategory = params.get('category')
       setQuery(initialQuery)
-      if (initialCategory && data.rows.some((row: PriceRow) => row.category === initialCategory)) setCategory(initialCategory)
-      setSnapshot(data)
+      if (initialCategory && stockData.rows.some((row) => row.category === initialCategory)) setCategory(initialCategory)
+      setSnapshot(stockData)
+      setPracticalSnapshot(practicalData)
     }).catch(() => setLoadError(true))
   }, [])
 
@@ -46,17 +125,25 @@ export default function MarketDirectory() {
     snapshot?.rows.forEach((row) => counts.set(row.category, (counts.get(row.category) || 0) + 1))
     return counts
   }, [snapshot])
+  const practicalByProduct = useMemo(() => {
+    const map = new Map<string, PracticalGroup>()
+    practicalSnapshot?.groups.forEach((group) => group.stockProducts.forEach((product) => map.set(product, group)))
+    return map
+  }, [practicalSnapshot])
   const groups = useMemo(() => {
     if (!snapshot) return []
     const globalSearch = Boolean(deferredQuery.trim())
     const rows = snapshot.rows.filter((row) => (globalSearch || row.category === category) && matchesCatalogQuery(row, deferredQuery))
-    const grouped = new Map<string, PriceRow[]>()
+    const grouped = new Map<string, DirectoryGroup>()
     rows.forEach((row) => {
-      const key = `${row.category}\u001f${row.product}`
-      grouped.set(key, [...(grouped.get(key) || []), row])
+      const practical = practicalByProduct.get(row.product)
+      const key = practical ? `practical:${practical.id}` : `stock:${row.category}\u001f${row.product}`
+      const current = grouped.get(key) || { rows: [], practical }
+      current.rows.push(row)
+      grouped.set(key, current)
     })
     return [...grouped.values()]
-  }, [snapshot, category, deferredQuery])
+  }, [snapshot, category, deferredQuery, practicalByProduct])
 
   useEffect(() => {
     if (!snapshot) return
@@ -70,44 +157,28 @@ export default function MarketDirectory() {
     return () => window.clearTimeout(timer)
   }, [category, query, router, snapshot])
 
-  const updateQuery = (value: string) => {
-    setQuery(value)
-  }
-
   const selectCategory = (value: string) => {
     setCategory(value)
     setQuery('')
   }
 
   if (loadError) return <div className="market-empty"><b>Не удалось загрузить справочник</b><span>Проверьте соединение и обновите страницу.</span><button onClick={() => window.location.reload()}>Повторить</button></div>
-  if (!snapshot) return <div className="market-loading">Загружаем размерные ряды…</div>
+  if (!snapshot || !practicalSnapshot) return <div className="market-loading">Загружаем размерные ряды…</div>
 
   return <>
     <div className="market-toolbar">
-      <label><span>Поиск сразу по всему справочнику</span><input value={query} onChange={(event) => updateQuery(event.target.value)} placeholder="Номенклатура, размер, марка или ГОСТ" /></label>
-      <p><b>{snapshot.rowCount.toLocaleString('ru-RU')}</b> подтверждённых позиций · снимок прайсов {snapshot.snapshotDate}</p>
+      <label><span>Поиск сразу по всему справочнику</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Номенклатура, размер, марка или ГОСТ" /></label>
+      <p><b>{snapshot.rowCount.toLocaleString('ru-RU')}</b> на складе · <b>{practicalSnapshot.sizeCount.toLocaleString('ru-RU')}</b> типоразмеров в практическом ряду</p>
     </div>
     <label className="market-category-select"><span>Раздел справочника</span><select value={category} onChange={(event) => selectCategory(event.target.value)}>{categories.map((item) => <option value={item} key={item}>{categoryLabel(item)} — {categoryCounts.get(item)?.toLocaleString('ru-RU')}</option>)}</select></label>
     <div className="market-browser">
       <nav className="market-tabs" aria-label="Разделы справочника">{categories.map((item) => <button className={!query && item === category ? 'active' : ''} onClick={() => selectCategory(item)} key={item}><span>{categoryLabel(item)}</span><b>{categoryCounts.get(item)?.toLocaleString('ru-RU')}</b></button>)}</nav>
       <section className="market-results">
-    <div className="market-category-title"><span>{query ? 'Поиск по всем разделам' : 'Раздел'}</span><h2>{query ? `Результаты: «${query}»` : categoryLabel(category)}</h2>{query && <button onClick={() => updateQuery('')}>Сбросить поиск</button>}</div>
-    <div className="market-groups">
-      {groups.map((rows, index) => {
-        const product = rows[0].product
-        const hasPipeDimensions = rows.every((row) => row.diameter && row.wall)
-        return <details className="market-group" key={`${rows[0].category}-${product}`} open={Boolean(query) && groups.length === 1 && index === 0}>
-        <summary><i aria-hidden="true" /><span><small>{query ? categoryLabel(rows[0].category) : 'Подраздел'}</small><b>{formatProductTitle(product)}</b><small>{rows.length} {positionWord(rows.length)}</small></span><em><i />На складе</em></summary>
-        <div className="market-table-wrap"><table><thead><tr>{hasPipeDimensions ? <><th>Диаметр / профиль</th><th>Толщина стенки</th></> : <th>Размер</th>}<th>Марка / исполнение</th><th>ГОСТ / ТУ</th><th>Наличие</th></tr></thead><tbody>
-          {rows.map((row, rowIndex) => {
-            const positionUrl = `/poziciya?id=${row.id}&returnTo=${encodeURIComponent(window.location.pathname + window.location.search)}`
-            const openPosition = () => router.push(positionUrl)
-            return <tr className="market-position-row" tabIndex={0} role="link" aria-label={`Открыть ${formatProductTitle(row.product)}, ${row.size}`} onClick={openPosition} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openPosition() } }} key={`${row.designation}-${row.size}-${rowIndex}`}>{hasPipeDimensions ? <><td data-label="Диаметр / профиль">{row.diameter}</td><td data-label="Толщина стенки">{row.wall}</td></> : <td data-label="Размер">{row.size}</td>}<td data-label="Марка / исполнение">{row.designation || '—'}</td><td data-label="ГОСТ / ТУ">{row.standard || 'По прайсу'}</td><td data-label="Наличие"><span className="stock-green"><i />На складе</span></td></tr>
-          })}
-        </tbody></table></div>
-      </details>})}
-      {!groups.length && <div className="market-empty"><b>Подтверждённого наличия не найдено</b><span>Позиция может поставляться под заказ. Не подменяем её похожим товаром без проверки.</span><Link href="/#request">Запросить проверку и КП →</Link></div>}
-    </div>
+        <div className="market-category-title"><span>{query ? 'Поиск по всем разделам' : 'Раздел'}</span><h2>{query ? `Результаты: «${query}»` : categoryLabel(category)}</h2>{query && <button onClick={() => setQuery('')}>Сбросить поиск</button>}</div>
+        <div className="market-groups">
+          {groups.map((group, index) => <MarketProductGroup group={group} globalSearch={Boolean(query)} openByDefault={Boolean(query) && groups.length === 1 && index === 0} key={`${group.practical?.id || group.rows[0].product}-${query}`} />)}
+          {!groups.length && <div className="market-empty"><b>Позиции не найдены</b><span>Типоразмер может быть изготовлен по ГОСТ или ТУ после проверки спецификации.</span><Link href="/#request">Запросить изготовление и КП →</Link></div>}
+        </div>
       </section>
     </div>
   </>

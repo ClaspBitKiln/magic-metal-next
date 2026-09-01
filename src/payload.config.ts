@@ -10,6 +10,8 @@ import { Media } from './collections/Media'
 import { Products } from './collections/Products'
 import { RequestFiles } from './collections/RequestFiles'
 import { Requests } from './collections/Requests'
+import { SupplierOffers } from './collections/SupplierOffers'
+import { SupplierSources } from './collections/SupplierSources'
 import { SiteSettings } from './globals/SiteSettings'
 
 const filename = fileURLToPath(import.meta.url)
@@ -28,7 +30,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Products, RequestFiles, Requests],
+  collections: [Users, Media, Products, RequestFiles, Requests, SupplierSources, SupplierOffers],
   globals: [SiteSettings],
   editor: lexicalEditor(),
   secret: requiredEnv('PAYLOAD_SECRET'),

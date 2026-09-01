@@ -6,64 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { FormEvent, useEffect, useMemo, useState } from 'react'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
-import { requestOnlyDirectoryQueries } from '@/data/catalogAvailability'
-import { productDetailCatalog } from '@/data/productDetailCatalog'
-
-const pipeCatalog = [
-  ['Электросварные прямошовные и спиралешовные', 'Ø 15–1420 мм', 'ГОСТ 10704, 10705, 10706, 20295', 'Ст3, 20, 09Г2С, 17Г1СУ, 10Г2ФБЮ', '/produkciya/truby-elektrosvarnye'],
-  ['Водогазопроводные', 'Ду 10–100', 'ГОСТ 3262-75', 'малоуглеродистые стали', '/produkciya/truby-elektrosvarnye/vodogazoprovodnye'],
-  ['Профильные квадратные и прямоугольные', '15×15–400×200 мм', 'ГОСТ 8639, 8645, 30245', 'Ст3, 09Г2С, С245, С255, С355', '/produkciya/truby-elektrosvarnye/profilnye'],
-  ['Бесшовные горячедеформированные', 'Ø 57–550 мм', 'ГОСТ 8732, ГОСТ 550; ТУ 14-3Р-55, 460, 1128', '10, 20, 35, 45, 09Г2С, 15ХМ, 12Х1МФ, 15Х1М1Ф, 10Х9МФБ', '/produkciya/truby-besshovnye/goryachedeformirovannye'],
-  ['Бесшовные холоднодеформированные', 'Ø 5–53 мм', 'ГОСТ 8734', '10, 20, 35, 45, 10Г2, 15Х, 20Х, 40Х, 30ХГСА, 15ХМ', '/produkciya/truby-besshovnye/holodnodeformirovannye'],
-  ['Котельные и крекинговые', 'По спецификации', 'ТУ 14-3Р-55; ГОСТ 550; ASTM A335', '20, 15ХМ, 12Х1МФ, 15Х1М1Ф, P5, P11, P22, P91', '/produkciya/truby-besshovnye/kotelnye'],
-  ['Нержавеющие и коррозионностойкие', 'Ø 5–273 мм', 'ГОСТ 9940, 9941; ASTM A312', '08Х18Н10, 12Х18Н10Т, 10Х17Н13М2Т, TP304, TP316, TP321', '/produkciya/truby-besshovnye/nerzhaveyushchie'],
-  ['Нефтяного сортамента', 'По проекту', 'ГОСТ 632, 633; API 5CT', 'НКТ, обсадные, бурильные трубы и муфты', '/produkciya/truby-besshovnye'],
-  ['Отводы бесшовные', 'DN 15–1000', 'ГОСТ 17375, 30753, 17380', '2D и 3D · углеродистые, низколегированные и нержавеющие стали', '/produkciya/sdt/otvody-besshovnye'],
-  ['Тройники бесшовные', 'DN 15–500', 'ГОСТ 17376, 17380', 'равнопроходные и переходные исполнения', '/produkciya/sdt/troyniki-besshovnye'],
-  ['Переходы бесшовные', 'DN 20–500', 'ГОСТ 17378, 17380', 'концентрические и эксцентрические исполнения', '/produkciya/sdt/perekhody-besshovnye'],
-  ['Фланцы', 'DN 10–4000', 'ГОСТ 33259', 'плоские, воротниковые, свободные · PN 1–250', '/produkciya/sdt/flantsy'],
-  ['Заглушки и днища', 'По стандарту и чертежу', 'ГОСТ 17379, 6533; ОСТ, АТК', 'эллиптические, плоские и специальные исполнения', '/produkciya/sdt/zaglushki-i-dnishcha'],
-]
-
-const catalogGroups = [
-  { title: 'Трубы', note: 'Электросварные, бесшовные, профильные, котельные, нержавеющие и нефтяного сортамента', items: pipeCatalog.slice(0, 8) },
-  { title: 'СДТ', note: 'Отводы, тройники, переходы, фланцы, заглушки и днища', items: pipeCatalog.slice(8) },
-]
-
-const assortmentByProduct: Record<string, string[]> = {
-  'Электросварные прямошовные и спиралешовные': ['gost-10704-91'],
-  'Бесшовные горячедеформированные': ['gost-8732-2025'],
-  'Бесшовные холоднодеформированные': ['gost-8734-75'],
-  'Отводы бесшовные': ['gost-17375-2001', 'gost-30753-2001'],
-  'Тройники бесшовные': ['gost-17376-2001'],
-  'Переходы бесшовные': ['gost-17378-2001'],
-  'Фланцы': ['gost-33259-2015'],
-  'Заглушки и днища': ['gost-17379-2001'],
-}
-
-const hiddenDirectorySlugs = new Set(['krug-i-kvadrat', 'balka-shveller-ugolok'])
-
-const otherCatalogGroups = [
-  { title: 'Листовой и рулонный прокат', note: 'Горячекатаный, холоднокатаный, оцинкованный и прокат с покрытиями', categorySlug: 'listovoy-prokat' },
-  { title: 'Сортовой и фасонный прокат', note: 'Арматура, круг, квадрат, полоса, уголок, балка и швеллер', categorySlug: 'sortovoy-i-fasonny-prokat' },
-  { title: 'Нержавеющие и специальные стали', note: 'Лист, трубы, сортовой прокат и специальные марки', categorySlug: 'nerzhaveyushchaya-stal' },
-  { title: 'Поковки и заготовки', note: 'Кольца, диски, валы, оси и поковки по чертежу', categorySlug: 'pokovki-i-zagotovki' },
-  { title: 'Цветной металлопрокат', note: 'Алюминий и дюраль; медь, бронза и латунь; титан; олово; свинец; цинк; нихром; баббит', categorySlug: 'cvetnye-metally' },
-  { title: 'Метизы и сварочные материалы', note: 'Крепёж, сетка, лента, проволока, электроды и расходные материалы', categorySlug: 'metizy-i-svarochnye-materialy' },
-]
-
-const directRequestCatalogGroups = [
-  {
-    title: 'Трубы и СДТ в изоляции',
-    note: 'ППУ, ВУС, ЦПП и эпоксидные покрытия заводского нанесения',
-    item: ['Трубы и СДТ с заводской изоляцией', 'по базовой трубе или детали', 'ГОСТ 30732 · ГОСТ 9.602 · ГОСТ Р 51164 · ТУ проекта', 'ППУ, ВУС, ЦПП и эпоксидные покрытия', '/produkciya/truby-i-sdt-v-izolyacii', '/#request'],
-  },
-  {
-    title: 'Оборудование и комплектующие',
-    note: 'Промышленное оборудование, детали и нестандартные позиции по техническому заданию',
-    item: ['Промышленное оборудование и комплектующие', 'по техническому заданию или чертежу', 'ГОСТ · ТУ · ОСТ · требования проекта', 'по назначению и условиям эксплуатации', '/?product=komplektuyushchie#request', '/?product=komplektuyushchie#request'],
-  },
-] as const
+import { homeCatalogGroups } from '@/data/homeCatalog'
 
 const reveal = { hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }
 
@@ -217,40 +160,28 @@ export default function MagicMetalHome() {
         </div>
       <div className="product-unified" id="products" aria-labelledby="products-title">
       <div className="section catalog-section product-subsection">
-        <div className="catalog-head"><div><p className="product-subsection-label">Единый каталог металлопроката</p><h2 id="products-title">Категории<br /><em>и номенклатура</em></h2></div><p>Все виды продукции собраны в одном непрерывном дереве без отдельных каталогов. СДТ — такой же раздел общей номенклатуры, как трубы, листовой и сортовой прокат.</p></div>
-        {catalogGroups.map((group, groupIndex) => <details className="catalog-group" key={group.title} open={groupIndex === 0}>
+        <div className="catalog-head"><div><p className="product-subsection-label">Общий справочник по металлопрокату</p><h2 id="products-title">Категории<br /><em>и номенклатура</em></h2></div><p>Все виды продукции собраны в одном дереве. Откройте категорию, затем нужную номенклатуру: размеры, ГОСТ и исполнения раскрываются по «+» и скрываются по «−».</p></div>
+        {homeCatalogGroups.map((group, groupIndex) => <details className="catalog-group" key={group.title} open={groupIndex === 0}>
           <summary><i className="catalog-toggle" aria-hidden="true" /><span><strong>{group.title}</strong><small>{group.note}</small></span></summary>
           <div className="catalog-table" aria-label={group.title}>
             <div className="catalog-row catalog-labels" role="row"><span>Номенклатура</span><span>Размеры</span><span>Стандарты</span><span>Марки / исполнение</span></div>
-            {group.items.map(([title, size, standards, grades, href], index) => <motion.details className="catalog-item" key={title} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .35 }} variants={animation} transition={{ duration: .42, delay: Math.min(index * .035, .2) }}>
-              <summary className="catalog-row"><strong><i className="catalog-toggle" aria-hidden="true" /><span>{title}</span></strong><span>{size}</span><span className="standard-list">{standards.replace(/(ГОСТ|ТУ|ОСТ|СТО) /g, '$1\u00A0')}</span><span>{grades}</span></summary>
-              <div className="home-size-series"><span>{assortmentByProduct[title]?.map((slug) => slug.replace('gost-', 'ГОСТ ').replaceAll('-', '–')).join(' · ') || 'Размеры по действующим стандартам'}</span>{requestOnlyDirectoryQueries.has(title) ? <Link className="verified-range-link" href="/#request">Запросить наличие и КП <b aria-hidden="true">→</b></Link> : <Link className="verified-range-link" href={`/spravochnik-nalichiya?q=${encodeURIComponent(title)}`}>Показать размеры и наличие <b aria-hidden="true">→</b></Link>}<Link className="catalog-detail-link" href={href}>Характеристики продукции</Link></div>
-            </motion.details>)}
-          </div>
-        </details>)}
-        {otherCatalogGroups.map((group) => <details className="catalog-group" key={group.title}>
-          <summary><i className="catalog-toggle" aria-hidden="true" /><span><strong>{group.title}</strong><small>{group.note}</small></span></summary>
-          <div className="catalog-table" aria-label={group.title}>
-            <div className="catalog-row catalog-labels" role="row"><span>Номенклатура</span><span>Размеры</span><span>Стандарты</span><span>Марки / исполнение</span></div>
-            {productDetailCatalog.filter((item) => item.categorySlug === group.categorySlug && !hiddenDirectorySlugs.has(item.slug)).map((item, index) => <motion.details className="catalog-item" key={item.slug} initial="hidden" whileInView="visible" viewport={{ once: true, amount: .35 }} variants={animation} transition={{ duration: .42, delay: Math.min(index * .035, .2) }}>
-              <summary className="catalog-row"><strong><i className="catalog-toggle" aria-hidden="true" /><span>{item.shortTitle}</span></strong><span>{item.range.map((entry) => entry.value).join(' · ')}</span><span className="standard-list">{item.standards.join(' · ').replace(/(ГОСТ|ТУ|ОСТ|СТО) /g, '$1\u00A0')}</span><span>{item.grades.join(' · ')}</span></summary>
-              <div className="home-size-series"><span>{item.range.map((entry) => `${entry.label}: ${entry.value}`).join(' · ')}</span>{requestOnlyDirectoryQueries.has(item.shortTitle) ? <Link className="verified-range-link" href="/#request">Запросить наличие и КП <b aria-hidden="true">→</b></Link> : <Link className="verified-range-link" href={`/spravochnik-nalichiya?q=${encodeURIComponent(item.shortTitle)}`}>Показать размеры и наличие <b aria-hidden="true">→</b></Link>}<Link className="catalog-detail-link" href={`/produkciya/${item.categorySlug}/${item.slug}`}>Характеристики продукции</Link></div>
-            </motion.details>)}
-          </div>
-        </details>)}
-        {directRequestCatalogGroups.map((group) => {
-          const [title, size, standards, grades, detailHref, requestHref] = group.item
-          return <details className="catalog-group" key={group.title}>
-            <summary><i className="catalog-toggle" aria-hidden="true" /><span><strong>{group.title}</strong><small>{group.note}</small></span></summary>
-            <div className="catalog-table" aria-label={group.title}>
-              <div className="catalog-row catalog-labels" role="row"><span>Номенклатура</span><span>Размеры</span><span>Стандарты</span><span>Марки / исполнение</span></div>
-              <details className="catalog-item">
-                <summary className="catalog-row"><strong><i className="catalog-toggle" aria-hidden="true" /><span>{title}</span></strong><span>{size}</span><span className="standard-list">{standards.replace(/(ГОСТ|ТУ|ОСТ|СТО) /g, '$1\u00A0')}</span><span>{grades}</span></summary>
-                <div className="home-size-series"><span>Комплектация по требованиям проекта и условиям эксплуатации</span><Link className="verified-range-link" href={requestHref}>Запросить наличие и КП <b aria-hidden="true">→</b></Link><Link className="catalog-detail-link" href={detailHref}>Характеристики продукции</Link></div>
-              </details>
+          {group.items.map((item, index) => <motion.details className="catalog-item" key={item.title} initial={false} whileInView="visible" viewport={{ once: true, amount: .35 }} variants={animation} transition={{ duration: .42, delay: Math.min(index * .035, .2) }}>
+            <summary className="catalog-row">
+              <strong><i className="catalog-toggle" aria-hidden="true" /><span>{item.title}</span></strong>
+              <span>{item.size}</span>
+              <span className="standard-list">{item.standards.replace(/(ГОСТ|ТУ|ОСТ|СТО) /g, '$1\u00A0')}</span>
+              <span>{item.grades}</span>
+            </summary>
+            <div className="home-size-series">
+              <span>{item.practicalSeries ? 'Практический размерный ряд рынка' : item.requestOnly ? 'Исполнение и размеры по заявке' : 'Размеры из подтверждённого складского прайса'}</span>
+              {item.requestOnly
+                ? <Link className="verified-range-link" href={`/?product=${encodeURIComponent(item.availabilityQuery)}#request`}>Запросить изготовление по ГОСТ / ТУ <b aria-hidden="true">→</b></Link>
+                : <Link className="verified-range-link" href={`/spravochnik-nalichiya?q=${encodeURIComponent(item.availabilityQuery)}`}>Показать практический ряд и наличие <b aria-hidden="true">→</b></Link>}
+              <Link className="catalog-detail-link" href={item.href}>Характеристики продукции</Link>
             </div>
-          </details>
-        })}
+          </motion.details>)}
+          </div>
+        </details>)}
       </div>
       </div>
       </section>

@@ -26,4 +26,25 @@ test.describe('Frontend', () => {
     await expect(page.getByAltText(/Техническая схема/)).toBeVisible()
     await expect(page.getByRole('link', { name: /Отправить заявку/ })).toBeVisible()
   })
+
+  test('shows the practical size series without a nested vertical scroll', async ({ page }) => {
+    await page.goto('http://localhost:3000/spravochnik-nalichiya?q=Бесшовные%20горячедеформированные')
+    const group = page.locator('.market-group').first()
+    await expect(group).toHaveAttribute('open', '')
+    await expect(group.locator('.market-position-row')).toHaveCount(50)
+    await expect(group).toContainText('Практический размерный ряд')
+    await expect(page.locator('body')).not.toContainText('23met.ru')
+    await expect(group.locator('.market-table-wrap')).toHaveCSS('max-height', 'none')
+    await group.getByRole('button', { name: /Показать ещё 50/ }).click()
+    await expect(group.locator('.market-position-row')).toHaveCount(100)
+  })
+
+  test('renders SDT through the same catalog structure as every other category', async ({ page }) => {
+    await page.goto('http://localhost:3000/#products')
+    const sdtGroup = page.locator('.catalog-group').filter({ hasText: /^СДТ/ }).first()
+    await expect(sdtGroup).toBeVisible()
+    await sdtGroup.locator('summary').first().click()
+    await expect(sdtGroup.locator('.catalog-table')).toBeVisible()
+    await expect(sdtGroup.locator('.catalog-item')).toHaveCount(5)
+  })
 })
