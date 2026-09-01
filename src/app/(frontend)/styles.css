@@ -2617,3 +2617,9 @@ main select {
 .quote-success a { background: var(--state-green-dark); }
 .market-practical-row { background: var(--state-yellow-soft); }
 .market-practical-row .market-row-action > span { color: var(--state-yellow-dark); }
+.market-table-wrap table { min-width: 1040px; }
+.market-product-cell { width: 34%; min-width: 280px; color: #17345d !important; font-size: 13px !important; font-weight: 650 !important; line-height: 1.4; }
+.market-table-headings th:first-child,.market-table-filter-row th:first-child { width: 34%; }
+@media (max-width: 760px) {
+  .market-product-cell { width: auto; min-width: 0; }
+}
