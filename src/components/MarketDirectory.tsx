@@ -117,7 +117,6 @@ function MarketProductGroup({ group, globalSearch, openByDefault, filtersActive,
 export default function MarketDirectory() {
   const router = useRouter()
   const [snapshot, setSnapshot] = useState<Snapshot | null>(null)
-  const [practicalSnapshot, setPracticalSnapshot] = useState<PracticalSnapshot | null>(null)
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState('Трубы')
   const [mainSize, setMainSize] = useState('')
@@ -128,16 +127,10 @@ export default function MarketDirectory() {
   const deferredQuery = useDeferredValue(query)
 
   useEffect(() => {
-    Promise.all([
-      fetch('/data/mc-price-snapshot.json').then((response) => {
-        if (!response.ok) throw new Error('stock catalog load failed')
-        return response.json()
-      }),
-      fetch('/data/practical-size-snapshot.json').then((response) => {
-        if (!response.ok) throw new Error('practical catalog load failed')
-        return response.json() as Promise<PracticalSnapshot>
-      }),
-    ]).then(([stockPayload, practicalData]) => {
+    fetch('/data/mc-price-snapshot.json').then((response) => {
+      if (!response.ok) throw new Error('stock catalog load failed')
+      return response.json()
+    }).then((stockPayload) => {
       const stockData = decodeCatalogSnapshot(stockPayload)
       const params = new URLSearchParams(window.location.search)
       const initialQuery = params.get('q') || ''
@@ -145,7 +138,6 @@ export default function MarketDirectory() {
       setQuery(initialQuery)
       if (initialCategory && stockData.rows.some((row) => row.category === initialCategory)) setCategory(initialCategory)
       setSnapshot(stockData)
-      setPracticalSnapshot(practicalData)
     }).catch(() => setLoadError(true))
   }, [])
 
@@ -155,11 +147,7 @@ export default function MarketDirectory() {
     snapshot?.rows.forEach((row) => counts.set(row.category, (counts.get(row.category) || 0) + 1))
     return counts
   }, [snapshot])
-  const practicalByProduct = useMemo(() => {
-    const map = new Map<string, PracticalGroup>()
-    practicalSnapshot?.groups.forEach((group) => group.stockProducts.forEach((product) => map.set(product, group)))
-    return map
-  }, [practicalSnapshot])
+  const practicalByProduct = useMemo(() => new Map<string, PracticalGroup>(), [])
   const filterSourceRows = useMemo(() => snapshot ? snapshot.rows.filter((row) => (deferredQuery.trim() || row.category === category) && matchesCatalogQuery(row, deferredQuery)) : [], [snapshot, category, deferredQuery])
   const filterOptions = useMemo(() => {
     const unique = (values: Array<string | undefined>) => [...new Set(values.filter((value): value is string => Boolean(value)))].sort(compareSizes)
@@ -206,12 +194,12 @@ export default function MarketDirectory() {
   const resetFilters = () => { setMainSize(''); setWall(''); setDesignation(''); setStandard('') }
 
   if (loadError) return <div className="market-empty"><b>Не удалось загрузить справочник</b><span>Проверьте соединение и обновите страницу.</span><button onClick={() => window.location.reload()}>Повторить</button></div>
-  if (!snapshot || !practicalSnapshot) return <div className="market-loading">Загружаем размерные ряды…</div>
+  if (!snapshot) return <div className="market-loading">Загружаем каталог Металлсервис…</div>
 
   return <>
     <div className="market-toolbar">
       <label><span>Поиск сразу по всему справочнику</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Номенклатура, размер, марка или ГОСТ" /></label>
-      <p><b>{snapshot.rowCount.toLocaleString('ru-RU')}</b> на складе · <b>{practicalSnapshot.sizeCount.toLocaleString('ru-RU')}</b> типоразмеров в практическом ряду</p>
+      <p><b>{snapshot.rowCount.toLocaleString('ru-RU')}</b> позиций Металлсервис</p>
     </div>
     <ol className="market-flow" aria-label="Как запросить коммерческое предложение"><li><b>01</b><span>Найдите размер</span></li><li><b>02</b><span>Добавьте позиции</span></li><li><b>03</b><span>Укажите объём и получите КП</span></li></ol>
     <label className="market-category-select"><span>Раздел справочника</span><select value={category} onChange={(event) => selectCategory(event.target.value)}>{categories.map((item) => <option value={item} key={item}>{categoryLabel(item)} — {categoryCounts.get(item)?.toLocaleString('ru-RU')}</option>)}</select></label>
