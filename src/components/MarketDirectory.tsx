@@ -137,12 +137,12 @@ export default function MarketDirectory() {
   }, [practicalSnapshot])
   const filterSourceRows = useMemo(() => snapshot ? snapshot.rows.filter((row) => (deferredQuery.trim() || row.category === category) && matchesCatalogQuery(row, deferredQuery)) : [], [snapshot, category, deferredQuery])
   const filterOptions = useMemo(() => {
-    const unique = (values: string[]) => [...new Set(values.filter(Boolean))].sort(compareSizes)
+    const unique = (values: Array<string | undefined>) => [...new Set(values.filter((value): value is string => Boolean(value)))].sort(compareSizes)
     return {
       sizes: unique(filterSourceRows.map((row) => row.diameter || row.size.split(/[×хx]/)[0].trim())),
       walls: unique(filterSourceRows.map((row) => row.wall)),
-      designations: [...new Set(filterSourceRows.map((row) => row.designation).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'ru', { numeric: true })),
-      standards: [...new Set(filterSourceRows.map((row) => row.standard).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'ru', { numeric: true })),
+      designations: unique(filterSourceRows.map((row) => row.designation)),
+      standards: unique(filterSourceRows.map((row) => row.standard)),
     }
   }, [filterSourceRows])
   const filtersActive = Boolean(mainSize || wall || designation || standard)
