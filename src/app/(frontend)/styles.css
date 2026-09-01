@@ -2566,7 +2566,7 @@ main select {
 .market-practical-row { background: #f8f9fa; }
 .market-position-row:hover { background: #e8f0f8; box-shadow: inset 3px 0 #527faa; }
 .stock-green { color: #4f8f78; }
-.stock-yellow { color: #66717f; }
+.stock-yellow { color: #a88b32; }
 .add-to-quote.compact button { border-color: #315f8c; background: #315f8c; }
 .market-row-action > span { color: #315f8c; }
 .market-show-more { color: #315f8c; background: #edf2f7; }.market-show-more:hover { background: #e1e8f0; }
