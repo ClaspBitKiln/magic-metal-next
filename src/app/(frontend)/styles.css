@@ -2586,7 +2586,7 @@ main select {
   .market-table-filter-row select,.market-table-filter-row button { width: 100%; min-height: 40px; }
 }
 
-/* Semantic colors: green = available/selected/action, yellow = pending, red = unavailable/error. */
+/* Harmonized status palette: green = available/action, yellow = pending, red = unavailable/error. */
 :root {
   --state-green: #35b978;
   --state-green-dark: #19764e;
