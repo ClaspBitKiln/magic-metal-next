@@ -129,7 +129,7 @@ const insulatedItems = pipeCatalog
 export const homeCatalogGroups: HomeCatalogGroup[] = [
   { title: 'Трубы', note: 'Электросварные, бесшовные, профильные, котельные, нержавеющие и нефтяного сортамента', items: pipeItems },
   { title: 'СДТ', note: 'Отводы, тройники, переходы, фланцы, заглушки и днища', items: sdtItems },
-  { title: 'Трубы и СДТ в изоляции', note: 'Номенклатура партнёра USM Export: ППУ, экструдированный полиэтилен, ТУМ-лента и эпоксидные покрытия', items: insulatedItems },
+  { title: 'Трубы и СДТ в изоляции', note: 'ППУ, экструдированный полиэтилен, ТУМ-лента и эпоксидные покрытия', items: insulatedItems },
   ...detailGroups,
   {
     title: 'Оборудование и комплектующие',

@@ -173,7 +173,7 @@ export default function MagicMetalHome() {
               <span>{item.grades}</span>
             </summary>
             <div className={`home-size-series${item.requestOnly ? ' home-size-series--request' : ''}`}>
-              <div className="home-size-copy"><b>{item.requestOnly ? 'Поставка по заявке' : 'Позиции в каталоге'}</b><span>{item.requestOnly ? 'Подберём исполнение, документы и срок поставки' : 'Размеры, марки и ГОСТ из базы Металлсервис'}</span></div>
+              <div className="home-size-copy"><b>{item.requestOnly ? 'Поставка по заявке' : 'Позиции в каталоге'}</b><span>{item.requestOnly ? 'Подберём исполнение, документы и срок поставки' : 'Доступные размеры, марки и стандарты'}</span></div>
               <nav className="home-size-actions" aria-label={`Действия: ${item.title}`}>
               {item.requestOnly
                 ? <Link className="verified-range-link" href={`/?product=${encodeURIComponent(item.availabilityQuery)}#request`}>Запросить расчёт <b aria-hidden="true">→</b></Link>

@@ -75,7 +75,7 @@ export default function CatalogPosition() {
   const request = `${row.product}; ${row.size}; ${row.designation}; ${row.standard}`
   return <>
     <section className="position-hero">
-      <p>{row.category} · подтверждено {row.checkedAt}</p>
+      <p>{row.category}</p>
       <h1>{formatProductTitle(row.product)}</h1>
       <div><span className="stock-green"><i />На складе</span><AddToQuoteButton item={{ id: row.id, product: row.product, size: row.size, designation: row.designation, standard: row.standard }} /></div>
     </section>
@@ -84,7 +84,7 @@ export default function CatalogPosition() {
       {row.diameter && <div><span>Диаметр / профиль</span><b>{row.diameter} мм</b></div>}
       {row.wall && <div><span>Толщина стенки</span><b>{row.wall} мм</b></div>}
       <div><span>Марка / исполнение</span><b>{row.designation || 'Уточняется по заявке'}</b></div>
-      <div><span>Нормативный документ</span><b>{row.standard || 'Уточняется по позиции прайса'}</b></div>
+      <div><span>Стандарт</span><b>{row.standard || 'По запросу'}</b></div>
     </section>
     <section className="position-mass">
       <div><p>Теоретическая масса</p><h2>{mass ? `${fmt(mass.value)} ${mass.unit}` : 'По таблице сортамента'}</h2></div>
@@ -92,11 +92,11 @@ export default function CatalogPosition() {
       <small>Расчёт справочный. Фактическая масса зависит от допусков, марки, состояния поставки и стандарта продукции.</small>
     </section>
     {spec && material ? <section className="position-properties">
-      <header><div><p>Подтверждённая марка</p><h2>{material.designation}: химический состав и свойства</h2></div><Link href={`/spravochnik-materialov/${material.slug}`}>Полная карточка марки →</Link></header>
+      <header><div><p>Марка стали</p><h2>{material.designation}: химический состав и свойства</h2></div><Link href={`/spravochnik-materialov/${material.slug}`}>Характеристики марки →</Link></header>
       <h3>Механические свойства</h3><div className="position-property-grid">{spec.mechanics.map((item) => <div key={item.label}><span>{item.label}</span><b>{item.value}</b></div>)}</div>
       <h3>Химический состав</h3><div className="position-chemistry">{spec.chemistry.map((item) => <span key={item.label}><b>{item.label}</b>{item.value}</span>)}</div>
       <aside>{spec.condition}. {spec.note} Стандарт и сертификат конкретной партии имеют приоритет.</aside>
-    </section> : <section className="position-properties position-properties-empty"><h2>Свойства материала</h2><p>Для вывода химического состава и механических свойств нужна однозначно указанная марка. Мы не подставляем характеристики по догадке.</p></section>}
+    </section> : <section className="position-properties position-properties-empty"><h2>Свойства материала</h2><p>Укажите марку стали, чтобы получить химический состав и механические свойства.</p></section>}
     <section className="position-buy"><div><p>Покупка</p><h2>Проверим остаток и подготовим предложение</h2><span>Уточним количество, длину, требования проекта, срок и адрес поставки.</span></div><Link href={`/?product=${encodeURIComponent(request)}#request`}>Отправить заявку ↗</Link></section>
   </>
 }

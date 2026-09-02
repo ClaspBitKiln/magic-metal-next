@@ -9,7 +9,7 @@ export default function StandardAssortment({ standard }: { standard: Standard })
     <details>
       <summary className="standard-assortment-heading">
         <div><p>Справочник по размерам</p><h2 id="standard-assortment-title">Размерный ряд и доступность</h2></div>
-        <span><small>Снимок наличия: {assortmentCheckedAt}</small><b aria-hidden="true" /></span>
+        <span><small>Обновлено: {assortmentCheckedAt}</small><b aria-hidden="true" /></span>
       </summary>
       <div className="standard-assortment-content">
       <div className="assortment-legend" aria-label="Шкала доступности">

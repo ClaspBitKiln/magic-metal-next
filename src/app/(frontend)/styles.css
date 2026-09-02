@@ -2642,3 +2642,10 @@ main select {
   .market-table-filter-row select { min-width: 82px; padding-left: 7px; font-size: 10px; }
   .market-row-action { width: 102px; }
 }
+
+/* Clear hierarchy between a catalog category and its subsections. */
+.catalog-item > .catalog-row { padding-inline: 14px; border-left: 3px solid rgba(116,158,224,.55); background: rgba(42,79,150,.22); }
+.catalog-item:nth-of-type(even) > .catalog-row { background: rgba(31,65,132,.16); }
+.catalog-row:not(.catalog-labels):hover { padding-inline: 14px; background: rgba(70,111,188,.28); }
+.catalog-item[open] > .catalog-row { border-left-color: #8cb6ef; background: rgba(68,108,182,.3); }
+.catalog-item[open] .home-size-series { background: rgba(5,24,63,.32); }
