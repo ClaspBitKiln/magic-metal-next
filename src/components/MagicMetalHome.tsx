@@ -172,12 +172,14 @@ export default function MagicMetalHome() {
               <span className="standard-list">{item.standards.replace(/(ГОСТ|ТУ|ОСТ|СТО) /g, '$1\u00A0')}</span>
               <span>{item.grades}</span>
             </summary>
-            <div className="home-size-series">
-              <span>{item.practicalSeries ? 'Практический размерный ряд рынка' : item.requestOnly ? 'Исполнение и размеры по заявке' : 'Размеры из подтверждённого складского прайса'}</span>
+            <div className={`home-size-series${item.requestOnly ? ' home-size-series--request' : ''}`}>
+              <div className="home-size-copy"><b>{item.requestOnly ? 'Поставка по заявке' : 'Позиции в каталоге'}</b><span>{item.requestOnly ? 'Подберём исполнение, документы и срок поставки' : 'Размеры, марки и ГОСТ из базы Металлсервис'}</span></div>
+              <nav className="home-size-actions" aria-label={`Действия: ${item.title}`}>
               {item.requestOnly
-                ? <Link className="verified-range-link" href={`/?product=${encodeURIComponent(item.availabilityQuery)}#request`}>Запросить изготовление по ГОСТ / ТУ <b aria-hidden="true">→</b></Link>
-                : <Link className="verified-range-link" href={`/spravochnik-nalichiya?q=${encodeURIComponent(item.availabilityQuery)}`}>Показать практический ряд и наличие <b aria-hidden="true">→</b></Link>}
-              <Link className="catalog-detail-link" href={item.href}>Характеристики продукции</Link>
+                ? <Link className="verified-range-link" href={`/?product=${encodeURIComponent(item.availabilityQuery)}#request`}>Запросить расчёт <b aria-hidden="true">→</b></Link>
+                : <Link className="verified-range-link" href={`/spravochnik-nalichiya?q=${encodeURIComponent(item.availabilityQuery)}`}>Размеры и наличие <b aria-hidden="true">→</b></Link>}
+              <Link className="catalog-detail-link" href={item.href}>Описание и стандарты</Link>
+              </nav>
             </div>
           </motion.details>)}
           </div>
