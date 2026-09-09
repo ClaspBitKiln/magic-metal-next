@@ -119,6 +119,12 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Specify size, diameter, wall, grade, standard or type.' }, { status: 400 })
   }
 
+  // The site's runtime never contacts supplier, marketplace or factory websites.
+  // Their data is imported into our own database/snapshots out of band.
+  const capabilities = findFactoryCapabilities(query, tubeFactoryCapabilities)
+  let rankedOffers: TubeOffer[] = []
+  let offerSourceStatus: 'available' | 'degraded' = 'available'
+
   try {
     const payload = await getPayload({ config })
     const result = await payload.find({
@@ -136,32 +142,35 @@ export async function GET(request: NextRequest) {
       },
     })
 
-    const offers = result.docs.map((item) => toTubeOffer(item as unknown as PayloadOffer)).filter((item): item is TubeOffer => item !== null)
-    const rankedOffers = rankOffers(query, offers).slice(0, 50)
-    const capabilities = findFactoryCapabilities(query, tubeFactoryCapabilities)
-
-    return NextResponse.json({
-      query,
-      capabilities: capabilities.map(({ capability, reason }) => ({
-        factoryId: capability.factoryId,
-        factoryName: capability.factoryName,
-        region: capability.region,
-        tubeType: capability.tubeType,
-        reason,
-        evidenceLevel: capability.evidenceLevel,
-        checkedAt: capability.checkedAt,
-        sourceUrl: capability.sourceUrl,
-      })),
-      offers: rankedOffers,
-      meta: {
-        offerCount: rankedOffers.length,
-        capabilityCount: capabilities.length,
-        generatedAt: new Date().toISOString(),
-        stockRule: 'verified-stock requires a source state explicitly mapped as price-confirmed; market-listed remains a signal until commercially verified.',
-      },
-    })
+    const offers = result.docs
+      .map((item) => toTubeOffer(item as unknown as PayloadOffer))
+      .filter((item): item is TubeOffer => item !== null)
+    rankedOffers = rankOffers(query, offers).slice(0, 50)
   } catch (error) {
-    console.error('tube-search failed', error)
-    return NextResponse.json({ error: 'Tube search is temporarily unavailable.' }, { status: 500 })
+    offerSourceStatus = 'degraded'
+    console.error('tube-search internal offer store unavailable', error)
   }
+
+  return NextResponse.json({
+    query,
+    capabilities: capabilities.map(({ capability, reason }) => ({
+      factoryId: capability.factoryId,
+      factoryName: capability.factoryName,
+      region: capability.region,
+      tubeType: capability.tubeType,
+      reason,
+      evidenceLevel: capability.evidenceLevel,
+      checkedAt: capability.checkedAt,
+      sourceUrl: capability.sourceUrl,
+    })),
+    offers: rankedOffers,
+    meta: {
+      offerCount: rankedOffers.length,
+      capabilityCount: capabilities.length,
+      generatedAt: new Date().toISOString(),
+      offerSourceStatus,
+      stockRule: 'verified-stock requires an explicitly verified internal source state; market-listed remains a signal until commercially verified.',
+      runtimeExternalDependency: false,
+    },
+  })
 }
