@@ -27,6 +27,7 @@ const requestOnlyQueries = new Set([
   'Цинк',
   'Нихром',
   'Баббит',
+  'Магний и магниевые сплавы',
   'Кольца и диски',
   'Валы и оси',
   'Поковки по чертежу',
@@ -94,7 +95,7 @@ const detailGroupDefinitions = [
   { title: 'Сортовой и фасонный прокат', note: 'Арматура, круг, квадрат, полоса, уголок, балка и швеллер', categorySlug: 'sortovoy-i-fasonny-prokat' },
   { title: 'Нержавеющие и специальные стали', note: 'Лист, трубы, сортовой прокат и специальные марки', categorySlug: 'nerzhaveyushchaya-stal' },
   { title: 'Поковки и заготовки', note: 'Кольца, диски, валы, оси и поковки по чертежу', categorySlug: 'pokovki-i-zagotovki' },
-  { title: 'Цветной металлопрокат', note: 'Алюминий и дюраль; медь, бронза и латунь; титан; олово; свинец; цинк; нихром; баббит', categorySlug: 'cvetnye-metally' },
+  { title: 'Цветной металлопрокат', note: 'Алюминий и дюраль; медь, бронза и латунь; титан; олово; свинец; цинк; нихром; баббит; магний и магниевые сплавы', categorySlug: 'cvetnye-metally' },
   { title: 'Метизы и сварочные материалы', note: 'Крепёж, сетка, лента, проволока, электроды и расходные материалы', categorySlug: 'metizy-i-svarochnye-materialy' },
 ] as const
 
@@ -115,6 +116,17 @@ const detailGroups: HomeCatalogGroup[] = detailGroupDefinitions.map((group) => (
     })),
 }))
 
+const nonFerrousSupplement: HomeCatalogItem[] = [
+  catalogItem({
+    title: 'Магний и магниевые сплавы',
+    size: 'По марке, состоянию и форме полуфабриката',
+    standards: 'По стандарту конкретного полуфабриката',
+    grades: 'Магниевые сплавы — по подтверждённой технической заявке',
+    href: '/produkciya/cvetnye-metally',
+    availabilityQuery: 'Магний и магниевые сплавы',
+  }),
+]
+
 const insulatedItems = pipeCatalog
   .filter((item) => item.categorySlug === 'truby-i-sdt-v-izolyacii')
   .map((item) => catalogItem({
@@ -130,7 +142,9 @@ export const homeCatalogGroups: HomeCatalogGroup[] = [
   { title: 'Трубы', note: 'Электросварные, бесшовные, профильные, котельные, нержавеющие и нефтяного сортамента', items: pipeItems },
   { title: 'СДТ', note: 'Отводы, тройники, переходы, фланцы, заглушки и днища', items: sdtItems },
   { title: 'Трубы и СДТ в изоляции', note: 'ППУ, экструдированный полиэтилен, ТУМ-лента и эпоксидные покрытия', items: insulatedItems },
-  ...detailGroups,
+  ...detailGroups.map((group) => group.title === 'Цветной металлопрокат'
+    ? { ...group, items: [...group.items, ...nonFerrousSupplement] }
+    : group),
   {
     title: 'Оборудование и комплектующие',
     note: 'Промышленное оборудование, детали и нестандартные позиции по техническому заданию',
