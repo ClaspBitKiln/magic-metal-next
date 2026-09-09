@@ -16,6 +16,18 @@ Supplier identity is an internal sourcing attribute. It is never exposed in the 
 
 A factory being able to make `219×8` does not mean that `219×8` is in stock today. A marketplace listing is a market signal until the current commercial condition is verified.
 
+## Runtime independence rule
+
+The public site and manager search must not require a live connection to any supplier, marketplace or factory website. External sources are ingestion inputs only. Their data is imported into Magic Metal's own Payload database or controlled snapshots with `sourceUrl`, `observedAt`, freshness and evidence retained.
+
+Therefore:
+
+- a supplier website being unavailable must not make the site fail;
+- no page request should proxy or scrape a supplier in real time;
+- public catalog pages use local/static or first-party stored data;
+- internal search may degrade to the local capability layer when the offer database is temporarily unavailable;
+- external refresh is a separate ingestion job, never a page-render dependency.
+
 ## Normalized product key
 
 `type + outside_diameter_mm + wall_mm + grade + standard + execution + length_class`
