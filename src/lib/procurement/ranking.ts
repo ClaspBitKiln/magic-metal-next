@@ -33,11 +33,9 @@ const availabilityScore = (value: Offer['availability']) => ({ 'in-stock': 1, li
 
 export function rankOffers(offers: Offer[], weights: Partial<RankingWeights> = {}, context: RankingContext = {}): ProcurementDecision[] {
   const w = { ...defaults, ...weights }
-  const priced = offers
-    .map((offer) => offer.price)
-    .filter((price): price is number => Number.isFinite(price) && price >= 0)
-  const maxCost = priced.length
-    ? Math.max(...offers.filter((offer) => Number.isFinite(offer.price) && (offer.price ?? -1) >= 0).map((offer) => calculateLandedCost({ purchase: offer.price!, pickup: offer.pickupCost, freight: offer.freightCost, handling: offer.handlingCost, destination: offer.destinationCost, customs: offer.customsCost }).total))
+  const pricedOffers = offers.filter((offer) => Number.isFinite(offer.price) && (offer.price ?? -1) >= 0)
+  const maxCost = pricedOffers.length
+    ? Math.max(...pricedOffers.map((offer) => calculateLandedCost({ purchase: offer.price!, pickup: offer.pickupCost, freight: offer.freightCost, handling: offer.handlingCost, destination: offer.destinationCost, customs: offer.customsCost }).total))
     : 0
 
   const decisions = offers.map((offer) => {
@@ -59,10 +57,10 @@ export function rankOffers(offers: Offer[], weights: Partial<RankingWeights> = {
     const baseScore = costScore * w.landedCost + specScore * w.specification + availabilityScore(offer.availability) * w.availability + leadScore * w.leadTime + baseReliabilityScore * w.reliability + logisticsScore * w.logistics + benchmarkScore * w.benchmark
     const quality = assessOfferQuality(offer, context.supplierHistory?.[offer.supplierId], context.freshnessPolicy, context.now, context.logisticsObservedAtByOffer?.[offer.id])
     const freshness = (quality.priceFreshness + quality.availabilityFreshness + quality.logisticsFreshness) / 3
-    const allCosts = offers.map((item) => calculateLandedCost({ purchase: item.price ?? 0, pickup: item.pickupCost, freight: item.freightCost, handling: item.handlingCost, destination: item.destinationCost, customs: item.customsCost }).total)
-    const minCost = allCosts.length ? Math.min(...allCosts) : 0
-    const maxAllCost = allCosts.length ? Math.max(...allCosts) : 0
-    const costNormalized = maxAllCost > minCost ? 1 - (landedCost.total - minCost) / (maxAllCost - minCost) : 1
+    const pricedCosts = pricedOffers.map((item) => calculateLandedCost({ purchase: item.price!, pickup: item.pickupCost, freight: item.freightCost, handling: item.handlingCost, destination: item.destinationCost, customs: item.customsCost }).total)
+    const minCost = pricedCosts.length ? Math.min(...pricedCosts) : 0
+    const maxAllCost = pricedCosts.length ? Math.max(...pricedCosts) : 0
+    const costNormalized = hasPrice && maxAllCost > minCost ? Math.max(0, Math.min(1, 1 - (landedCost.total - minCost) / (maxAllCost - minCost))) : hasPrice ? 1 : 0
     const score = baseScore * 0.70 + quality.supplierReliability * 0.10 + freshness * 0.10 + quality.evidenceScore * 0.05 + costNormalized * 0.05
     const risks: string[] = []
     if (!hasPrice) risks.push('Цена не подтверждена')
