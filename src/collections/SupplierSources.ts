@@ -6,7 +6,7 @@ export const SupplierSources: CollectionConfig = {
   labels: { singular: 'Поставщик', plural: 'Поставщики' },
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'code', 'sourceType', 'lastCheckedAt', 'lastImportStatus', 'enabled'],
+    defaultColumns: ['name', 'code', 'sourceType', 'city', 'lastCheckedAt', 'lastImportStatus', 'enabled'],
     group: 'SaaS · снабжение',
   },
   access: {
@@ -19,6 +19,8 @@ export const SupplierSources: CollectionConfig = {
     { name: 'name', label: 'Название', type: 'text', required: true, index: true },
     { name: 'code', label: 'Системный код', type: 'text', required: true, unique: true, index: true },
     { name: 'website', label: 'Сайт', type: 'text', required: true },
+    { name: 'city', label: 'Основной город отгрузки', type: 'text', index: true },
+    { name: 'country', label: 'Страна отгрузки', type: 'text', index: true },
     {
       name: 'sourceType', label: 'Тип источника', type: 'select', required: true, index: true,
       options: [
