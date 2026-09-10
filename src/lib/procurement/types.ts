@@ -107,6 +107,9 @@ export type LogisticsRoute = {
   currency: string
   observedAt: string
   confidence: number
+  status: 'verified' | 'observed' | 'needs-verification' | 'disabled'
+  evidenceUrl?: string
+  evidenceNote?: string
 }
 
 export type SplitAllocation = {
