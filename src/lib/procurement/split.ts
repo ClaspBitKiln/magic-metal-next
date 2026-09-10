@@ -45,13 +45,18 @@ const variableRouteCost = (route: LogisticsRoute, candidates: Candidate[]) => {
   return { tons, cost: Math.max(route.minimumCharge ?? 0, (route.fixedCost ?? 0) + variable) }
 }
 
+// A transport run is consolidated by physical origin. Multiple suppliers in one city
+// may be collected in the same carrier run; supplier count remains a separate metric.
 const groupKey = (candidate: Candidate) => candidate.offer.city
-  ? `${candidate.offer.city}|${candidate.offer.supplierId}`
+  ? `origin:${candidate.offer.city}`
   : `offer:${candidate.offer.id}`
 
 function transportCost(candidates: Candidate[], routes: LogisticsRoute[], destination: string, allowObservedRoutes: boolean): TransportResult {
   const groups = new Map<string, Candidate[]>()
-  for (const candidate of candidates) groups.set(groupKey(candidate), [...(groups.get(groupKey(candidate)) ?? []), candidate])
+  for (const candidate of candidates) {
+    const key = groupKey(candidate)
+    groups.set(key, [...(groups.get(key) ?? []), candidate])
+  }
 
   let total = 0
   let unverifiedRuns = 0
@@ -80,15 +85,10 @@ function transportCost(candidates: Candidate[], routes: LogisticsRoute[], destin
   return { total, runs: groups.size, unverifiedRuns, groupCosts }
 }
 
-const directVariableCost = (offer: Offer, unit: string) => {
+const directVariableCost = (offer: Offer) => {
   const quantity = Math.max(offer.quantity ?? 1, 1)
   const fixed = (offer.handlingCost ?? 0) + (offer.destinationCost ?? 0) + (offer.customsCost ?? 0)
-  const freight = (offer.freightCost ?? 0) / quantity
-  const pickup = (offer.pickupCost ?? 0) / quantity
-  const variableFreight = normalizedUnit(unit) === 'кг' || normalizedUnit(unit) === 'kg'
-    ? freight + pickup
-    : freight + pickup
-  return (offer.price ?? 0) + fixed / quantity + variableFreight
+  return (offer.price ?? 0) + fixed / quantity + (offer.pickupCost ?? 0) / quantity + (offer.freightCost ?? 0) / quantity
 }
 
 function quantityPatterns(input: SplitInput, maxOffers: number): Candidate[][] {
@@ -100,7 +100,7 @@ function quantityPatterns(input: SplitInput, maxOffers: number): Candidate[][] {
   const subsetCount = 1 << offers.length
   for (let mask = 1; mask < subsetCount; mask += 1) {
     const selected = offers.filter((_, index) => (mask & (1 << index)) !== 0)
-      .sort((a, b) => directVariableCost(a, input.unit) - directVariableCost(b, input.unit))
+      .sort((a, b) => directVariableCost(a) - directVariableCost(b))
     let remaining = input.quantity
     const allocation: Candidate[] = []
     for (const offer of selected) {
@@ -141,7 +141,10 @@ function buildPlan(candidates: Candidate[], routes: LogisticsRoute[], destinatio
   }))
 
   const groups = new Map<string, typeof allocationsBase>()
-  for (const item of allocationsBase) groups.set(groupKey(item.candidate), [...(groups.get(groupKey(item.candidate)) ?? []), item])
+  for (const item of allocationsBase) {
+    const key = groupKey(item.candidate)
+    groups.set(key, [...(groups.get(key) ?? []), item])
+  }
 
   const allocations: SplitAllocation[] = []
   for (const [key, group] of groups) {
@@ -149,8 +152,8 @@ function buildPlan(candidates: Candidate[], routes: LogisticsRoute[], destinatio
     const groupQuantity = group.reduce((sum, item) => sum + item.candidate.quantity, 0)
     const groupLogistics = logistics.groupCosts.get(key) ?? 0
     for (const item of group) {
-      const basis = groupPurchase > 0 ? item.purchaseCost : item.candidate.quantity / Math.max(groupQuantity, 1)
-      const logisticsShare = groupPurchase > 0 ? groupLogistics * basis : groupLogistics * basis
+      const basis = groupPurchase > 0 ? item.purchaseCost / groupPurchase : item.candidate.quantity / Math.max(groupQuantity, 1)
+      const logisticsShare = groupLogistics * basis
       allocations.push({
         itemLine: item.candidate.itemLine,
         offerId: item.candidate.offer.id,
@@ -167,7 +170,8 @@ function buildPlan(candidates: Candidate[], routes: LogisticsRoute[], destinatio
   const extras = allocationsBase.reduce((sum, item) => sum + item.extraCost, 0)
   const total = purchase + extras + logistics.total
   const supplierCount = new Set(candidates.map((candidate) => candidate.offer.supplierId)).size
-  const reason = supplierCount > 1 || allocations.some((allocation) => allocation.quantity < (candidates.find((candidate) => candidate.offer.id === allocation.offerId)?.offer.quantity ?? allocation.quantity))
+  const isSplit = supplierCount > 1 || allocations.length > inputsAllocationCount(candidates)
+  const reason = isSplit
     ? 'Quantity-level Split Procurement: объём распределён между доступными предложениями с учётом ограничений количества и общей логистики.'
     : 'Single-source Procurement: весь объём закрыт одним предложением без необходимости дробления.'
   const risks = logistics.unverifiedRuns
@@ -186,6 +190,8 @@ function buildPlan(candidates: Candidate[], routes: LogisticsRoute[], destinatio
     recommended: false,
   }
 }
+
+const inputsAllocationCount = (candidates: Candidate[]) => new Set(candidates.map((candidate) => candidate.itemLine)).size
 
 export function optimizeSplitProcurement(inputs: SplitInput[], routes: LogisticsRoute[] = [], destination = 'Ташкент', options: SplitOptions = {}): ProcurementPlan[] {
   if (!inputs.length) return []
