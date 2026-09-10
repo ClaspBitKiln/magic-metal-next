@@ -47,11 +47,17 @@ export function evidenceScore(offer: Offer): number {
   return clamp(offer.confidence * 0.7 + availability[offer.availability] * 0.3)
 }
 
-export function assessOfferQuality(offer: Offer, history?: SupplierReliabilityRecord, policy: FreshnessPolicy = defaultFreshnessPolicy, now = new Date()): OfferQuality {
+export function assessOfferQuality(
+  offer: Offer,
+  history?: SupplierReliabilityRecord,
+  policy: FreshnessPolicy = defaultFreshnessPolicy,
+  now = new Date(),
+  logisticsObservedAt?: string,
+): OfferQuality {
   const supplierReliability = reliabilityFromHistory(history)
   const priceFreshness = freshnessScore(offer.observedAt, policy.priceDays, now)
   const availabilityFreshness = freshnessScore(offer.observedAt, policy.availabilityDays, now)
-  const logisticsFreshness = freshnessScore(offer.observedAt, policy.logisticsDays, now)
+  const logisticsFreshness = freshnessScore(logisticsObservedAt ?? offer.observedAt, policy.logisticsDays, now)
   const evidence = evidenceScore(offer)
   const risks: string[] = []
   if (priceFreshness < 0.5) risks.push('Цена устарела или близка к истечению срока актуальности')
