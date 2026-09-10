@@ -69,6 +69,9 @@ export type Offer = {
   observedAt: string
   match: MatchKind
   confidence: number
+  minOrderQuantity?: number
+  maxOrderQuantity?: number
+  orderStep?: number
 }
 
 export type LandedCost = {
