@@ -10,6 +10,7 @@ import { Media } from './collections/Media'
 import { Products } from './collections/Products'
 import { RequestFiles } from './collections/RequestFiles'
 import { Requests } from './collections/Requests'
+import { DealResults } from './collections/DealResults'
 import { SupplierOffers } from './collections/SupplierOffers'
 import { SupplierSources } from './collections/SupplierSources'
 import { LogisticsBenchmarks } from './collections/LogisticsBenchmarks'
@@ -29,7 +30,7 @@ export default buildConfig({
     user: Users.slug,
     importMap: { baseDir: path.resolve(dirname) },
   },
-  collections: [Users, Media, Products, RequestFiles, Requests, SupplierSources, SupplierOffers, LogisticsBenchmarks],
+  collections: [Users, Media, Products, RequestFiles, Requests, DealResults, SupplierSources, SupplierOffers, LogisticsBenchmarks],
   globals: [SiteSettings],
   editor: lexicalEditor(),
   secret: requiredEnv('PAYLOAD_SECRET'),
