@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { isAuthenticated } from '../access/isAuthenticated'
+import { buildProductIdentityKey, normalizeProductIdentity } from '../lib/procurement/productIdentity'
 
 export const SupplierOffers: CollectionConfig = {
   slug: 'supplier-offers',
@@ -15,16 +16,33 @@ export const SupplierOffers: CollectionConfig = {
     update: isAuthenticated,
     delete: isAuthenticated,
   },
+  hooks: {
+    beforeValidate: [
+      ({ data }) => {
+        if (!data) return data
+        const identity = normalizeProductIdentity(data)
+        return { ...data, ...identity, productIdentityKey: buildProductIdentityKey(data) }
+      },
+    ],
+  },
   fields: [
     { name: 'supplier', label: 'Поставщик', type: 'relationship', relationTo: 'supplier-sources', required: true, index: true },
     { name: 'externalKey', label: 'Ключ источника', type: 'text', required: true, unique: true, index: true },
     { name: 'category', label: 'Категория', type: 'text', index: true },
     { name: 'product', label: 'Номенклатура', type: 'text', required: true, index: true },
+    { name: 'productKey', label: 'Нормализованная номенклатура', type: 'text', index: true, admin: { hidden: true } },
     { name: 'designation', label: 'Марка / исполнение', type: 'text', index: true },
+    { name: 'designationKey', label: 'Нормализованная марка', type: 'text', index: true, admin: { hidden: true } },
     { name: 'size', label: 'Размер', type: 'text', required: true, index: true },
     { name: 'diameter', label: 'Диаметр / профиль', type: 'text', index: true },
+    { name: 'diameterKey', label: 'Нормализованный диаметр', type: 'text', index: true, admin: { hidden: true } },
     { name: 'wall', label: 'Толщина стенки', type: 'text', index: true },
+    { name: 'wallKey', label: 'Нормализованная стенка', type: 'text', index: true, admin: { hidden: true } },
+    { name: 'thicknessKey', label: 'Нормализованная толщина', type: 'text', index: true, admin: { hidden: true } },
+    { name: 'lengthKey', label: 'Нормализованная длина', type: 'text', index: true, admin: { hidden: true } },
+    { name: 'productIdentityKey', label: 'Product Identity Key', type: 'text', index: true, admin: { hidden: true } },
     { name: 'standard', label: 'ГОСТ / ТУ', type: 'text', index: true },
+    { name: 'standardKey', label: 'Нормализованный стандарт', type: 'text', index: true, admin: { hidden: true } },
     { name: 'price', label: 'Цена', type: 'number' },
     { name: 'currency', label: 'Валюта', type: 'select', defaultValue: 'RUB', options: ['RUB', 'USD', 'EUR', 'UZS', 'KZT', 'CNY'] },
     { name: 'unit', label: 'Единица цены', type: 'text' },
