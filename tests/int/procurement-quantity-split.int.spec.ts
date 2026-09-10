@@ -96,6 +96,20 @@ describe('quantity-level split procurement', () => {
     expect(result).toEqual([])
   })
 
+  it('enforces supplier minimum, maximum and order-step constraints', () => {
+    const result = optimizeSplitProcurement([
+      { itemLine: 1, quantity: 20, unit: 'т', offers: [
+        offer('a', 'A', 'Москва', 99000, 20, { minOrderQuantity: 5, maxOrderQuantity: 10, orderStep: 5 }),
+        offer('b', 'B', 'Москва', 100000, 20),
+      ] },
+    ], [route('moscow-tashkent', 'Москва', 50000, 5000, 25)])
+
+    expect(result.length).toBeGreaterThan(0)
+    const aQuantity = result[0].allocations.find((item) => item.offerId === 'a')?.quantity ?? 0
+    expect(aQuantity).toBe(10)
+    expect(result[0].allocations.reduce((sum, item) => sum + item.quantity, 0)).toBe(20)
+  })
+
   it('marks observed logistics as a risk and does not recommend it by default', () => {
     const result = optimizeSplitProcurement([
       { itemLine: 1, quantity: 20, unit: 'т', offers: [offer('a', 'A', 'Москва', 100000, 20)] },
