@@ -92,3 +92,41 @@ export type ProcurementDecision = {
   risks: string[]
   recommended: boolean
 }
+
+export type LogisticsRoute = {
+  id: string
+  origin: string
+  destination: string
+  mode: 'road' | 'rail' | 'sea' | 'multimodal'
+  fixedCost?: number
+  variableCostPerTon?: number
+  variableCostPerKg?: number
+  minimumCharge?: number
+  leadTimeDays?: number
+  capacityTons?: number
+  currency: string
+  observedAt: string
+  confidence: number
+}
+
+export type SplitAllocation = {
+  itemLine: number
+  offerId: string
+  quantity: number
+  unit: string
+  purchaseCost: number
+  logisticsCost: number
+  landedCost: number
+}
+
+export type ProcurementPlan = {
+  allocations: SplitAllocation[]
+  landedCost: number
+  currency: string
+  supplierCount: number
+  transportRunCount: number
+  leadTimeDays?: number
+  reasons: string[]
+  risks: string[]
+  recommended: boolean
+}
