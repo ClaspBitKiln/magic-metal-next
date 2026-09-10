@@ -1,4 +1,9 @@
 const clean = (value?: string) => value?.trim().toLowerCase().replace(/ё/g, 'е').replace(/[^a-zа-я0-9]+/gi, '') ?? ''
+const cleanNumber = (value?: string | number) => {
+  if (value === undefined || value === '') return ''
+  const number = Number(String(value).trim().replace(',', '.'))
+  return Number.isFinite(number) ? String(number) : clean(String(value))
+}
 
 export type ProductIdentityInput = {
   product?: string
@@ -14,10 +19,10 @@ export const normalizeProductIdentity = (input: ProductIdentityInput) => ({
   productKey: clean(input.product),
   designationKey: clean(input.designation),
   standardKey: clean(input.standard),
-  diameterKey: input.diameter === undefined ? '' : clean(String(input.diameter).replace(',', '.')),
-  wallKey: input.wall === undefined ? '' : clean(String(input.wall).replace(',', '.')),
-  thicknessKey: input.thickness === undefined ? '' : clean(String(input.thickness).replace(',', '.')),
-  lengthKey: input.length === undefined ? '' : clean(String(input.length).replace(',', '.')),
+  diameterKey: cleanNumber(input.diameter),
+  wallKey: cleanNumber(input.wall),
+  thicknessKey: cleanNumber(input.thickness),
+  lengthKey: cleanNumber(input.length),
 })
 
 export const buildProductIdentityKey = (input: ProductIdentityInput) => {
