@@ -1,6 +1,7 @@
 import type { Payload } from 'payload'
 import type { NormalizedRFQItem, Offer } from './types'
 import type { ProcurementAdapter } from './engine'
+import { normalizeProductIdentity } from './productIdentity'
 
 type SupplierOfferDoc = {
   id: string | number
@@ -35,35 +36,51 @@ const numberFrom = (value?: string) => {
 }
 
 const normalized = (value?: string) => value?.toLowerCase().replace(/[\s°×xх-]+/g, '')
-const equalNormalized = (a?: string, b?: string) => {
-  if (!a || !b) return false
-  return normalized(a) === normalized(b)
-}
+const equalNormalized = (a?: string, b?: string) => Boolean(a && b && normalized(a) === normalized(b))
 
 const productMatches = (doc: SupplierOfferDoc, item: NormalizedRFQItem) => {
   const requested = normalized(item.product.value)
   if (!requested) return false
   const product = normalized(doc.product)
   const designation = normalized(doc.designation)
-  return Boolean(product && (product.includes(requested) || requested.includes(product) || designation?.includes(requested)))
+  return Boolean(product && (product === requested || product.includes(requested) || requested.includes(product) || designation?.includes(requested)))
 }
 
 export function createPayloadOfferAdapter(payload: Payload): ProcurementAdapter {
   return {
     id: 'payload-supplier-offers',
     async search(item) {
+      const identity = normalizeProductIdentity({
+        product: item.product.value,
+        designation: item.subtype.value,
+        standard: item.standard.value,
+        diameter: item.diameter.value,
+        wall: item.wall.value,
+        thickness: item.thickness.value,
+        length: item.length.value,
+      })
+
+      const and: Array<Record<string, unknown>> = [
+        { active: { equals: true } },
+        { productKey: { equals: identity.productKey } },
+      ]
+      if (identity.designationKey) and.push({ designationKey: { equals: identity.designationKey } })
+      if (identity.standardKey) and.push({ standardKey: { equals: identity.standardKey } })
+      if (identity.diameterKey) and.push({ diameterKey: { equals: identity.diameterKey } })
+      if (identity.wallKey) and.push({ wallKey: { equals: identity.wallKey } })
+
       const result = await payload.find({
         collection: 'supplier-offers',
-        where: { active: { equals: true } },
-        limit: 1000,
+        where: { and },
+        limit: 250,
         depth: 0,
         sort: '-observedAt',
       })
       const candidates = result.docs as unknown as SupplierOfferDoc[]
+
       return candidates
         .map((doc): Offer | null => {
           if (!productMatches(doc, item)) return null
-
           const diameter = numberFrom(doc.diameter)
           const wall = numberFrom(doc.wall)
           const gradeMatch = !item.grade.value || equalNormalized(doc.designation, item.grade.value) || normalized(doc.designation)?.includes(normalized(item.grade.value) ?? '___')
@@ -72,7 +89,6 @@ export function createPayloadOfferAdapter(payload: Payload): ProcurementAdapter 
           const wallMatch = item.wall.value === undefined || wall === item.wall.value
           if (!gradeMatch || !standardMatch || !diameterMatch || !wallMatch) return null
 
-          const exact = Boolean(gradeMatch && standardMatch && diameterMatch && wallMatch)
           return {
             id: String(doc.id),
             sourceId: String(sourceId(doc.supplier)),
@@ -88,8 +104,8 @@ export function createPayloadOfferAdapter(payload: Payload): ProcurementAdapter 
             unit: doc.unit,
             availability: availability(doc.availability),
             observedAt: doc.observedAt,
-            match: exact ? 'exact' : 'clarification-required',
-            confidence: exact ? (doc.availability === 'price-confirmed' ? 0.98 : 0.9) : 0.6,
+            match: 'exact',
+            confidence: doc.availability === 'price-confirmed' ? 0.98 : 0.9,
           }
         })
         .filter((offer): offer is Offer => Boolean(offer))
