@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "routes": [
+    { "id": "moscow-tashkent-road", "origin": "Москва", "destination": "Ташкент", "mode": "road", "carType": "close", "tonnage": 20, "withNds": false },
+    { "id": "chelyabinsk-tashkent-road", "origin": "Челябинск", "destination": "Ташкент", "mode": "road", "carType": "close", "tonnage": 20, "withNds": false },
+    { "id": "ekaterinburg-tashkent-road", "origin": "Екатеринбург", "destination": "Ташкент", "mode": "road", "carType": "close", "tonnage": 20, "withNds": false },
+    { "id": "china-tashkent-multimodal", "origin": "Китай", "destination": "Ташкент", "mode": "multimodal", "carType": "docker", "tonnage": 20, "withNds": false }
+  ],
+  "rule": "ATI is a preliminary observed market benchmark. It is never treated as a confirmed Magic Metal carrier tariff."
+}
