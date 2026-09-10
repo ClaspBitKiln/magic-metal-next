@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "routes": [
     {
       "id": "moscow-tashkent-road",
@@ -7,7 +7,10 @@
       "destination": "Ташкент",
       "mode": "road",
       "currency": "RUB",
-      "status": "needs-verification"
+      "status": "observed",
+      "observedAt": "2026-08-18",
+      "evidenceUrl": "https://maintransport.ru/transportnye-kompanii/moskva/tashkent",
+      "evidenceNote": "Market benchmark: FTL route exists; published page reports average FTL transit about 5d15h with one driver. A 10,000 kg calculation is published at 468,720 RUB, but this is not a verified Magic Metal contract tariff and must not be used as a final purchase rate."
     },
     {
       "id": "chelyabinsk-tashkent-road",
@@ -15,7 +18,10 @@
       "destination": "Ташкент",
       "mode": "road",
       "currency": "RUB",
-      "status": "needs-verification"
+      "status": "observed",
+      "observedAt": "2026-08-28",
+      "evidenceUrl": "https://maintransport.ru/transportnye-kompanii/chelyabinsk/tashkent",
+      "evidenceNote": "Market benchmark: published 20,000 kg door-to-door calculation is 469,326 RUB with 6-day transit. This is an observed market quote, not a verified Magic Metal contract tariff."
     },
     {
       "id": "ekaterinburg-tashkent-road",
@@ -23,16 +29,34 @@
       "destination": "Ташкент",
       "mode": "road",
       "currency": "RUB",
-      "status": "needs-verification"
+      "status": "observed",
+      "observedAt": "2026-09-03",
+      "evidenceUrl": "https://maintransport.ru/transportnye-kompanii/ekaterinburg/tashkent",
+      "evidenceNote": "Market benchmark: FTL route exists; published calculations and carrier comparisons are available. No contract tariff is stored until directly verified."
     },
     {
-      "id": "china-tashkent-multimodal",
+      "id": "china-tashkent-fesco-landborder",
       "origin": "Китай",
       "destination": "Ташкент",
       "mode": "multimodal",
       "currency": "RUB",
-      "status": "needs-verification"
+      "status": "observed",
+      "observedAt": "2026-09-10",
+      "evidenceUrl": "https://www.fesco.ru/en/clients/container/trains/fesco-asia-landborder/",
+      "evidenceNote": "FESCO officially publishes rail service from China via land border crossings to Tashkent and supports door-to-door delivery. Tariff is quote-based/dynamic, so no invented fixed cost is stored."
+    },
+    {
+      "id": "vladivostok-tashkent-fesco",
+      "origin": "Владивосток",
+      "destination": "Ташкент",
+      "mode": "rail",
+      "currency": "RUB",
+      "status": "observed",
+      "observedAt": "2026-09-10",
+      "leadTimeDays": 13,
+      "evidenceUrl": "https://www.fesco.ru/ru/clients/container/trains/fesco-tashkent-shuttle/",
+      "evidenceNote": "FESCO publishes a regular weekly Vladivostok–Tashkent container train with 13–14 day transit. Tariff remains quote-based/dynamic and is not invented here."
     }
   ],
-  "rule": "Never hardcode a universal logistics surcharge into product prices. Use route-specific verified economics."
+  "rule": "Only routes with status=verified may be used as deterministic tariff inputs for recommended procurement plans. observed routes are evidence/benchmark only. Never hardcode a universal logistics surcharge into product prices."
 }
