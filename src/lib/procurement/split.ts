@@ -91,6 +91,17 @@ const directVariableCost = (offer: Offer) => {
   return (offer.price ?? 0) + fixed / quantity + (offer.pickupCost ?? 0) / quantity + (offer.freightCost ?? 0) / quantity
 }
 
+const allocationQuantity = (offer: Offer, remaining: number) => {
+  const stock = offer.quantity ?? 0
+  const supplierMax = offer.maxOrderQuantity ?? Number.POSITIVE_INFINITY
+  let quantity = Math.min(remaining, stock, supplierMax)
+  const step = offer.orderStep
+  if (step !== undefined && step > 0) quantity = Math.floor(quantity / step) * step
+  const min = offer.minOrderQuantity ?? 0
+  if (quantity > 0 && quantity < min) return 0
+  return quantity
+}
+
 function quantityPatterns(input: SplitInput, maxOffers: number): Candidate[][] {
   if (!Number.isFinite(input.quantity) || input.quantity <= 0) return []
   const offers = eligible(input.offers).slice(0, maxOffers)
@@ -104,8 +115,8 @@ function quantityPatterns(input: SplitInput, maxOffers: number): Candidate[][] {
     let remaining = input.quantity
     const allocation: Candidate[] = []
     for (const offer of selected) {
-      if (remaining <= 0) break
-      const available = Math.min(remaining, offer.quantity ?? 0)
+      if (remaining <= 1e-9) break
+      const available = allocationQuantity(offer, remaining)
       if (available <= 0) continue
       allocation.push({ offer, quantity: available, itemLine: input.itemLine, unit: input.unit })
       remaining -= available
@@ -125,6 +136,8 @@ function quantityPatterns(input: SplitInput, maxOffers: number): Candidate[][] {
 function approximatePatternCost(pattern: Candidate[]) {
   return pattern.reduce((sum, candidate) => sum + (candidate.offer.price ?? 0) * candidate.quantity + (candidate.offer.handlingCost ?? 0) + (candidate.offer.destinationCost ?? 0) + (candidate.offer.customsCost ?? 0), 0)
 }
+
+const inputsAllocationCount = (candidates: Candidate[]) => new Set(candidates.map((candidate) => candidate.itemLine)).size
 
 function buildPlan(candidates: Candidate[], routes: LogisticsRoute[], destination: string, allowObservedRoutes: boolean): ProcurementPlan | null {
   if (!candidates.length) return null
@@ -190,8 +203,6 @@ function buildPlan(candidates: Candidate[], routes: LogisticsRoute[], destinatio
     recommended: false,
   }
 }
-
-const inputsAllocationCount = (candidates: Candidate[]) => new Set(candidates.map((candidate) => candidate.itemLine)).size
 
 export function optimizeSplitProcurement(inputs: SplitInput[], routes: LogisticsRoute[] = [], destination = 'Ташкент', options: SplitOptions = {}): ProcurementPlan[] {
   if (!inputs.length) return []
