@@ -15,6 +15,7 @@ export type RankingWeights = {
 export type RankingContext = {
   supplierHistory?: Record<string, SupplierReliabilityRecord>
   freshnessPolicy?: FreshnessPolicy
+  logisticsObservedAtByOffer?: Record<string, string>
   now?: Date
 }
 
@@ -56,7 +57,7 @@ export function rankOffers(offers: Offer[], weights: Partial<RankingWeights> = {
     const benchmarkScore = offer.benchmarkValue && offer.price ? Math.max(0, Math.min(1, offer.benchmarkValue / offer.price)) : 0.5
     const baseReliabilityScore = Math.max(0, Math.min(1, offer.confidence))
     const baseScore = costScore * w.landedCost + specScore * w.specification + availabilityScore(offer.availability) * w.availability + leadScore * w.leadTime + baseReliabilityScore * w.reliability + logisticsScore * w.logistics + benchmarkScore * w.benchmark
-    const quality = assessOfferQuality(offer, context.supplierHistory?.[offer.supplierId], context.freshnessPolicy, context.now)
+    const quality = assessOfferQuality(offer, context.supplierHistory?.[offer.supplierId], context.freshnessPolicy, context.now, context.logisticsObservedAtByOffer?.[offer.id])
     const freshness = (quality.priceFreshness + quality.availabilityFreshness + quality.logisticsFreshness) / 3
     const allCosts = offers.map((item) => calculateLandedCost({ purchase: item.price ?? 0, pickup: item.pickupCost, freight: item.freightCost, handling: item.handlingCost, destination: item.destinationCost, customs: item.customsCost }).total)
     const minCost = allCosts.length ? Math.min(...allCosts) : 0
