@@ -6,8 +6,8 @@ describe('product identity', () => {
     const identity = normalizeProductIdentity({ product: 'Труба  ', designation: '20', standard: 'ГОСТ 8732', diameter: '100,0', wall: '5,0' })
     expect(identity.productKey).toBe('труба')
     expect(identity.standardKey).toBe('гост8732')
-    expect(identity.diameterKey).toBe('1000')
-    expect(identity.wallKey).toBe('50')
+    expect(identity.diameterKey).toBe('100')
+    expect(identity.wallKey).toBe('5')
   })
 
   it('builds the same key for equivalent formatting', () => {
