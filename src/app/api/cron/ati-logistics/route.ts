@@ -14,10 +14,7 @@ const yesterday = () => {
 
 export async function GET(request: Request) {
   const expected = process.env.CRON_SECRET
-  if (!expected || request.headers.get('authorization') !== `Bearer ${expected}`) {
-    return Response.json({ error: 'Unauthorized' }, { status: 401 })
-  }
-
+  if (!expected || request.headers.get('authorization') !== `Bearer ${expected}`) return Response.json({ error: 'Unauthorized' }, { status: 401 })
   const token = process.env.ATI_API_TOKEN
   if (!token) return Response.json({ error: 'ATI_API_TOKEN is not configured' }, { status: 503 })
 
@@ -27,11 +24,7 @@ export async function GET(request: Request) {
   const payload = await getPayload({ config })
 
   for (const snapshot of snapshots) {
-    const existing = await payload.find({
-      collection: 'logistics-benchmarks',
-      where: { and: [{ routeId: { equals: snapshot.routeId } }, { dateFrom: { equals: snapshot.dateFrom } }, { source: { equals: snapshot.source } }] },
-      limit: 1,
-    })
+    const existing = await payload.find({ collection: 'logistics-benchmarks', where: { and: [{ routeId: { equals: snapshot.routeId } }, { dateFrom: { equals: snapshot.dateFrom } }, { source: { equals: snapshot.source } }] }, limit: 1 })
     const data = {
       ...snapshot,
       dateFrom: new Date(snapshot.dateFrom).toISOString(),
