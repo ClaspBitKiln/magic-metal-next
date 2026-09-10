@@ -15,6 +15,7 @@ type SupplierOfferDoc = {
   currency?: string
   unit?: string
   availability: 'price-confirmed' | 'market-listed' | 'on-request' | 'inactive'
+  sourceUrl?: string
   observedAt: string
   active?: boolean
 }
@@ -34,6 +35,18 @@ const numberFrom = (value?: string) => {
 }
 
 const normalized = (value?: string) => value?.toLowerCase().replace(/[\s°×xх-]+/g, '')
+const equalNormalized = (a?: string, b?: string) => {
+  if (!a || !b) return false
+  return normalized(a) === normalized(b)
+}
+
+const productMatches = (doc: SupplierOfferDoc, item: NormalizedRFQItem) => {
+  const requested = normalized(item.product.value)
+  if (!requested) return false
+  const product = normalized(doc.product)
+  const designation = normalized(doc.designation)
+  return Boolean(product && (product.includes(requested) || requested.includes(product) || designation?.includes(requested)))
+}
 
 export function createPayloadOfferAdapter(payload: Payload): ProcurementAdapter {
   return {
@@ -44,18 +57,21 @@ export function createPayloadOfferAdapter(payload: Payload): ProcurementAdapter 
         where: { active: { equals: true } },
         limit: 1000,
         depth: 0,
+        sort: '-observedAt',
       })
       const candidates = result.docs as unknown as SupplierOfferDoc[]
       return candidates
         .map((doc): Offer | null => {
-          const productMatch = normalized(doc.product)?.includes(normalized(item.product.value ?? '') || '___')
-          const gradeMatch = !item.grade.value || normalized(doc.designation)?.includes(normalized(item.grade.value))
-          const standardMatch = !item.standard.value || normalized(doc.standard)?.includes(normalized(item.standard.value))
+          if (!productMatches(doc, item)) return null
+
           const diameter = numberFrom(doc.diameter)
           const wall = numberFrom(doc.wall)
+          const gradeMatch = !item.grade.value || equalNormalized(doc.designation, item.grade.value) || normalized(doc.designation)?.includes(normalized(item.grade.value) ?? '___')
+          const standardMatch = !item.standard.value || equalNormalized(doc.standard, item.standard.value) || normalized(doc.standard)?.includes(normalized(item.standard.value) ?? '___')
           const diameterMatch = item.diameter.value === undefined || diameter === item.diameter.value
           const wallMatch = item.wall.value === undefined || wall === item.wall.value
-          if (!productMatch || !gradeMatch || !standardMatch || !diameterMatch || !wallMatch) return null
+          if (!gradeMatch || !standardMatch || !diameterMatch || !wallMatch) return null
+
           const exact = Boolean(gradeMatch && standardMatch && diameterMatch && wallMatch)
           return {
             id: String(doc.id),
@@ -73,7 +89,7 @@ export function createPayloadOfferAdapter(payload: Payload): ProcurementAdapter 
             availability: availability(doc.availability),
             observedAt: doc.observedAt,
             match: exact ? 'exact' : 'clarification-required',
-            confidence: exact ? 0.95 : 0.6,
+            confidence: exact ? (doc.availability === 'price-confirmed' ? 0.98 : 0.9) : 0.6,
           }
         })
         .filter((offer): offer is Offer => Boolean(offer))
