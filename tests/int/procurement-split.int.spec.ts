@@ -14,12 +14,23 @@ describe('split procurement', () => {
       { itemLine: 1, quantity: 10, unit: 'т', offers: [offer('a1', 'A', 'Москва', 100000), offer('b1', 'B', 'Челябинск', 98000)] },
       { itemLine: 2, quantity: 10, unit: 'т', offers: [offer('a2', 'A', 'Москва', 100000), offer('b2', 'B', 'Челябинск', 98000)] },
     ], [
-      { id: 'moscow-tashkent', origin: 'Москва', destination: 'Ташкент', mode: 'road', fixedCost: 50000, variableCostPerTon: 1000, currency: 'RUB', observedAt: new Date().toISOString(), confidence: 1 },
-      { id: 'chel-tashkent', origin: 'Челябинск', destination: 'Ташкент', mode: 'road', fixedCost: 100000, variableCostPerTon: 1000, currency: 'RUB', observedAt: new Date().toISOString(), confidence: 1 },
+      { id: 'moscow-tashkent', origin: 'Москва', destination: 'Ташкент', mode: 'road', fixedCost: 50000, variableCostPerTon: 1000, currency: 'RUB', observedAt: new Date().toISOString(), confidence: 1, status: 'verified' },
+      { id: 'chel-tashkent', origin: 'Челябинск', destination: 'Ташкент', mode: 'road', fixedCost: 100000, variableCostPerTon: 1000, currency: 'RUB', observedAt: new Date().toISOString(), confidence: 1, status: 'verified' },
     ])
 
     expect(plans[0].recommended).toBe(true)
     expect(plans[0].supplierCount).toBe(1)
     expect(plans[0].transportRunCount).toBe(1)
+  })
+
+  it('does not recommend a plan whose route tariff is unverified', () => {
+    const plans = optimizeSplitProcurement([
+      { itemLine: 1, quantity: 10, unit: 'т', offers: [offer('a1', 'A', 'Москва', 100000)] },
+    ], [
+      { id: 'moscow-tashkent', origin: 'Москва', destination: 'Ташкент', mode: 'road', fixedCost: 50000, variableCostPerTon: 1000, currency: 'RUB', observedAt: new Date().toISOString(), confidence: 1, status: 'needs-verification' },
+    ])
+
+    expect(plans[0].recommended).toBe(false)
+    expect(plans[0].risks.length).toBeGreaterThan(0)
   })
 })
