@@ -1,89 +1,91 @@
-import type { LandedCost, LogisticsRoute, Offer, ProcurementPlan, SplitAllocation } from './types'
-import { calculateLandedCost } from './landedCost'
+import type { LogisticsRoute, Offer, ProcurementPlan, SplitAllocation } from './types'
 
 type SplitInput = {
   itemLine: number
   quantity: number
   unit: string
   offers: Offer[]
-  routes?: LogisticsRoute[]
 }
 
-const eligible = (offers: Offer[]) => offers.filter((offer) =>
-  offer.match === 'exact' || offer.match === 'approved-alternative'
-).filter((offer) => Number.isFinite(offer.price) && (offer.price ?? -1) >= 0)
+type Candidate = { offer: Offer; quantity: number; itemLine: number; unit: string }
 
-const routeCost = (offer: Offer, quantity: number, routes: LogisticsRoute[]) => {
-  const route = routes.find((candidate) => candidate.origin === offer.city)
-  if (!route) return undefined
-  const fixed = route.fixedCost ?? 0
-  const variable = route.variableCostPerTon !== undefined ? route.variableCostPerTon * quantity : (route.variableCostPerKg ?? 0) * quantity * 1000
-  return Math.max(route.minimumCharge ?? 0, fixed + variable)
+const eligible = (offers: Offer[]) => offers.filter((offer) =>
+  (offer.match === 'exact' || offer.match === 'approved-alternative') && Number.isFinite(offer.price) && (offer.price ?? -1) >= 0,
+)
+
+const routeFor = (offer: Offer, routes: LogisticsRoute[]) => routes.find((route) => route.origin === offer.city)
+
+function transportCost(candidates: Candidate[], routes: LogisticsRoute[]) {
+  const groups = new Map<string, Candidate[]>()
+  for (const candidate of candidates) {
+    const key = candidate.offer.city ?? `offer:${candidate.offer.id}`
+    groups.set(key, [...(groups.get(key) ?? []), candidate])
+  }
+  let total = 0
+  for (const [, group] of groups) {
+    const route = routeFor(group[0].offer, routes)
+    const tons = group.reduce((sum, candidate) => sum + (candidate.unit === 'т' ? candidate.quantity : 0), 0)
+    const kg = group.reduce((sum, candidate) => sum + (candidate.unit === 'кг' ? candidate.quantity : 0), 0)
+    if (!route) {
+      total += group.reduce((sum, candidate) => sum + (candidate.offer.pickupCost ?? 0) + (candidate.offer.freightCost ?? 0), 0)
+      continue
+    }
+    const variable = route.variableCostPerTon !== undefined ? route.variableCostPerTon * tons : (route.variableCostPerKg ?? 0) * kg
+    total += Math.max(route.minimumCharge ?? 0, (route.fixedCost ?? 0) + variable)
+  }
+  return { total, runs: groups.size }
+}
+
+function buildPlan(candidates: Candidate[], routes: LogisticsRoute[], reason: string): ProcurementPlan {
+  const allocations: SplitAllocation[] = candidates.map((candidate) => ({
+    itemLine: candidate.itemLine,
+    offerId: candidate.offer.id,
+    quantity: candidate.quantity,
+    unit: candidate.unit,
+    purchaseCost: (candidate.offer.price ?? 0) * candidate.quantity,
+    logisticsCost: 0,
+    landedCost: (candidate.offer.price ?? 0) * candidate.quantity,
+  }))
+  const logistics = transportCost(candidates, routes)
+  const purchase = allocations.reduce((sum, allocation) => sum + allocation.purchaseCost, 0)
+  const extra = candidates.reduce((sum, candidate) => sum + (candidate.offer.handlingCost ?? 0) + (candidate.offer.destinationCost ?? 0) + (candidate.offer.customsCost ?? 0), 0)
+  const total = purchase + logistics.total + extra
+  const perAllocationLogistics = logistics.runs ? logistics.total / logistics.runs : 0
+  return {
+    allocations: allocations.map((allocation) => ({ ...allocation, logisticsCost: perAllocationLogistics, landedCost: allocation.purchaseCost + perAllocationLogistics })),
+    landedCost: total,
+    currency: candidates[0]?.offer.currency ?? 'RUB',
+    supplierCount: new Set(candidates.map((candidate) => candidate.offer.supplierId)).size,
+    transportRunCount: logistics.runs,
+    leadTimeDays: Math.max(...candidates.map((candidate) => candidate.offer.leadTimeDays ?? 0)) || undefined,
+    reasons: [reason, `Логистика консолидирована по ${logistics.runs} маршруту(ам).`],
+    risks: [],
+    recommended: false,
+  }
 }
 
 export function optimizeSplitProcurement(inputs: SplitInput[], routes: LogisticsRoute[] = []): ProcurementPlan[] {
   if (!inputs.length) return []
+  const options = inputs.map((input) => eligible(input.offers).map((offer) => ({ offer, quantity: input.quantity, itemLine: input.itemLine, unit: input.unit })))
+  if (options.some((items) => !items.length)) return []
 
-  const plans: ProcurementPlan[] = []
-  const singleAllocations: SplitAllocation[] = []
-
-  for (const input of inputs) {
-    const best = eligible(input.offers).sort((a, b) => (a.price ?? Infinity) - (b.price ?? Infinity))[0]
-    if (!best) continue
-    const logistics = routeCost(best, input.quantity, routes) ?? best.pickupCost ?? 0
-    const purchaseCost = (best.price ?? 0) * input.quantity
-    const landedCost = calculateLandedCost({
-      purchase: purchaseCost,
-      pickup: logistics,
-      freight: best.freightCost,
-      handling: best.handlingCost,
-      destination: best.destinationCost,
-      customs: best.customsCost,
-    }).total
-    singleAllocations.push({ itemLine: input.itemLine, offerId: best.id, quantity: input.quantity, unit: input.unit, purchaseCost, logisticsCost: logistics, landedCost })
+  // Exhaustive combinations are intentionally used for the MVP. The search space is
+  // bounded later by top-N offers per line when connected to production sources.
+  const combinations: Candidate[][] = []
+  const visit = (index: number, current: Candidate[]) => {
+    if (index === options.length) return combinations.push(current)
+    for (const candidate of options[index]) visit(index + 1, [...current, candidate])
   }
+  visit(0, [])
 
-  if (singleAllocations.length === inputs.length) {
-    plans.push({
-      allocations: singleAllocations,
-      landedCost: singleAllocations.reduce((sum, allocation) => sum + allocation.landedCost, 0),
-      currency: 'RUB',
-      supplierCount: new Set(singleAllocations.map((allocation) => allocation.offerId)).size,
-      transportRunCount: new Set(singleAllocations.map((allocation) => inputs.find((input) => input.itemLine === allocation.itemLine)?.offers.find((offer) => offer.id === allocation.offerId)?.city)).size,
-      reasons: ['Базовый план: лучшие доступные предложения по строкам заявки.'],
-      risks: [],
-      recommended: false,
-    })
-  }
-
-  // Generate a split candidate only when an alternative supplier is materially cheaper
-  // for an individual line. This keeps the MVP deterministic and avoids combinatorial explosion.
-  for (const input of inputs) {
-    const offers = eligible(input.offers).sort((a, b) => (a.price ?? Infinity) - (b.price ?? Infinity))
-    if (offers.length < 2) continue
-    const cheapest = offers[0]
-    const second = offers[1]
-    if (!cheapest.price || !second.price || second.price <= cheapest.price) continue
-
-    const allocations = singleAllocations.map((allocation) => {
-      if (allocation.itemLine !== input.itemLine) return allocation
-      const logistics = routeCost(second, input.quantity, routes) ?? second.pickupCost ?? 0
-      const purchaseCost = second.price! * input.quantity
-      const landedCost = calculateLandedCost({ purchase: purchaseCost, pickup: logistics, freight: second.freightCost, handling: second.handlingCost, destination: second.destinationCost, customs: second.customsCost }).total
-      return { ...allocation, offerId: second.id, purchaseCost, logisticsCost: logistics, landedCost }
-    })
-    const plan: ProcurementPlan = {
-      allocations,
-      landedCost: allocations.reduce((sum, allocation) => sum + allocation.landedCost, 0),
-      currency: 'RUB',
-      supplierCount: new Set(allocations.map((allocation) => allocation.offerId)).size,
-      transportRunCount: new Set(allocations.map((allocation) => inputs.find((candidate) => candidate.itemLine === allocation.itemLine)?.offers.find((offer) => offer.id === allocation.offerId)?.city)).size,
-      reasons: ['Сценарий разделённой закупки рассчитан для сравнения полной стоимости.'],
-      risks: ['Требуется проверить, что дополнительный маршрут не создаёт несогласованные сроки или транспортные затраты.'],
-      recommended: false,
-    }
-    plans.push(plan)
-  }
-
-  return plans.sort((a, b) => a.landedCost - b.landedCost).map((plan, index) => ({ ...plan, recommended: index === 0 && plan.risks.length === 0 }))
+  return combinations
+    .map((combination) => buildPlan(
+      combination,
+      routes,
+      new Set(combination.map((candidate) => candidate.offer.supplierId)).size > 1
+        ? 'Split Procurement: позиции распределены между несколькими поставщиками с учётом общей логистики.'
+        : 'Single-source Procurement: позиции сведены к одному поставщику, когда это выгоднее по полной стоимости.',
+    ))
+    .sort((a, b) => a.landedCost - b.landedCost)
+    .map((plan, index) => ({ ...plan, recommended: index === 0 }))
 }
