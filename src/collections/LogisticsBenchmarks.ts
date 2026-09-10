@@ -14,6 +14,7 @@ export const LogisticsBenchmarks: CollectionConfig = {
     { name: 'routeId', type: 'text', required: true, index: true },
     { name: 'origin', type: 'text', required: true, index: true },
     { name: 'destination', type: 'text', required: true, index: true },
+    { name: 'mode', type: 'select', required: true, options: ['road', 'rail', 'sea', 'multimodal'] },
     { name: 'dateFrom', type: 'date', required: true, index: true },
     { name: 'dateTo', type: 'date' },
     { name: 'averagePriceRub', type: 'number', required: true },
