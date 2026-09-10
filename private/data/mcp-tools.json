@@ -1,0 +1,28 @@
+{
+  "tools": [
+    {
+      "id": "github",
+      "status": "active",
+      "purpose": "код и документация проекта",
+      "access": ["read", "write"]
+    },
+    {
+      "id": "obsidian-gateway",
+      "status": "planned",
+      "purpose": "внутренняя база знаний",
+      "access": ["search", "read", "append"]
+    },
+    {
+      "id": "firecrawl",
+      "status": "planned",
+      "purpose": "поиск и чтение публичных источников",
+      "access": ["search", "read"]
+    },
+    {
+      "id": "activepieces",
+      "status": "planned",
+      "purpose": "автоматизация",
+      "access": ["trigger"]
+    }
+  ]
+}
