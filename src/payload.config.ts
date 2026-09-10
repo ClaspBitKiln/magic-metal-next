@@ -12,6 +12,7 @@ import { RequestFiles } from './collections/RequestFiles'
 import { Requests } from './collections/Requests'
 import { SupplierOffers } from './collections/SupplierOffers'
 import { SupplierSources } from './collections/SupplierSources'
+import { LogisticsBenchmarks } from './collections/LogisticsBenchmarks'
 import { SiteSettings } from './globals/SiteSettings'
 
 const filename = fileURLToPath(import.meta.url)
@@ -26,22 +27,14 @@ function requiredEnv(name: 'PAYLOAD_SECRET' | 'DATABASE_URL') {
 export default buildConfig({
   admin: {
     user: Users.slug,
-    importMap: {
-      baseDir: path.resolve(dirname),
-    },
+    importMap: { baseDir: path.resolve(dirname) },
   },
-  collections: [Users, Media, Products, RequestFiles, Requests, SupplierSources, SupplierOffers],
+  collections: [Users, Media, Products, RequestFiles, Requests, SupplierSources, SupplierOffers, LogisticsBenchmarks],
   globals: [SiteSettings],
   editor: lexicalEditor(),
   secret: requiredEnv('PAYLOAD_SECRET'),
-  typescript: {
-    outputFile: path.resolve(dirname, 'payload-types.ts'),
-  },
-  db: postgresAdapter({
-    pool: {
-      connectionString: requiredEnv('DATABASE_URL'),
-    },
-  }),
+  typescript: { outputFile: path.resolve(dirname, 'payload-types.ts') },
+  db: postgresAdapter({ pool: { connectionString: requiredEnv('DATABASE_URL') } }),
   sharp,
   plugins: [],
 })
