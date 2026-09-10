@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "routes": [
+    {
+      "id": "moscow-tashkent-road",
+      "origin": "Москва",
+      "destination": "Ташкент",
+      "mode": "road",
+      "currency": "RUB",
+      "status": "needs-verification"
+    },
+    {
+      "id": "chelyabinsk-tashkent-road",
+      "origin": "Челябинск",
+      "destination": "Ташкент",
+      "mode": "road",
+      "currency": "RUB",
+      "status": "needs-verification"
+    },
+    {
+      "id": "ekaterinburg-tashkent-road",
+      "origin": "Екатеринбург",
+      "destination": "Ташкент",
+      "mode": "road",
+      "currency": "RUB",
+      "status": "needs-verification"
+    },
+    {
+      "id": "china-tashkent-multimodal",
+      "origin": "Китай",
+      "destination": "Ташкент",
+      "mode": "multimodal",
+      "currency": "RUB",
+      "status": "needs-verification"
+    }
+  ],
+  "rule": "Never hardcode a universal logistics surcharge into product prices. Use route-specific verified economics."
+}
