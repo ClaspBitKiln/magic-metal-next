@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/ati-logistics",
+      "schedule": "30 6 * * *"
+    }
+  ]
+}
