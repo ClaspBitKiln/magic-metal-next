@@ -7,6 +7,8 @@ const DOMAINS = ['metalinfo.ru', 'ww1.metalinfo.ru']
 
 type SearchResult = { title?: string; url?: string; description?: string; markdown?: string }
 
+type ParsedLine = { text: string; price?: number; quantity?: number }
+
 function normalizeText(value: string): string {
   return value.toLowerCase().replace(/ё/g, 'е').replace(/[×*]/g, 'х').replace(/\s+/g, ' ').trim()
 }
@@ -78,16 +80,45 @@ function parseSupplier(text: string): string | undefined {
   return undefined
 }
 
+function splitIntoCandidateLines(text: string): ParsedLine[] {
+  const normalized = text.replace(/\r/g, '\n').replace(/[•;]/g, '\n')
+  const rawLines = normalized.split(/\n+/).map((line) => line.trim()).filter(Boolean)
+  const lines: ParsedLine[] = []
+  const sizePattern = /\b\d{2,4}\s*[хx]\s*\d{1,3}\b/gi
+
+  for (const raw of rawLines) {
+    const matches = [...raw.matchAll(sizePattern)]
+    if (!matches.length) {
+      lines.push({ text: raw })
+      continue
+    }
+    for (let i = 0; i < matches.length; i++) {
+      const start = matches[i].index ?? 0
+      const end = i + 1 < matches.length ? (matches[i + 1].index ?? raw.length) : raw.length
+      const segment = raw.slice(Math.max(0, start - 60), end).trim()
+      lines.push({ text: segment, price: parsePrice(segment), quantity: parseQuantity(segment) })
+    }
+  }
+  return lines
+}
+
+function findExactCandidate(item: NormalizedRFQItem, text: string): ParsedLine | undefined {
+  const lines = splitIntoCandidateLines(text)
+  return lines.find((line) =>
+    containsNumber(line.text, item.diameter.value) &&
+    containsNumber(line.text, item.wall.value || item.thickness.value) &&
+    containsToken(line.text, item.grade.value) &&
+    line.price !== undefined,
+  )
+}
+
 function buildOffer(item: NormalizedRFQItem, result: SearchResult, index: number): Offer | undefined {
   const text = `${result.title ?? ''}\n${result.description ?? ''}\n${result.markdown ?? ''}`
-  if (!containsNumber(text, item.diameter.value)) return undefined
-  if (!containsNumber(text, item.wall.value || item.thickness.value)) return undefined
-  if (!containsToken(text, item.grade.value)) return undefined
-  const price = parsePrice(text)
+  const candidate = findExactCandidate(item, text)
+  if (!candidate || !result.url) return undefined
   const supplier = parseSupplier(text)
-  if (price === undefined || !supplier || !result.url) return undefined
-  const quantity = parseQuantity(text)
-  const city = parseCity(text)
+  if (!supplier) return undefined
+  const city = parseCity(candidate.text) || parseCity(text)
   return {
     id: `MI-${Date.now()}-${index}`,
     sourceId: SOURCE_ID,
@@ -100,18 +131,18 @@ function buildOffer(item: NormalizedRFQItem, result: SearchResult, index: number
     length: item.length.value,
     grade: item.grade.value,
     standard: item.standard.value,
-    quantity,
+    quantity: candidate.quantity,
     unit: 't',
-    price,
+    price: candidate.price,
     currency: 'RUB',
-    availability: quantity && quantity > 0 ? 'in-stock' : 'on-request',
+    availability: candidate.quantity && candidate.quantity > 0 ? 'in-stock' : 'on-request',
     warehouse: city,
     city,
     observedAt: new Date().toISOString(),
     match: 'exact',
-    confidence: 0.82,
+    confidence: 0.9,
     evidenceUrl: result.url,
-    evidenceNote: `Metalinfo Firecrawl search: ${result.title ?? result.url}`,
+    evidenceNote: `Metalinfo Firecrawl search: ${result.title ?? result.url}; цена привязана к локальному сегменту позиции`,
   }
 }
 
