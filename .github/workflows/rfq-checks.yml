@@ -7,7 +7,8 @@ on:
     paths:
       - 'src/lib/procurement/**'
       - 'src/components/RFQWorkbench.tsx'
-      - 'tests/int/**'
+      - 'tests/int/metalinfo-adapter.int.spec.ts'
+      - 'tests/int/procurement-engine.int.spec.ts'
       - 'package.json'
       - 'package-lock.json'
       - '.github/workflows/rfq-checks.yml'
@@ -36,5 +37,5 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run integration tests
-        run: npm run test:int
+      - name: Run RFQ integration tests
+        run: npx vitest run --config ./vitest.config.mts tests/int/metalinfo-adapter.int.spec.ts tests/int/procurement-engine.int.spec.ts
