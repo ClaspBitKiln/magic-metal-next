@@ -1,52 +1,79 @@
 # RFQ Workbench MVP
 
 ## Purpose
+
 Isolated manager workbench for turning a client RFQ into a procurement comparison and a client-safe quote. Production remains unchanged.
 
 ## Current flow
-`RFQ → normalization → Metalinfo search → observed offers → landed cost → ranking → manager approval → client-safe quote`
+
+`RFQ → normalization → Metalinfo search → observed offers → freshness/evidence → landed cost → ranking → manager approval → client-safe quote`
 
 ## Live Metalinfo source
+
 The workbench uses Firecrawl Search API as the acquisition layer for Metalinfo.
 
 - Search is restricted to `metalinfo.ru` and indexed Metalinfo subdomains.
 - Multiple size spellings are searched: `х`, `x`, `*`, `×`.
 - Product, dimensions, grade and standard are included when available.
-- Search results are deduplicated by URL.
-- Only results containing the requested dimensions/grade, an explicit parseable price, a supplier identity and a URL become internal offers.
+- Results are deduplicated by canonical evidence URL.
+- An offer is accepted only when one local catalogue segment contains the requested diameter, wall/thickness, grade, standard and an explicit parseable price.
 - Accepted price formats are explicit RUB/kg, RUB/t, or thousand RUB.
-- Supplier, city and quantity are extracted conservatively.
-- Missing quantity is not converted into artificial stock; the offer is marked `on-request`.
-- Each offer retains an internal evidence URL and observation timestamp.
+- Supplier identity and evidence URL are mandatory.
+- Quantity, VAT, city and source dates are extracted conservatively.
+- Missing quantity stays unknown and is never converted into artificial stock.
+- Each offer retains `sourcePublishedAt`/`sourceUpdatedAt` separately from `observedAt`.
 
-## What the live test established
-Firecrawl search successfully found multiple current/indexed Metalinfo board listings for the test family `бесшовная труба 09Г2С`, including results whose snippets contain the requested 219×10 size. Direct scraping of one Metalinfo bulletin returned HTTP 503/browser-check content, so search-result evidence is retained as `observed`, not as supplier confirmation.
+## Evidence status and freshness
+
+A Metalinfo listing is observed market evidence, not a verified supplier commitment.
+
+- `fresh`: source date is at most 30 days old.
+- `aging`: source date is 31–90 days old.
+- `stale`: source date is more than 90 days old.
+- `unknown`: the source supplied no usable date.
+
+Live Metalinfo results remain `needs-verification`; stale results are marked `stale`. A search observation timestamp never substitutes for the source publication/update date.
+
+## Exact-match safety
+
+The adapter rejects:
+
+- neighboring sizes;
+- another steel grade;
+- another standard;
+- prices that cannot be tied to the exact local product segment;
+- results without supplier identity or evidence URL;
+- RFQs missing a required exact-match field.
+
+No result is safer than an invented or mismatched offer.
 
 ## Benchmark vs offer
+
 `src/lib/procurement/metalinfoBenchmark.ts` is a separate market-monitoring layer. Benchmark values are not executable supplier offers and cannot by themselves create a procurement decision or client quote.
 
 ## Live source requirements
+
 - `FIRECRAWL_API_KEY` is required for live application search.
 - `RFQ_WORKBENCH_DEMO=true` is available only for deterministic local/demo testing.
 - Without demo mode, the API uses the live Metalinfo adapter and does not silently fall back to synthetic offers.
-
-## Deliberate limitations
-A Metalinfo listing is an observed market offer, not a verified supplier commitment. Availability, price, terms and logistics must be verified before a commercial quote is released.
-
-The adapter does not invent missing prices, stock, supplier identity or logistics costs.
+- Secrets must be supplied through the runtime environment and never committed.
 
 ## Manager acceptance scenario
-1. Open RFQ-1024.
-2. Click `Найти варианты`.
-3. Confirm the Procurement Engine runs.
-4. Review ranked options by landed cost, availability, lead time and risk.
-5. Select an option.
-6. Set/approve selling price.
-7. Generate client-safe quote.
+
+1. Paste or type a real RFQ.
+2. Confirm the normalized size, grade, standard, quantity and destination.
+3. Run Metalinfo search.
+4. Review evidence URL, source date, freshness and verification status.
+5. Compare ranked options by landed cost, availability, lead time and risk.
+6. Select an option and approve the selling price.
+7. Generate the client-safe quote.
+
+The client version hides supplier identity, evidence URLs, purchase price, margin and internal assessments.
 
 ## Non-goals
-- No changes to the Production homepage/catalog.
+
+- No changes to the production homepage or catalog.
 - No new CRM.
 - No autonomous binding quote transmission.
-- No invented live supplier prices or availability.
+- No invented live supplier prices, availability or logistics.
 - No replacement of the existing Procurement Engine.
