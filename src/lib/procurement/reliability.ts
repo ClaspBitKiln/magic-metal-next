@@ -44,7 +44,7 @@ export function reliabilityFromHistory(record?: SupplierReliabilityRecord): numb
 export function evidenceScore(offer: Offer): number {
   if (offer.match === 'non-qualifying') return 0
   const availability: Record<Availability, number> = { 'in-stock': 1, limited: 0.8, 'on-request': 0.55, production: 0.35, unknown: 0.1 }
-  return clamp(offer.confidence * 0.7 + availability[offer.availability] * 0.3)
+  const statusWeight = offer.evidenceStatus === 'confirmed' ? 1\n    : offer.evidenceStatus === 'observed' ? 0.8\n      : offer.evidenceStatus === 'needs-verification' ? 0.55\n        : offer.evidenceStatus === 'stale' ? 0.1\n          : offer.evidenceStatus === 'benchmark' ? 0.3\n            : 1\n  return clamp((offer.confidence * 0.7 + availability[offer.availability] * 0.3) * statusWeight)
 }
 
 export function assessOfferQuality(
@@ -63,7 +63,7 @@ export function assessOfferQuality(
   if (priceFreshness < 0.5) risks.push('Цена устарела или близка к истечению срока актуальности')
   if (availabilityFreshness < 0.5) risks.push('Данные о наличии устарели')
   if (logisticsFreshness < 0.5) risks.push('Логистические данные требуют обновления')
-  if (!history) risks.push('Нет истории исполнения поставщика')
+  if (offer.evidenceStatus === 'needs-verification') risks.push('Источник предложения требует подтверждения')\n  if (offer.evidenceStatus === 'stale' || offer.freshness === 'stale') risks.push('Источник предложения устарел')\n  if (offer.freshness === 'unknown') risks.push('Дата источника предложения неизвестна')\n  if (!history) risks.push('Нет истории исполнения поставщика')
   const overall = supplierReliability * 0.30 + priceFreshness * 0.20 + availabilityFreshness * 0.15 + logisticsFreshness * 0.10 + evidence * 0.25
   return { supplierReliability, priceFreshness, availabilityFreshness, logisticsFreshness, evidenceScore: evidence, overall, risks }
 }
