@@ -1,0 +1,43 @@
+name: RFQ checks
+
+on:
+  pull_request:
+    branches:
+      - rfq-workbench-mvp
+    paths:
+      - 'src/lib/procurement/**'
+      - 'src/components/RFQWorkbench.tsx'
+      - 'tests/int/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - '.github/workflows/rfq-checks.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rfq-checks-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run integration tests
+        run: pnpm test:int
