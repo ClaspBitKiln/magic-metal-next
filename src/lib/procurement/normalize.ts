@@ -1,5 +1,5 @@
 import crypto from 'node:crypto'
-import type { NormalizedRFQ, NormalizedRFQItem } from './types'
+import type { NormalizedField, NormalizedRFQ, NormalizedRFQItem } from './types'
 
 const numberFrom = (value?: string): number | undefined => {
   if (!value) return undefined
@@ -8,7 +8,7 @@ const numberFrom = (value?: string): number | undefined => {
   return match ? Number(match[0]) : undefined
 }
 
-const field = <T>(value: T | undefined, raw?: string): NormalizedRFQItem['product'] => ({
+const field = <T>(value: T | undefined, raw?: string): NormalizedField<T> => ({
   value,
   raw,
   confidence: value === undefined ? 'missing' : 'high',
