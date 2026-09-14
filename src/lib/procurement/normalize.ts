@@ -69,7 +69,7 @@ export function normalizeRFQ(text: string, parsedAt = new Date().toISOString()):
     const unitValue = normalizeUnit(quantity?.[2])
 
     let product = line
-    for (const match of [diameter, wall, thickness, compactSize, quantity, gradeMatch, standardMatch, destination]) {
+    for (const match of [diameter, wall, thickness, compactSize, quantity, gradeMatch, standard, destination]) {
       product = removeMatch(product, match)
     }
     product = product
