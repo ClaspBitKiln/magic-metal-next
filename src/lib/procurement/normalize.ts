@@ -59,7 +59,7 @@ export function normalizeRFQ(text: string, parsedAt = new Date().toISOString()):
       /(?:^|[,;]\s*|\s)(\d+(?:[.,]\d+)?)\s*(т|тонн(?:а|ы)?|кг|шт\.?)(?=$|[,;.\s])/i,
     )
     const quantity = labelledQuantity || bareQuantity
-    const grade = extractGrade(line)
+    const gradeInput = compactSize?.[0] ? line.replace(compactSize[0], ' ') : line\n    const grade = extractGrade(gradeInput)
     const gradeMatch = grade ? line.match(new RegExp(grade.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i')) : undefined
     const standard = line.match(/\b(?:ГОСТ|GOST|ТУ|ASTM|EN|DIN)\s*[A-Za-zА-Яа-яЁё0-9./:-]+/i)
     const destination = line.match(/(?:достав(?:ка|ить)|адрес|в\s+город)\s*[:=-]?\s*([^,;]+)/i)
@@ -94,7 +94,7 @@ export function normalizeRFQ(text: string, parsedAt = new Date().toISOString()):
       destination: field(destination?.[1]?.trim(), destination?.[0]),
       deadline: field(undefined),
       certification: field(/сертификат|паспорт|мкс|мтк/i.test(line) ? 'требуется' : undefined),
-      substitutionAllowed: field(/аналог|замен[а-я]* допуска|эквивалент/i.test(line), undefined),
+      substitutionAllowed: field(/аналог|замен[а-я]* допуска|эквивалент/i.test(line) ? true : undefined),
     }
   })
 
