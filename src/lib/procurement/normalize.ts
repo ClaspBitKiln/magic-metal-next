@@ -69,7 +69,7 @@ export function normalizeRFQ(text: string, parsedAt = new Date().toISOString()):
     const unitValue = normalizeUnit(quantity?.[2])
 
     let product = line
-    for (const match of [diameter, wall, thickness, compactSize, quantity, gradeMatch, standard, destination]) {
+    for (const match of [diameter, wall, thickness, compactSize, quantity, gradeMatch, standardMatch, destination]) {
       product = removeMatch(product, match)
     }
     product = product
@@ -88,7 +88,7 @@ export function normalizeRFQ(text: string, parsedAt = new Date().toISOString()):
       thickness: field(numberFrom(thickness?.[1]), thickness?.[0]),
       length: field(undefined),
       grade: field(grade, grade),
-      standard: field(normalizeStandard(standard?.[0]), standard?.[0]),
+      standard: field(normalizeStandard(standard), standard),
       quantity: field(numberFrom(quantity?.[1]), quantity?.[0]?.trim()),
       unit: field(unitValue, quantity?.[2]),
       destination: field(destination?.[1]?.trim(), destination?.[0]),
