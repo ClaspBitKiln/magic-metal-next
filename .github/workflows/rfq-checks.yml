@@ -1,6 +1,9 @@
 name: RFQ checks
 
 on:
+  push:
+    branches:
+      - codex/rfq-metalinfo-freshness-20260914
   pull_request:
     branches:
       - rfq-workbench-mvp
@@ -19,7 +22,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: rfq-checks-${{ github.event.pull_request.number }}
+  group: rfq-checks-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
