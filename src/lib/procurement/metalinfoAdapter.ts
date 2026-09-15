@@ -38,10 +38,6 @@ function normalizeText(value: string): string {
     .trim()
 }
 
-function normalizeCode(value: string): string {
-  return normalizeText(value).replace(/[^a-zа-я0-9]/g, '')
-}
-
 function unique<T>(values: T[]): T[] {
   return [...new Set(values)]
 }
@@ -69,30 +65,33 @@ function buildQueries(item: NormalizedRFQItem): string[] {
 function containsSize(text: string, diameter: number, wall: number): boolean {
   const d = String(diameter).replace('.', '[,.]')
   const w = String(wall).replace('.', '[,.]')
-  return new RegExp(`(?:^|[^0-9])${d}\\s*[хx]\\s*${w}(?:$|[^0-9])`, 'i').test(normalizeText(text))
+  return new RegExp(`(?:^|[^0-9])${d}\\s*[хx]\\s*${w}(?![0-9]|[,.][0-9])`, 'i').test(normalizeText(text))
+}
+
+function escapeRegex(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
 
 function containsGrade(text: string, grade: string): boolean {
   const normalized = normalizeText(text)
-  const normalizedGrade = normalizeText(grade)
-
-  if (/^\d+$/.test(normalizedGrade)) {
-    return new RegExp(`(?:сталь|ст\\.?|марка)\\s*[:=-]?\\s*${normalizedGrade}(?!\\d)`, 'i').test(normalized)
+  const code = escapeRegex(normalizeText(grade))
+  if (/^\d+$/.test(grade)) {
+    return new RegExp(`(?:^|[^a-zа-я0-9])(?:сталь|ст\\.?|марка)\\s*[:=-]?\\s*${code}(?![a-zа-я0-9])`, 'i').test(normalized)
   }
-
-  return normalizeCode(normalized).includes(normalizeCode(normalizedGrade))
+  return new RegExp(`(?:^|[^a-zа-я0-9])${code}(?![a-zа-я0-9])`, 'i').test(normalized)
 }
 
 function containsStandard(text: string, standard: string): boolean {
-  return normalizeCode(text).includes(normalizeCode(standard))
+  const code = normalizeText(standard).split(/[\s‐‑–—-]+/).map(escapeRegex).join('[\\s‐‑–—-]*')
+  return new RegExp(`(?:^|[^a-zа-я0-9])${code}(?![a-zа-я0-9])`, 'i').test(normalizeText(text))
 }
 
 function parsePrice(text: string): Pick<ParsedLine, 'price' | 'unit'> {
   const normalized = text.replace(/\u00a0/g, ' ')
   const patterns: Array<{ re: RegExp; factor: number; unit: 't' | 'kg' }> = [
-    { re: /(\d[\d\s.,]*)\s*(?:руб\.?\s*\/\s*кг|р\.?\s*\/\s*кг)/i, factor: 1000, unit: 'kg' },
-    { re: /(\d[\d\s.,]*)\s*(?:руб\.?\s*\/\s*т|р\.?\s*\/\s*т|₽\s*\/\s*т)/i, factor: 1, unit: 't' },
-    { re: /(\d[\d\s.,]*)\s*(?:тыс\.?\s*(?:руб|р))(?:\s*\/\s*т)?/i, factor: 1000, unit: 't' },
+    { re: /(?<![\d.,-])((?:\d{1,3}(?: \d{3})+|\d+)(?:[.,]\d{1,2})?)\s*(?:руб\.?\s*\/\s*кг|р\.?\s*\/\s*кг)/i, factor: 1000, unit: 'kg' },
+    { re: /(?<![\d.,-])((?:\d{1,3}(?: \d{3})+|\d+)(?:[.,]\d{1,2})?)\s*(?:руб\.?\s*\/\s*т|р\.?\s*\/\s*т|₽\s*\/\s*т)/i, factor: 1, unit: 't' },
+    { re: /(?<![\d.,-])((?:\d{1,3}(?: \d{3})+|\d+)(?:[.,]\d{1,2})?)\s*(?:тыс\.?\s*(?:руб|р))(?:\s*\/\s*т)?/i, factor: 1000, unit: 't' },
   ]
 
   for (const { re, factor, unit } of patterns) {
@@ -163,7 +162,7 @@ function parseSupplier(text: string): string | undefined {
 }
 
 function splitIntoCandidateLines(text: string): ParsedLine[] {
-  const normalized = text.replace(/\r/g, '\n').replace(/•/g, '\n')
+  const normalized = text.replace(/\r/g, '\n').replace(/[•;]/g, '\n').replace(/[×*]/g, 'х')
   const rawLines = normalized
     .split(/\n+/)
     .map((line) => line.trim())
@@ -188,7 +187,7 @@ function splitIntoCandidateLines(text: string): ParsedLine[] {
     for (let index = 0; index < matches.length; index++) {
       const start = matches[index].index ?? 0
       const end = index + 1 < matches.length ? (matches[index + 1].index ?? raw.length) : raw.length
-      const segment = raw.slice(Math.max(0, start - 80), end).trim()
+      const segment = raw.slice(index === 0 ? 0 : start, end).trim()
       const price = parsePrice(segment)
       lines.push({
         text: segment,
