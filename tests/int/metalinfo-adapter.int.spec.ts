@@ -23,6 +23,26 @@ const liveResult = (overrides: Partial<MetalinfoSearchResult> = {}): MetalinfoSe
 })
 
 describe('Metalinfo evidence adapter', () => {
+
+  it.each([
+    ['219х8 09Г2С ГОСТ 8732-78 110000 руб./т; 219х10 09Г2С ГОСТ 8732-78 125000 руб./т', 125000],
+    ['219х8 09Г2С ГОСТ 8732-78 — 110000 руб./т 219х10 09Г2С ГОСТ 8732-78 — 125000 руб./т', 125000],
+    ['219×10 09Г2С ГОСТ 8732-78 125 000 руб./т', 125000],
+    ['219х10 09Г2С ГОСТ 8732-78 125,50 руб./кг', 125500],
+  ])('parses the price of an isolated exact position: %s', (markdown, price) => {
+    expect(buildMetalinfoOffer(item(), liveResult({ markdown }))?.price).toBe(price)
+  })
+
+  it.each([
+    '219х8 09Г2С ГОСТ 8732-78 110000 руб./т 219х10 сталь 20 ГОСТ 10704-91 125000 руб./т',
+    '219х10 09Г2СД ГОСТ 8732-78 125000 руб./т',
+    '219х10 09Г2С ГОСТ 8732-780 125000 руб./т',
+    '219х10.5 09Г2С ГОСТ 8732-78 125000 руб./т',
+    '219х10,5 09Г2С ГОСТ 8732-78 125000 руб./т',
+  ])('rejects neighboring or partial identity matches: %s', (markdown) => {
+    expect(buildMetalinfoOffer(item(), liveResult({ markdown }))).toBeUndefined()
+  })
+
   it('normalizes a compact Russian pipe request without inventing fields', () => {
     const normalized = item()
 
