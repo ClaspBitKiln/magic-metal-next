@@ -173,7 +173,7 @@ export default function RFQWorkbench() {
                       const freshness = freshnessLabels[offer.freshness || ''] || 'не определено'
                       return (
                         <tr key={offer.id} style={{ background: offer.id === selectedIdFinal ? '#f2f8f7' : '#fff' }}>
-                          <td style={td}><b>{offer.id}</b><br /><span style={muted}>{offer.product} {offer.diameter}×{offer.wall} {offer.grade} {offer.standard}</span></td>
+                          <td style={td}><b>{offer.id}</b>{offer.id === recommended && <div style={pill}>Минимальная стоимость среди проверенных</div>}<br /><span style={muted}>{offer.product} {offer.diameter}×{offer.wall} {offer.grade} {offer.standard}</span></td>
                           <td style={td}>{offer.supplierId}</td>
                           <td style={td}>{offer.price ? money.format(offer.price) + ' ' + offer.currency + '/' + (offer.unit || '?') : '—'}<br /><span style={muted}>{offer.vatIncluded === true ? 'с НДС' : offer.vatIncluded === false ? 'без НДС' : 'НДС не указан'}</span></td>
                           <td style={td}>{offer.quantity ? offer.quantity + ' ' + (offer.unit || 'т') : 'не указано'}</td>
@@ -236,8 +236,8 @@ export default function RFQWorkbench() {
               </div>
             </div>
             <div style={metrics}>
-              <Metric label="Валовая прибыль / т" value={gross !== undefined ? money.format(gross) + ' ₽' : 'введите цену продажи'} />
-              <Metric label="Валовая прибыль" value={quantity && gross !== undefined ? money.format(gross * quantity) + ' ₽' : 'введите цену продажи'} />
+              <Metric label="Разница цены и затрат / т, с НДС" value={gross !== undefined ? money.format(gross) + ' ₽' : 'введите цену продажи'} />
+              <Metric label="Разница цены и затрат, с НДС" value={quantity && gross !== undefined ? money.format(gross * quantity) + ' ₽' : 'введите цену продажи'} />
               <Metric label="Статус" value="КП к проверке" />
             </div>
             <button style={secondary} onClick={() => setStep('search')}>← Назад к закупке</button>
