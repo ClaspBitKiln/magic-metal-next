@@ -1,10 +1,10 @@
 # RFQ Workbench MVP
 
 ## Purpose
-Isolated manager workbench for turning a client RFQ into a procurement comparison and a client-safe quote. Production remains unchanged.
+Isolated internal manager workbench for turning a client RFQ into a procurement comparison and a client-safe quote. Production remains unchanged.
 
 ## Current flow
-`RFQ → normalization → Metalinfo search → observed offers → landed cost → ranking → manager approval → client-safe quote`
+`RFQ → normalization → Metalinfo search → observed offers → qualification gates → landed cost → ranking → manager approval → client-safe quote`
 
 ## Live Metalinfo source
 The workbench uses Firecrawl Search API as the acquisition layer for Metalinfo.
@@ -18,6 +18,13 @@ The workbench uses Firecrawl Search API as the acquisition layer for Metalinfo.
 - Supplier, city and quantity are extracted conservatively.
 - Missing quantity is not converted into artificial stock; the offer is marked `on-request`.
 - Each offer retains an internal evidence URL and observation timestamp.
+
+## Procurement selection
+The ranking layer now separates market ranking from executable procurement selection.
+
+An offer cannot become the automatic winner when its price is missing, availability is explicitly unknown, technical matching requires unresolved clarification, or price/availability evidence is materially stale under the configured freshness policy.
+
+The decision model evaluates landed cost, technical match, availability, lead time, supplier reliability, logistics efficiency, benchmark sanity check, evidence and freshness. Detailed criteria are documented in `docs/ai/PROCUREMENT_SELECTION_CRITERIA.md`.
 
 ## What the live test established
 Firecrawl search successfully found multiple current/indexed Metalinfo board listings for the test family `бесшовная труба 09Г2С`, including results whose snippets contain the requested 219×10 size. Direct scraping of one Metalinfo bulletin returned HTTP 503/browser-check content, so search-result evidence is retained as `observed`, not as supplier confirmation.
@@ -35,14 +42,8 @@ A Metalinfo listing is an observed market offer, not a verified supplier commitm
 
 The adapter does not invent missing prices, stock, supplier identity or logistics costs.
 
-## Manager acceptance scenario
-1. Open RFQ-1024.
-2. Click `Найти варианты`.
-3. Confirm the Procurement Engine runs.
-4. Review ranked options by landed cost, availability, lead time and risk.
-5. Select an option.
-6. Set/approve selling price.
-7. Generate client-safe quote.
+## Next MVP step
+After the single-line winner is reliable, extend the same decision layer to procurement plans: compare one supplier against multi-supplier split procurement using quantity coverage, transport-run count, consolidation and total landed cost. Do not activate this layer until quantity and logistics data are sufficiently reliable.
 
 ## Non-goals
 - No changes to the Production homepage/catalog.
