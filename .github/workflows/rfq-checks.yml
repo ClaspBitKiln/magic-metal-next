@@ -9,6 +9,8 @@ on:
       - 'src/components/RFQWorkbench.tsx'
       - 'tests/int/metalinfo-adapter.int.spec.ts'
       - 'tests/int/procurement-engine.int.spec.ts'
+      - 'tests/int/workbench.int.spec.ts'
+      - 'tests/int/rfq-workbench-ui.int.spec.ts'
       - 'package.json'
       - 'package-lock.json'
       - '.github/workflows/rfq-checks.yml'
@@ -38,4 +40,5 @@ jobs:
         run: npm ci
 
       - name: Run RFQ integration tests
-        run: npx vitest run --config ./vitest.config.mts tests/int/metalinfo-adapter.int.spec.ts tests/int/procurement-engine.int.spec.ts
+        run: npx vitest run --config ./vitest.config.mts tests/int/metalinfo-adapter.int.spec.ts tests/int/procurement-engine.int.spec.ts tests/int/workbench.int.spec.ts tests/int/rfq-workbench-ui.int.spec.ts
+
