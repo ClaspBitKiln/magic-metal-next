@@ -59,9 +59,10 @@ export function normalizeRFQ(text: string, parsedAt = new Date().toISOString()):
       /(?:^|[,;]\s*|\s)(\d+(?:[.,]\d+)?)\s*(т|тонн(?:а|ы)?|кг|шт\.?)(?=$|[,;.\s])/i,
     )
     const quantity = labelledQuantity || bareQuantity
-    const gradeInput = compactSize?.[0] ? line.replace(compactSize[0], ' ') : line\n    const grade = extractGrade(gradeInput)
+    const gradeInput = compactSize?.[0] ? line.replace(compactSize[0], ' ') : line
+    const grade = extractGrade(gradeInput)
     const gradeMatch = grade ? line.match(new RegExp(grade.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i')) : undefined
-    const standard = line.match(/\b(?:ГОСТ|GOST|ТУ|ASTM|EN|DIN)\s*[A-Za-zА-Яа-яЁё0-9./:-]+/i)
+    const standard = line.match(/(?<![A-Za-zА-Яа-яЁё0-9])(?:ГОСТ|GOST|ТУ|ASTM|EN|DIN)\s*[A-Za-zА-Яа-яЁё0-9./:-]+/i)
     const destination = line.match(/(?:достав(?:ка|ить)|адрес|в\s+город)\s*[:=-]?\s*([^,;]+)/i)
 
     const diameterValue = numberFrom(diameter?.[1] || compactSize?.[1])
@@ -88,7 +89,7 @@ export function normalizeRFQ(text: string, parsedAt = new Date().toISOString()):
       thickness: field(numberFrom(thickness?.[1]), thickness?.[0]),
       length: field(undefined),
       grade: field(grade, grade),
-      standard: field(normalizeStandard(standard), standard),
+      standard: field(normalizeStandard(standard?.[0]), standard?.[0]),
       quantity: field(numberFrom(quantity?.[1]), quantity?.[0]?.trim()),
       unit: field(unitValue, quantity?.[2]),
       destination: field(destination?.[1]?.trim(), destination?.[0]),
