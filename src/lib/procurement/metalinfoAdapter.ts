@@ -86,6 +86,16 @@ function containsStandard(text: string, standard: string): boolean {
   return new RegExp(`(?:^|[^a-zа-я0-9])${code}(?![a-zа-я0-9])`, 'i').test(normalizeText(text))
 }
 
+function containsRequestedProductType(text: string, item: NormalizedRFQItem): boolean {
+  const normalized = normalizeText(text)
+  const requestedSubtype = normalizeText(item.subtype.value ?? '')
+
+  if (requestedSubtype.includes('бесшов')) return /бесшов/.test(normalized) && !/электросвар/.test(normalized)
+  if (requestedSubtype.includes('электросвар')) return /электросвар/.test(normalized) && !/бесшов/.test(normalized)
+
+  return true
+}
+
 function parsePrice(text: string): Pick<ParsedLine, 'price' | 'unit'> {
   const normalized = text.replace(/\u00a0/g, ' ')
   const patterns: Array<{ re: RegExp; factor: number; unit: 't' | 'kg' }> = [
@@ -185,7 +195,14 @@ function splitIntoCandidateLines(text: string): ParsedLine[] {
     }
 
     for (let index = 0; index < matches.length; index++) {
-      const start = matches[index].index ?? 0
+      let start = matches[index].index ?? 0
+      if (index > 0) {
+        const previousEnd = (matches[index - 1].index ?? 0) + matches[index - 1][0].length
+        const prefix = raw.slice(previousEnd, start)
+        const descriptors = [...prefix.matchAll(/(?:труб[а-я]*\s+)?(?:бесшовн[а-я]*|электросварн[а-я]*)/gi)]
+        const descriptor = descriptors.at(-1)
+        if (descriptor?.index !== undefined) start = previousEnd + descriptor.index
+      }
       const end = index + 1 < matches.length ? (matches[index + 1].index ?? raw.length) : raw.length
       const segment = raw.slice(index === 0 ? 0 : start, end).trim()
       const price = parsePrice(segment)
@@ -211,6 +228,7 @@ function findExactCandidate(item: NormalizedRFQItem, text: string): ParsedLine |
 
   return splitIntoCandidateLines(text).find(
     (line) =>
+      containsRequestedProductType(line.text, item) &&
       containsSize(line.text, diameter, wall) &&
       containsGrade(line.text, grade) &&
       containsStandard(line.text, standard) &&

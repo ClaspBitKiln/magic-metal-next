@@ -47,12 +47,14 @@ export default function RFQWorkbench() {
 
   const rfqItem = data?.rfq?.items?.find(item => item.line === activeLine)
   const lineReviews = reviews[activeLine] ?? {}
-  const options = rfqItem ? compareOptions(rfqItem, data?.offers?.[activeLine] ?? [], lineReviews) : []
+  const lineDecisions = data?.decisions?.[activeLine] ?? []
+  const options = rfqItem ? compareOptions(rfqItem, data?.offers?.[activeLine] ?? [], lineReviews, lineDecisions) : []
   const offers = options.map(option => option.offer)
   const recommended = options.find(option => option.ready)?.offer.id
   const selectedIdFinal = selectedId || recommended || offers[0]?.id || ''
   const selected = offers.find(offer => offer.id === selectedIdFinal)
-  const assessment = rfqItem && selected ? evaluateOption(rfqItem, selected, lineReviews[selected.id]) : undefined
+  const selectedDecision = selected ? lineDecisions.find(decision => decision.offerId === selected.id) : undefined
+  const assessment = rfqItem && selected ? evaluateOption(rfqItem, selected, lineReviews[selected.id], selectedDecision) : undefined
   const review = selected ? lineReviews[selected.id] ?? emptyReview : emptyReview
   const landed = assessment?.unitCost
   const sell = amount(sellingPrice)
@@ -202,9 +204,14 @@ export default function RFQWorkbench() {
                   <label>Цена с НДС, ₽/т<input aria-label="Цена с НДС, ₽/т" inputMode="decimal" value={review.price} style={input} onChange={event => updateReview({ price: event.target.value, confirmed: false })} /></label>
                   <label>Доступно, т<input aria-label="Доступно, т" inputMode="decimal" value={review.stock} style={input} onChange={event => updateReview({ stock: event.target.value, confirmed: false })} /></label>
                   <label>Расходы на партию, ₽<input aria-label="Расходы на партию, ₽" inputMode="decimal" value={review.expenses} style={input} onChange={event => updateReview({ expenses: event.target.value, confirmed: false })} /></label>
+                  <label>Источник ручной проверки<input aria-label="Источник ручной проверки" value={review.verificationNote} style={input} placeholder="Звонок поставщику, ФИО/дата или № счёта" onChange={event => updateReview({ verificationNote: event.target.value, confirmed: false, confirmedAt: undefined })} /></label>
                 </div>
-                <label style={{ display: 'block', marginTop: 16 }}><input type="checkbox" checked={review.confirmed} onChange={event => updateReview({ confirmed: event.target.checked })} /> Проверены цена с НДС, наличие, срок, документы, условия заказа и все расходы</label>
+                <label style={{ display: 'block', marginTop: 16 }}><input type="checkbox" checked={review.confirmed} onChange={event => updateReview({ confirmed: event.target.checked, confirmedAt: event.target.checked ? new Date().toISOString() : undefined })} /> Проверены цена с НДС, наличие, срок, документы, условия заказа и все расходы</label>
                 <p style={muted}>Проверки сохраняются только до нового поиска или закрытия страницы. Рекомендация относится к одной позиции и одному поставщику.</p>
+                {selectedDecision && <div style={noticeStyle}>
+                  <b>Оценка закупочного движка:</b> {selectedDecision.reasons.join(' · ')}
+                  {!!selectedDecision.risks.length && <><br /><b>Исходные риски:</b> {selectedDecision.risks.join(' · ')}</>}
+                </div>}
                 <div style={metrics}>
                   <Metric label="Стоимость с расходами / т" value={landed !== undefined ? money.format(landed) + ' ₽' : 'не рассчитана'} />
                   <Metric label="Стоимость всей партии" value={assessment?.total !== undefined ? money.format(assessment.total) + ' ₽' : 'не рассчитана'} />
@@ -217,7 +224,7 @@ export default function RFQWorkbench() {
             {statusMessage && <p style={muted}>{statusMessage}</p>}
             <div style={{ display: 'flex', gap: 12 }}>
               <button onClick={() => setStep('request')} style={secondary}>← Изменить заявку</button>
-              <button onClick={() => { if (assessment?.ready) setStep('quote') }} style={primary} disabled={!assessment?.ready}>Сформировать КП</button>
+              <button onClick={() => { if (assessment?.ready) setStep('quote') }} style={assessment?.ready ? primary : disabledButton} disabled={!assessment?.ready}>Черновик КП по позиции</button>
             </div>
           </section>
         )}
@@ -267,6 +274,7 @@ const metrics: React.CSSProperties = { display: 'grid', gridTemplateColumns: 're
 const pill: React.CSSProperties = { padding: '7px 10px', borderRadius: 999, background: '#e5f4f1', color: '#12645d', fontSize: 12, whiteSpace: 'nowrap' }
 const input: React.CSSProperties = { marginTop: 5, width: '100%', boxSizing: 'border-box', border: '1px solid #ccd6dc', borderRadius: 7, padding: '10px 11px', fontSize: 15 }
 const primary: React.CSSProperties = { marginTop: 22, border: 0, borderRadius: 8, padding: '12px 18px', background: '#0f6b72', color: '#fff', fontWeight: 700, cursor: 'pointer' }
+const disabledButton: React.CSSProperties = { ...primary, background: '#d7dde1', color: '#6b7780', cursor: 'not-allowed' }
 const secondary: React.CSSProperties = { marginTop: 22, border: '1px solid #cbd5db', borderRadius: 8, padding: '12px 18px', background: '#fff', fontWeight: 600, cursor: 'pointer' }
 const th: React.CSSProperties = { textAlign: 'left', padding: '11px 8px', borderBottom: '1px solid #dfe5ea', color: '#607080', fontWeight: 600, whiteSpace: 'nowrap' }
 const td: React.CSSProperties = { padding: '12px 8px', borderBottom: '1px solid #edf0f2', verticalAlign: 'top', whiteSpace: 'nowrap' }
@@ -274,4 +282,3 @@ const td: React.CSSProperties = { padding: '12px 8px', borderBottom: '1px solid 
 function button(active: boolean): React.CSSProperties {
   return { border: active ? '1px solid #0f6b72' : '1px solid #ccd6dc', background: active ? '#e7f4f2' : '#fff', borderRadius: 7, padding: '7px 10px', cursor: 'pointer' }
 }
-

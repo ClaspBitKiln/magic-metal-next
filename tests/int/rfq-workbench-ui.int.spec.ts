@@ -22,12 +22,13 @@ const item = (line: number) => ({
   unit: field(line === 1 ? 'кг' : 'т'), destination: field('Челябинск'),
 })
 const offer = { id: 'same-id', supplierId: 'Supplier', product: 'Труба', price: 100000, currency: 'RUB', unit: 't', match: 'exact', availability: 'unknown', evidenceStatus: 'needs-verification' }
+const decision = { offerId: 'same-id', score: 0.5, landedCost: { total: 100000, currency: 'RUB' }, reasons: ['Точное соответствие'], risks: ['Наличие не подтверждено'], recommended: false }
 
 afterEach(async () => { if (root) await act(async () => root.unmount()); container?.remove(); vi.unstubAllGlobals() })
 
 async function search() {
   vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: async () => ({
-    rfq: { items: [item(1), item(2)] }, offers: { 1: [offer], 2: [{ ...offer }] },
+    rfq: { items: [item(1), item(2)] }, offers: { 1: [offer], 2: [{ ...offer }] }, decisions: { 1: [decision], 2: [{ ...decision }] },
   }) }))
   vi.stubGlobal('IS_REACT_ACT_ENVIRONMENT', true)
   container = document.createElement('div')
@@ -42,13 +43,14 @@ async function fillReview() {
   await change(input('Цена с НДС, ₽/т'), '100000')
   await change(input('Доступно, т'), '20')
   await change(input('Расходы на партию, ₽'), '100000')
+  await change(input('Источник ручной проверки'), 'Звонок поставщику 15.09.2026')
   await click(container.querySelector<HTMLInputElement>('[type="checkbox"]')!)
 }
 
 describe('RFQ workbench manager flow', () => {
   it('keeps quote blocked until terms are checked and invalidates a check after editing', async () => {
     await search()
-    const quote = button('Сформировать КП') as HTMLButtonElement
+    const quote = button('Черновик КП по позиции') as HTMLButtonElement
     expect(quote.disabled).toBe(true)
     await fillReview()
     expect(quote.disabled).toBe(false)
@@ -61,14 +63,14 @@ describe('RFQ workbench manager flow', () => {
     await fillReview()
     await change(container.querySelector('select')!, '2')
     expect((input('Цена с НДС, ₽/т') as HTMLInputElement).value).toBe('')
-    expect((button('Сформировать КП') as HTMLButtonElement).disabled).toBe(true)
+    expect((button('Черновик КП по позиции') as HTMLButtonElement).disabled).toBe(true)
     await change(container.querySelector('select')!, '1')
     expect((input('Цена с НДС, ₽/т') as HTMLInputElement).value).toBe('100000')
   })
   it('uses tonnes in the quote total and requires a real selling price', async () => {
     await search()
     await fillReview()
-    await click(button('Сформировать КП'))
+    await click(button('Черновик КП по позиции'))
     expect(container.textContent).toContain('20 т')
     await change(container.querySelector('input')!, '120000')
     expect(container.textContent?.replace(/\s/g, '')).toContain('2400000₽')

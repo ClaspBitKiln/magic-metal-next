@@ -77,3 +77,9 @@ The client version hides supplier identity, evidence URLs, purchase price, margi
 - No autonomous binding quote transmission.
 - No invented live supplier prices, availability or logistics.
 - No replacement of the existing Procurement Engine.
+
+## Selection criteria and manager review
+
+The engine criteria from `PROCUREMENT_SELECTION_CRITERIA.md` are retained. Market ranking is distinct from a manager-reviewed procurement decision. Workbench chooses the lowest delivered cost only among options whose current terms, sufficient stock and expenses were explicitly checked for the selected RFQ line; merely opening an observation does not recommend it or enable a quote.
+
+See `../../PROCUREMENT_WORKBENCH_MVP.md` for the implemented review flow and `../../PROCUREMENT_DECISION_METHOD.md` for the critical review and fallback method. Split procurement and shared transport remain a later step requiring reliable quantities and logistics.

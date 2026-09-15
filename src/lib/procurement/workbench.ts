@@ -1,14 +1,16 @@
-import type { NormalizedRFQItem, Offer } from './types'
+import type { NormalizedRFQItem, Offer, ProcurementDecision } from './types'
 
 // Manager-entered amounts use RUB including VAT; expenses apply to the entire line.
 export type OfferReview = {
   price: string
   stock: string
   expenses: string
+  verificationNote: string
+  confirmedAt?: string
   confirmed: boolean
 }
 
-export const emptyReview: OfferReview = { price: '', stock: '', expenses: '', confirmed: false }
+export const emptyReview: OfferReview = { price: '', stock: '', expenses: '', verificationNote: '', confirmed: false }
 
 export function amount(value: string): number | undefined {
   const clean = value.trim().replace(/\s/g, '').replace(',', '.')
@@ -24,7 +26,12 @@ export function tons(quantity?: number, unit?: string): number | undefined {
   return undefined
 }
 
-export function evaluateOption(item: NormalizedRFQItem, offer: Offer, review = emptyReview) {
+export function evaluateOption(
+  item: NormalizedRFQItem,
+  offer: Offer,
+  review = emptyReview,
+  decision?: ProcurementDecision,
+) {
   const quantity = tons(item.quantity.value, item.unit.value)
   const price = amount(review.price)
   const stock = amount(review.stock)
@@ -39,6 +46,8 @@ export function evaluateOption(item: NormalizedRFQItem, offer: Offer, review = e
   else if (quantity && stock < quantity) blockers.push('Остатка недостаточно для всей позиции')
   if (expenses === undefined) blockers.push('Введите все дополнительные расходы на партию; 0 — если их нет')
   if (!review.confirmed) blockers.push('Подтвердите цену, наличие, условия заказа и расходы')
+  if (!review.verificationNote.trim()) blockers.push('Укажите источник или примечание ручной проверки')
+  if (!decision) blockers.push('Нет серверной оценки закупочного движка')
   if (quantity && offer.minOrderQuantity !== undefined) {
     const minimum = tons(offer.minOrderQuantity, offer.unit)
     if (minimum === undefined || quantity < minimum) blockers.push('Не соблюдён минимальный заказ поставщика')
@@ -58,8 +67,17 @@ export function evaluateOption(item: NormalizedRFQItem, offer: Offer, review = e
   return { quantity, total, unitCost, blockers, ready: blockers.length === 0 }
 }
 
-export function compareOptions(item: NormalizedRFQItem, offers: Offer[], reviews: Record<string, OfferReview>) {
-  return offers.map(offer => ({ offer, ...evaluateOption(item, offer, reviews[offer.id]) }))
+export function compareOptions(
+  item: NormalizedRFQItem,
+  offers: Offer[],
+  reviews: Record<string, OfferReview>,
+  decisions: ProcurementDecision[] = [],
+) {
+  return offers.map(offer => ({
+    offer,
+    decision: decisions.find(decision => decision.offerId === offer.id),
+    ...evaluateOption(item, offer, reviews[offer.id], decisions.find(decision => decision.offerId === offer.id)),
+  }))
     .sort((a, b) => Number(b.ready) - Number(a.ready)
       || (a.total ?? Infinity) - (b.total ?? Infinity)
       || a.offer.id.localeCompare(b.offer.id))
