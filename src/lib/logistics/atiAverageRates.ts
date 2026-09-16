@@ -78,8 +78,9 @@ export async function fetchAtiAverageRates(token: string, routes: AtiRouteConfig
       body: JSON.stringify({ From: { CityId: direction.FromCityId }, To: { CityId: direction.ToCityId }, CarType: route.carType ?? 'close', DateFrom: date, Frequency: 'day', WithNds: route.withNds ?? false, RoundTrip: route.roundTrip ?? false, Tonnage: route.tonnage ?? 20 }),
     })
     const row = result.Data?.[0]
-    const averagePriceRub = row?.PricesInRub?.AveragePrice
-    if (averagePriceRub === undefined || result.Distance === undefined) continue
+    if (!row || result.Distance === undefined) continue
+    const averagePriceRub = row.PricesInRub?.AveragePrice
+    if (averagePriceRub === undefined) continue
     snapshots.push({
       routeId: route.id, origin: route.origin, destination: route.destination, mode: route.mode,
       dateFrom: row.DateFrom, dateTo: row.DateTo ?? null,

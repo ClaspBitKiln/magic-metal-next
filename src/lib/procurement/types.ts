@@ -4,6 +4,10 @@ export type Availability = 'in-stock' | 'limited' | 'on-request' | 'production' 
 
 export type MatchKind = 'exact' | 'approved-alternative' | 'clarification-required' | 'non-qualifying'
 
+export type EvidenceFreshness = 'fresh' | 'aging' | 'stale' | 'unknown'
+
+export type EvidenceStatus = 'observed' | 'needs-verification' | 'confirmed' | 'stale' | 'benchmark'
+
 export type RFQFieldConfidence = 'high' | 'medium' | 'low' | 'missing'
 
 export type NormalizedField<T> = {
@@ -66,9 +70,16 @@ export type Offer = {
   customsCost?: number
   benchmarkValue?: number
   benchmarkCurrency?: string
+  sourcePublishedAt?: string
+  sourceUpdatedAt?: string
   observedAt: string
+  freshness?: EvidenceFreshness
+  evidenceStatus?: EvidenceStatus
+  vatIncluded?: boolean
   match: MatchKind
   confidence: number
+  evidenceUrl?: string
+  evidenceNote?: string
   minOrderQuantity?: number
   maxOrderQuantity?: number
   orderStep?: number
