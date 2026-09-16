@@ -45,4 +45,12 @@ describe('Procurement workbench decisions', () => {
     }, [decision, { ...decision, offerId: 'b' }, { ...decision, offerId: 'c' }])
     expect(options.map(option => option.offer.id)).toEqual(['b', 'a', 'c'])
   })
+  it('uses the server score to choose the first candidate when no option is confirmed', () => {
+    const options = compareOptions(item, [offer, { ...offer, id: 'b' }], {}, [
+      { ...decision, offerId: 'a', score: 0.4 },
+      { ...decision, offerId: 'b', score: 0.9 },
+    ])
+    expect(options.map(option => option.offer.id)).toEqual(['b', 'a'])
+    expect(options.every(option => option.ready === false)).toBe(true)
+  })
 })

@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import type { NormalizedRFQItem, Offer, ProcurementDecision } from '../lib/procurement/types'
-import { amount, compareOptions, emptyReview, evaluateOption, type OfferReview } from '../lib/procurement/workbench'
+import { compareOptions, emptyReview, evaluateOption, type OfferReview } from '../lib/procurement/workbench'
 
 type SearchResult = {
   rfq?: { items?: NormalizedRFQItem[] }
@@ -34,22 +34,11 @@ function formatSourceDate(value?: string) {
   return Number.isNaN(date.getTime()) ? 'дата неизвестна' : date.toLocaleDateString('ru-RU')
 }
 
-export default function RFQWorkbench() {
-  const [step, setStep] = useState<'request' | 'search' | 'quote'>('request')
+export default function RFQWorkbench({ managerEmail }: { managerEmail?: string }) {
+  const [step, setStep] = useState<'request' | 'search'>('request')
   const [requestText, setRequestText] = useState(defaultRequest)
   const [data, setData] = useState<SearchResult | null>(null)
   const [selectedId, setSelectedId] = useState('')
-  const [sellingPrice, setSellingPrice] = useState('')
-  const [quoteNumber, setQuoteNumber] = useState('')
-  const [quoteDate, setQuoteDate] = useState('')
-  const [customerCompany, setCustomerCompany] = useState('')
-  const [customerContact, setCustomerContact] = useState('')
-  const [requestReference, setRequestReference] = useState('')
-  const [quoteLeadTime, setQuoteLeadTime] = useState('')
-  const [paymentTerms, setPaymentTerms] = useState('70% предоплата, 30% перед отгрузкой')
-  const [supplyTerms, setSupplyTerms] = useState('Доставка и условия отгрузки — по согласованию')
-  const [vatTerms, setVatTerms] = useState('НДС 20% включён')
-  const [validUntil, setValidUntil] = useState('')
   const [activeLine, setActiveLine] = useState(1)
   const [reviews, setReviews] = useState<Record<string, Record<string, OfferReview>>>({})
   const [statusMessage, setStatusMessage] = useState('')
@@ -60,17 +49,17 @@ export default function RFQWorkbench() {
   const lineDecisions = data?.decisions?.[activeLine] ?? []
   const options = rfqItem ? compareOptions(rfqItem, data?.offers?.[activeLine] ?? [], lineReviews, lineDecisions) : []
   const offers = options.map(option => option.offer)
-  const recommended = options.find(option => option.ready)?.offer.id
-  const selectedIdFinal = selectedId || recommended || offers[0]?.id || ''
+  const readyOptions = options.filter(option => option.ready)
+  const bestOption = readyOptions[0]
+  const reserveOption = readyOptions[1]
+  const verificationCandidate = options.find(option => !option.ready)
+  const selectedIdFinal = selectedId || bestOption?.offer.id || offers[0]?.id || ''
   const selected = offers.find(offer => offer.id === selectedIdFinal)
   const selectedDecision = selected ? lineDecisions.find(decision => decision.offerId === selected.id) : undefined
   const assessment = rfqItem && selected ? evaluateOption(rfqItem, selected, lineReviews[selected.id], selectedDecision) : undefined
   const review = selected ? lineReviews[selected.id] ?? emptyReview : emptyReview
   const landed = assessment?.unitCost
-  const sell = amount(sellingPrice)
   const quantity = assessment?.quantity
-  const gross = sell !== undefined && landed !== undefined ? sell - landed : undefined
-  const comparableGross = vatTerms === 'НДС 20% включён' ? gross : undefined
 
   function updateReview(patch: Partial<OfferReview>) {
     if (!selected) return
@@ -89,7 +78,6 @@ export default function RFQWorkbench() {
     setData(null)
     setReviews({})
     setSelectedId('')
-    setSellingPrice('')
     setSearching(true)
     setStatusMessage('Ищу наблюдаемые объявления Metalinfo и проверяю точное совпадение…')
     try {
@@ -106,7 +94,7 @@ export default function RFQWorkbench() {
       setStep('search')
       setStatusMessage(
         'Найдено предложений: ' + Object.values(result.offers ?? {}).reduce((count, entries) => count + entries.length, 0) +
-        '. Каждое требует проверки менеджером перед использованием в КП.',
+        '. Каждое требует проверки менеджером перед окончательным выбором.',
       )
     } catch (error) {
       setStatusMessage(error instanceof Error ? error.message : 'Ошибка поиска')
@@ -115,7 +103,7 @@ export default function RFQWorkbench() {
     }
   }
 
-  const quoteProduct = [
+  const recognizedProduct = [
     rfqItem?.product.value || selected?.product || 'Позиция из заявки',
     rfqItem?.diameter.value && rfqItem?.wall.value ? rfqItem.diameter.value + '×' + rfqItem.wall.value : '',
     rfqItem?.grade.value || '',
@@ -124,16 +112,23 @@ export default function RFQWorkbench() {
 
   return (
     <main style={{ minHeight: '100vh', background: '#f4f6f8', color: '#16202a', fontFamily: 'Arial, sans-serif' }}>
-      <header style={{ background: '#fff', borderBottom: '1px solid #dfe5ea', padding: '18px 28px', display: 'flex', justifyContent: 'space-between' }}>
-        <div><div style={eyebrow}>Мэджик Металл</div><strong style={{ fontSize: 22 }}>RFQ Workbench</strong></div>
-        <div style={muted}>Рабочее место закупщика</div>
+      <header style={{ background: '#fff', borderBottom: '1px solid #dfe5ea', padding: '18px 28px', display: 'flex', justifyContent: 'space-between', gap: 20, alignItems: 'center' }}>
+        <div><div style={eyebrow}>Мэджик Металл</div><strong style={{ fontSize: 22 }}>Закупочный кабинет</strong></div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+          <a href="/admin/collections/requests" style={headerLink}>Заявки</a>
+          <a href="/admin/collections/supplier-sources" style={headerLink}>Поставщики</a>
+          <div style={{ ...muted, textAlign: 'right' }}>
+            <div>Внутренний SaaS · рабочее место менеджера</div>
+            {managerEmail && <div>{managerEmail}</div>}
+          </div>
+        </div>
       </header>
 
       <div style={{ maxWidth: 1400, margin: '0 auto', padding: 28 }}>
         <div style={{ display: 'flex', gap: 8, marginBottom: 18 }}>
-          {['request', 'search', 'quote'].map((stage, index) => (
+          {['request', 'search'].map((stage, index) => (
             <div key={stage} style={{ flex: 1, padding: 10, borderRadius: 8, background: step === stage ? '#0f6b72' : '#e5eaee', color: step === stage ? '#fff' : '#52616d', fontSize: 13 }}>
-              {index + 1}. {stage === 'request' ? 'Заявка' : stage === 'search' ? 'Поиск и закупка' : 'КП'}
+              {index + 1}. {stage === 'request' ? 'Заявка' : 'Поставщики и выбор'}
             </div>
           ))}
         </div>
@@ -162,14 +157,14 @@ export default function RFQWorkbench() {
             <label style={{ display: 'block', marginTop: 16 }}>
               Позиция заявки
               <select aria-label="Позиция заявки" value={activeLine} style={input} onChange={event => {
-                setActiveLine(Number(event.target.value)); setSelectedId(''); setSellingPrice('')
+                setActiveLine(Number(event.target.value)); setSelectedId('')
               }}>
                 {data?.rfq?.items?.map(item => <option key={item.line} value={item.line}>{item.line}. {item.originalText}</option>)}
               </select>
             </label>
             {rfqItem && (
               <div style={noticeStyle}>
-                <b>Распознано:</b> {quoteProduct}
+                <b>Распознано:</b> {recognizedProduct}
                 {quantity ? ' · ' + quantity + ' т' : ' · количество требует уточнения'}
                 {rfqItem.destination.value ? ' · доставка: ' + rfqItem.destination.value : ''}
               </div>
@@ -186,7 +181,7 @@ export default function RFQWorkbench() {
                       const freshness = freshnessLabels[offer.freshness || ''] || 'не определено'
                       return (
                         <tr key={offer.id} style={{ background: offer.id === selectedIdFinal ? '#f2f8f7' : '#fff' }}>
-                          <td style={td}><b>{offer.id}</b>{offer.id === recommended && <div style={pill}>Минимальная стоимость среди проверенных</div>}<br /><span style={muted}>{offer.product} {offer.diameter}×{offer.wall} {offer.grade} {offer.standard}</span></td>
+                          <td style={td}><b>{offer.id}</b>{offer.id === bestOption?.offer.id && <div style={pill}>Лучший подтверждённый</div>}<br /><span style={muted}>{offer.product} {offer.diameter}×{offer.wall} {offer.grade} {offer.standard}</span></td>
                           <td style={td}>{offer.supplierId}</td>
                           <td style={td}>{offer.price ? money.format(offer.price) + ' ' + offer.currency + '/' + (offer.unit || '?') : '—'}<br /><span style={muted}>{offer.vatIncluded === true ? 'с НДС' : offer.vatIncluded === false ? 'без НДС' : 'НДС не указан'}</span></td>
                           <td style={td}>{offer.quantity ? offer.quantity + ' ' + (offer.unit || 'т') : 'не указано'}</td>
@@ -196,7 +191,7 @@ export default function RFQWorkbench() {
                           <td style={td}>{option.ready ? 'Проверено менеджером' : evidenceStatus}<br /><span style={muted}>{freshness}</span></td>
                           <td style={td}>{formatSourceDate(offer.sourceUpdatedAt || offer.sourcePublishedAt)}</td>
                           <td style={td}>{offer.evidenceUrl ? <a href={offer.evidenceUrl} target="_blank" rel="noreferrer">открыть</a> : '—'}</td>
-                          <td style={td}><button onClick={() => { setSelectedId(offer.id); setSellingPrice('') }} style={button(offer.id === selectedIdFinal)}>Выбрать</button></td>
+                          <td style={td}><button onClick={() => setSelectedId(offer.id)} style={button(offer.id === selectedIdFinal)}>Проверить</button></td>
                         </tr>
                       )
                     })}
@@ -209,7 +204,7 @@ export default function RFQWorkbench() {
 
             {selected && (
               <div style={recommendation}>
-                <b>{selected.id === recommended ? 'Минимальная стоимость среди проверенных: ' : 'Выбранный вариант: '}{selected.id}</b>
+                <b>{selected.id === bestOption?.offer.id ? 'Лучший подтверждённый вариант: ' : 'Проверяемый вариант: '}{selected.id}</b>
                 <p>Введите актуальные условия поставщика. Расходы включают доставку до указанного места, погрузку и все применимые сборы на всю партию этой позиции.</p>
                 <div style={grid}>
                   <label>Цена с НДС, ₽/т<input aria-label="Цена с НДС, ₽/т" inputMode="decimal" value={review.price} style={input} onChange={event => updateReview({ price: event.target.value, confirmed: false })} /></label>
@@ -232,57 +227,33 @@ export default function RFQWorkbench() {
               </div>
             )}
 
-            {statusMessage && <p style={muted}>{statusMessage}</p>}
-            <div style={{ display: 'flex', gap: 12 }}>
-              <button onClick={() => setStep('request')} style={secondary}>← Изменить заявку</button>
-              <button onClick={() => { if (assessment?.ready) setStep('quote') }} style={assessment?.ready ? primary : disabledButton} disabled={!assessment?.ready}>Черновик КП по позиции</button>
+            <div style={decisionSummary}>
+              <h3 style={{ marginTop: 0 }}>Итог выбора</h3>
+              <p style={muted}>Критерии: точное соответствие спецификации, подтверждённый полный объём, цена с НДС, все расходы на партию и серверная оценка рисков.</p>
+              {bestOption ? <>
+                <p><b>Лучший вариант: {bestOption.offer.supplierId}</b></p>
+                <div style={metrics}>
+                  <Metric label="Полная стоимость партии" value={money.format(bestOption.total!) + ' ₽'} />
+                  <Metric label="Стоимость / т" value={money.format(bestOption.unitCost!) + ' ₽'} />
+                  <Metric label="Рейтинг данных" value={bestOption.decision ? Math.round(bestOption.decision.score * 100) + '/100' : 'нет оценки'} />
+                </div>
+                <p style={muted}>Основание: вариант реализуем по подтверждённым данным и имеет минимальную полную стоимость среди готовых вариантов.</p>
+                {reserveOption
+                  ? <p><b>Резервный вариант:</b> {reserveOption.offer.supplierId} · {money.format(reserveOption.total!)} ₽. Он станет первым автоматически, если основной вариант перестанет соответствовать условиям.</p>
+                  : <p style={muted}>Подтверждённого резервного варианта пока нет.</p>}
+              </> : <>
+                <p><b>Лучший вариант пока не определён.</b> Нет поставщика с подтверждённым полным объёмом и полной стоимостью.</p>
+                {verificationCandidate && <p><b>Первый кандидат для проверки:</b> {verificationCandidate.offer.supplierId}. {verificationCandidate.blockers.slice(0, 3).join(' · ')}</p>}
+              </>}
             </div>
-          </section>
-        )}
 
-        {step === 'quote' && selected && assessment?.ready && (
-          <section style={card}>
-            <h2>Черновик КП · позиция {activeLine} из {data?.rfq?.items?.length}</h2>
-            <div style={{ border: '1px solid #dfe5ea', borderRadius: 10, padding: 20 }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap', borderBottom: '1px solid #dfe5ea', paddingBottom: 18 }}>
-                <div><div style={eyebrow}>Мэджик Металл</div><h3 style={{ margin: '6px 0' }}>Коммерческое предложение</h3><div style={muted}>Клиентская версия · внутренние источники и закупочная цена скрыты</div></div>
-                <div style={{ textAlign: 'right', lineHeight: 1.5 }}><b>ООО «Мэджик Металл»</b><br /><span style={muted}>ИНН 7453362080 · m1@magicmet.ru · magicmet.ru</span></div>
-              </div>
-              <div style={grid}>
-                <label><span style={labelStyle}>Номер КП</span><input aria-label="Номер КП" value={quoteNumber} onChange={(event) => setQuoteNumber(event.target.value)} style={input} placeholder="№12-ЮИ/06/2026" /></label>
-                <label><span style={labelStyle}>Дата КП</span><input aria-label="Дата КП" type="date" value={quoteDate} onChange={(event) => setQuoteDate(event.target.value)} style={input} /></label>
-                <label><span style={labelStyle}>Организация клиента</span><input aria-label="Организация клиента" value={customerCompany} onChange={(event) => setCustomerCompany(event.target.value)} style={input} /></label>
-                <label><span style={labelStyle}>Кому</span><input aria-label="Кому" value={customerContact} onChange={(event) => setCustomerContact(event.target.value)} style={input} placeholder="ФИО и должность" /></label>
-                <label><span style={labelStyle}>Основание</span><input aria-label="Основание" value={requestReference} onChange={(event) => setRequestReference(event.target.value)} style={input} placeholder="Письмо или заявка №…" /></label>
-              </div>
-              <h3 style={{ marginTop: 26 }}>{quoteProduct}</h3>
-              <div style={grid}>
-                <Field label="Количество" value={quantity ? quantity + ' т' : 'уточнить'} />
-                <label><span style={labelStyle}>Цена продажи, ₽/т</span><input aria-label="Цена продажи, ₽/т" value={sellingPrice} onChange={(event) => setSellingPrice(event.target.value)} style={input} /></label>
-                <Field label="Итого" value={quantity && sell !== undefined && sell > 0 ? money.format(sell * quantity) + ' ₽' : 'введите цену продажи'} />
-                <label><span style={labelStyle}>НДС</span><select aria-label="НДС" value={vatTerms} onChange={(event) => setVatTerms(event.target.value)} style={input}><option>НДС 20% включён</option><option>НДС 0% (экспорт)</option><option>Без НДС</option></select></label>
-                <label><span style={labelStyle}>Срок поставки</span><input aria-label="Срок поставки" value={quoteLeadTime} onChange={(event) => setQuoteLeadTime(event.target.value)} style={input} placeholder={selected.leadTimeDays ? selected.leadTimeDays + ' дней' : 'Уточнить'} /></label>
-                <label><span style={labelStyle}>Условия оплаты</span><input aria-label="Условия оплаты" value={paymentTerms} onChange={(event) => setPaymentTerms(event.target.value)} style={input} /></label>
-                <label><span style={labelStyle}>Условия поставки</span><input aria-label="Условия поставки" value={supplyTerms} onChange={(event) => setSupplyTerms(event.target.value)} style={input} /></label>
-                <label><span style={labelStyle}>Предложение действительно до</span><input aria-label="Предложение действительно до" type="date" value={validUntil} onChange={(event) => setValidUntil(event.target.value)} style={input} /></label>
-              </div>
-              <p style={{ ...muted, marginTop: 22 }}>В итоговую сумму применяется режим «{vatTerms}». {vatTerms === 'НДС 0% (экспорт)' ? 'Нулевую ставку применяйте только к экспортной продаже после проверки подтверждающих документов. ' : ''}Черновик не является публичной офертой. Перед отправкой проверьте адресата, НДС, итоговую сумму, срок действия, документы, оплату и поставку.</p>
-            </div>
-            <div style={metrics}>
-              <Metric label="Разница цены и затрат / т" value={comparableGross !== undefined ? money.format(comparableGross) + ' ₽' : vatTerms === 'НДС 20% включён' ? 'введите цену продажи' : 'приведите цены к одной базе НДС'} />
-              <Metric label="Разница цены и затрат" value={quantity && comparableGross !== undefined ? money.format(comparableGross * quantity) + ' ₽' : vatTerms === 'НДС 20% включён' ? 'введите цену продажи' : 'приведите цены к одной базе НДС'} />
-              <Metric label="Статус" value="КП к проверке" />
-            </div>
-            <button style={secondary} onClick={() => setStep('search')}>← Назад к закупке</button>
+            {statusMessage && <p style={muted}>{statusMessage}</p>}
+            <button onClick={() => setStep('request')} style={secondary}>← Изменить заявку</button>
           </section>
         )}
       </div>
     </main>
   )
-}
-
-function Field({ label, value }: { label: string; value: string }) {
-  return <div><div style={labelStyle}>{label}</div><div style={{ fontWeight: 600, marginTop: 6 }}>{value}</div></div>
 }
 
 function Metric({ label, value }: { label: string; value: string }) {
@@ -292,10 +263,12 @@ function Metric({ label, value }: { label: string; value: string }) {
 const labelStyle: React.CSSProperties = { fontSize: 11, color: '#687985', textTransform: 'uppercase', letterSpacing: 0.5 }
 const muted: React.CSSProperties = { fontSize: 13, color: '#607080' }
 const eyebrow: React.CSSProperties = { fontSize: 12, letterSpacing: 1.4, textTransform: 'uppercase', color: '#607080' }
+const headerLink: React.CSSProperties = { color: '#0f6b72', fontSize: 13, fontWeight: 700, textDecoration: 'none' }
 const card: React.CSSProperties = { background: '#fff', border: '1px solid #dfe5ea', borderRadius: 12, padding: 24 }
 const grid: React.CSSProperties = { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, marginTop: 22 }
 const noticeStyle: React.CSSProperties = { marginTop: 20, padding: 16, background: '#f7f9fa', borderRadius: 9, lineHeight: 1.6 }
 const recommendation: React.CSSProperties = { marginTop: 22, padding: 18, border: '1px solid #cfe1de', borderRadius: 10, background: '#f7fbfa' }
+const decisionSummary: React.CSSProperties = { marginTop: 22, padding: 18, border: '1px solid #bed4df', borderRadius: 10, background: '#f5f9fb' }
 const metrics: React.CSSProperties = { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12, margin: '14px 0 20px' }
 const pill: React.CSSProperties = { padding: '7px 10px', borderRadius: 999, background: '#e5f4f1', color: '#12645d', fontSize: 12, whiteSpace: 'nowrap' }
 const input: React.CSSProperties = { marginTop: 5, width: '100%', boxSizing: 'border-box', border: '1px solid #ccd6dc', borderRadius: 7, padding: '10px 11px', fontSize: 15 }

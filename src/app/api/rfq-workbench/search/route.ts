@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server'
+import config from '@payload-config'
 import { runProcurement, type ProcurementAdapter } from '@/lib/procurement/engine'
 import type { Offer } from '@/lib/procurement/types'
 import { metalinfoAdapter } from '@/lib/procurement/metalinfoAdapter'
+import { getPayload } from 'payload'
 
 const demoAdapter: ProcurementAdapter = {
   id: 'rfq-workbench-test-sources',
@@ -29,6 +31,10 @@ const demoAdapter: ProcurementAdapter = {
 }
 
 export async function POST(request: Request) {
+  const payload = await getPayload({ config })
+  const { user } = await payload.auth({ headers: request.headers })
+  if (!user) return NextResponse.json({ error: 'Требуется вход менеджера' }, { status: 401 })
+
   const body = await request.json().catch(() => null) as { text?: string } | null
   const text = body?.text?.trim()
   if (!text) return NextResponse.json({ error: 'RFQ text is required' }, { status: 400 })

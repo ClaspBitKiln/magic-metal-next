@@ -80,5 +80,6 @@ export function compareOptions(
   }))
     .sort((a, b) => Number(b.ready) - Number(a.ready)
       || (a.total ?? Infinity) - (b.total ?? Infinity)
+      || (b.decision?.score ?? -Infinity) - (a.decision?.score ?? -Infinity)
       || a.offer.id.localeCompare(b.offer.id))
 }
