@@ -34,7 +34,7 @@ export type Agent = {
 const technicalAgent: Agent = {
   role: 'technical', priority: 10,
   async run({ rfq }) {
-    return rfq.items.flatMap((item) => {
+    return rfq.items.flatMap<AgentFinding>((item) => {
       const missing = ['grade', 'standard'].filter((key) => item[key as 'grade' | 'standard'].confidence === 'missing')
       return missing.length
         ? [{ agent: 'technical', status: 'warn', message: `Позиция ${item.line}: отсутствуют ${missing.join(', ')}.` }]
