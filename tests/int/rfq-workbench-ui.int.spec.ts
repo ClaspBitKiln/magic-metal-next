@@ -72,7 +72,7 @@ describe('RFQ workbench manager flow', () => {
     await fillReview()
     await click(button('Черновик КП по позиции'))
     expect(container.textContent).toContain('20 т')
-    await change(input('Цена продажи с НДС, ₽/т'), '120000')
+    await change(input('Цена продажи, ₽/т'), '120000')
     expect(container.textContent?.replace(/\s/g, '')).toContain('2400000₽')
   })
   it('uses the company quote sample fields without exposing the supplier', async () => {
@@ -85,6 +85,19 @@ describe('RFQ workbench manager flow', () => {
     expect(input('Кому')).toBeTruthy()
     expect(input('Основание')).toBeTruthy()
     expect(input('Условия оплаты').value).toContain('70%')
+    expect(container.querySelector<HTMLSelectElement>('[aria-label="НДС"]')?.value).toBe('НДС 20% включён')
+    expect(input('Предложение действительно до')).toBeTruthy()
     expect(container.textContent).not.toContain('Supplier')
+  })
+
+  it('supports the zero-rate VAT and validity fields from the second quote sample', async () => {
+    await search()
+    await fillReview()
+    await click(button('Черновик КП по позиции'))
+    await change(container.querySelector<HTMLSelectElement>('[aria-label="НДС"]')!, 'НДС 0%')
+    await change(input('Предложение действительно до'), '2026-02-09')
+    expect(container.textContent).toContain('НДС 0%')
+    expect(container.textContent).toContain('приведите цены к одной базе НДС')
+    expect(input('Предложение действительно до').value).toBe('2026-02-09')
   })
 })
