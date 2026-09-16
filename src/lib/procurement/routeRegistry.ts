@@ -16,7 +16,7 @@ export type ProcurementRouteRegistry = {
 }
 
 export function isProcurementEligibleSupplier(entry: SupplierRegistryEntry): boolean {
-  return entry.verificationStatus === 'confirmed' && entry.integrationStatus !== 'disabled'
+  return entry.verificationStatus === 'confirmed'
 }
 
 export function filterEligibleSuppliers(entries: SupplierRegistryEntry[], productScope?: string): SupplierRegistryEntry[] {

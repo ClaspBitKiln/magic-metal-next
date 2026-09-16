@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { amount, compareOptions, evaluateOption, tons } from '../../src/lib/procurement/workbench'
+import { calculateLandedCost } from '../../src/lib/procurement/landedCost'
 import type { NormalizedRFQItem, Offer } from '../../src/lib/procurement/types'
 
 const item = {
@@ -7,7 +8,7 @@ const item = {
   standard: { value: 'ГОСТ 8732-78' }, destination: { value: 'Челябинск' },
 } as NormalizedRFQItem
 const offer = { id: 'a', match: 'exact', unit: 't' } as Offer
-const decision = { offerId: 'a', score: 0.9, landedCost: { total: 100000, currency: 'RUB' }, reasons: [], risks: [], recommended: true }
+const decision = { offerId: 'a', score: 0.9, landedCost: calculateLandedCost({ purchase: 100000 }), reasons: [], risks: [], recommended: true }
 const review = { price: '100000', stock: '20', expenses: '100000', verificationNote: 'Счёт поставщика №1 от 15.09.2026', confirmed: true }
 
 describe('Procurement workbench decisions', () => {

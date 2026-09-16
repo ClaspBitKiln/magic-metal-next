@@ -2,7 +2,7 @@ import type { Availability, Offer } from './types'
 
 export type SupplierReliabilityRecord = {
   supplierId: string
-  reliabilityScore: number
+  reliabilityScore?: number
   completedDeliveries?: number
   failedDeliveries?: number
   confirmedDeliveries?: number
@@ -33,7 +33,9 @@ export function freshnessScore(observedAt: string | undefined, maxAgeDays: numbe
 
 export function reliabilityFromHistory(record?: SupplierReliabilityRecord): number {
   if (!record) return 0.5
-  if (Number.isFinite(record.reliabilityScore)) return clamp(record.reliabilityScore)
+  if (record.reliabilityScore !== undefined && Number.isFinite(record.reliabilityScore)) {
+    return clamp(record.reliabilityScore)
+  }
   const completed = Math.max(0, record.completedDeliveries ?? 0)
   if (!completed) return 0.5
   const successful = Math.max(0, (record.confirmedDeliveries ?? 0) || completed - (record.failedDeliveries ?? 0))
