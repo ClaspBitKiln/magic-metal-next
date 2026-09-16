@@ -40,6 +40,14 @@ export default function RFQWorkbench() {
   const [data, setData] = useState<SearchResult | null>(null)
   const [selectedId, setSelectedId] = useState('')
   const [sellingPrice, setSellingPrice] = useState('')
+  const [quoteNumber, setQuoteNumber] = useState('')
+  const [quoteDate, setQuoteDate] = useState('')
+  const [customerCompany, setCustomerCompany] = useState('')
+  const [customerContact, setCustomerContact] = useState('')
+  const [requestReference, setRequestReference] = useState('')
+  const [quoteLeadTime, setQuoteLeadTime] = useState('')
+  const [paymentTerms, setPaymentTerms] = useState('70% предоплата, 30% перед отгрузкой')
+  const [supplyTerms, setSupplyTerms] = useState('Доставка и условия отгрузки — по согласованию')
   const [activeLine, setActiveLine] = useState(1)
   const [reviews, setReviews] = useState<Record<string, Record<string, OfferReview>>>({})
   const [statusMessage, setStatusMessage] = useState('')
@@ -233,14 +241,27 @@ export default function RFQWorkbench() {
           <section style={card}>
             <h2>Черновик КП · позиция {activeLine} из {data?.rfq?.items?.length}</h2>
             <div style={{ border: '1px solid #dfe5ea', borderRadius: 10, padding: 20 }}>
-              <div style={muted}>Клиентская версия · поставщик, закупочная цена и внутренние источники скрыты</div>
-              <h3>{quoteProduct}</h3>
+              <div style={{ display: 'flex', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap', borderBottom: '1px solid #dfe5ea', paddingBottom: 18 }}>
+                <div><div style={eyebrow}>Мэджик Металл</div><h3 style={{ margin: '6px 0' }}>Коммерческое предложение</h3><div style={muted}>Клиентская версия · внутренние источники и закупочная цена скрыты</div></div>
+                <div style={{ textAlign: 'right', lineHeight: 1.5 }}><b>ООО «Мэджик Металл»</b><br /><span style={muted}>ИНН 7453362080 · m1@magicmet.ru · magicmet.ru</span></div>
+              </div>
+              <div style={grid}>
+                <label><span style={labelStyle}>Номер КП</span><input aria-label="Номер КП" value={quoteNumber} onChange={(event) => setQuoteNumber(event.target.value)} style={input} placeholder="№12-ЮИ/06/2026" /></label>
+                <label><span style={labelStyle}>Дата КП</span><input aria-label="Дата КП" type="date" value={quoteDate} onChange={(event) => setQuoteDate(event.target.value)} style={input} /></label>
+                <label><span style={labelStyle}>Организация клиента</span><input aria-label="Организация клиента" value={customerCompany} onChange={(event) => setCustomerCompany(event.target.value)} style={input} /></label>
+                <label><span style={labelStyle}>Кому</span><input aria-label="Кому" value={customerContact} onChange={(event) => setCustomerContact(event.target.value)} style={input} placeholder="ФИО и должность" /></label>
+                <label><span style={labelStyle}>Основание</span><input aria-label="Основание" value={requestReference} onChange={(event) => setRequestReference(event.target.value)} style={input} placeholder="Письмо или заявка №…" /></label>
+              </div>
+              <h3 style={{ marginTop: 26 }}>{quoteProduct}</h3>
               <div style={grid}>
                 <Field label="Количество" value={quantity ? quantity + ' т' : 'уточнить'} />
-                <label><span style={labelStyle}>Цена продажи с НДС, ₽/т</span><input value={sellingPrice} onChange={(event) => setSellingPrice(event.target.value)} style={input} /></label>
+                <label><span style={labelStyle}>Цена продажи с НДС, ₽/т</span><input aria-label="Цена продажи с НДС, ₽/т" value={sellingPrice} onChange={(event) => setSellingPrice(event.target.value)} style={input} /></label>
                 <Field label="Итого" value={quantity && sell !== undefined && sell > 0 ? money.format(sell * quantity) + ' ₽' : 'введите цену продажи'} />
-                <Field label="Срок" value={selected.leadTimeDays ? selected.leadTimeDays + ' дней (уточнить)'  : 'уточнить'} />
+                <label><span style={labelStyle}>Срок поставки</span><input aria-label="Срок поставки" value={quoteLeadTime} onChange={(event) => setQuoteLeadTime(event.target.value)} style={input} placeholder={selected.leadTimeDays ? selected.leadTimeDays + ' дней' : 'Уточнить'} /></label>
+                <label><span style={labelStyle}>Условия оплаты</span><input aria-label="Условия оплаты" value={paymentTerms} onChange={(event) => setPaymentTerms(event.target.value)} style={input} /></label>
+                <label><span style={labelStyle}>Условия поставки</span><input aria-label="Условия поставки" value={supplyTerms} onChange={(event) => setSupplyTerms(event.target.value)} style={input} /></label>
               </div>
+              <p style={{ ...muted, marginTop: 22 }}>Черновик не является публичной офертой. Перед отправкой проверьте адресата, НДС, итоговую сумму, срок, документы, оплату и поставку.</p>
             </div>
             <div style={metrics}>
               <Metric label="Разница цены и затрат / т, с НДС" value={gross !== undefined ? money.format(gross) + ' ₽' : 'введите цену продажи'} />
