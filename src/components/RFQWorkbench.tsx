@@ -48,6 +48,8 @@ export default function RFQWorkbench() {
   const [quoteLeadTime, setQuoteLeadTime] = useState('')
   const [paymentTerms, setPaymentTerms] = useState('70% предоплата, 30% перед отгрузкой')
   const [supplyTerms, setSupplyTerms] = useState('Доставка и условия отгрузки — по согласованию')
+  const [vatTerms, setVatTerms] = useState('НДС 20% включён')
+  const [validUntil, setValidUntil] = useState('')
   const [activeLine, setActiveLine] = useState(1)
   const [reviews, setReviews] = useState<Record<string, Record<string, OfferReview>>>({})
   const [statusMessage, setStatusMessage] = useState('')
@@ -68,6 +70,7 @@ export default function RFQWorkbench() {
   const sell = amount(sellingPrice)
   const quantity = assessment?.quantity
   const gross = sell !== undefined && landed !== undefined ? sell - landed : undefined
+  const comparableGross = vatTerms === 'НДС 20% включён' ? gross : undefined
 
   function updateReview(patch: Partial<OfferReview>) {
     if (!selected) return
@@ -255,17 +258,19 @@ export default function RFQWorkbench() {
               <h3 style={{ marginTop: 26 }}>{quoteProduct}</h3>
               <div style={grid}>
                 <Field label="Количество" value={quantity ? quantity + ' т' : 'уточнить'} />
-                <label><span style={labelStyle}>Цена продажи с НДС, ₽/т</span><input aria-label="Цена продажи с НДС, ₽/т" value={sellingPrice} onChange={(event) => setSellingPrice(event.target.value)} style={input} /></label>
+                <label><span style={labelStyle}>Цена продажи, ₽/т</span><input aria-label="Цена продажи, ₽/т" value={sellingPrice} onChange={(event) => setSellingPrice(event.target.value)} style={input} /></label>
                 <Field label="Итого" value={quantity && sell !== undefined && sell > 0 ? money.format(sell * quantity) + ' ₽' : 'введите цену продажи'} />
+                <label><span style={labelStyle}>НДС</span><select aria-label="НДС" value={vatTerms} onChange={(event) => setVatTerms(event.target.value)} style={input}><option>НДС 20% включён</option><option>НДС 0% (экспорт)</option><option>Без НДС</option></select></label>
                 <label><span style={labelStyle}>Срок поставки</span><input aria-label="Срок поставки" value={quoteLeadTime} onChange={(event) => setQuoteLeadTime(event.target.value)} style={input} placeholder={selected.leadTimeDays ? selected.leadTimeDays + ' дней' : 'Уточнить'} /></label>
                 <label><span style={labelStyle}>Условия оплаты</span><input aria-label="Условия оплаты" value={paymentTerms} onChange={(event) => setPaymentTerms(event.target.value)} style={input} /></label>
                 <label><span style={labelStyle}>Условия поставки</span><input aria-label="Условия поставки" value={supplyTerms} onChange={(event) => setSupplyTerms(event.target.value)} style={input} /></label>
+                <label><span style={labelStyle}>Предложение действительно до</span><input aria-label="Предложение действительно до" type="date" value={validUntil} onChange={(event) => setValidUntil(event.target.value)} style={input} /></label>
               </div>
-              <p style={{ ...muted, marginTop: 22 }}>Черновик не является публичной офертой. Перед отправкой проверьте адресата, НДС, итоговую сумму, срок, документы, оплату и поставку.</p>
+              <p style={{ ...muted, marginTop: 22 }}>В итоговую сумму применяется режим «{vatTerms}». {vatTerms === 'НДС 0% (экспорт)' ? 'Нулевую ставку применяйте только к экспортной продаже после проверки подтверждающих документов. ' : ''}Черновик не является публичной офертой. Перед отправкой проверьте адресата, НДС, итоговую сумму, срок действия, документы, оплату и поставку.</p>
             </div>
             <div style={metrics}>
-              <Metric label="Разница цены и затрат / т, с НДС" value={gross !== undefined ? money.format(gross) + ' ₽' : 'введите цену продажи'} />
-              <Metric label="Разница цены и затрат, с НДС" value={quantity && gross !== undefined ? money.format(gross * quantity) + ' ₽' : 'введите цену продажи'} />
+              <Metric label="Разница цены и затрат / т" value={comparableGross !== undefined ? money.format(comparableGross) + ' ₽' : vatTerms === 'НДС 20% включён' ? 'введите цену продажи' : 'приведите цены к одной базе НДС'} />
+              <Metric label="Разница цены и затрат" value={quantity && comparableGross !== undefined ? money.format(comparableGross * quantity) + ' ₽' : vatTerms === 'НДС 20% включён' ? 'введите цену продажи' : 'приведите цены к одной базе НДС'} />
               <Metric label="Статус" value="КП к проверке" />
             </div>
             <button style={secondary} onClick={() => setStep('search')}>← Назад к закупке</button>
