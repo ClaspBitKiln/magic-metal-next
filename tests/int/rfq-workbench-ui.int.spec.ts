@@ -48,14 +48,13 @@ async function fillReview() {
 }
 
 describe('RFQ workbench manager flow', () => {
-  it('keeps quote blocked until terms are checked and invalidates a check after editing', async () => {
+  it('keeps the best option unset until terms are checked and invalidates a check after editing', async () => {
     await search()
-    const quote = button('Черновик КП по позиции') as HTMLButtonElement
-    expect(quote.disabled).toBe(true)
+    expect(container.textContent).toContain('Лучший вариант пока не определён')
     await fillReview()
-    expect(quote.disabled).toBe(false)
+    expect(container.textContent).toContain('Лучший вариант: Supplier')
     await change(input('Доступно, т'), '18')
-    expect(quote.disabled).toBe(true)
+    expect(container.textContent).toContain('Лучший вариант пока не определён')
     expect((container.querySelector('[type=checkbox]') as HTMLInputElement).checked).toBe(false)
   })
   it('isolates reviews across RFQ lines even when an offer ID repeats', async () => {
@@ -63,42 +62,21 @@ describe('RFQ workbench manager flow', () => {
     await fillReview()
     await change(container.querySelector('select')!, '2')
     expect((input('Цена с НДС, ₽/т') as HTMLInputElement).value).toBe('')
-    expect((button('Черновик КП по позиции') as HTMLButtonElement).disabled).toBe(true)
+    expect(container.textContent).toContain('Лучший вариант пока не определён')
     await change(container.querySelector('select')!, '1')
     expect((input('Цена с НДС, ₽/т') as HTMLInputElement).value).toBe('100000')
   })
-  it('uses tonnes in the quote total and requires a real selling price', async () => {
+  it('uses tonnes when calculating the full procurement cost', async () => {
     await search()
     await fillReview()
-    await click(button('Черновик КП по позиции'))
     expect(container.textContent).toContain('20 т')
-    await change(input('Цена продажи, ₽/т'), '120000')
-    expect(container.textContent?.replace(/\s/g, '')).toContain('2400000₽')
+    expect(container.textContent?.replace(/\s/g, '')).toContain('2100000₽')
   })
-  it('uses the company quote sample fields without exposing the supplier', async () => {
+  it('is an internal supplier workspace without the quote form', async () => {
     await search()
-    await fillReview()
-    await click(button('Черновик КП по позиции'))
-    expect(input('Номер КП')).toBeTruthy()
-    expect(input('Дата КП')).toBeTruthy()
-    expect(input('Организация клиента')).toBeTruthy()
-    expect(input('Кому')).toBeTruthy()
-    expect(input('Основание')).toBeTruthy()
-    expect(input('Условия оплаты').value).toContain('70%')
-    expect(container.querySelector<HTMLSelectElement>('[aria-label="НДС"]')?.value).toBe('НДС 20% включён')
-    expect(input('Предложение действительно до')).toBeTruthy()
-    expect(container.textContent).not.toContain('Supplier')
-  })
-
-  it('supports the zero-rate VAT and validity fields from the second quote sample', async () => {
-    await search()
-    await fillReview()
-    await click(button('Черновик КП по позиции'))
-    await change(container.querySelector<HTMLSelectElement>('[aria-label="НДС"]')!, 'НДС 0% (экспорт)')
-    await change(input('Предложение действительно до'), '2026-02-09')
-    expect(container.textContent).toContain('НДС 0% (экспорт)')
-    expect(container.textContent).toContain('только к экспортной продаже')
-    expect(container.textContent).toContain('приведите цены к одной базе НДС')
-    expect(input('Предложение действительно до').value).toBe('2026-02-09')
+    expect(container.textContent).toContain('Внутренний SaaS')
+    expect(container.textContent).toContain('Supplier')
+    expect(container.textContent).not.toContain('Номер КП')
+    expect(container.textContent).not.toContain('Цена продажи')
   })
 })
