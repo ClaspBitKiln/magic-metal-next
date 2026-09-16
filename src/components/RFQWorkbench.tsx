@@ -260,13 +260,13 @@ export default function RFQWorkbench() {
                 <Field label="Количество" value={quantity ? quantity + ' т' : 'уточнить'} />
                 <label><span style={labelStyle}>Цена продажи, ₽/т</span><input aria-label="Цена продажи, ₽/т" value={sellingPrice} onChange={(event) => setSellingPrice(event.target.value)} style={input} /></label>
                 <Field label="Итого" value={quantity && sell !== undefined && sell > 0 ? money.format(sell * quantity) + ' ₽' : 'введите цену продажи'} />
-                <label><span style={labelStyle}>НДС</span><select aria-label="НДС" value={vatTerms} onChange={(event) => setVatTerms(event.target.value)} style={input}><option>НДС 20% включён</option><option>НДС 0%</option><option>Без НДС</option></select></label>
+                <label><span style={labelStyle}>НДС</span><select aria-label="НДС" value={vatTerms} onChange={(event) => setVatTerms(event.target.value)} style={input}><option>НДС 20% включён</option><option>НДС 0% (экспорт)</option><option>Без НДС</option></select></label>
                 <label><span style={labelStyle}>Срок поставки</span><input aria-label="Срок поставки" value={quoteLeadTime} onChange={(event) => setQuoteLeadTime(event.target.value)} style={input} placeholder={selected.leadTimeDays ? selected.leadTimeDays + ' дней' : 'Уточнить'} /></label>
                 <label><span style={labelStyle}>Условия оплаты</span><input aria-label="Условия оплаты" value={paymentTerms} onChange={(event) => setPaymentTerms(event.target.value)} style={input} /></label>
                 <label><span style={labelStyle}>Условия поставки</span><input aria-label="Условия поставки" value={supplyTerms} onChange={(event) => setSupplyTerms(event.target.value)} style={input} /></label>
                 <label><span style={labelStyle}>Предложение действительно до</span><input aria-label="Предложение действительно до" type="date" value={validUntil} onChange={(event) => setValidUntil(event.target.value)} style={input} /></label>
               </div>
-              <p style={{ ...muted, marginTop: 22 }}>В итоговую сумму применяется режим «{vatTerms}». Черновик не является публичной офертой. Перед отправкой проверьте адресата, НДС, итоговую сумму, срок действия, документы, оплату и поставку.</p>
+              <p style={{ ...muted, marginTop: 22 }}>В итоговую сумму применяется режим «{vatTerms}». {vatTerms === 'НДС 0% (экспорт)' ? 'Нулевую ставку применяйте только к экспортной продаже после проверки подтверждающих документов. ' : ''}Черновик не является публичной офертой. Перед отправкой проверьте адресата, НДС, итоговую сумму, срок действия, документы, оплату и поставку.</p>
             </div>
             <div style={metrics}>
               <Metric label="Разница цены и затрат / т" value={comparableGross !== undefined ? money.format(comparableGross) + ' ₽' : vatTerms === 'НДС 20% включён' ? 'введите цену продажи' : 'приведите цены к одной базе НДС'} />
