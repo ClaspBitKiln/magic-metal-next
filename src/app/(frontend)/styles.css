@@ -2720,5 +2720,6 @@ main select {
   .public-home { --home-h1: clamp(2rem, 8.5vw, 2.375rem); --home-h2: clamp(1.625rem, 7vw, 1.9375rem); --home-h3: 1.25rem; }
   .public-home .top-actions { flex-wrap: wrap; }
   .public-home .topbar { height: auto; min-height: 76px; }
+  .public-home .nav { top: 100%; }
   .public-home .top-cta { font-size: .8125rem; padding: 10px; gap: 6px; }
 }
