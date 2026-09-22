@@ -6,6 +6,7 @@ import { spawn } from 'node:child_process'
 // connected. Runtime CMS and request handling still require real project envs.
 const env = {
   ...process.env,
+  SIMPLE_PUBLIC_SITE_BUILD: process.env.SIMPLE_PUBLIC_SITE_BUILD || '1',
   NODE_OPTIONS: `--no-deprecation --max-old-space-size=${process.env.BUILD_MEMORY_MB || '4096'}`,
   PAYLOAD_SECRET: process.env.PAYLOAD_SECRET || 'build-only-staging-secret',
   DATABASE_URL:

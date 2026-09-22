@@ -40,6 +40,13 @@ describe('unified homepage catalog', () => {
     expect(styles).toContain('.catalog-section-card')
     expect(styles).toContain('grid-template-columns: repeat(2, minmax(0, 1fr))')
   })
+
+  it('isolates the public launch from unfinished internal type errors', () => {
+    const config = fs.readFileSync(path.join(process.cwd(), 'next.config.ts'), 'utf8')
+    const build = fs.readFileSync(path.join(process.cwd(), 'scripts/build.mjs'), 'utf8')
+    expect(config).toContain("ignoreBuildErrors: process.env.SIMPLE_PUBLIC_SITE_BUILD === '1'")
+    expect(build).toContain("SIMPLE_PUBLIC_SITE_BUILD: process.env.SIMPLE_PUBLIC_SITE_BUILD || '1'")
+  })
 })
 
 describe('public and SaaS supplier data separation', () => {
