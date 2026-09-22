@@ -156,34 +156,18 @@ export default function MagicMetalHome() {
       <section className="reference-hub" id="gost" aria-labelledby="quick-search-title">
         <div className="quick-search">
           <div><p className="section-kicker">Единый технический справочник</p><h2 id="quick-search-title">Справочник<br /><em>по металлопрокату</em></h2></div>
-          <div className="quick-search-tools"><p className="reference-purpose">Рабочий инструмент для снабжения и проектировщиков: основные параметры продукции, полный сортамент по ГОСТ, ориентир по наличию на рынке и варианты замены для последующей проверки на соответствие проекту.</p><form action="/poisk" method="get"><label htmlFor="home-search">Товар, размер, марка или ГОСТ</label><div><input id="home-search" name="q" placeholder="12Х1МФ, ГОСТ 8732, труба 219×8" /><button type="submit">Найти →</button></div></form><nav aria-label="Разделы справочника"><Link href="/spravochnik-nalichiya">Размеры и наличие</Link><Link href="#products">Все разделы</Link><Link href="/spravochnik-gost">ГОСТ и размеры</Link><Link href="/spravochnik-materialov">Материалы и аналоги</Link><Link href="/kalkulyator-metalla">Калькулятор массы</Link></nav></div>
+          <div className="quick-search-tools"><p className="reference-purpose">Рабочий инструмент для снабжения и проектировщиков: основные параметры продукции, действующие стандарты и варианты замены для последующей проверки на соответствие проекту.</p><form action="/poisk" method="get"><label htmlFor="home-search">Товар, размер, марка или ГОСТ</label><div><input id="home-search" name="q" placeholder="12Х1МФ, ГОСТ 8732, труба 219×8" /><button type="submit">Найти →</button></div></form><nav aria-label="Разделы справочника"><Link href="#products">Все разделы</Link><Link href="/spravochnik-gost">ГОСТ и размеры</Link><Link href="/spravochnik-materialov">Материалы и аналоги</Link><Link href="/kalkulyator-metalla">Калькулятор массы</Link></nav></div>
         </div>
       <div className="product-unified" id="products" aria-labelledby="products-title">
       <div className="section catalog-section product-subsection">
-        <div className="catalog-head"><div><p className="product-subsection-label">Общий справочник по металлопрокату</p><h2 id="products-title">Категории<br /><em>и номенклатура</em></h2></div><p>Все виды продукции собраны в одном дереве. Откройте категорию, затем нужную номенклатуру: размеры, ГОСТ и исполнения раскрываются по «+» и скрываются по «−».</p></div>
-        {homeCatalogGroups.map((group, groupIndex) => <details className="catalog-group" key={group.title} open={groupIndex === 0}>
-          <summary><i className="catalog-toggle" aria-hidden="true" /><span><strong>{group.title}</strong><small>{group.note}</small></span></summary>
-          <div className="catalog-table" aria-label={group.title}>
-            <div className="catalog-row catalog-labels" role="row"><span>Номенклатура</span><span>Размеры</span><span>Стандарты</span><span>Марки / исполнение</span></div>
-          {group.items.map((item, index) => <motion.details className="catalog-item" key={item.title} initial={false} whileInView="visible" viewport={{ once: true, amount: .35 }} variants={animation} transition={{ duration: .42, delay: Math.min(index * .035, .2) }}>
-            <summary className="catalog-row">
-              <strong><i className="catalog-toggle" aria-hidden="true" /><span>{item.title}</span></strong>
-              <span>{item.size}</span>
-              <span className="standard-list">{item.standards.replace(/(ГОСТ|ТУ|ОСТ|СТО) /g, '$1\u00A0')}</span>
-              <span>{item.grades}</span>
-            </summary>
-            <div className={`home-size-series${item.requestOnly ? ' home-size-series--request' : ''}`}>
-              <div className="home-size-copy"><b>{item.requestOnly ? 'Поставка по заявке' : 'Позиции в каталоге'}</b><span>{item.requestOnly ? 'Подберём исполнение, документы и срок поставки' : 'Доступные размеры, марки и стандарты'}</span></div>
-              <nav className="home-size-actions" aria-label={`Действия: ${item.title}`}>
-              {item.requestOnly
-                ? <Link className="verified-range-link" href={`/?product=${encodeURIComponent(item.availabilityQuery)}#request`}>Запросить расчёт <b aria-hidden="true">→</b></Link>
-                : <Link className="verified-range-link" href={`/spravochnik-nalichiya?q=${encodeURIComponent(item.availabilityQuery)}`}>Размеры и наличие <b aria-hidden="true">→</b></Link>}
-              <Link className="catalog-detail-link" href={item.href}>Описание и стандарты</Link>
-              </nav>
-            </div>
-          </motion.details>)}
-          </div>
-        </details>)}
+        <div className="catalog-head"><div><p className="product-subsection-label">Основные направления поставок</p><h2 id="products-title">Что мы<br /><em>можем поставить</em></h2></div><p>Выберите нужный раздел и отправьте заявку. Размеры, марку стали, стандарт, цену, наличие и срок поставки подтвердим по вашей спецификации.</p></div>
+        <div className="catalog-section-list" aria-label="Разделы поставок">
+          {homeCatalogGroups.map((group, index) => <motion.article className="catalog-section-card" key={group.title} initial={false} whileInView="visible" viewport={{ once: true, amount: .25 }} variants={animation} transition={{ duration: .36, delay: Math.min(index * .035, .18) }}>
+            <span className="catalog-section-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+            <div><h3>{group.title}</h3><p>{group.note}</p></div>
+            <Link href={`/?product=${encodeURIComponent(group.title)}#request`} aria-label={`Отправить заявку: ${group.title}`}>Заявка <b aria-hidden="true">→</b></Link>
+          </motion.article>)}
+        </div>
       </div>
       </div>
       </section>
