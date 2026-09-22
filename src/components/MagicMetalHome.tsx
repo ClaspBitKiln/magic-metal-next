@@ -91,7 +91,7 @@ export default function MagicMetalHome() {
   }
 
   return (
-    <main>
+    <main className="public-home">
       <a className="skip-link" href="#content">К содержанию</a>
       <header className="topbar">
         <a className="brand" href="#top" aria-label="Мэджик Металл — главная"><Image src="/images/logo-transparent-v2.png" alt="Мэджик Металл" width={147} height={109} priority /></a>
