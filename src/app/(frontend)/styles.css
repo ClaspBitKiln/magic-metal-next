@@ -1843,17 +1843,17 @@ h2 {
 
 
 /* Unified public-site typography scale: desktop, tablet and mobile. */
-main h1 {
+main:not(.public-home) h1 {
   font-size: clamp(36px, 3.2vw, 48px) !important;
   line-height: 1.08 !important;
   letter-spacing: -0.03em !important;
 }
-main h2 {
+main:not(.public-home) h2 {
   font-size: clamp(28px, 2.5vw, 38px) !important;
   line-height: 1.12 !important;
   letter-spacing: -0.025em !important;
 }
-main h3 {
+main:not(.public-home) h3 {
   font-size: clamp(18px, 1.45vw, 24px) !important;
   line-height: 1.25 !important;
   letter-spacing: -0.015em !important;
@@ -1869,15 +1869,15 @@ main select {
   overflow-wrap: anywhere;
 }
 @media (max-width: 720px) {
-  main h1 {
+  main:not(.public-home) h1 {
     font-size: clamp(32px, 8.5vw, 38px) !important;
     line-height: 1.1 !important;
   }
-  main h2 {
+  main:not(.public-home) h2 {
     font-size: clamp(25px, 7vw, 31px) !important;
     line-height: 1.15 !important;
   }
-  main h3 {
+  main:not(.public-home) h3 {
     font-size: clamp(18px, 5vw, 22px) !important;
   }
 }
@@ -2680,4 +2680,46 @@ main select {
   .catalog-section-list { grid-template-columns: 1fr; }
   .catalog-section-card { min-height: 0; padding: 22px 18px; grid-template-columns: 34px minmax(0, 1fr); }
   .catalog-section-card > a { grid-column: 2; justify-self: start; }
+}
+
+/* Public homepage typography: scoped to avoid changing technical directories. */
+.public-home {
+  --home-h1: clamp(2.25rem, 3.2vw, 3rem);
+  --home-h2: clamp(2rem, 2.5vw, 2.25rem);
+  --home-h3: clamp(1.375rem, 1.65vw, 1.5rem);
+}
+.public-home h1 { font-size: var(--home-h1); line-height: 1.12; letter-spacing: -.025em; }
+.public-home h2 { font-size: var(--home-h2); line-height: 1.2; letter-spacing: -.02em; }
+.public-home h3 { font-size: var(--home-h3); line-height: 1.3; font-weight: 600; letter-spacing: -.01em; }
+.public-home .hero-lead { font-size: 1.0625rem; line-height: 1.55; font-weight: 400; }
+.public-home .request-copy h2 em { -webkit-text-fill-color: currentColor; -webkit-text-stroke: 0; }
+.public-home .primary-button,
+.public-home .quick-search-tools button,
+.public-home .request-form button { font-size: .9375rem; font-weight: 600; line-height: 1.4; }
+.public-home .top-cta { font-size: .875rem; line-height: 1.4; min-width: 0; }
+.public-home .quick-search-tools form > label,
+.public-home .request-form label { font-size: .875rem; font-weight: 600; letter-spacing: .02em; line-height: 1.5; }
+.public-home .request-form input,
+.public-home .request-form textarea,
+.public-home .request-form select { font-size: 1rem; font-weight: 400; line-height: 1.5; }
+.public-home .request-form :is(input,textarea,select):focus-visible { outline: 3px solid #ffbf47; outline-offset: 3px; }
+.public-home .section-kicker,
+.public-home .product-subsection-label,
+.public-home .hero-label,
+.public-home .hero-label span { font-size: .8125rem; font-weight: 600; letter-spacing: .06em; }
+.public-home .file-types,
+.public-home .file-field small,
+.public-home .footer,
+.public-home .quick-search-tools nav a { font-size: .875rem; line-height: 1.5; letter-spacing: 0; }
+.public-home .delivery-title span { font-size: .875rem; line-height: 1.5; }
+.public-home .catalog-section-card { grid-template-columns: 2rem minmax(0,1fr); gap: 1rem; }
+.public-home .catalog-section-card > div { min-width: 0; }
+.public-home .catalog-section-card > a { grid-column: 2; justify-self: start; min-height: 44px; font-size: .875rem; font-weight: 600; letter-spacing: .02em; }
+.public-home .catalog-section-number { font-weight: 600; }
+@media (max-width: 820px) {
+  .public-home { --home-h1: clamp(2rem, 8.5vw, 2.375rem); --home-h2: clamp(1.625rem, 7vw, 1.9375rem); --home-h3: 1.25rem; }
+  .public-home .top-actions { flex-wrap: wrap; }
+  .public-home .topbar { height: auto; min-height: 76px; }
+  .public-home .nav { top: 100%; }
+  .public-home .top-cta { font-size: .8125rem; padding: 10px; gap: 6px; }
 }
