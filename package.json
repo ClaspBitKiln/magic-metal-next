@@ -19,7 +19,8 @@
     "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts",
     "qa:site": "tsx qa/run.ts",
     "qa:production": "cross-env QA_BASE_URL=https://magic-metal-next.vercel.app tsx qa/run.ts",
-    "import:suppliers": "payload run scripts/import_supplier_catalog.ts"
+    "import:suppliers": "payload run scripts/import_supplier_catalog.ts",
+    "obsidian:sync": "node scripts/sync_obsidian.mjs"
   },
   "dependencies": {
     "@openai/agents": "0.18.0",

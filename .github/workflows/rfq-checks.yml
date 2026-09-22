@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - codex/rfq-metalinfo-freshness-20260914
+      - codex/obsidian-account-bridge-20260922
   pull_request:
     branches:
       - rfq-workbench-mvp
@@ -12,11 +13,16 @@ on:
       - 'src/components/RFQWorkbench.tsx'
       - 'src/app/rfq-workbench/**'
       - 'src/app/api/rfq-workbench/**'
+      - 'scripts/sync_obsidian.mjs'
+      - 'scripts/diagnose_remote_desktop_commander.ps1'
+      - 'scripts/start_remote_desktop_commander.cmd'
       - 'tests/int/rfq-workbench-auth.int.spec.ts'
       - 'tests/int/metalinfo-adapter.int.spec.ts'
       - 'tests/int/procurement-engine.int.spec.ts'
       - 'tests/int/workbench.int.spec.ts'
       - 'tests/int/rfq-workbench-ui.int.spec.ts'
+      - 'tests/int/obsidian-sync.int.spec.ts'
+      - 'tests/int/remote-device-recovery.int.spec.ts'
       - 'package.json'
       - 'package-lock.json'
       - '.github/workflows/rfq-checks.yml'
@@ -46,5 +52,4 @@ jobs:
         run: npm ci
 
       - name: Run RFQ integration tests
-        run: npx vitest run --config ./vitest.config.mts tests/int/metalinfo-adapter.int.spec.ts tests/int/procurement-engine.int.spec.ts tests/int/workbench.int.spec.ts tests/int/rfq-workbench-ui.int.spec.ts tests/int/rfq-workbench-auth.int.spec.ts
-
+        run: npx vitest run --config ./vitest.config.mts tests/int/metalinfo-adapter.int.spec.ts tests/int/procurement-engine.int.spec.ts tests/int/workbench.int.spec.ts tests/int/rfq-workbench-ui.int.spec.ts tests/int/rfq-workbench-auth.int.spec.ts tests/int/obsidian-sync.int.spec.ts tests/int/remote-device-recovery.int.spec.ts

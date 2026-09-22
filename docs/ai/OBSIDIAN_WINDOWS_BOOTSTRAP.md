@@ -9,11 +9,26 @@ This is the machine-side bootstrap checklist. It does not contain secrets.
 - Obsidian Local REST API plugin installed from Community Plugins and enabled.
 - Cloudflare account/domain available for a named tunnel.
 
-## 2. Verify Obsidian MCP locally
+## 2. Verify Obsidian API locally
 
 In Obsidian, open the Local REST API plugin settings and verify that its built-in MCP server is enabled.
 
 Test the configured local endpoint from the workstation. Prefer HTTPS on port 27124.
+
+The repository contains an idempotent stage-log synchronizer. It reads the API key only from the local environment, writes a dedicated project note, reads it back and verifies the SHA-256 hash:
+
+```powershell
+$env:OBSIDIAN_API_URL = 'https://127.0.0.1:27124'
+$env:OBSIDIAN_API_KEY = '<local Obsidian REST API key>'
+pnpm obsidian:sync
+```
+
+Optional overrides:
+
+```text
+OBSIDIAN_SYNC_SOURCE=docs/ai/OBSIDIAN_PENDING_2026-09-16.md
+OBSIDIAN_SYNC_TARGET=02 Projects/Magic Metal/OBSIDIAN_PENDING_2026-09-16.md
+```
 
 Do not publish the plugin endpoint directly to the Internet.
 
@@ -36,6 +51,7 @@ Example variable names only:
 
 ```text
 OBSIDIAN_MCP_URL=https://127.0.0.1:27124/mcp/
+OBSIDIAN_API_URL=https://127.0.0.1:27124
 OBSIDIAN_API_KEY=<local Obsidian REST API key>
 GATEWAY_BIND=127.0.0.1
 GATEWAY_PORT=8787
