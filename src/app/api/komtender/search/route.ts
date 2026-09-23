@@ -25,34 +25,41 @@ type TenderDetail = {
   stage?: string;
 };
 
-const METAL_TERMS = [
-  "металл", "металлопрокат", "лист", "рулон", "полоса", "сортовой",
-  "арматур", "катанк", "круг", "угол", "швеллер", "двутавр", "балк",
-  "проволок", "оцинков", "профнастил", "труба", "трубопрокат",
-  "бесшовн", "электросварн", "сварн", "профиль"
+// Products that are present in the MMK product catalog.
+// The search is based on the requested product, not on the customer's identity.
+const MMK_PRODUCT_TERMS = [
+  "арматур", "катанк", "св-08", "св08", "св-08а", "св08а",
+  "круг", "уголок", "швеллер", "двутавр", "балк",
+  "лист", "рулон", "полоса", "проволок",
+  "оцинков", "холоднокатан", "горячекатан", "прокат",
+  "труба", "трубопрокат", "бесшовн", "электросварн",
+  "профильн", "профнастил"
 ];
 
-const MMK_TERMS = [
-  "ммк", "магнитогорский металлургический комбинат",
-  "пao ммк", "пао «ммк»", "публичное акционерное общество магнитогорский металлургический комбинат"
+const MMK_CUSTOMER_TERMS = [
+  "ммк",
+  "магнитогорский металлургический комбинат",
+  "пao ммк",
+  "пао «ммк»"
 ];
 
 function textOf(value: unknown) {
   return String(value ?? "").toLowerCase();
 }
 
-function haystack(tender: TenderDetail) {
+function productText(tender: TenderDetail) {
   return [
-    tender.customer?.name,
     tender.descr,
-    tender.place,
-    tender.regions,
     ...(tender.positions || []).flatMap((p) => [p.name, p.unit]),
   ].map(textOf).join(" ");
 }
 
 function hasTerm(text: string, terms: string[]) {
   return terms.some((term) => text.includes(term));
+}
+
+function isMmkCustomer(name: string) {
+  return hasTerm(textOf(name), MMK_CUSTOMER_TERMS);
 }
 
 export async function GET(request: Request) {
@@ -63,15 +70,14 @@ export async function GET(request: Request) {
   const q = textOf(url.searchParams.get("q"));
   const customer = textOf(url.searchParams.get("customer"));
   const region = textOf(url.searchParams.get("region"));
-  const mmkOnly = url.searchParams.get("mmk") !== "0";
 
   try {
     const result = await getTemplate(templateId, page, "new-first");
     const payload = result.data as { data?: TenderShort[]; _meta?: unknown };
     const rows = Array.isArray(payload?.data) ? payload.data.slice(0, scan) : [];
 
-    // The list endpoint does not contain tender title/customer/positions.
-    // Therefore we inspect only the first N newest cards, keeping quota use predictable.
+    // The list endpoint has no positions/customer, so details are fetched only
+    // for the limited scan window. This keeps API usage predictable.
     const details = await Promise.all(rows.map(async (item) => {
       try {
         const response = await getTender(String(item.id));
@@ -84,9 +90,10 @@ export async function GET(request: Request) {
     const items = details
       .filter((detail): detail is TenderDetail => Boolean(detail))
       .map((detail) => {
-        const text = haystack(detail);
-        const isMetal = hasTerm(text, METAL_TERMS);
-        const isMmk = hasTerm(text, MMK_TERMS);
+        const customerName = detail.customer?.name ?? "";
+        const products = productText(detail);
+        const isMmkProduct = hasTerm(products, MMK_PRODUCT_TERMS);
+
         return {
           id: detail.id,
           url: detail.url,
@@ -94,32 +101,31 @@ export async function GET(request: Request) {
           deadline: detail.dte,
           price: detail.price?.value ?? null,
           currency: detail.price?.currency ?? "RUB",
-          customer: detail.customer?.name ?? "",
+          customer: customerName,
           customerInn: detail.customer?.inn ?? "",
           description: detail.descr ?? "",
           positions: detail.positions ?? [],
           place: detail.place ?? "",
           regions: detail.regions ?? "",
           stage: detail.stage ?? "",
-          isMetal,
-          isMmk,
+          isMmkCustomer: isMmkCustomer(customerName),
+          isMmkProduct,
         };
       })
-      .filter((item) => item.isMetal)
-      .filter((item) => !mmkOnly || item.isMmk)
+      // Ключевой фильтр: заказчик НЕ ММК, но в заявке есть продукция ММК.
+      .filter((item) => !item.isMmkCustomer && item.isMmkProduct)
       .filter((item) => !q || [item.description, item.customer, ...item.positions.map((p) => p.name)].map(textOf).join(" ").includes(q))
       .filter((item) => !customer || textOf(item.customer).includes(customer))
-      .filter((item) => !region || textOf(item.regions).includes(region) || textOf(item.place).includes(region))
-      .sort((a, b) => Number(b.isMmk) - Number(a.isMmk));
+      .filter((item) => !region || textOf(item.regions).includes(region) || textOf(item.place).includes(region));
 
     return Response.json({
-      goal: "Металлопрокат и трубы, приоритет продукции ММК",
+      goal: "Заказчики не ММК → заявки с продукцией из номенклатуры ММК",
       templateId,
       page,
       scanned: rows.length,
       matched: items.length,
       quotaCost: rows.length + 1,
-      query: { q, customer, region, mmkOnly },
+      query: { q, customer, region },
       items,
       meta: payload?._meta ?? null,
     });
