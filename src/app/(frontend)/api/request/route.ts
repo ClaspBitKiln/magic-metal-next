@@ -81,7 +81,6 @@ export async function POST(request: Request) {
   if (totalSize > MAX_TOTAL_FILE_SIZE) return NextResponse.json({ error: 'Файлы превышают 25 МБ' }, { status: 413 })
   if (files.some((file) => !ALLOWED_EXTENSIONS.has(file.name.split('.').pop()?.toLowerCase() || ''))) return NextResponse.json({ error: 'Недопустимый тип файла' }, { status: 415 })
 
-  const payload = await getPayload({ config })
   const uploadedIds: number[] = []
   const attachments: { filename: string; content: Buffer; contentType?: string }[] = []
 
@@ -94,35 +93,44 @@ export async function POST(request: Request) {
   if (invalidFile) return NextResponse.json({ error: `Содержимое файла «${invalidFile.filename}» не соответствует его формату` }, { status: 415 })
 
   for (const { file, buffer, filename } of preparedFiles) {
-    const uploaded = await payload.create({
-      collection: 'request-files',
-      data: { description: `Заявка: ${company || requestName}` },
-      file: { data: buffer, mimetype: file.type || 'application/octet-stream', name: filename, size: file.size },
-      overrideAccess: true,
-    })
-    uploadedIds.push(uploaded.id)
     attachments.push({ filename, content: buffer, contentType: file.type || undefined })
   }
 
   const landingPage = text(form, 'landingPage', 1000)
   const source = text(form, 'utm_source', 200) || (text(form, 'referrer', 1000) ? 'referral' : 'direct')
-  const created = await payload.create({
-    collection: 'requests',
-    data: {
-      name: requestName, company, phone: requestPhone, email: email || null, message: requestMessage, context,
-      productDirection: (productDirection || null) as 'electrowelded-pipes' | 'seamless-pipes' | 'pipeline-parts' | 'insulated' | 'other' | null,
-      originPreference: 'any',
-      files: uploadedIds,
-      status: 'new',
-      source,
-      landingPage,
-      referrer: text(form, 'referrer', 1000),
-      utmSource: text(form, 'utm_source', 200),
-      utmMedium: text(form, 'utm_medium', 200),
-      utmCampaign: text(form, 'utm_campaign', 200),
-    },
-    overrideAccess: true,
-  })
+  let payload: Awaited<ReturnType<typeof getPayload>> | null = null
+  let created: { id: number | string } | null = null
+  try {
+    payload = await getPayload({ config })
+    for (const { file, buffer, filename } of preparedFiles) {
+      const uploaded = await payload.create({
+        collection: 'request-files',
+        data: { description: `Заявка: ${company || requestName}` },
+        file: { data: buffer, mimetype: file.type || 'application/octet-stream', name: filename, size: file.size },
+        overrideAccess: true,
+      })
+      uploadedIds.push(uploaded.id)
+    }
+    created = await payload.create({
+      collection: 'requests',
+      data: {
+        name: requestName, company, phone: requestPhone, email: email || null, message: requestMessage, context,
+        productDirection: (productDirection || null) as 'electrowelded-pipes' | 'seamless-pipes' | 'pipeline-parts' | 'insulated' | 'other' | null,
+        originPreference: 'any',
+        files: uploadedIds,
+        status: 'new',
+        source,
+        landingPage,
+        referrer: text(form, 'referrer', 1000),
+        utmSource: text(form, 'utm_source', 200),
+        utmMedium: text(form, 'utm_medium', 200),
+        utmCampaign: text(form, 'utm_campaign', 200),
+      },
+      overrideAccess: true,
+    })
+  } catch (error) {
+    console.error(JSON.stringify({ level: 'error', message: 'Request persistence failed', route: '/api/request', error: error instanceof Error ? error.message : String(error) }))
+  }
 
   let emailDelivered = false
   if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASSWORD) {
@@ -148,7 +156,7 @@ export async function POST(request: Request) {
       const workflowPayload = JSON.stringify({
         event: 'website.request.created',
         occurredAt: new Date().toISOString(),
-        request: { id: created.id, name, company, phone, email, message, context, productDirection, source, landingPage, fileIds: uploadedIds },
+        request: { id: created?.id || null, name, company, phone, email, message, context, productDirection, source, landingPage, fileIds: uploadedIds },
       })
       const signature = process.env.N8N_WEBHOOK_SECRET
         ? createHmac('sha256', process.env.N8N_WEBHOOK_SECRET).update(workflowPayload).digest('hex')
@@ -163,9 +171,17 @@ export async function POST(request: Request) {
     } catch (error) { payload.logger.error({ err: error, msg: 'Заявка сохранена, но доставка в Activepieces/n8n/CRM не выполнена' }) }
   }
 
-  if (emailDelivered || crmDelivered) {
-    await payload.update({ collection: 'requests', id: created.id, data: { emailDelivered, crmDelivered }, overrideAccess: true })
+  if (payload && created && (emailDelivered || crmDelivered)) {
+    try {
+      await payload.update({ collection: 'requests', id: created.id, data: { emailDelivered, crmDelivered }, overrideAccess: true })
+    } catch (error) {
+      console.error(JSON.stringify({ level: 'error', message: 'Request delivery status update failed', route: '/api/request', error: error instanceof Error ? error.message : String(error) }))
+    }
   }
 
-  return NextResponse.json({ ok: true, id: created.id })
+  if (!created && !emailDelivered && !crmDelivered) {
+    return NextResponse.json({ error: 'Не удалось сохранить или доставить заявку. Позвоните нам или напишите на m1@magicmet.ru.' }, { status: 503 })
+  }
+
+  return NextResponse.json({ ok: true, id: created?.id || null, emailDelivered, crmDelivered })
 }
