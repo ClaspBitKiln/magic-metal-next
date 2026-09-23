@@ -1,4 +1,4 @@
-import { getTemplate, getTender, komtenderGet } from "@/lib/komtender/client";
+import { getTender, getTemplate, komtenderGet } from "@/lib/komtender/client";
 
 type TenderShort = {
   id: number | string;
@@ -11,46 +11,43 @@ type TenderShort = {
   stage?: string;
 };
 
-type TenderDetail = {
-  id?: number | string;
-  url?: string;
-  dts?: string;
-  dte?: string;
-  price?: { value?: number; currency?: string };
+type Position = { name?: string; unit?: string; price?: number; quantity?: number };
+
+type TenderDetail = TenderShort & {
   customer?: { name?: string; inn?: string };
   descr?: string;
-  positions?: Array<{ name?: string; unit?: string; price?: number; quantity?: number }>;
-  place?: string;
-  regions?: string;
-  stage?: string;
+  positions?: Position[];
 };
-
-// Products that are present in the MMK product catalog.
-// The search is based on the requested product, not on the customer's identity.
-const MMK_PRODUCT_TERMS = [
-  "арматур", "катанк", "св-08", "св08", "св-08а", "св08а",
-  "круг", "уголок", "швеллер", "двутавр", "балк",
-  "лист", "рулон", "полоса", "проволок",
-  "оцинков", "холоднокатан", "горячекатан", "прокат",
-  "труба", "трубопрокат", "бесшовн", "электросварн",
-  "профильн", "профнастил"
-];
 
 const MMK_CUSTOMER_TERMS = [
   "ммк",
   "магнитогорский металлургический комбинат",
   "пao ммк",
-  "пао «ммк»"
+  "пао «ммк»",
+];
+
+const PRODUCT_TERMS = [
+  "арматур", "катанк", "круг", "уголок", "швеллер", "двутавр", "балк",
+  "лист", "листов", "листовой", "рулон", "полоса", "проволок",
+  "оцинк", "холоднокатан", "горячекатан", "прокат",
+  "труба", "трубопрокат", "бесшовн", "электросварн", "профильн",
+  "профнастил", "09г2с", "17г1с", "08пс", "ст3", "ст20", "aisi",
+];
+
+const THIN_SHEET_TERMS = [
+  "лист", "листов", "листовой", "горячекатан", "холоднокатан",
+  "оцинк", "оцинкован", "рулон", "х/к", "г/к", "aisi",
+  "ст3", "ст08", "08пс", "09г2с", "17г1с",
 ];
 
 function textOf(value: unknown) {
-  return String(value ?? "").toLowerCase();
+  return String(value ?? "").toLowerCase().replace(/ё/g, "е");
 }
 
-function productText(tender: TenderDetail) {
+function tenderText(tender: TenderDetail) {
   return [
     tender.descr,
-    ...(tender.positions || []).flatMap((p) => [p.name, p.unit]),
+    ...(tender.positions || []).flatMap((p) => [p.name, p.unit, p.quantity]),
   ].map(textOf).join(" ");
 }
 
@@ -62,43 +59,116 @@ function isMmkCustomer(name: string) {
   return hasTerm(textOf(name), MMK_CUSTOMER_TERMS);
 }
 
+function isMetalTender(tender: TenderDetail) {
+  return hasTerm(tenderText(tender), PRODUCT_TERMS);
+}
+
+function isThinSheetTender(tender: TenderDetail) {
+  const text = tenderText(tender);
+  if (!hasTerm(text, THIN_SHEET_TERMS)) return false;
+  return (tender.positions || []).some((p) => {
+    const n = textOf(p.name);
+    const u = textOf(p.unit);
+    return hasTerm(n, THIN_SHEET_TERMS) || /лист|рулон/.test(u);
+  }) || /лист|рулон/.test(text);
+}
+
+function tons(position: Position) {
+  const unit = textOf(position.unit);
+  const quantity = Number(position.quantity);
+  if (Number.isFinite(quantity) && /(т|тонн|тонна|тонны|тн)/.test(unit)) return quantity;
+  const name = textOf(position.name);
+  const m = name.match(/(?:^|\s)(\d+(?:[.,]\d+)?)\s*(?:т|тн|тонн|тонны|тонна)(?:\b|$)/i);
+  return m ? Number(m[1].replace(",", ".")) : null;
+}
+
+function deadlineMs(value?: string) {
+  if (!value) return Number.POSITIVE_INFINITY;
+  const m = value.match(/^(\d{4})-(\d{2})-(\d{2})(?:\s+(\d{2}):(\d{2})(?::(\d{2}))?)?/);
+  if (!m) return Number.POSITIVE_INFINITY;
+  // KomTender supplies Moscow-local timestamps. Convert explicitly to UTC.
+  const iso = `${m[1]}-${m[2]}-${m[3]}T${m[4] || "23"}:${m[5] || "59"}:${m[6] || "59"}+03:00`;
+  return Date.parse(iso);
+}
+
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const templateId = url.searchParams.get("templateId") || process.env.KOMTENDER_SEARCH_TEMPLATE_ID || "1";
-  const page = Math.max(1, Number(url.searchParams.get("page") || "1"));
-  const scan = Math.min(30, Math.max(1, Number(url.searchParams.get("scan") || "20")));
+  const startPage = Math.max(1, Number(url.searchParams.get("page") || "1"));
+  const pages = Math.min(5, Math.max(1, Number(url.searchParams.get("pages") || "1")));
+  const scan = Math.min(100, Math.max(1, Number(url.searchParams.get("scan") || "100")));
   const q = textOf(url.searchParams.get("q"));
   const customer = textOf(url.searchParams.get("customer"));
   const region = textOf(url.searchParams.get("region"));
+  const family = textOf(url.searchParams.get("family"));
+  const activeOnly = url.searchParams.get("active") !== "false";
 
   try {
     const apiKey = request.headers.get("x-komtender-api-key");
     const headers = apiKey ? { "X-API-KEY": apiKey } : undefined;
-    const result = await getTemplateWithKey(templateId, page, "new-first", headers);
-    const payload = result.data as { data?: TenderShort[]; _meta?: unknown };
-    const rows = Array.isArray(payload?.data) ? payload.data.slice(0, scan) : [];
 
-    // The list endpoint has no positions/customer, so details are fetched only
-    // for the limited scan window. This keeps API usage predictable.
-    const details = await Promise.all(rows.map(async (item) => {
+    const infoResponse = await komtenderGet("info", { headers });
+    const infoPayload = infoResponse.data as any;
+    const remaining = Number(
+      infoPayload?.data?.remaining ??
+      infoPayload?.remaining ??
+      infoResponse.headers.get("X-RateLimit-Remaining") ??
+      0
+    );
+
+    // One list request costs quota too. Never blindly start a scan that can
+    // consume more quota than is available.
+    const maxDetails = Math.max(0, remaining - pages);
+    const requestedDetails = Math.min(scan * pages, maxDetails);
+    if (requestedDetails <= 0) {
+      return Response.json({
+        ok: false,
+        error: "Недостаточно KomTender API quota для глубокого сканирования",
+        remaining,
+        requestedDetails: scan * pages,
+        hint: "Уменьшите pages/scan или повторите после сброса суточной квоты.",
+      }, { status: 429 });
+    }
+
+    const rows: TenderShort[] = [];
+    const pageMeta: any[] = [];
+    for (let i = 0; i < pages && rows.length < requestedDetails; i++) {
+      const currentPage = startPage + i;
+      const result = await komtenderGet(
+        "template/" + encodeURIComponent(templateId) +
+        "?page=" + currentPage + "&sort=new-first",
+        { headers }
+      );
+      const payload = result.data as { data?: TenderShort[]; _meta?: unknown };
+      const pageRows = Array.isArray(payload?.data) ? payload.data : [];
+      pageMeta.push(payload?._meta ?? null);
+      rows.push(...pageRows.slice(0, Math.min(scan, requestedDetails - rows.length)));
+    }
+
+    const details: TenderDetail[] = [];
+    for (const item of rows) {
       try {
-        const response = await getTenderWithKey(String(item.id), headers);
-        return response.data as TenderDetail;
+        const response = await komtenderGet(encodeURIComponent(String(item.id)), { headers });
+        details.push(response.data as TenderDetail);
       } catch {
-        return null;
+        // One bad tender must not abort the whole scan.
       }
-    }));
+    }
 
+    const now = Date.now();
     const items = details
-      .filter((detail): detail is TenderDetail => Boolean(detail))
       .map((detail) => {
         const customerName = detail.customer?.name ?? "";
-        const products = productText(detail);
-        const isMmkProduct = hasTerm(products, MMK_PRODUCT_TERMS);
+        const products = tenderText(detail);
+        const thinSheet = isThinSheetTender(detail);
+        const quantityTons = (detail.positions || [])
+          .map(tons)
+          .filter((x): x is number => x !== null)
+          .reduce((a, b) => a + b, 0) || null;
 
         return {
           id: detail.id,
-          url: detail.url,
+          url: detail.url || `https://www.komtender.ru/tender/${detail.id}`,
           date: detail.dts,
           deadline: detail.dte,
           price: detail.price?.value ?? null,
@@ -111,25 +181,38 @@ export async function GET(request: Request) {
           regions: detail.regions ?? "",
           stage: detail.stage ?? "",
           isMmkCustomer: isMmkCustomer(customerName),
-          isMmkProduct,
+          isMmkProduct: hasTerm(products, PRODUCT_TERMS),
+          productFamily: thinSheet ? "thin_sheet" : "other_metal",
+          quantityTons,
+          isActive: deadlineMs(detail.dte) > now,
         };
       })
-      // Ключевой фильтр: заказчик НЕ ММК, но в заявке есть продукция ММК.
       .filter((item) => !item.isMmkCustomer && item.isMmkProduct)
+      .filter((item) => !activeOnly || item.isActive)
+      .filter((item) => !family || item.productFamily === family)
       .filter((item) => !q || [item.description, item.customer, ...item.positions.map((p) => p.name)].map(textOf).join(" ").includes(q))
       .filter((item) => !customer || textOf(item.customer).includes(customer))
       .filter((item) => !region || textOf(item.regions).includes(region) || textOf(item.place).includes(region));
 
+    items.sort((a, b) => {
+      if (a.productFamily !== b.productFamily) return a.productFamily === "thin_sheet" ? -1 : 1;
+      if ((b.quantityTons ?? 0) !== (a.quantityTons ?? 0)) return (b.quantityTons ?? 0) - (a.quantityTons ?? 0);
+      return deadlineMs(a.deadline) - deadlineMs(b.deadline);
+    });
+
     return Response.json({
-      goal: "Заказчики не ММК → заявки с продукцией из номенклатуры ММК",
+      ok: true,
+      goal: "Заказчики не ММК → продукция из номенклатуры ММК; тонкий лист — отдельный приоритет",
       templateId,
-      page,
+      startPage,
+      pages,
       scanned: rows.length,
+      detailed: details.length,
       matched: items.length,
-      quotaCost: rows.length + 1,
-      query: { q, customer, region },
+      remainingBeforeScan: remaining,
+      query: { q, customer, region, family, activeOnly },
       items,
-      meta: payload?._meta ?? null,
+      meta: pageMeta,
     });
   } catch (error) {
     const status = typeof error === "object" && error && "status" in error
@@ -138,11 +221,4 @@ export async function GET(request: Request) {
     const message = error instanceof Error ? error.message : "KomTender error";
     return Response.json({ error: message }, { status });
   }
-}
-
-async function getTemplateWithKey(id: string, page: number, sort: string, headers?: Record<string,string>) {
-  return komtenderGet("template/" + encodeURIComponent(id) + "?page=" + page + "&sort=" + encodeURIComponent(sort), { headers });
-}
-async function getTenderWithKey(id: string, headers?: Record<string,string>) {
-  return komtenderGet(encodeURIComponent(id), { headers });
 }
