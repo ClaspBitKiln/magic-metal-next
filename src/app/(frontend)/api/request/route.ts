@@ -3,8 +3,6 @@ import { NextResponse } from 'next/server'
 import nodemailer from 'nodemailer'
 import { createHmac } from 'node:crypto'
 
-import config from '@/payload.config'
-
 export const runtime = 'nodejs'
 
 const MAX_TOTAL_FILE_SIZE = 25 * 1024 * 1024
@@ -101,6 +99,7 @@ export async function POST(request: Request) {
   let payload: Awaited<ReturnType<typeof getPayload>> | null = null
   let created: { id: number | string } | null = null
   try {
+    const { default: config } = await import('@/payload.config')
     payload = await getPayload({ config })
     for (const { file, buffer, filename } of preparedFiles) {
       const uploaded = await payload.create({
@@ -146,11 +145,13 @@ export async function POST(request: Request) {
         attachments,
       })
       emailDelivered = true
-    } catch (error) { payload.logger.error({ err: error, msg: 'Заявка сохранена, но SMTP-доставка не выполнена' }) }
+    } catch (error) {
+      console.error(JSON.stringify({ level: 'error', message: 'Request SMTP delivery failed', route: '/api/request', error: error instanceof Error ? error.message : String(error) }))
+    }
   }
 
   let crmDelivered = false
-  const workflowUrl = process.env.N8N_WEBHOOK_URL || process.env.CRM_WEBHOOK_URL || 'https://cloud.activepieces.com/api/v1/webhooks/fglfaNe3jXxDWgHGKW1cX'
+  const workflowUrl = process.env.N8N_WEBHOOK_URL || process.env.CRM_WEBHOOK_URL
   if (workflowUrl) {
     try {
       const workflowPayload = JSON.stringify({
@@ -168,7 +169,9 @@ export async function POST(request: Request) {
         body: workflowPayload,
       })
       crmDelivered = crmResponse.ok
-    } catch (error) { payload.logger.error({ err: error, msg: 'Заявка сохранена, но доставка в Activepieces/n8n/CRM не выполнена' }) }
+    } catch (error) {
+      console.error(JSON.stringify({ level: 'error', message: 'Request CRM delivery failed', route: '/api/request', error: error instanceof Error ? error.message : String(error) }))
+    }
   }
 
   if (payload && created && (emailDelivered || crmDelivered)) {
