@@ -1,0 +1,52 @@
+name: KomTender runner test
+
+on:
+  push:
+    branches: [procurement-komtender-mvp]
+  pull_request:
+    branches: [procurement-komtender-mvp]
+
+jobs:
+  python-self-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile runner
+        run: python -m py_compile scripts/komtender_test.py
+      - name: Test matching and Excel XML
+        run: |
+          python - <<'PY'
+          import importlib.util
+          spec = importlib.util.spec_from_file_location("kt", "scripts/komtender_test.py")
+          m = importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(m)
+
+          good = {
+              "customer": {"name": "ООО Стройснаб", "inn": "1234567890"},
+              "descr": "Поставка горячекатаного листа 8 мм и трубы",
+              "positions": [{"name": "Лист горячекатаный 8 мм", "unit": "т"}],
+          }
+          mmk = {
+              "customer": {"name": "ПАО ММК"},
+              "descr": "Поставка листа",
+              "positions": [{"name": "Лист 8 мм", "unit": "т"}],
+          }
+          bad = {
+              "customer": {"name": "ООО Стройснаб"},
+              "descr": "Поставка спецодежды",
+              "positions": [{"name": "Каска", "unit": "шт"}],
+          }
+
+          assert m.is_match(good) is True
+          assert m.is_match(mmk) is False
+          assert m.is_match(bad) is False
+
+          xml = m.excel_xml([{"ID": 1, "Заказчик": "ООО <Тест>", "Описание": "Лист & труба"}])
+          assert xml.startswith("<?xml")
+          assert "&lt;Тест&gt;" in xml
+          assert "Лист &amp; труба" in xml
+          print("KomTender self-test: PASS")
+          PY
