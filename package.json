@@ -22,6 +22,7 @@
     "import:suppliers": "payload run scripts/import_supplier_catalog.ts"
   },
   "dependencies": {
+    "@openai/agents": "0.18.0",
     "@payloadcms/db-postgres": "3.88.0",
     "@payloadcms/next": "3.88.0",
     "@payloadcms/richtext-lexical": "3.88.0",
