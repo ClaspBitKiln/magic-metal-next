@@ -1,4 +1,4 @@
-import { getTemplate, getTender } from "@/lib/komtender/client";
+import { getTemplate, getTender, komtenderGet } from "@/lib/komtender/client";
 
 type TenderShort = {
   id: number | string;
@@ -72,7 +72,9 @@ export async function GET(request: Request) {
   const region = textOf(url.searchParams.get("region"));
 
   try {
-    const result = await getTemplate(templateId, page, "new-first");
+    const apiKey = request.headers.get("x-komtender-api-key");
+    const headers = apiKey ? { "X-API-KEY": apiKey } : undefined;
+    const result = await getTemplateWithKey(templateId, page, "new-first", headers);
     const payload = result.data as { data?: TenderShort[]; _meta?: unknown };
     const rows = Array.isArray(payload?.data) ? payload.data.slice(0, scan) : [];
 
@@ -80,7 +82,7 @@ export async function GET(request: Request) {
     // for the limited scan window. This keeps API usage predictable.
     const details = await Promise.all(rows.map(async (item) => {
       try {
-        const response = await getTender(String(item.id));
+        const response = await getTenderWithKey(String(item.id), headers);
         return response.data as TenderDetail;
       } catch {
         return null;
@@ -136,4 +138,11 @@ export async function GET(request: Request) {
     const message = error instanceof Error ? error.message : "KomTender error";
     return Response.json({ error: message }, { status });
   }
+}
+
+async function getTemplateWithKey(id: string, page: number, sort: string, headers?: Record<string,string>) {
+  return komtenderGet("template/" + encodeURIComponent(id) + "?page=" + page + "&sort=" + encodeURIComponent(sort), { headers });
+}
+async function getTenderWithKey(id: string, headers?: Record<string,string>) {
+  return komtenderGet(encodeURIComponent(id), { headers });
 }
