@@ -185,14 +185,13 @@ export default function MagicMetalHome() {
         <form className="request-form" onSubmit={submitRequest} encType="multipart/form-data" noValidate>
           {selectedProduct && <p className="selected-product">Выбран раздел: <strong>{selectedProduct}</strong></p>}
           <div className="form-stage" hidden={formStep !== 1}>
-            <div className="form-step"><strong>1. Прикрепите заявку или опишите задачу</strong><span>Подойдёт готовый файл, фотография, текст или голосовое сообщение.</span></div>
-            <label className="file-field"><span>Приложить заявку</span><span className="file-button">Выбрать файлы</span><input name="files" type="file" multiple accept=".xlsx,.xls,.pdf,.doc,.docx,.png,.jpg,.jpeg,.webp,.dwg,.dxf,.mp3,.m4a,.wav,.ogg,.webm,audio/*" onChange={(event) => setSelectedFiles(event.currentTarget.files?.length || 0)} /><strong>{selectedFiles ? `Выбрано файлов: ${selectedFiles}` : 'Файлы не выбраны'}</strong><small>Excel, PDF, Word, фото, чертежи и аудио · до 25 МБ суммарно</small></label>
+            <label className="file-field"><span className="file-button">Прикрепить файл</span><input name="files" type="file" multiple accept=".xlsx,.xls,.pdf,.doc,.docx,.png,.jpg,.jpeg,.webp,.dwg,.dxf,.mp3,.m4a,.wav,.ogg,.webm,audio/*" onChange={(event) => setSelectedFiles(event.currentTarget.files?.length || 0)} />{selectedFiles > 0 && <strong>{`Выбрано файлов: ${selectedFiles}`}</strong>}<small>Excel, PDF, Word, фото, чертежи или аудио · до 25 МБ</small></label>
             <div className="form-or"><span>или</span></div>
-            <label>Краткое описание<textarea name="message" rows={3} placeholder="Что требуется: наименование, размер, ГОСТ/ТУ, количество и город доставки" /></label>
+            <label>Опишите, что требуется<textarea name="message" rows={3} placeholder="Наименование, размер, ГОСТ/ТУ, количество" /></label>
             <button className="form-next" type="button" onClick={continueRequest}>Продолжить <span>→</span></button>
           </div>
           <div className="form-stage" hidden={formStep !== 2}>
-            <div className="form-step"><strong>2. Куда отправить расчёт?</strong><span>Укажите телефон или email. Остальные поля — по желанию.</span></div>
+            <div className="form-step"><strong>Контактные данные</strong><span>Укажите телефон или email.</span></div>
             <div className="form-grid"><label>Ваше имя<input name="name" autoComplete="name" /></label><label>Компания<input name="company" autoComplete="organization" /></label><label>Телефон<input name="phone" type="tel" inputMode="tel" autoComplete="tel" /></label><label>Email<input name="email" type="email" autoComplete="email" /></label></div>
             <label>Направление<select name="productDirection" defaultValue=""><option value="">Выберите при необходимости</option><option value="electrowelded-pipes">Трубы электросварные</option><option value="seamless-pipes">Трубы бесшовные</option><option value="pipeline-parts">СДТ</option><option value="insulated">Трубы и СДТ в изоляции</option><option value="other">Другая продукция</option></select></label>
             <label className="honeypot" aria-hidden="true" hidden>Ваш сайт<input name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" /></label>
