@@ -272,10 +272,11 @@ body { top: 0 !important; }
   padding: 14px 16px;
   border-radius: 3px;
 }
-.top-cta span,
+.top-cta-arrow,
 .primary-button span {
   font-size: 17px;
 }
+.top-cta-label-short { display: none; }
 .top-cta:hover,
 .primary-button:hover {
   transform: translateY(-2px);
@@ -291,12 +292,14 @@ body { top: 0 !important; }
 }
 .menu-button {
   display: none;
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   padding: 10px;
   border: 0;
   background: transparent;
+  cursor: pointer;
 }
+.menu-button:focus-visible { outline: 3px solid #ffbf47; outline-offset: 2px; }
 .menu-button span {
   display: block;
   height: 2px;
@@ -1344,7 +1347,14 @@ h2 {
   .top-actions {
     gap: 7px;
   }
+  .language-switcher > summary {
+    height: 44px;
+  }
+  .language-menu button {
+    min-height: 44px;
+  }
   .top-cta {
+    min-height: 44px;
     min-width: 0;
     padding: 12px 13px;
     font-size: 10px;
@@ -2738,8 +2748,14 @@ main select {
 .public-home .catalog-section-number { font-weight: 600; }
 @media (max-width: 820px) {
   .public-home { --home-h1: clamp(2rem, 8.5vw, 2.375rem); --home-h2: clamp(1.625rem, 7vw, 1.9375rem); --home-h3: 1.25rem; }
-  .public-home .top-actions { flex-wrap: wrap; }
+  .public-home .top-actions { flex-wrap: nowrap; }
   .public-home .topbar { height: auto; min-height: 76px; }
   .public-home .nav { top: 100%; }
-  .public-home .top-cta { font-size: .8125rem; padding: 10px; gap: 6px; }
+  .public-home .top-cta { min-height: 44px; font-size: .8125rem; padding: 0 12px; gap: 6px; }
+}
+@media (max-width: 480px) {
+  .public-home .topbar { padding-inline: 10px; }
+  .public-home .brand img { width: 76px; }
+  .public-home .top-cta-label-full { display: none; }
+  .public-home .top-cta-label-short { display: inline; }
 }
