@@ -109,7 +109,7 @@ export default function MagicMetalHome() {
         <div className="top-actions">
           <a className="phone" href="tel:+79227117363">+7 922 711-73-63</a>
           <LanguageSwitcher />
-          <a className="top-cta" href="#request">Отправить заявку <span>↗</span></a>
+          <a className="top-cta" href="#request"><span className="top-cta-label top-cta-label-full">Отправить заявку</span><span className="top-cta-label top-cta-label-short">Заявка</span><span className="top-cta-arrow" aria-hidden="true">↗</span></a>
           <button className="menu-button" type="button" aria-label="Открыть меню" aria-expanded={menuOpen} onClick={() => setMenuOpen((value) => !value)}><span /><span /><span /></button>
         </div>
       </header>
