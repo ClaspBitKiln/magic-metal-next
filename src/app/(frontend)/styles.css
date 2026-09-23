@@ -1178,6 +1178,7 @@ h2 {
 }
 .selected-product strong { font-weight: 700; }
 .honeypot {
+  display: none !important;
   position: absolute !important;
   left: -10000px !important;
   width: 1px !important;
@@ -1230,6 +1231,7 @@ h2 {
 }
 .request-form .form-back {
   width: auto;
+  min-height: 44px;
   margin: 0 0 12px;
   padding: 8px 0;
   justify-content: flex-start;
