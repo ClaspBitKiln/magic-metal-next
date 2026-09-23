@@ -21,6 +21,7 @@ export default function KomTenderSearch() {
   const [apiKey, setApiKey] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [family, setFamily] = useState("thin_sheet");
 
   useEffect(() => {
     setApiKey(sessionStorage.getItem("komtender_api_key") || "");
@@ -32,7 +33,7 @@ export default function KomTenderSearch() {
       const key = apiKey.trim();
       if (!key) throw new Error("Введите тестовый KomTender API key");
       sessionStorage.setItem("komtender_api_key", key);
-      const params = new URLSearchParams({ scan: "20" });
+      const params = new URLSearchParams({ scan: "100", pages: "1", family, active: "true" });
       if (q.trim()) params.set("q", q.trim());
       const response = await fetch("/api/komtender/search?" + params, {
         headers: { "X-Komtender-API-Key": key },
@@ -58,19 +59,20 @@ export default function KomTenderSearch() {
         <input value={q} onChange={e=>setQ(e.target.value)} onKeyDown={e=>{if(e.key==="Enter") search();}}
           placeholder="Например: труба, лист, швеллер, 09Г2С"
           style={{flex:1, padding:"14px 16px", border:"1px solid #ddd", borderRadius:8}} />
+        <select value={family} onChange={e=>setFamily(e.target.value)} style={{padding:"14px 12px",border:"1px solid #ddd",borderRadius:8}}><option value="thin_sheet">Тонкий лист — приоритет</option><option value="">Весь металлопрокат</option></select>
         <button onClick={search} disabled={loading} style={{padding:"14px 22px", borderRadius:8}}>
           {loading ? "Ищем…" : "Найти"}
         </button>
       </div>
       {error && <p style={{color:"#b00020"}}>{error}</p>}
-      <p style={{marginBottom:16}}>Заказчики не ММК → заявки, содержащие продукцию из номенклатуры ММК.</p>
+      <p style={{marginBottom:16}}>Заказчики не ММК → открытые заявки с продукцией ММК. Тонкий лист — отдельный приоритет; поиск сканирует до 100 записей страницы.</p>
       <div style={{display:"grid", gap:12}}>
         {items.map(item => (
           <article key={item.id} style={{border:"1px solid #e5e5e5", borderRadius:10, padding:18}}>
             <strong>{item.positions?.map(p=>p.name).filter(Boolean).join("; ") || item.description || ("Тендер №"+item.id)}</strong>
             <div style={{marginTop:8}}>{item.customer}</div>
             <div style={{marginTop:6, opacity:.7}}>ИНН {item.customerInn || "—"} · {item.date || "—"} · до {item.deadline || "—"}</div>
-            <div style={{marginTop:6}}>{item.price ? item.price.toLocaleString("ru-RU")+" "+(item.currency||"RUB") : "Цена не указана"}</div>
+            <div style={{marginTop:6}}>{item.price ? item.price.toLocaleString("ru-RU")+" "+(item.currency||"RUB") : "Цена не указана"} · {item.positions?.map(p=>p.quantity && p.unit ? `${p.quantity} ${p.unit}` : "").filter(Boolean).join("; ") || "количество не указано"}</div>
             {item.url && <a href={item.url} target="_blank" rel="noreferrer" style={{display:"inline-block", marginTop:10}}>Открыть тендер →</a>}
           </article>
         ))}
