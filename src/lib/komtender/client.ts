@@ -7,16 +7,23 @@ export class KomTenderError extends Error {
     super(message); this.name = "KomTenderError"; this.status = status; this.payload = payload;
   }
 }
-function apiKey() {
-  const key = process.env.KOMTENDER_API_KEY;
-  if (!key) throw new KomTenderError(503, "KOMTENDER_API_KEY is not configured");
+function apiKey(init: RequestInit) {
+  const fromHeader = init.headers instanceof Headers
+    ? init.headers.get("X-API-KEY")
+    : Array.isArray(init.headers)
+      ? new Headers(init.headers).get("X-API-KEY")
+      : typeof init.headers === "object" && init.headers
+        ? String((init.headers as Record<string, string>)["X-API-KEY"] || "")
+        : "";
+  const key = fromHeader || process.env.KOMTENDER_API_KEY;
+  if (!key) throw new KomTenderError(503, "KomTender API key is not configured");
   return key;
 }
 export async function komtenderGet<T = unknown>(path = "", init: RequestInit = {}) {
   const url = new URL(path.replace(/^\//, ""), BASE_URL);
   const response = await fetch(url, {
     ...init,
-    headers: { Accept: "application/json", "X-API-KEY": apiKey(), ...(init.headers || {}) },
+    headers: { Accept: "application/json", ...(init.headers || {}), "X-API-KEY": apiKey(init) },
     cache: "no-store",
   });
   const text = await response.text();
