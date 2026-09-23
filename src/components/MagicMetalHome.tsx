@@ -9,6 +9,7 @@ import LanguageSwitcher from '@/components/LanguageSwitcher'
 import { homeCatalogGroups } from '@/data/homeCatalog'
 
 const reveal = { hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }
+const MotionLink = motion.create(Link)
 
 export default function MagicMetalHome() {
   const reducedMotion = useReducedMotion()
@@ -17,13 +18,20 @@ export default function MagicMetalHome() {
   const [formError, setFormError] = useState('')
   const [formStep, setFormStep] = useState<1 | 2>(1)
   const [selectedFiles, setSelectedFiles] = useState(0)
+  const [selectedProduct, setSelectedProduct] = useState('')
   const [startedAt] = useState(() => Date.now())
   const animation = useMemo(() => (reducedMotion ? {} : reveal), [reducedMotion])
 
   useEffect(() => {
     const close = () => setMenuOpen(false)
+    const syncSelectedProduct = () => setSelectedProduct(new URLSearchParams(window.location.search).get('product')?.trim() || '')
+    syncSelectedProduct()
     window.addEventListener('resize', close)
-    return () => window.removeEventListener('resize', close)
+    window.addEventListener('popstate', syncSelectedProduct)
+    return () => {
+      window.removeEventListener('resize', close)
+      window.removeEventListener('popstate', syncSelectedProduct)
+    }
   }, [])
 
   function continueRequest(event: FormEvent<HTMLButtonElement>) {
@@ -117,7 +125,7 @@ export default function MagicMetalHome() {
           <motion.p initial="hidden" animate="visible" variants={animation} transition={{ duration: .28, delay: .08 }} className="hero-lead">Проверяем требования и актуальность ГОСТов, находим редкие позиции и технически обоснованные аналоги. Комплектуем металл и сопутствующие материалы с полным пакетом документов — для поставок по России и на экспорт.</motion.p>
           <motion.div initial="hidden" animate="visible" variants={animation} transition={{ duration: .28, delay: .12 }} className="hero-actions"><a className="primary-button" href="#request">Отправить заявку <span>↗</span></a><span className="file-types">Excel · PDF · Word · фото · голосовое сообщение</span></motion.div>
         </div>
-        <div className="hero-strip" id="delivery"><div className="delivery-title"><b>Авто · Ж/Д · Авиа</b><span>Срочная доставка снижает риск простоя оборудования и персонала, а также штрафных санкций за срыв сроков проекта</span></div><a href="#request">Отправить заявку <span>→</span></a></div>
+        <div className="hero-strip" id="delivery"><div className="delivery-title"><b>Авто · Ж/Д · Авиа</b><span>Срочная доставка снижает риск простоя оборудования и персонала, а также штрафных санкций за срыв сроков проекта</span></div></div>
       </section>
 
       <section className="section company-trust-section" id="about" aria-labelledby="company-trust-title">
@@ -160,13 +168,13 @@ export default function MagicMetalHome() {
         </div>
       <div className="product-unified" id="products" aria-labelledby="products-title">
       <div className="section catalog-section product-subsection">
-        <div className="catalog-head"><div><p className="product-subsection-label">Основные направления поставок</p><h2 id="products-title">Что мы<br /><em>можем поставить</em></h2></div><p>Выберите нужный раздел и отправьте заявку. Размеры, марку стали, стандарт, цену, наличие и срок поставки подтвердим по вашей спецификации.</p></div>
+        <div className="catalog-head"><div><p className="product-subsection-label">Основные направления поставок</p><h2 id="products-title">Что мы<br /><em>можем поставить</em></h2></div><div className="catalog-head-actions"><p>Выберите нужный раздел. Размеры, марку стали, стандарт, цену, наличие и срок поставки подтвердим по вашей спецификации.</p><a className="catalog-main-cta" href="#request">Отправить заявку <span aria-hidden="true">→</span></a></div></div>
         <div className="catalog-section-list" aria-label="Разделы поставок">
-          {homeCatalogGroups.map((group, index) => <motion.article className="catalog-section-card" key={group.title} initial={false} whileInView="visible" viewport={{ once: true, amount: .25 }} variants={animation} transition={{ duration: .36, delay: Math.min(index * .035, .18) }}>
+          {homeCatalogGroups.map((group, index) => <MotionLink className="catalog-section-card" href={`/?product=${encodeURIComponent(group.title)}#request`} aria-label={`Выбрать раздел «${group.title}» и перейти к заявке`} onClick={() => setSelectedProduct(group.title)} key={group.title} initial={false} whileInView="visible" viewport={{ once: true, amount: .25 }} variants={animation} transition={{ duration: .36, delay: Math.min(index * .035, .18) }}>
             <span className="catalog-section-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
             <div><h3>{group.title}</h3><p>{group.note}</p></div>
-            <Link href={`/?product=${encodeURIComponent(group.title)}#request`} aria-label={`Отправить заявку: ${group.title}`}>Заявка <b aria-hidden="true">→</b></Link>
-          </motion.article>)}
+            <span className="catalog-section-arrow" aria-hidden="true">→</span>
+          </MotionLink>)}
         </div>
       </div>
       </div>
@@ -175,6 +183,7 @@ export default function MagicMetalHome() {
       <section className="request-section" id="request">
         <div className="request-copy" id="contacts"><h2>Отправьте<br /><em>заявку</em></h2><p>Укажите требования и город доставки. Проверим спецификацию, предложим исполнение и подготовим коммерческое предложение.</p><a href="mailto:m1@magicmet.ru">m1@magicmet.ru</a><a href="tel:+79227117363">+7 922 711-73-63</a></div>
         <form className="request-form" onSubmit={submitRequest} encType="multipart/form-data" noValidate>
+          {selectedProduct && <p className="selected-product">Выбран раздел: <strong>{selectedProduct}</strong></p>}
           <div className="form-stage" hidden={formStep !== 1}>
             <div className="form-step"><strong>1. Прикрепите заявку или опишите задачу</strong><span>Подойдёт готовый файл, фотография, текст или голосовое сообщение.</span></div>
             <label className="file-field"><span>Приложить заявку</span><span className="file-button">Выбрать файлы</span><input name="files" type="file" multiple accept=".xlsx,.xls,.pdf,.doc,.docx,.png,.jpg,.jpeg,.webp,.dwg,.dxf,.mp3,.m4a,.wav,.ogg,.webm,audio/*" onChange={(event) => setSelectedFiles(event.currentTarget.files?.length || 0)} /><strong>{selectedFiles ? `Выбрано файлов: ${selectedFiles}` : 'Файлы не выбраны'}</strong><small>Excel, PDF, Word, фото, чертежи и аудио · до 25 МБ суммарно</small></label>
