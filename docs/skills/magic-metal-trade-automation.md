@@ -2,124 +2,146 @@
 
 ## Purpose
 
-Use this skill for practical tender-to-trade research for Magic Metal.
+This skill is the operating standard for Magic Metal tender intelligence.
 
-The objective is simple:
+**Non-negotiable objective: do not miss commercially relevant metal tenders.**
 
-**find a real tender -> identify the exact product -> find where to buy it -> calculate delivery and cost -> estimate sale price and margin -> state the next action.**
+The engine must find a real tender -> exact product -> quantity -> supplier/manufacturer -> logistics -> landed cost -> margin -> next action.
 
-Do not build an unnecessarily complex model. Prefer verified facts, a small number of good supplier options, and an actionable result.
+## 1. Tender discovery — exhaustive first, ranking second
 
-## Workflow
+Do NOT rely on one generic keyword search or the first page of results.
 
-### 1. Find relevant tenders
+For KomTender:
+1. Check API quota with `info`.
+2. Use 100-record template pages where quota permits.
+3. Scan multiple pages, not only the first 20 records.
+4. Fetch full tender cards so positions and quantities are available.
+5. Process current/open tenders first.
+6. Search by both product family and specification/quantity clues.
+7. Keep a separate historical stream for closed tenders.
 
-Prioritize tenders where:
-- the customer is not MMK;
-- the product matches Magic Metal's catalog;
-- the customer is an end user / industrial or construction buyer where possible;
-- the tender is current or has useful historical value.
+A tender must not be discarded merely because its title is generic ("Металлопрокат", "Поставка продукции", "Закупка металла"). The positions may contain the commercially important product.
 
-Use KomTender API when authenticated access is available. Public pages may be used for discovery and verification.
+### Why quantity matters
 
-Never claim API data was obtained unless an actual authenticated response was received.
+The title may omit the key commercial signal. Therefore extract and normalize:
+- quantity;
+- unit;
+- tonnes;
+- piece count;
+- dimensions;
+- grade;
+- GOST/TU.
 
-### 2. Normalize the position
+Explicit quantities such as **140 т / 140 тн / 140 тонн** are high-value discovery signals.
 
-For each relevant position extract:
+## 2. Thin sheet is a first-class Magic Metal category
+
+**Thin sheet must never be hidden inside a generic "лист/металлопрокат" bucket.**
+
+Always classify and separately surface:
+- hot-rolled sheet;
+- cold-rolled sheet;
+- galvanized sheet;
+- coated sheet;
+- sheet in coils/rolls;
+- structural thin sheet;
+- special-grade sheet;
+- AISI stainless sheet when it matches the catalog;
+- 08ps / St3 / 09G2S / 17G1S and other catalog grades.
+
+Search variants:
+- лист;
+- листовой прокат;
+- лист стальной;
+- лист горячекатаный;
+- лист холоднокатаный;
+- г/к;
+- х/к;
+- оцинкованный лист;
+- рулон;
+- 08пс;
+- Ст3;
+- 09Г2С;
+- 17Г1С;
+- AISI;
+- exact dimensions;
+- quantity patterns such as 50 т, 100 т, 140 т, 200 т.
+
+Do not depend on the word "тонкий" being present.
+
+## 3. MMK customer exclusion
+
+The customer filter is:
+**customer != MMK**.
+
+It must be based on customer identity, not product text.
+
+Never exclude a tender because MMK is mentioned in the description as a manufacturer, standard, source, or comparison.
+
+## 4. Current/open logic
+
+"Active" means the application deadline has not passed in **Moscow time**.
+
+Always interpret KomTender deadline timestamps as Moscow-local time and convert to an absolute timestamp before filtering.
+
+Do not mark a tender active merely because its calendar date is today.
+
+## 5. Normalize the position
+
+For every relevant position extract:
 - product;
+- family;
 - steel grade;
 - GOST/TU;
 - dimensions;
 - quantity;
 - unit;
+- quantity in tonnes when possible;
 - delivery location;
 - deadline.
 
-If a parameter is unknown, mark it unknown. Do not invent it.
+Unknown remains unknown.
 
-### 3. Find suppliers
+## 6. Suppliers and market map
 
 For every important position search in this order:
 1. manufacturer;
-2. major distributor / stockist;
+2. major distributor/stockist;
 3. regional warehouse;
 4. alternative producer;
 5. import source when economically relevant.
 
-Search by the exact combination of product + grade + size + GOST, not only by the generic product name.
+Search the exact combination of product + grade + size + GOST.
 
-### 4. Find market leaders
+Never invent price, stock, supplier access, winner, participant count, or technical equivalence.
 
-Identify several significant manufacturers or suppliers of the exact product.
+## 7. Economics
 
-Use factual labels:
-- manufacturer;
-- major producer;
-- regional supplier;
-- stockist;
-- specialist producer.
+Normalize:
+**purchase price + logistics + mandatory costs = landed cost**
 
-Do not call a company the market leader unless there is reliable evidence for that claim.
+Then show target selling price, gross profit per tonne, total gross profit and margin.
 
-### 5. Compare prices
+Do not mix VAT-inclusive and VAT-exclusive values.
 
-For each serious source record:
-- supplier;
-- manufacturer status;
-- exact product match;
-- price;
-- VAT;
-- price basis;
-- date;
-- stock / production lead time;
-- minimum lot;
-- source.
+## 8. Customer history
 
-Prefer current, directly verifiable prices.
+For promising customers, search previous relevant procurements and identify:
+- recurring products;
+- quantities;
+- purchase intervals;
+- repeated seasonal/quarterly cycles.
 
-### 6. Calculate logistics
+History is a monitoring signal, not a guaranteed forecast.
 
-Calculate delivery from supplier to tender destination.
+## 9. Final output
 
-Normalize to:
-
-**purchase price + delivery = landed cost**
-
-For imports include applicable customs, terminal, broker, certification and other mandatory costs.
-
-Do not mix VAT-inclusive and VAT-exclusive prices without normalization.
-
-### 7. Calculate trade economics
-
-Show:
-- landed cost;
-- target selling price;
-- gross profit per tonne;
-- total gross profit;
-- margin %.
-
-Use simple scenarios such as 10%, 15%, and 20% when useful.
-
-### 8. Check customer history
-
-For promising customers, find previous relevant procurements.
-
-Record:
-- date;
-- product;
-- quantity/value when available;
-- interval between purchases;
-- repeated product groups.
-
-Use history to identify a likely monitoring window, not as a guaranteed forecast.
-
-### 9. Final answer
-
-For each opportunity provide:
+For each opportunity:
 
 **CLIENT**
-- name / INN
+- customer / INN
 - tender
 - deadline
 - destination
@@ -127,104 +149,65 @@ For each opportunity provide:
 **PRODUCT**
 - exact specification
 - quantity
+- tonnes
+- family
 
 **SUPPLIERS**
-- 2–5 serious sources when possible
-- manufacturer(s)
-- price and evidence
+- 2–5 serious sources
+- manufacturer status
+- current price/evidence
 
 **ECONOMICS**
 - purchase
 - logistics
 - landed cost
-- target client price
+- client price
 - profit
 - margin
 
 **ACTION**
-- what Magic Metal should do next.
+- next commercial step
 
-## Search depth
+## 10. Evidence
 
-Normally find several supplier options.
+Every important commercial fact needs a source.
 
-For a large or strategically important tender, continue deeper:
-- exact manufacturer search;
-- alternative manufacturer;
-- regional supplier;
-- warehouse;
-- import source;
-- logistics comparison.
+A = official manufacturer/direct verified source  
+B = established supplier with explicit product evidence  
+C = marketplace/search listing requiring confirmation  
+D = secondary mention
 
-Stop when additional searching is unlikely to materially change the commercial decision.
+Separate FACT / SOURCE CLAIM / INFERENCE / UNKNOWN.
 
-## Evidence rules
+## 11. Quality gate
 
-Every important commercial fact must have a source.
+Before returning results, run these checks:
+- Did we scan enough pages?
+- Did we fetch full cards rather than rely on titles?
+- Did we inspect positions?
+- Did we extract quantities?
+- Did we separately test thin-sheet rules?
+- Did we exclude only MMK customers, not MMK products?
+- Did we apply Moscow-time deadline logic?
+- Did we include generic-title tenders?
+- Did we search exact dimensions and quantity patterns?
+- Did we preserve direct tender URLs?
 
-Evidence:
-- A = official manufacturer / official price / direct verified source;
-- B = established supplier with explicit product evidence;
-- C = marketplace/search listing requiring confirmation;
-- D = secondary mention.
-
-Never present C/D as confirmed current availability.
-
-Separate:
-- FACT;
-- SOURCE CLAIM;
-- INFERENCE;
-- UNKNOWN.
-
-## Priority
-
-Prioritize opportunities with:
-- exact product fit;
-- meaningful volume/value;
-- current deadline;
-- repeat customer;
-- favorable logistics;
-- realistic supplier availability;
-- room for Magic Metal margin.
-
-Do not rank opportunities using an opaque score. Explain why an opportunity is commercially interesting.
-
-## Non-negotiable rules
-
-Never invent:
-- prices;
-- stock;
-- quantities;
-- suppliers;
-- manufacturers;
-- winners;
-- participants;
-- technical equivalence.
-
-A technical alternative is not automatically acceptable.
-
-A low nominal price is not automatically the best source: compare technical compliance and landed cost.
+If any answer is "no", the search is incomplete.
 
 ## Core commands
 
-When the user says: «Ищи поставщиков»
+"Ищи тендера" =
+exhaustive KomTender scan -> active/open filter -> exact product normalization -> quantity extraction -> thin-sheet priority -> supplier search -> logistics -> economics.
 
-run:
-tender -> exact specification -> manufacturers -> suppliers -> prices -> logistics -> landed cost -> margin -> action
+"Ищи тонкий лист" =
+same workflow, but thin-sheet is a dedicated first-class filter and quantity-first search.
 
-When the user says: «Ищи глубоко»
+"Ищи глубоко" =
+add alternative manufacturers, regional sources, warehouses, imports, customer history and repeated procurement cycles.
 
-also search alternative manufacturers, regional sources, warehouses and imports.
+"Проверь клиента" =
+analyze relevant customer procurement history.
 
-When the user says: «Найди лидеров»
-
-build a concise market map of significant manufacturers and suppliers for the exact product.
-
-When the user says: «Проверь клиента»
-
-analyze the customer's relevant procurement history and recurring demand.
-
-When the user says: «Сделай сделку»
-
-combine:
-customer + tender + supplier market + trade economics.
+"Сделай сделку" =
+customer + tender + supplier market + logistics + trade economics.
