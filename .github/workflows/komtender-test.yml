@@ -5,6 +5,7 @@ on:
     branches: [procurement-komtender-mvp]
   pull_request:
     branches: [procurement-komtender-mvp]
+  workflow_dispatch:
 
 jobs:
   python-self-test:
@@ -36,7 +37,9 @@ jobs:
           PY
 
   chzsi-material-search:
-    if: github.event_name == 'push'
+    # Live API path. It runs on push when the configured GitHub secret exists,
+    # and can also be started manually from Actions without changing source code.
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
