@@ -40,7 +40,7 @@ jobs:
     # TRIZ fallback: use the already-configured local runtime instead of copying
     # its KomTender credential into GitHub Secrets.
     runs-on: self-hosted
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v4
       - name: Run live KomTender search on the local runner
