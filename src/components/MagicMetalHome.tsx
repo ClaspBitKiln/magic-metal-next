@@ -72,8 +72,14 @@ export default function MagicMetalHome() {
       setFormError('Прикрепите заявку или кратко опишите, что требуется.')
       return
     }
+    if (!data.get('consent')) {
+      setStatus('error')
+      setFormError('Подтвердите согласие на обработку данных.')
+      return
+    }
     setStatus('sending')
     setEmailFallback('')
+    data.set('productDirection', selectedProduct)
     data.set('startedAt', String(startedAt))
     data.set('landingPage', window.location.href)
     data.set('referrer', document.referrer)
@@ -98,8 +104,10 @@ export default function MagicMetalHome() {
       analytics.gtag?.('event', 'generate_lead', { product_direction: String(data.get('productDirection') || ''), context: String(data.get('context') || '') })
     } catch (error) {
       const subject = 'Заявка с сайта magicmet.ru'
+      const emailMessage = message.length > 1600 ? `${message.slice(0, 1600)}…` : message
       const body = [
-        message || 'Требования приложены в файле.',
+        selectedProduct ? `Раздел: ${selectedProduct}` : '',
+        emailMessage || 'Требования приложены в файле.',
         '',
         phone ? `Телефон: ${phone}` : '',
         email ? `Email: ${email}` : '',
