@@ -1,0 +1,28 @@
+name: KomTender simple runner
+
+on:
+  push:
+    branches: [procurement-komtender-mvp]
+  workflow_dispatch:
+
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile
+        run: python -m py_compile scripts/komtender_simple_runner.py
+      - name: Basic matcher test
+        run: |
+          python - <<'PY'
+          import importlib.util
+          s=importlib.util.spec_from_file_location("r","scripts/komtender_simple_runner.py")
+          m=importlib.util.module_from_spec(s); s.loader.exec_module(m)
+          assert m.is_match({"customer":{"name":"ООО Стройснаб"},"descr":"Поставка листа","positions":[]})
+          assert not m.is_match({"customer":{"name":"ПАО ММК"},"descr":"Поставка листа","positions":[]})
+          assert not m.is_match({"customer":{"name":"ООО Стройснаб"},"descr":"Поставка касок","positions":[]})
+          print("PASS")
+          PY
