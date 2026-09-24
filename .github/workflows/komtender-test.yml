@@ -15,7 +15,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Compile runner
-        run: python -m py_compile scripts/komtender_test.py
+        run: python -m py_compile scripts/komtender_test.py scripts/chzsi_komtender_search.py
       - name: Test matching and Excel XML
         run: |
           python - <<'PY'
@@ -23,30 +23,37 @@ jobs:
           spec = importlib.util.spec_from_file_location("kt", "scripts/komtender_test.py")
           m = importlib.util.module_from_spec(spec)
           spec.loader.exec_module(m)
-
-          good = {
-              "customer": {"name": "ООО Стройснаб", "inn": "1234567890"},
-              "descr": "Поставка горячекатаного листа 8 мм и трубы",
-              "positions": [{"name": "Лист горячекатаный 8 мм", "unit": "т"}],
-          }
-          mmk = {
-              "customer": {"name": "ПАО ММК"},
-              "descr": "Поставка листа",
-              "positions": [{"name": "Лист 8 мм", "unit": "т"}],
-          }
-          bad = {
-              "customer": {"name": "ООО Стройснаб"},
-              "descr": "Поставка спецодежды",
-              "positions": [{"name": "Каска", "unit": "шт"}],
-          }
-
+          good = {"customer":{"name":"ООО Стройснаб"},"descr":"Поставка горячекатаного листа и трубы","positions":[{"name":"Лист горячекатаный","unit":"т"}]}
+          mmk = {"customer":{"name":"ПАО ММК"},"descr":"Поставка листа","positions":[{"name":"Лист","unit":"т"}]}
+          bad = {"customer":{"name":"ООО Стройснаб"},"descr":"Поставка спецодежды","positions":[{"name":"Каска","unit":"шт"}]}
           assert m.is_match(good) is True
           assert m.is_match(mmk) is False
           assert m.is_match(bad) is False
-
-          xml = m.excel_xml([{"ID": 1, "Заказчик": "ООО <Тест>", "Описание": "Лист & труба"}])
+          xml=m.excel_xml([{"ID":1,"Заказчик":"ООО <Тест>","Описание":"Лист & труба"}])
           assert xml.startswith("<?xml")
-          assert "&lt;Тест&gt;" in xml
-          assert "Лист &amp; труба" in xml
+          assert "&lt;Тест&gt;" in xml and "Лист &amp; труба" in xml
           print("KomTender self-test: PASS")
           PY
+
+  chzsi-material-search:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Excel dependency
+        run: python -m pip install --disable-pip-version-check openpyxl
+      - name: Search KomTender API for CHZSI materials
+        env:
+          KOMTENDER_API_KEY: ${{ secrets.KOMTENDER_API_KEY }}
+          KOMTENDER_SEARCH_TEMPLATE_ID: ${{ vars.KOMTENDER_SEARCH_TEMPLATE_ID || '1' }}
+          KOMTENDER_PAGES: "10"
+        run: python scripts/chzsi_komtender_search.py
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: chzsi-komtender-material-tenders
+          path: artifacts/chzsi_komtender_material_tenders.xlsx
+          if-no-files-found: error
