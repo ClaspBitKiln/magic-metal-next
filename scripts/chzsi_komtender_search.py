@@ -10,6 +10,8 @@ TEMPLATE=os.environ.get("KOMTENDER_SEARCH_TEMPLATE_ID","1")
 MAX_PAGES=int(os.environ.get("KOMTENDER_PAGES","10"))
 if not KEY: raise SystemExit("KOMTENDER_API_KEY is not configured")
 
+# Live runner contract: never print or persist the API key.
+
 def get(path):
     req=Request(BASE+path,headers={"Accept":"application/json","X-API-KEY":KEY})
     with urlopen(req,timeout=45) as r: return json.loads(r.read().decode())
@@ -27,6 +29,7 @@ materials=json.load(open("data/chzsi_materials.json",encoding="utf-8"))["materia
 terms=[(m,norm(m)) for m in materials]
 now=datetime.now(timezone.utc); cutoff=now+timedelta(hours=72)
 info=get("info"); ip=info.get("data",info); remaining=int(ip.get("remaining",0) or 0)
+if remaining < 2: raise SystemExit(f"KomTender quota is insufficient: remaining={remaining}")
 
 rows=[]; pages=0
 for page in range(1,MAX_PAGES+1):
