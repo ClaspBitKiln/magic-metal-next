@@ -1259,6 +1259,16 @@ h2 {
 .form-status.error {
   color: #b42318;
 }
+.form-status.error p {
+  margin: 0 0 10px;
+}
+.email-fallback {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  color: var(--blue);
+  font-weight: 700;
+}
 .footer {
   min-height: 120px;
   padding: 22px 7vw;
