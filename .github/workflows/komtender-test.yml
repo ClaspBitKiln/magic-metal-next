@@ -36,6 +36,27 @@ jobs:
           print("KomTender self-test: PASS")
           PY
 
+  local-live-komtender:
+    # TRIZ fallback: use the already-configured local runtime instead of copying
+    # its KomTender credential into GitHub Secrets.
+    runs-on: self-hosted
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run live KomTender search on the local runner
+        shell: powershell
+        run: powershell -ExecutionPolicy Bypass -File scripts/run_komtender_local.ps1
+      - name: Verify artifact
+        shell: powershell
+        run: |
+          if (-not (Test-Path "artifacts/chzsi_komtender_material_tenders.xlsx")) { throw "Expected KomTender artifact was not created" }
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: chzsi-komtender-material-tenders-local
+          path: artifacts/chzsi_komtender_material_tenders.xlsx
+          if-no-files-found: error
+
   chzsi-material-search:
     # Live API path. It runs on push when the configured GitHub secret exists,
     # and can also be started manually from Actions without changing source code.
