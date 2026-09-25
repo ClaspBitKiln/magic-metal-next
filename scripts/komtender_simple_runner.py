@@ -29,8 +29,7 @@ def is_match(t):
  return not has_term(c,MMK_TERMS) and has_term(body,PRODUCT_TERMS)
 
 def tons(p):
- q=p.get("quantity")
- u=text(p.get("unit"))
+ q=p.get("quantity"); u=text(p.get("unit"))
  if q is not None and ("т" in u or "тон" in u): return float(q)
  m=__import__("re").search(r"(\d+(?:[.,]\d+)?)\s*(?:т|тн|тонн|тонны|тонна)\b",text(p.get("name")))
  return float(m.group(1).replace(",",".")) if m else None
@@ -47,8 +46,8 @@ def excel_xml(rows):
 def main():
  ap=argparse.ArgumentParser()
  ap.add_argument("--template",default=os.getenv("KOMTENDER_SEARCH_TEMPLATE_ID","1"))
- ap.add_argument("--pages",type=int,default=int(os.getenv("KOMTENDER_PAGES","3")))
- ap.add_argument("--scan",type=int,default=100)
+ ap.add_argument("--pages",type=int,default=1)
+ ap.add_argument("--scan",type=int,default=25)
  ap.add_argument("--active",action="store_true",default=True)
  ap.add_argument("--out",default="artifacts/komtender_results.xls")
  args=ap.parse_args()
@@ -60,16 +59,19 @@ def main():
  if remaining < 2: sys.exit(f"Insufficient KomTender quota: {remaining}")
  matches=[]; seen=set(); now=datetime.now(timezone(timedelta(hours=3)))
  pages=min(args.pages,max(0,remaining-1))
+ calls=1
  for page in range(1,pages+1):
-  payload=api(f"template/{urllib.parse.quote(args.template)}?page={page}&sort=new-first",key)
+  if remaining-calls < 1: break
+  payload=api(f"template/{urllib.parse.quote(args.template)}?page={page}&sort=new-first",key); calls+=1
   data=payload.get("data",[]) if isinstance(payload,dict) else []
   if not data: break
   for short in data[:args.scan]:
+   if remaining-calls < 1: break
    tid=str(short.get("id") or "")
-   if not tid or tid in seen or remaining <= pages+len(matches): continue
-   try: detail=api(urllib.parse.quote(tid),key)
-   except Exception as e: print("skip",tid,e,file=sys.stderr); continue
+   if not tid or tid in seen: continue
    seen.add(tid)
+   try: detail=api(urllib.parse.quote(tid),key); calls+=1
+   except Exception as e: print("skip",tid,e,file=sys.stderr); calls+=1; continue
    if not isinstance(detail,dict) or not is_match(detail): continue
    dl=deadline_dt(detail.get("dte"))
    if args.active and dl and dl < now: continue
@@ -78,5 +80,5 @@ def main():
    matches.append({"ID":detail.get("id"),"Дата":detail.get("dts"),"Срок":detail.get("dte"),"Заказчик":customer.get("name"),"ИНН":customer.get("inn"),"Цена":price.get("value"),"Валюта":price.get("currency","RUB"),"Количество, т":sum(qty) if qty else "", "Позиции":"; ".join(str(p.get("name") or "") for p in positions),"Описание":detail.get("descr"),"Место":detail.get("place"),"Регионы":detail.get("regions"),"URL":detail.get("url") or f"https://www.komtender.ru/tender/{tid}"})
   print(f"page {page}: scanned {len(data)}, matches total {len(matches)}")
  with open(args.out,"w",encoding="utf-8") as f: f.write(excel_xml(matches))
- print(json.dumps({"ok":True,"rows":len(matches),"pages":pages,"remaining_before":remaining,"file":args.out},ensure_ascii=False))
+ print(json.dumps({"ok":True,"rows":len(matches),"api_calls":calls,"file":args.out},ensure_ascii=False))
 if __name__=="__main__": main()
