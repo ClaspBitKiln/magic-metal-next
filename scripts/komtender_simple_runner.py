@@ -4,7 +4,7 @@ from xml.sax.saxutils import escape
 from datetime import datetime, timezone, timedelta
 
 BASE = "https://www.komtender.ru/api/tenders/get/"
-PRODUCT_TERMS = ["арматур","катанк","св-08","св08","св-08а","св08а","круг","уголок","швеллер","двутавр","балк","лист","рулон","полоса","проволок","оцинков","холоднокатан","горячекатан","прокат","труба","трубопрокат","бесшовн","электросварн","профильн","профнастил"]
+PRODUCT_TERMS = ["металлопрокат","металл","сталь","стальной","арматур","катанк","св-08","св08","св-08а","св08а","круг","уголок","швеллер","двутавр","балк","лист","рулон","полоса","проволок","оцинков","холоднокатан","горячекатан","прокат","труба","трубопрокат","бесшовн","электросварн","профильн","профнастил"]
 MMK_TERMS = ["ммк","магнитогорский металлургический комбинат","пао ммк","пао «ммк»"]
 
 def api(path, key):
@@ -50,7 +50,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--template", default=os.getenv("KOMTENDER_SEARCH_TEMPLATE_ID","1"))
     ap.add_argument("--pages", type=int, default=1)
-    ap.add_argument("--scan", type=int, default=25)
+    ap.add_argument("--scan", type=int, default=100)
     ap.add_argument("--active", action="store_true", default=True)
     ap.add_argument("--out", default="artifacts/komtender_results.xls")
     args = ap.parse_args()
