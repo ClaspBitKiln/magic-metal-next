@@ -12,17 +12,48 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: '3.12'
       - name: Compile
         run: python -m py_compile scripts/komtender_simple_runner.py
       - name: Basic matcher test
         run: |
           python - <<'PY'
           import importlib.util
-          s=importlib.util.spec_from_file_location("r","scripts/komtender_simple_runner.py")
+          s=importlib.util.spec_from_file_location('r','scripts/komtender_simple_runner.py')
           m=importlib.util.module_from_spec(s); s.loader.exec_module(m)
-          assert m.is_match({"customer":{"name":"ООО Стройснаб"},"descr":"Поставка листа","positions":[]})
-          assert not m.is_match({"customer":{"name":"ПАО ММК"},"descr":"Поставка листа","positions":[]})
-          assert not m.is_match({"customer":{"name":"ООО Стройснаб"},"descr":"Поставка касок","positions":[]})
-          print("PASS")
+          assert m.is_match({'customer':{'name':'ООО Стройснаб'},'descr':'Поставка листа','positions':[]})
+          assert not m.is_match({'customer':{'name':'ПАО ММК'},'descr':'Поставка листа','positions':[]})
+          assert not m.is_match({'customer':{'name':'ООО Стройснаб'},'descr':'Поставка касок','positions':[]})
+          print('PASS')
           PY
+
+  live:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    env:
+      KOMTENDER_API_KEY: ${{ secrets.KOMTENDER_API_KEY }}
+      KOMTENDER_SEARCH_TEMPLATE_ID: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run one-page live KomTender MVP
+        run: python scripts/komtender_simple_runner.py --pages 1 --scan 25
+      - name: Verify result
+        run: |
+          test -s artifacts/komtender_results.xls
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('artifacts/komtender_results.xls')
+          s=p.read_text(encoding='utf-8')
+          assert s.startswith('<?xml')
+          assert '<Workbook' in s
+          print('LIVE_ARTIFACT_OK', p.stat().st_size)
+          PY
+      - name: Upload live result
+        uses: actions/upload-artifact@v4
+        with:
+          name: komtender-live-results
+          path: artifacts/komtender_results.xls
+          if-no-files-found: error
