@@ -51,7 +51,9 @@ def main():
  ap.add_argument("--active",action="store_true",default=True)
  ap.add_argument("--out",default="artifacts/komtender_results.xls")
  args=ap.parse_args()
- key=os.getenv("KOMTENDER_API_KEY") or getpass.getpass("KomTender API key: ").strip()
+ key=os.getenv("KOMTENDER_API_KEY")
+    if not key:
+        raise SystemExit("KOMTENDER_API_KEY is missing; refusing interactive input in autonomous mode")
  if not key: sys.exit("API key is required")
  os.makedirs(os.path.dirname(args.out) or ".",exist_ok=True)
  info=api("info",key); info_data=info.get("data",info) if isinstance(info,dict) else {}
