@@ -10,6 +10,17 @@ const MAX_REQUEST_SIZE = 28 * 1024 * 1024
 const ALLOWED_EXTENSIONS = new Set(['xlsx', 'xls', 'pdf', 'doc', 'docx', 'png', 'jpg', 'jpeg', 'webp', 'dwg', 'dxf', 'mp3', 'm4a', 'wav', 'ogg', 'webm'])
 const requestLog = new Map<string, number[]>()
 
+type DeliveryFailure = 'smtp-not-configured' | 'smtp-auth' | 'smtp-connection' | 'smtp-timeout' | 'smtp-error'
+
+function classifySmtpFailure(error: unknown): DeliveryFailure {
+  if (!error || typeof error !== 'object') return 'smtp-error'
+  const details = error as { code?: string; responseCode?: number }
+  if (details.code === 'EAUTH' || details.responseCode === 535) return 'smtp-auth'
+  if (details.code === 'ETIMEDOUT') return 'smtp-timeout'
+  if (['ECONNECTION', 'ECONNREFUSED', 'ECONNRESET', 'EDNS', 'ESOCKET'].includes(details.code || '')) return 'smtp-connection'
+  return 'smtp-error'
+}
+
 function text(form: FormData, key: string, max = 4000) {
   return String(form.get(key) || '').trim().slice(0, max)
 }
@@ -132,6 +143,7 @@ export async function POST(request: Request) {
   }
 
   let emailDelivered = false
+  let deliveryFailure: DeliveryFailure | null = null
   if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASSWORD) {
     try {
       const transporter = nodemailer.createTransport({
@@ -146,8 +158,11 @@ export async function POST(request: Request) {
       })
       emailDelivered = true
     } catch (error) {
+      deliveryFailure = classifySmtpFailure(error)
       console.error(JSON.stringify({ level: 'error', message: 'Request SMTP delivery failed', route: '/api/request', error: error instanceof Error ? error.message : String(error) }))
     }
+  } else {
+    deliveryFailure = 'smtp-not-configured'
   }
 
   let crmDelivered = false
@@ -183,7 +198,10 @@ export async function POST(request: Request) {
   }
 
   if (!created && !emailDelivered && !crmDelivered) {
-    return NextResponse.json({ error: 'Не удалось сохранить или доставить заявку. Позвоните нам или напишите на m1@magicmet.ru.' }, { status: 503 })
+    return NextResponse.json({
+      error: 'Не удалось сохранить или доставить заявку. Позвоните нам или напишите на m1@magicmet.ru.',
+      deliveryFailure,
+    }, { status: 503 })
   }
 
   return NextResponse.json({ ok: true, id: created?.id || null, emailDelivered, crmDelivered })
