@@ -28,7 +28,6 @@ jobs:
           PY
 
   live:
-    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     env:
       KOMTENDER_API_KEY: ${{ secrets.KOMTENDER_API_KEY }}
