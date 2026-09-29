@@ -78,3 +78,17 @@ test('www hostname serves the same approved public state', async ({ page }) => {
   ).toBe(true)
   expect(await page.evaluate(() => getComputedStyle(document.body).margin)).toBe('0px')
 })
+
+test('critical public content stays visible when JavaScript is unavailable', async ({ browser, baseURL }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false })
+  const page = await context.newPage()
+  const response = await page.goto(baseURL!, { waitUntil: 'domcontentloaded' })
+
+  expect(response?.status()).toBe(200)
+  await expect(page.getByRole('heading', { name: /СЛОЖНЫЕ ПРОМЫШЛЕННЫЕ/i })).toBeVisible()
+  await expect(page.locator('#products')).toBeVisible()
+  await expect(page.locator('#request')).toBeVisible()
+  await expect(page.getByRole('link', { name: /\+7 922 711-73-63/ }).first()).toBeVisible()
+
+  await context.close()
+})

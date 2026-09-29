@@ -1,135 +1,25 @@
-/* eslint-disable @next/next/no-img-element */
-'use client'
-
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { FormEvent, useEffect, useMemo, useState } from 'react'
-import LanguageSwitcher from '@/components/LanguageSwitcher'
 import { homeCatalogGroups } from '@/data/homeCatalog'
-import { hasRequestConsent, REQUEST_CONSENT_ERROR } from '@/lib/requestValidation'
-
-const reveal = { hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }
-const MotionLink = motion.create(Link)
+import PublicHeader from '@/components/PublicHeader'
+import RequestForm from '@/components/RequestForm'
 
 export default function MagicMetalHome() {
-  const reducedMotion = useReducedMotion()
-  const [menuOpen, setMenuOpen] = useState(false)
-  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
-  const [formError, setFormError] = useState('')
-  const [formStep, setFormStep] = useState<1 | 2>(1)
-  const [selectedFiles, setSelectedFiles] = useState(0)
-  const [selectedProduct, setSelectedProduct] = useState('')
-  const [startedAt] = useState(() => Date.now())
-  const animation = useMemo(() => (reducedMotion ? {} : reveal), [reducedMotion])
-
-  useEffect(() => {
-    const close = () => setMenuOpen(false)
-    const syncSelectedProduct = () => setSelectedProduct(new URLSearchParams(window.location.search).get('product')?.trim() || '')
-    syncSelectedProduct()
-    window.addEventListener('resize', close)
-    window.addEventListener('popstate', syncSelectedProduct)
-    return () => {
-      window.removeEventListener('resize', close)
-      window.removeEventListener('popstate', syncSelectedProduct)
-    }
-  }, [])
-
-  function continueRequest(event: FormEvent<HTMLButtonElement>) {
-    const form = event.currentTarget.form
-    if (!form) return
-    const data = new FormData(form)
-    const message = String(data.get('message') || '').trim()
-    const hasFiles = data.getAll('files').some((value) => value instanceof File && value.size > 0)
-    if (!message && !hasFiles) {
-      setFormStep(1)
-      setStatus('error')
-      setFormError('Прикрепите заявку или кратко опишите, что требуется.')
-      return
-    }
-    setFormError('')
-    setStatus('idle')
-    setFormStep(2)
-  }
-
-  async function submitRequest(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    const form = event.currentTarget
-    const data = new FormData(form)
-    const phone = String(data.get('phone') || '').trim()
-    const email = String(data.get('email') || '').trim()
-    const message = String(data.get('message') || '').trim()
-    const hasFiles = data.getAll('files').some((value) => value instanceof File && value.size > 0)
-    setFormError('')
-    if (!hasRequestConsent(data.get('consent'))) {
-      setStatus('error')
-      setFormError(REQUEST_CONSENT_ERROR)
-      return
-    }
-    if (!phone && !email) {
-      setStatus('error')
-      setFormError('Укажите телефон или email, чтобы мы могли отправить расчёт.')
-      return
-    }
-    if (!message && !hasFiles) {
-      setStatus('error')
-      setFormError('Прикрепите заявку или кратко опишите, что требуется.')
-      return
-    }
-    setStatus('sending')
-    data.set('startedAt', String(startedAt))
-    data.set('landingPage', window.location.href)
-    data.set('referrer', document.referrer)
-    const params = new URLSearchParams(window.location.search)
-    data.set('context', params.get('material') || params.get('standard') || params.get('product') || params.get('region') || '')
-    for (const key of ['utm_source', 'utm_medium', 'utm_campaign']) data.set(key, params.get(key) || '')
-    try {
-      const response = await fetch('/api/request', { method: 'POST', body: data })
-      if (!response.ok) {
-        const result = await response.json().catch(() => null) as { error?: string } | null
-        throw new Error(result?.error || 'Не удалось отправить заявку')
-      }
-      form.reset()
-      setSelectedFiles(0)
-      setFormError('')
-      setFormStep(1)
-      setStatus('success')
-      const analytics = window as Window & { ym?: (id: number, action: string, goal: string) => void; gtag?: (action: string, event: string, params?: Record<string, unknown>) => void }
-      const metrikaId = Number(process.env.NEXT_PUBLIC_YANDEX_METRIKA_ID || 0)
-      if (metrikaId) analytics.ym?.(metrikaId, 'reachGoal', 'request_sent')
-      analytics.gtag?.('event', 'generate_lead', { product_direction: String(data.get('productDirection') || ''), context: String(data.get('context') || '') })
-    } catch (error) {
-      setFormError(error instanceof Error ? error.message : 'Не удалось отправить заявку. Попробуйте ещё раз или позвоните нам.')
-      setStatus('error')
-    }
-  }
-
   return (
     <main className="public-home">
       <a className="skip-link" href="#content">К содержанию</a>
-      <header className="topbar">
-        <a className="brand" href="#top" aria-label="Мэджик Металл — главная"><Image src="/images/logo-transparent-v2.png" alt="Мэджик Металл" width={147} height={109} priority /></a>
-        <nav className={menuOpen ? 'nav open' : 'nav'} aria-label="Основная навигация">
-          <a href="#about">О компании</a><a href="#products">Продукция</a><Link href="/spravochnik-gost">Справочник ГОСТ</Link><a href="#contacts">Контакты</a>
-        </nav>
-        <div className="top-actions">
-          <a className="phone" href="tel:+79227117363">+7 922 711-73-63</a>
-          <LanguageSwitcher />
-          <a className="top-cta" href="#request"><span className="top-cta-label top-cta-label-full">Отправить заявку</span><span className="top-cta-label top-cta-label-short">Заявка</span><span className="top-cta-arrow" aria-hidden="true">↗</span></a>
-          <button className="menu-button" type="button" aria-label="Открыть меню" aria-expanded={menuOpen} onClick={() => setMenuOpen((value) => !value)}><span /><span /><span /></button>
-        </div>
-      </header>
+      <PublicHeader />
 
       <section className="hero" id="top" aria-labelledby="hero-title">
-        <Image className="hero-visual" src="/images/hero-mercedes-v5.webp" alt="Брендированный грузовой автомобиль Mercedes-Benz Мэджик Металл, промышленное производство, металлопрокат, трубы и детали трубопроводов" fill priority sizes="100vw" />
+        <Image className="hero-visual" src="/images/hero-mercedes-v5.webp" alt="Брендированный грузовой автомобиль Mercedes-Benz Мэджик Металл, промышленное производство, металлопрокат, трубы и детали трубопроводов" fill priority fetchPriority="high" sizes="100vw" />
         <div className="hero-copy" id="content">
-          <motion.p initial="hidden" animate="visible" variants={animation} transition={{ duration: .24 }} className="hero-label">
+          <p className="hero-label">
             <span>СРОЧНЫЕ ПОСТАВКИ:</span>
             <strong>РОССИЯ · УЗБЕКИСТАН · КАЗАХСТАН · КЫРГЫЗСТАН · БЕЛАРУСЬ · ТУРЦИЯ</strong>
-          </motion.p>
-          <motion.h1 initial="hidden" animate="visible" variants={animation} transition={{ duration: .28, delay: .04 }} id="hero-title">КОМПЛЕКТУЕМ <em>СЛОЖНЫЕ ПРОМЫШЛЕННЫЕ</em> ЗАЯВКИ</motion.h1>
-          <motion.p initial="hidden" animate="visible" variants={animation} transition={{ duration: .28, delay: .08 }} className="hero-lead">Проверяем требования и актуальность ГОСТов, находим редкие позиции и технически обоснованные аналоги. Комплектуем металл и сопутствующие материалы с полным пакетом документов — для поставок по России и на экспорт.</motion.p>
-          <motion.div initial="hidden" animate="visible" variants={animation} transition={{ duration: .28, delay: .12 }} className="hero-actions"><a className="primary-button" href="#request">Отправить заявку <span>↗</span></a><span className="file-types">Excel · PDF · Word · фото · голосовое сообщение</span></motion.div>
+          </p>
+          <h1 id="hero-title">КОМПЛЕКТУЕМ <em>СЛОЖНЫЕ ПРОМЫШЛЕННЫЕ</em> ЗАЯВКИ</h1>
+          <p className="hero-lead">Проверяем требования и актуальность ГОСТов, находим редкие позиции и технически обоснованные аналоги. Комплектуем металл и сопутствующие материалы с полным пакетом документов — для поставок по России и на экспорт.</p>
+          <div className="hero-actions"><a className="primary-button" href="#request">Отправить заявку <span>↗</span></a><span className="file-types">Excel · PDF · Word · фото · голосовое сообщение</span></div>
         </div>
         <div className="hero-strip" id="delivery"><div className="delivery-title"><b>Авто · Ж/Д · Авиа</b><span>Срочная доставка снижает риск простоя оборудования и персонала, а также штрафных санкций за срыв сроков проекта</span></div></div>
       </section>
@@ -149,19 +39,19 @@ export default function MagicMetalHome() {
           <p className="company-proof-label">Опыт работы с подрядными организациями</p>
           <ul className="company-client-list" aria-label="Отраслевой опыт компании">
             <li>
-              <img src="/images/clients/gazprom.svg" alt="Газпром" loading="lazy" />
+              <Image src="/images/clients/gazprom.svg" alt="Газпром" width={180} height={64} />
             </li>
             <li>
-              <img src="/images/clients/rosneft.svg" alt="Роснефть" loading="lazy" />
+              <Image src="/images/clients/rosneft.svg" alt="Роснефть" width={180} height={64} />
             </li>
             <li>
-              <img src="/images/clients/rosatom.svg" alt="Госкорпорация «Росатом»" loading="lazy" />
+              <Image src="/images/clients/rosatom.svg" alt="Госкорпорация «Росатом»" width={180} height={64} />
             </li>
             <li>
-              <img src="/images/clients/uztransgaz.svg" alt="АО «Узтрансгаз»" loading="lazy" />
+              <Image src="/images/clients/uztransgaz.svg" alt="АО «Узтрансгаз»" width={180} height={64} />
             </li>
             <li>
-              <img src="/images/clients/uzbekneftegaz.png" alt="АО «Узбекнефтегаз»" loading="lazy" />
+              <Image src="/images/clients/uzbekneftegaz.png" alt="АО «Узбекнефтегаз»" width={180} height={64} />
             </li>
           </ul>
         </div>
@@ -176,11 +66,11 @@ export default function MagicMetalHome() {
       <div className="section catalog-section product-subsection">
         <div className="catalog-head"><div><p className="product-subsection-label">Основные направления поставок</p><h2 id="products-title">Что мы<br /><em>можем поставить</em></h2></div><div className="catalog-head-actions"><p>Выберите нужный раздел. Размеры, марку стали, стандарт, цену, наличие и срок поставки подтвердим по вашей спецификации.</p><a className="catalog-main-cta" href="#request">Отправить заявку <span aria-hidden="true">→</span></a></div></div>
         <div className="catalog-section-list" aria-label="Разделы поставок">
-          {homeCatalogGroups.map((group, index) => <MotionLink className="catalog-section-card" href={`/?product=${encodeURIComponent(group.title)}#request`} aria-label={`Выбрать раздел «${group.title}» и перейти к заявке`} onClick={() => setSelectedProduct(group.title)} key={group.title} initial={false} whileInView="visible" viewport={{ once: true, amount: .25 }} variants={animation} transition={{ duration: .36, delay: Math.min(index * .035, .18) }}>
+          {homeCatalogGroups.map((group, index) => <Link className="catalog-section-card" href={`/?product=${encodeURIComponent(group.title)}#request`} aria-label={`Выбрать раздел «${group.title}» и перейти к заявке`} key={group.title}>
             <span className="catalog-section-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
             <div><h3>{group.title}</h3><p>{group.note}</p></div>
             <span className="catalog-section-arrow" aria-hidden="true">→</span>
-          </MotionLink>)}
+          </Link>)}
         </div>
       </div>
       </div>
@@ -188,25 +78,7 @@ export default function MagicMetalHome() {
 
       <section className="request-section" id="request">
         <div className="request-copy" id="contacts"><h2>Отправьте<br /><em>заявку</em></h2><p>Укажите требования и способ получения: самовывоз или доставку с указанием города. Проверим заявку, согласуем возможную замену и подготовим коммерческое предложение.</p><a href="mailto:m1@magicmet.ru">m1@magicmet.ru</a><a href="tel:+79227117363">+7 922 711-73-63</a></div>
-        <form className="request-form" onSubmit={submitRequest} encType="multipart/form-data" noValidate>
-          {selectedProduct && <p className="selected-product">Выбран раздел: <strong>{selectedProduct}</strong></p>}
-          <div className="form-stage" hidden={formStep !== 1}>
-            <label className="file-field"><span className="file-button">Прикрепить файл</span><input name="files" type="file" multiple accept=".xlsx,.xls,.pdf,.doc,.docx,.png,.jpg,.jpeg,.webp,.dwg,.dxf,.mp3,.m4a,.wav,.ogg,.webm,audio/*" onChange={(event) => setSelectedFiles(event.currentTarget.files?.length || 0)} />{selectedFiles > 0 && <strong>{`Выбрано файлов: ${selectedFiles}`}</strong>}<small>Excel, PDF, Word, фото, чертежи или аудио · до 25 МБ</small></label>
-            <div className="form-or"><span>или</span></div>
-            <label>Опишите, что требуется<textarea name="message" rows={3} placeholder="Наименование, размер, ГОСТ/ТУ, количество" /></label>
-            <button className="form-next" type="button" onClick={continueRequest}>Продолжить <span>→</span></button>
-          </div>
-          <div className="form-stage" hidden={formStep !== 2}>
-            <div className="form-step"><strong>Контактные данные</strong><span>Укажите телефон или email.</span></div>
-            <div className="form-grid"><label>Ваше имя<input name="name" autoComplete="name" /></label><label>Компания<input name="company" autoComplete="organization" /></label><label>Телефон<input name="phone" type="tel" inputMode="tel" autoComplete="tel" /></label><label>Email<input name="email" type="email" autoComplete="email" /></label></div>
-            <label>Направление<select name="productDirection" defaultValue=""><option value="">Выберите при необходимости</option><option value="electrowelded-pipes">Трубы электросварные</option><option value="seamless-pipes">Трубы бесшовные</option><option value="pipeline-parts">СДТ</option><option value="insulated">Трубы и СДТ в изоляции</option><option value="other">Другая продукция</option></select></label>
-            <label className="honeypot" aria-hidden="true" hidden>Ваш сайт<input name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" /></label>
-            <label className="consent"><input name="consent" type="checkbox" required /><span>Согласен на <Link href="/politika-konfidencialnosti">обработку персональных данных</Link> для подготовки коммерческого предложения</span></label>
-            <button className="form-back" type="button" onClick={() => { setStatus('idle'); setFormError(''); setFormStep(1) }}>← Изменить заявку</button>
-            <button type="submit" disabled={status === 'sending'}>{status === 'sending' ? 'Отправляем…' : 'Отправить заявку'} <span>→</span></button>
-          </div>
-          <AnimatePresence mode="wait">{status === 'success' && <motion.p className="form-status success" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>Заявка принята. Мы свяжемся с вами.</motion.p>}{status === 'error' && <motion.p className="form-status error" role="alert" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>{formError || 'Не удалось отправить. Позвоните нам или напишите на m1@magicmet.ru.'}</motion.p>}</AnimatePresence>
-        </form>
+        <RequestForm />
       </section>
 
       <footer className="footer"><Image src="/images/logo-hq.webp" alt="" width={92} height={68} /><p>ООО «Мэджик Металл» · поставки металла для промышленности</p><div><a href="tel:+79227117363">+7 922 711-73-63</a><a href="mailto:m1@magicmet.ru">m1@magicmet.ru</a><Link href="/politika-konfidencialnosti">Политика</Link></div></footer>
