@@ -16,7 +16,6 @@ export default function MagicMetalHome() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
   const [formError, setFormError] = useState('')
-  const [emailFallback, setEmailFallback] = useState('')
   const [formStep, setFormStep] = useState<1 | 2>(1)
   const [selectedFiles, setSelectedFiles] = useState(0)
   const [selectedProduct, setSelectedProduct] = useState('')
@@ -48,7 +47,6 @@ export default function MagicMetalHome() {
       return
     }
     setFormError('')
-    setEmailFallback('')
     setStatus('idle')
     setFormStep(2)
   }
@@ -72,14 +70,7 @@ export default function MagicMetalHome() {
       setFormError('Прикрепите заявку или кратко опишите, что требуется.')
       return
     }
-    if (!data.get('consent')) {
-      setStatus('error')
-      setFormError('Подтвердите согласие на обработку данных.')
-      return
-    }
     setStatus('sending')
-    setEmailFallback('')
-    data.set('productDirection', selectedProduct)
     data.set('startedAt', String(startedAt))
     data.set('landingPage', window.location.href)
     data.set('referrer', document.referrer)
@@ -95,7 +86,6 @@ export default function MagicMetalHome() {
       form.reset()
       setSelectedFiles(0)
       setFormError('')
-      setEmailFallback('')
       setFormStep(1)
       setStatus('success')
       const analytics = window as Window & { ym?: (id: number, action: string, goal: string) => void; gtag?: (action: string, event: string, params?: Record<string, unknown>) => void }
@@ -103,17 +93,6 @@ export default function MagicMetalHome() {
       if (metrikaId) analytics.ym?.(metrikaId, 'reachGoal', 'request_sent')
       analytics.gtag?.('event', 'generate_lead', { product_direction: String(data.get('productDirection') || ''), context: String(data.get('context') || '') })
     } catch (error) {
-      const subject = 'Заявка с сайта magicmet.ru'
-      const emailMessage = message.length > 1600 ? `${message.slice(0, 1600)}…` : message
-      const body = [
-        selectedProduct ? `Раздел: ${selectedProduct}` : '',
-        emailMessage || 'Требования приложены в файле.',
-        '',
-        phone ? `Телефон: ${phone}` : '',
-        email ? `Email: ${email}` : '',
-        hasFiles ? 'К заявке нужно приложить выбранные файлы.' : '',
-      ].filter(Boolean).join('\n')
-      setEmailFallback(`mailto:m1@magicmet.ru?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`)
       setFormError(error instanceof Error ? error.message : 'Не удалось отправить заявку. Попробуйте ещё раз или позвоните нам.')
       setStatus('error')
     }
@@ -164,13 +143,13 @@ export default function MagicMetalHome() {
           <p className="company-proof-label">Опыт работы с подрядными организациями</p>
           <ul className="company-client-list" aria-label="Отраслевой опыт компании">
             <li>
-              <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Gazprom_logo.svg" alt="Газпром" loading="lazy" />
+              <img src="/images/clients/gazprom.svg" alt="Газпром" loading="lazy" />
             </li>
             <li>
-              <img src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Rosneft_Logo_2016.svg" alt="Роснефть" loading="lazy" />
+              <img src="/images/clients/rosneft.svg" alt="Роснефть" loading="lazy" />
             </li>
             <li>
-              <img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/ab/Rosatom_logo.png/250px-Rosatom_logo.png" alt="Госкорпорация «Росатом»" loading="lazy" />
+              <img src="/images/clients/rosatom.svg" alt="Госкорпорация «Росатом»" loading="lazy" />
             </li>
             <li>
               <img src="/images/clients/uztransgaz.svg" alt="АО «Узтрансгаз»" loading="lazy" />
@@ -212,13 +191,15 @@ export default function MagicMetalHome() {
             <button className="form-next" type="button" onClick={continueRequest}>Продолжить <span>→</span></button>
           </div>
           <div className="form-stage" hidden={formStep !== 2}>
-            <div className="form-grid"><label>Телефон<input name="phone" type="tel" inputMode="tel" autoComplete="tel" /></label><label>Email<input name="email" type="email" autoComplete="email" /></label></div>
+            <div className="form-step"><strong>Контактные данные</strong><span>Укажите телефон или email.</span></div>
+            <div className="form-grid"><label>Ваше имя<input name="name" autoComplete="name" /></label><label>Компания<input name="company" autoComplete="organization" /></label><label>Телефон<input name="phone" type="tel" inputMode="tel" autoComplete="tel" /></label><label>Email<input name="email" type="email" autoComplete="email" /></label></div>
+            <label>Направление<select name="productDirection" defaultValue=""><option value="">Выберите при необходимости</option><option value="electrowelded-pipes">Трубы электросварные</option><option value="seamless-pipes">Трубы бесшовные</option><option value="pipeline-parts">СДТ</option><option value="insulated">Трубы и СДТ в изоляции</option><option value="other">Другая продукция</option></select></label>
             <label className="honeypot" aria-hidden="true" hidden>Ваш сайт<input name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" /></label>
             <label className="consent"><input name="consent" type="checkbox" required /><span>Согласен на <Link href="/politika-konfidencialnosti">обработку персональных данных</Link> для подготовки коммерческого предложения</span></label>
             <button className="form-back" type="button" onClick={() => { setStatus('idle'); setFormError(''); setFormStep(1) }}>← Изменить заявку</button>
             <button type="submit" disabled={status === 'sending'}>{status === 'sending' ? 'Отправляем…' : 'Отправить заявку'} <span>→</span></button>
           </div>
-          <AnimatePresence mode="wait">{status === 'success' && <motion.p className="form-status success" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>Заявка принята. Мы свяжемся с вами.</motion.p>}{status === 'error' && <motion.div className="form-status error" role="alert" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><p>{formError || 'Не удалось отправить. Позвоните нам или напишите на m1@magicmet.ru.'}</p>{emailFallback && <a className="email-fallback" href={emailFallback}>Отправить по email</a>}</motion.div>}</AnimatePresence>
+          <AnimatePresence mode="wait">{status === 'success' && <motion.p className="form-status success" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>Заявка принята. Мы свяжемся с вами.</motion.p>}{status === 'error' && <motion.p className="form-status error" role="alert" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>{formError || 'Не удалось отправить. Позвоните нам или напишите на m1@magicmet.ru.'}</motion.p>}</AnimatePresence>
         </form>
       </section>
 
