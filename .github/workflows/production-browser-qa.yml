@@ -2,21 +2,20 @@ name: Production browser QA
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'src/app/(frontend)/**'
-      - 'src/components/**'
-      - 'public/**'
-      - 'tests/e2e/production-smoke.e2e.spec.ts'
-      - 'playwright.production.config.ts'
-      - 'lighthouserc.production.cjs'
-      - '.github/workflows/production-browser-qa.yml'
+  deployment_status:
+
+concurrency:
+  group: production-browser-qa
+  cancel-in-progress: true
 
 jobs:
   browser-smoke:
+    if: github.event_name == 'workflow_dispatch' || (github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Production')
     name: Playwright (${{ matrix.browser }})
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
     strategy:
       fail-fast: false
       matrix:
@@ -43,8 +42,12 @@ jobs:
           if-no-files-found: ignore
 
   lighthouse:
+    if: github.event_name == 'workflow_dispatch' || (github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Production')
     name: Lighthouse CI
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -53,7 +56,7 @@ jobs:
           cache: npm
       - run: npm ci
       - name: Audit live production
-        run: npx --yes @lhci/cli autorun --config=lighthouserc.production.cjs
+        run: npx --yes @lhci/cli@0.15.1 autorun --config=lighthouserc.production.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:

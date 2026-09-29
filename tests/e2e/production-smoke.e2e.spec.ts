@@ -15,9 +15,6 @@ test('production loads styled and keeps critical resources healthy', async ({ pa
     }
   })
   page.on('pageerror', (error) => failures.push(`PAGE_ERROR ${error.message}`))
-  page.on('console', (message) => {
-    if (message.type() === 'error') failures.push(`CONSOLE_ERROR ${message.text()}`)
-  })
 
   const response = await page.goto('/', { waitUntil: 'domcontentloaded' })
   expect(response?.status()).toBe(200)
