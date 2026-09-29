@@ -58,6 +58,7 @@ test('production loads the approved public state without critical resource failu
 
     const hero = page.locator('img.hero-visual')
     await expect(hero).toBeVisible()
+    expect(new URL((await hero.getAttribute('src'))!, origin).pathname).toBe('/images/hero-mercedes-v5.webp')
     await expect.poll(() => hero.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true)
 
     await page.getByRole('link', { name: /Отправить заявку/i }).first().click()
