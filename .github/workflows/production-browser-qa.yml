@@ -1,0 +1,62 @@
+name: Production browser QA
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'src/app/(frontend)/**'
+      - 'src/components/**'
+      - 'public/**'
+      - 'tests/e2e/production-smoke.e2e.spec.ts'
+      - 'playwright.production.config.ts'
+      - 'lighthouserc.production.cjs'
+      - '.github/workflows/production-browser-qa.yml'
+
+jobs:
+  browser-smoke:
+    name: Playwright (${{ matrix.browser }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps ${{ matrix.browser }}
+      - name: Test live production
+        env:
+          BASE_URL: https://magicmet.ru
+        run: npx playwright test --config=playwright.production.config.ts --project=${{ matrix.browser }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-${{ matrix.browser }}
+          path: |
+            playwright-report
+            test-results
+          if-no-files-found: ignore
+
+  lighthouse:
+    name: Lighthouse CI
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Audit live production
+        run: npx --yes @lhci/cli autorun --config=lighthouserc.production.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lighthouse-report
+          path: lhci-report
+          if-no-files-found: ignore
