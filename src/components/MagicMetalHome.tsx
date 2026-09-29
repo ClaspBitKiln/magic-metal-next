@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { FormEvent, useEffect, useMemo, useState } from 'react'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
 import { homeCatalogGroups } from '@/data/homeCatalog'
+import { hasRequestConsent, REQUEST_CONSENT_ERROR } from '@/lib/requestValidation'
 
 const reveal = { hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }
 const MotionLink = motion.create(Link)
@@ -60,6 +61,11 @@ export default function MagicMetalHome() {
     const message = String(data.get('message') || '').trim()
     const hasFiles = data.getAll('files').some((value) => value instanceof File && value.size > 0)
     setFormError('')
+    if (!hasRequestConsent(data.get('consent'))) {
+      setStatus('error')
+      setFormError(REQUEST_CONSENT_ERROR)
+      return
+    }
     if (!phone && !email) {
       setStatus('error')
       setFormError('Укажите телефон или email, чтобы мы могли отправить расчёт.')
