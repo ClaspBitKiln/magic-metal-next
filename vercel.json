@@ -1,4 +1,6 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "ignoreCommand": "git rev-parse HEAD^ >/dev/null 2>&1 || exit 1; git diff --quiet HEAD^ HEAD -- . ':(exclude)docs/**' ':(exclude).github/**' ':(exclude)tests/**' ':(exclude)qa/**' ':(exclude)skills/**' ':(exclude).codex/**' ':(exclude).vscode/**' ':(exclude)README.md' ':(exclude)AGENTS.md' ':(exclude)CLAUDE.md' ':(exclude)AUDIT-*.md' ':(exclude)DESIGN-QA.md' ':(exclude)GLOBAL-BENCHMARKS.md' ':(exclude)MOTION-AUDIT-*.md' ':(exclude)SENIOR-AUDIT-CHECKLIST.md' ':(exclude)playwright.config.ts' ':(exclude)playwright.production.config.ts' ':(exclude)lighthouserc.production.cjs' ':(exclude)vitest.config.mts' ':(exclude)vitest.setup.ts' ':(exclude)test.env'",
   "crons": [
     {
       "path": "/api/cron/ati-logistics",

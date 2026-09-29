@@ -1,6 +1,8 @@
 import { expect, test } from '@playwright/test'
 
-test('production loads styled and keeps critical resources healthy', async ({ page, request, baseURL }) => {
+const maintenanceTitle = 'САЙТ НА РЕКОНСТРУКЦИИ'
+
+test('production loads the approved public state without critical resource failures', async ({ page, request, baseURL }) => {
   const origin = new URL(baseURL!).origin
   const failures: string[] = []
   const translateRequests: string[] = []
@@ -24,8 +26,11 @@ test('production loads styled and keeps critical resources healthy', async ({ pa
 
   const response = await page.goto('/', { waitUntil: 'domcontentloaded' })
   expect(response?.status()).toBe(200)
-  await expect(page.locator('h1')).toContainText('СЛОЖНЫЕ ПРОМЫШЛЕННЫЕ')
-  await expect(page.locator('#request')).toBeAttached()
+
+  const heading = page.locator('h1')
+  await expect(heading).toBeVisible()
+  const headingText = (await heading.innerText()).trim()
+  const isMaintenance = headingText === maintenanceTitle
 
   const applied = await page.evaluate(() => ({
     styleSheets: document.styleSheets.length,
@@ -44,19 +49,32 @@ test('production loads styled and keeps critical resources healthy', async ({ pa
   expect(cssResponse.headers()['content-type']).toContain('text/css')
   expect(await cssResponse.text()).not.toContain('fonts.googleapis.com')
 
-  const hero = page.locator('img.hero-visual')
-  await expect(hero).toBeVisible()
-  await expect.poll(() => hero.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true)
+  if (isMaintenance) {
+    await expect(page.getByRole('heading', { name: maintenanceTitle, exact: true })).toHaveCount(1)
+    await expect(page.locator('main')).toBeVisible()
+  } else {
+    expect(headingText).toContain('СЛОЖНЫЕ ПРОМЫШЛЕННЫЕ')
+    await expect(page.locator('#request')).toBeAttached()
 
-  await page.getByRole('link', { name: /Отправить заявку/i }).first().click()
-  await expect(page.locator('#request')).toBeVisible()
+    const hero = page.locator('img.hero-visual')
+    await expect(hero).toBeVisible()
+    await expect.poll(() => hero.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true)
+
+    await page.getByRole('link', { name: /Отправить заявку/i }).first().click()
+    await expect(page.locator('#request')).toBeVisible()
+  }
+
   expect(failures, failures.join('\n')).toEqual([])
   expect(translateRequests, translateRequests.join('\n')).toEqual([])
 })
 
-test('www hostname serves the same styled production page', async ({ page }) => {
+test('www hostname serves the same approved public state', async ({ page }) => {
   const response = await page.goto('https://www.magicmet.ru/', { waitUntil: 'domcontentloaded' })
   expect(response?.status()).toBe(200)
-  await expect(page.locator('h1')).toContainText('СЛОЖНЫЕ ПРОМЫШЛЕННЫЕ')
+
+  const headingText = (await page.locator('h1').innerText()).trim()
+  expect(
+    headingText === maintenanceTitle || headingText.includes('СЛОЖНЫЕ ПРОМЫШЛЕННЫЕ'),
+  ).toBe(true)
   expect(await page.evaluate(() => getComputedStyle(document.body).margin)).toBe('0px')
 })
