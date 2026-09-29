@@ -3,6 +3,7 @@ import { expect, test } from '@playwright/test'
 test('production loads styled and keeps critical resources healthy', async ({ page, request, baseURL }) => {
   const origin = new URL(baseURL!).origin
   const failures: string[] = []
+  const translateRequests: string[] = []
 
   page.on('response', (response) => {
     if (response.url().startsWith(origin) && response.status() >= 400) {
@@ -12,6 +13,11 @@ test('production loads styled and keeps critical resources healthy', async ({ pa
   page.on('requestfailed', (failed) => {
     if (failed.url().startsWith(origin)) {
       failures.push(`REQUEST_FAILED ${failed.url()} ${failed.failure()?.errorText || ''}`)
+    }
+  })
+  page.on('request', (request) => {
+    if (/translate\.google|translate-pa\.googleapis/.test(request.url())) {
+      translateRequests.push(request.url())
     }
   })
   page.on('pageerror', (error) => failures.push(`PAGE_ERROR ${error.message}`))
@@ -45,6 +51,7 @@ test('production loads styled and keeps critical resources healthy', async ({ pa
   await page.getByRole('link', { name: /Отправить заявку/i }).first().click()
   await expect(page.locator('#request')).toBeVisible()
   expect(failures, failures.join('\n')).toEqual([])
+  expect(translateRequests, translateRequests.join('\n')).toEqual([])
 })
 
 test('www hostname serves the same styled production page', async ({ page }) => {
