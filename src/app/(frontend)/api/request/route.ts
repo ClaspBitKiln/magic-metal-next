@@ -2,6 +2,7 @@ import { getPayload } from 'payload'
 import { NextResponse } from 'next/server'
 import nodemailer from 'nodemailer'
 import { createHmac } from 'node:crypto'
+import { hasRequestConsent, REQUEST_CONSENT_ERROR } from '@/lib/requestValidation'
 
 export const runtime = 'nodejs'
 
@@ -69,6 +70,7 @@ export async function POST(request: Request) {
 
   const form = await request.formData()
   if (text(form, 'website', 200)) return NextResponse.json({ ok: true })
+  if (!hasRequestConsent(form.get('consent'))) return NextResponse.json({ error: REQUEST_CONSENT_ERROR }, { status: 400 })
   const startedAt = Number(text(form, 'startedAt', 20))
   if (Number.isFinite(startedAt) && Date.now() - startedAt < 1800) return NextResponse.json({ error: 'Проверка формы не пройдена' }, { status: 400 })
 
