@@ -32,6 +32,10 @@ export default function LanguageSwitcher() {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setLanguage(selected)
 
+    // Keep the default Russian page independent of Google Translate. Load the
+    // third-party widget only after a visitor has explicitly chosen a translation.
+    if (selected === 'ru') return
+
     const translateWindow = window as TranslateWindow
     translateWindow.googleTranslateElementInit = () => {
       const TranslateElement = translateWindow.google?.translate?.TranslateElement
@@ -52,12 +56,6 @@ export default function LanguageSwitcher() {
     setLanguage(nextLanguage)
     window.localStorage.setItem('magicmet-language', nextLanguage)
     setTranslationCookie(nextLanguage)
-    const googleSelect = document.querySelector<HTMLSelectElement>('.goog-te-combo')
-    if (googleSelect && nextLanguage !== 'ru') {
-      googleSelect.value = nextLanguage
-      googleSelect.dispatchEvent(new Event('change'))
-      return
-    }
     window.location.reload()
   }
 
