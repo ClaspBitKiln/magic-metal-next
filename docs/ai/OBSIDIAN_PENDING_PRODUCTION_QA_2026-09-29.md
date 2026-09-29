@@ -67,3 +67,18 @@
 - `inn-bot` не изменять.
 - Внутренние закупочные цены и Workbench не публиковать.
 - Секреты и токены не записывать в Git или проектные заметки.
+
+
+## Возврат полной версии — 29.09.2026, 15:15 (+05)
+
+- Обнаружена блокирующая причина новых Vercel deploy: значение `ignoreCommand` превышало лимит 256 символов.
+- Логика перенесена в `scripts/vercel-ignore-build.mjs`; в `vercel.json` оставлена короткая команда.
+- PR №41 вернул компонент `MagicMetalHome` вместо временной заглушки.
+- Preview Vercel получил статус Ready и был проверен до слияния.
+- Production build: 140/140 страниц.
+- На https://magicmet.ru снова работает полноценная главная, каталог разделов, справочник и форма заявки.
+- Production browser QA №24 прошёл: Chromium, Firefox и Lighthouse — успешно.
+- Run: https://github.com/ClaspBitKiln/magic-metal-next/actions/runs/36554239090
+- Production commit: `b38b32b`.
+
+**Итог:** временная заглушка снята; полноценный сайт опубликован и прошёл автоматическую production-проверку. `inn-bot` не изменялся.
