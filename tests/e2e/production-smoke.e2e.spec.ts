@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test'
 
 const maintenanceTitle = 'САЙТ НА РЕКОНСТРУКЦИИ'
 
-test('production loads the approved public state without critical resource failures', async ({ page, request, baseURL }) => {
+test('production loads the approved public state without critical resource failures', async ({ page, baseURL }) => {
   const origin = new URL(baseURL!).origin
   const failures: string[] = []
   const translateRequests: string[] = []
@@ -42,12 +42,10 @@ test('production loads the approved public state without critical resource failu
   expect(applied.fontFamily).not.toMatch(/Times New Roman/i)
   expect(applied.bodyMargin).toBe('0px')
 
-  const stylesheet = await page.locator('link[rel="stylesheet"]').first().getAttribute('href')
-  expect(stylesheet).toBeTruthy()
-  const cssResponse = await request.get(new URL(stylesheet!, origin).toString())
-  expect(cssResponse.status()).toBe(200)
-  expect(cssResponse.headers()['content-type']).toContain('text/css')
-  expect(await cssResponse.text()).not.toContain('fonts.googleapis.com')
+  const inlinedCss = page.locator('style[data-precedence="next"]')
+  await expect(inlinedCss).toHaveCount(1)
+  expect(await inlinedCss.textContent()).not.toContain('fonts.googleapis.com')
+  await expect(page.locator('link[rel="stylesheet"]')).toHaveCount(0)
 
   if (isMaintenance) {
     await expect(page.getByRole('heading', { name: maintenanceTitle, exact: true })).toHaveCount(1)
