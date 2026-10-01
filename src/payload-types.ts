@@ -72,8 +72,10 @@ export interface Config {
     products: Product;
     'request-files': RequestFile;
     requests: Request;
+    'deal-results': DealResult;
     'supplier-sources': SupplierSource;
     'supplier-offers': SupplierOffer;
+    'logistics-benchmarks': LogisticsBenchmark;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -86,8 +88,10 @@ export interface Config {
     products: ProductsSelect<false> | ProductsSelect<true>;
     'request-files': RequestFilesSelect<false> | RequestFilesSelect<true>;
     requests: RequestsSelect<false> | RequestsSelect<true>;
+    'deal-results': DealResultsSelect<false> | DealResultsSelect<true>;
     'supplier-sources': SupplierSourcesSelect<false> | SupplierSourcesSelect<true>;
     'supplier-offers': SupplierOffersSelect<false> | SupplierOffersSelect<true>;
+    'logistics-benchmarks': LogisticsBenchmarksSelect<false> | LogisticsBenchmarksSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -280,6 +284,33 @@ export interface Request {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "deal-results".
+ */
+export interface DealResult {
+  id: number;
+  request: number | Request;
+  result: 'won' | 'lost' | 'cancelled';
+  lossReason?: string | null;
+  quoteTotal?: number | null;
+  actualSellingTotal?: number | null;
+  currency?: ('RUB' | 'USD' | 'EUR' | 'UZS' | 'KZT' | 'CNY') | null;
+  actualPurchaseCost?: number | null;
+  actualLogisticsCost?: number | null;
+  actualLandedCost?: number | null;
+  actualGrossProfit?: number | null;
+  actualLeadTimeDays?: number | null;
+  deliverySuccessful?: boolean | null;
+  reclamation?: boolean | null;
+  reclamationNote?: string | null;
+  actualProcurementRoute?: string | null;
+  actualSupplier?: string | null;
+  recordedAt: string;
+  notes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "supplier-sources".
  */
 export interface SupplierSource {
@@ -287,6 +318,8 @@ export interface SupplierSource {
   name: string;
   code: string;
   website: string;
+  city?: string | null;
+  country?: string | null;
   sourceType: 'price-file' | 'public-catalog' | 'marketplace' | 'api';
   enabled?: boolean | null;
   publicVisible?: boolean | null;
@@ -306,11 +339,19 @@ export interface SupplierOffer {
   externalKey: string;
   category?: string | null;
   product: string;
+  productKey?: string | null;
   designation?: string | null;
+  designationKey?: string | null;
   size: string;
   diameter?: string | null;
+  diameterKey?: string | null;
   wall?: string | null;
+  wallKey?: string | null;
+  thicknessKey?: string | null;
+  lengthKey?: string | null;
+  productIdentityKey?: string | null;
   standard?: string | null;
+  standardKey?: string | null;
   price?: number | null;
   currency?: ('RUB' | 'USD' | 'EUR' | 'UZS' | 'KZT' | 'CNY') | null;
   unit?: string | null;
@@ -327,6 +368,33 @@ export interface SupplierOffer {
     | boolean
     | null;
   active?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "logistics-benchmarks".
+ */
+export interface LogisticsBenchmark {
+  id: number;
+  routeId: string;
+  origin: string;
+  destination: string;
+  mode: 'road' | 'rail' | 'sea' | 'multimodal';
+  dateFrom: string;
+  dateTo?: string | null;
+  averagePriceRub: number;
+  lowerPriceRub?: number | null;
+  upperPriceRub?: number | null;
+  averagePricePerKm?: number | null;
+  distanceKm?: number | null;
+  loadsCount?: number | null;
+  tonnage?: number | null;
+  carType?: string | null;
+  withNds?: boolean | null;
+  source: string;
+  evidenceLevel: 'observed' | 'verified';
+  observedAt: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -375,12 +443,20 @@ export interface PayloadLockedDocument {
         value: number | Request;
       } | null)
     | ({
+        relationTo: 'deal-results';
+        value: number | DealResult;
+      } | null)
+    | ({
         relationTo: 'supplier-sources';
         value: number | SupplierSource;
       } | null)
     | ({
         relationTo: 'supplier-offers';
         value: number | SupplierOffer;
+      } | null)
+    | ({
+        relationTo: 'logistics-benchmarks';
+        value: number | LogisticsBenchmark;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -561,12 +637,40 @@ export interface RequestsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "deal-results_select".
+ */
+export interface DealResultsSelect<T extends boolean = true> {
+  request?: T;
+  result?: T;
+  lossReason?: T;
+  quoteTotal?: T;
+  actualSellingTotal?: T;
+  currency?: T;
+  actualPurchaseCost?: T;
+  actualLogisticsCost?: T;
+  actualLandedCost?: T;
+  actualGrossProfit?: T;
+  actualLeadTimeDays?: T;
+  deliverySuccessful?: T;
+  reclamation?: T;
+  reclamationNote?: T;
+  actualProcurementRoute?: T;
+  actualSupplier?: T;
+  recordedAt?: T;
+  notes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "supplier-sources_select".
  */
 export interface SupplierSourcesSelect<T extends boolean = true> {
   name?: T;
   code?: T;
   website?: T;
+  city?: T;
+  country?: T;
   sourceType?: T;
   enabled?: T;
   publicVisible?: T;
@@ -585,11 +689,19 @@ export interface SupplierOffersSelect<T extends boolean = true> {
   externalKey?: T;
   category?: T;
   product?: T;
+  productKey?: T;
   designation?: T;
+  designationKey?: T;
   size?: T;
   diameter?: T;
+  diameterKey?: T;
   wall?: T;
+  wallKey?: T;
+  thicknessKey?: T;
+  lengthKey?: T;
+  productIdentityKey?: T;
   standard?: T;
+  standardKey?: T;
   price?: T;
   currency?: T;
   unit?: T;
@@ -598,6 +710,32 @@ export interface SupplierOffersSelect<T extends boolean = true> {
   observedAt?: T;
   raw?: T;
   active?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "logistics-benchmarks_select".
+ */
+export interface LogisticsBenchmarksSelect<T extends boolean = true> {
+  routeId?: T;
+  origin?: T;
+  destination?: T;
+  mode?: T;
+  dateFrom?: T;
+  dateTo?: T;
+  averagePriceRub?: T;
+  lowerPriceRub?: T;
+  upperPriceRub?: T;
+  averagePricePerKm?: T;
+  distanceKm?: T;
+  loadsCount?: T;
+  tonnage?: T;
+  carType?: T;
+  withNds?: T;
+  source?: T;
+  evidenceLevel?: T;
+  observedAt?: T;
   updatedAt?: T;
   createdAt?: T;
 }

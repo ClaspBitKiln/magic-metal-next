@@ -2,6 +2,11 @@ import { describe, expect, it } from 'vitest'
 import { buildProductIdentityKey, normalizeProductIdentity } from '../../src/lib/procurement/productIdentity'
 
 describe('product identity', () => {
+  it('treats nullable database fields as missing, not zero dimensions', () => {
+    expect(normalizeProductIdentity({ product: null, designation: null, diameter: null, wall: null }))
+      .toEqual(normalizeProductIdentity({}))
+    expect(normalizeProductIdentity({ diameter: 0 }).diameterKey).toBe('0')
+  })
   it('normalizes Russian text, ГОСТ and dimensions deterministically', () => {
     const identity = normalizeProductIdentity({ product: 'Труба  ', designation: '20', standard: 'ГОСТ 8732', diameter: '100,0', wall: '5,0' })
     expect(identity.productKey).toBe('труба')
