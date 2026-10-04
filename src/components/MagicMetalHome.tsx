@@ -23,11 +23,11 @@ export default function MagicMetalHome() {
           <img src="/images/hero-mercedes-1024.webp" alt="" width="1440" height="810" fetchPriority="high" />
         </picture>
         <div className="hero-content">
-          <p className="eyebrow">Поставки по России и на экспорт</p>
-          <h1 id="hero-title">СЛОЖНЫЕ ПРОМЫШЛЕННЫЕ ЗАЯВКИ — <em>КОМПЛЕКТУЕМ МЕТАЛЛ</em></h1>
-          <p>Проверяем ГОСТ и ТУ, находим редкие позиции и обоснованные аналоги. Самовывоз или доставка.</p>
-          <div className="hero-actions"><a className="primary-button" href="#request">Отправить заявку</a><a className="secondary-link" href="tel:+79227117363">Позвонить</a></div>
-          <ul aria-label="Преимущества"><li>20+ лет опыта</li><li>Документы на продукцию</li><li>Россия и СНГ</li></ul>
+          <p className="eyebrow">Россия · Казахстан · Узбекистан · Кыргызстан</p>
+          <h1 id="hero-title">Комплектуем сложные заявки <em>на металл</em></h1>
+          <p>Проверим спецификацию, ГОСТ и ТУ. Предложим подтверждённый вариант, обоснованную замену и логистику.</p>
+          <div className="hero-actions"><a className="primary-button" href="#request">Отправить спецификацию</a><a className="secondary-link" href="tel:+79227117363">Позвонить</a></div>
+          <ul aria-label="Преимущества"><li>20+ лет опыта</li><li>Проверка документов</li><li>Самовывоз или доставка</li></ul>
         </div>
       </section>
 
@@ -39,7 +39,7 @@ export default function MagicMetalHome() {
       </section>
 
       <section className="minimal-request" id="request">
-        <div className="request-copy" id="contacts"><p className="eyebrow">Расчёт поставки</p><h2>Отправьте заявку</h2><p>Прикрепите спецификацию или опишите позиции. При необходимости согласуем замену.</p><a href="mailto:m1@magicmet.ru">m1@magicmet.ru</a><a href="tel:+79227117363">+7 922 711-73-63</a></div>
+        <div className="request-copy" id="contacts"><p className="eyebrow">Расчёт поставки</p><h2>Пришлите спецификацию</h2><p>Проверим требования, согласуем замену при необходимости и подготовим предложение. Укажите город доставки или самовывоз.</p><a href="mailto:m1@magicmet.ru">m1@magicmet.ru</a><a href="tel:+79227117363">+7 922 711-73-63</a></div>
         <RequestForm />
       </section>
 

@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { FormEvent, useEffect, useState } from 'react'
+import { FormEvent, useEffect, useRef, useState } from 'react'
 import { hasRequestConsent, REQUEST_CONSENT_ERROR } from '@/lib/requestValidation'
 
 export default function RequestForm() {
@@ -11,6 +11,7 @@ export default function RequestForm() {
   const [selectedFiles, setSelectedFiles] = useState(0)
   const [selectedProduct, setSelectedProduct] = useState('')
   const [startedAt] = useState(() => Date.now())
+  const formStarted = useRef(false)
 
   useEffect(() => {
     const syncSelectedProduct = () => setSelectedProduct(new URLSearchParams(window.location.search).get('product')?.trim() || '')
@@ -34,6 +35,20 @@ export default function RequestForm() {
     setFormError('')
     setStatus('idle')
     setFormStep(2)
+    trackFormEvent('request_step_2')
+  }
+
+  function trackFormEvent(goal: 'request_started' | 'request_step_2') {
+    const analytics = window as Window & { ym?: (id: number, action: string, goal: string) => void; gtag?: (action: string, event: string) => void }
+    const metrikaId = Number(process.env.NEXT_PUBLIC_YANDEX_METRIKA_ID || 0)
+    if (metrikaId) analytics.ym?.(metrikaId, 'reachGoal', goal)
+    analytics.gtag?.('event', goal)
+  }
+
+  function trackFormStart() {
+    if (formStarted.current) return
+    formStarted.current = true
+    trackFormEvent('request_started')
   }
 
   async function submitRequest(event: FormEvent<HTMLFormElement>) {
@@ -89,7 +104,7 @@ export default function RequestForm() {
   }
 
   return (
-    <form className="request-form" onSubmit={submitRequest} encType="multipart/form-data" noValidate>
+    <form className="request-form" onSubmit={submitRequest} onFocusCapture={trackFormStart} encType="multipart/form-data" noValidate>
       {selectedProduct && <p className="selected-product">Выбран раздел: <strong>{selectedProduct}</strong></p>}
       <div className="form-stage" hidden={formStep !== 1}>
         <label className="file-field"><span className="file-button">Прикрепить файл</span><input name="files" type="file" multiple accept=".xlsx,.xls,.pdf,.doc,.docx,.png,.jpg,.jpeg,.webp,.dwg,.dxf,.mp3,.m4a,.wav,.ogg,.webm,audio/*" onChange={(event) => setSelectedFiles(event.currentTarget.files?.length || 0)} />{selectedFiles > 0 && <strong>{`Выбрано файлов: ${selectedFiles}`}</strong>}<small>Excel, PDF, Word, фото, чертежи или аудио · до 25 МБ</small></label>
@@ -100,11 +115,12 @@ export default function RequestForm() {
       <div className="form-stage" hidden={formStep !== 2}>
         <div className="form-step"><strong>Контактные данные</strong><span>Укажите телефон или email.</span></div>
         <div className="form-grid"><label>Ваше имя<input name="name" autoComplete="name" /></label><label>Компания<input name="company" autoComplete="organization" /></label><label>Телефон<input name="phone" type="tel" inputMode="tel" autoComplete="tel" /></label><label>Email<input name="email" type="email" autoComplete="email" /></label></div>
+        <label>Город доставки или самовывоз<input name="delivery" autoComplete="address-level2" placeholder="Например: Алматы или самовывоз" /></label>
         <label>Направление<select name="productDirection" defaultValue=""><option value="">Выберите при необходимости</option><option value="electrowelded-pipes">Трубы электросварные</option><option value="seamless-pipes">Трубы бесшовные</option><option value="pipeline-parts">СДТ</option><option value="insulated">Трубы и СДТ в изоляции</option><option value="other">Другая продукция</option></select></label>
         <label className="honeypot" aria-hidden="true" hidden>Ваш сайт<input name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" /></label>
         <label className="consent"><input name="consent" type="checkbox" required /><span>Согласен на <Link href="/politika-konfidencialnosti">обработку персональных данных</Link> для подготовки коммерческого предложения</span></label>
         <button className="form-back" type="button" onClick={() => { setStatus('idle'); setFormError(''); setFormStep(1) }}>← Изменить заявку</button>
-        <button type="submit" disabled={status === 'sending'}>{status === 'sending' ? 'Отправляем…' : 'Отправить заявку'} <span>→</span></button>
+        <button type="submit" disabled={status === 'sending'}>{status === 'sending' ? 'Отправляем…' : 'Отправить на расчёт'} <span>→</span></button>
       </div>
       {status === 'success' && <p className="form-status success">Заявка принята. Мы свяжемся с вами.</p>}
       {status === 'error' && <p className="form-status error" role="alert">{formError || 'Не удалось отправить. Позвоните нам или напишите на m1@magicmet.ru.'}</p>}

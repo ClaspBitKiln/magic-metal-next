@@ -79,6 +79,7 @@ export async function POST(request: Request) {
   const phone = text(form, 'phone', 80)
   const email = text(form, 'email', 180)
   const message = text(form, 'message', 8000)
+  const delivery = text(form, 'delivery', 240)
   const context = text(form, 'context', 300)
   const productDirection = text(form, 'productDirection', 80)
   const files = form.getAll('files').filter((value): value is File => value instanceof File && value.size > 0)
@@ -86,7 +87,7 @@ export async function POST(request: Request) {
   if (!message && files.length === 0) return NextResponse.json({ error: 'Прикрепите заявку или опишите задачу' }, { status: 400 })
   const requestName = name || company || 'Клиент сайта'
   const requestPhone = phone || email
-  const requestMessage = message || 'Требования приложены в файлах.'
+  const requestMessage = [message || 'Требования приложены в файлах.', delivery ? `Получение: ${delivery}` : ''].filter(Boolean).join('\n\n')
 
   const totalSize = files.reduce((sum, file) => sum + file.size, 0)
   if (totalSize > MAX_TOTAL_FILE_SIZE) return NextResponse.json({ error: 'Файлы превышают 25 МБ' }, { status: 413 })
@@ -155,7 +156,7 @@ export async function POST(request: Request) {
       await transporter.sendMail({
         from: process.env.SMTP_USER, to: process.env.REQUEST_TO_EMAIL || 'm1@magicmet.ru', replyTo: email || undefined,
         subject: `Заявка с сайта: ${company || name || phone || email}`,
-        html: `<h2>Новая заявка с сайта</h2><p><b>Имя:</b> ${escapeHtml(name || '—')}</p><p><b>Компания:</b> ${escapeHtml(company || '—')}</p><p><b>Телефон:</b> ${escapeHtml(phone || '—')}</p><p><b>Email:</b> ${escapeHtml(email || '—')}</p><p><b>Направление:</b> ${escapeHtml(productDirection || 'не выбрано')}</p><p><b>Контекст:</b> ${escapeHtml(context || 'не указан')}</p><p><b>Запрос:</b><br>${escapeHtml(requestMessage).replace(/\n/g, '<br>')}</p><hr><p>Источник: ${escapeHtml(source)}<br>Страница: ${escapeHtml(landingPage)}</p>`,
+        html: `<h2>Новая заявка с сайта</h2><p><b>Имя:</b> ${escapeHtml(name || '—')}</p><p><b>Компания:</b> ${escapeHtml(company || '—')}</p><p><b>Телефон:</b> ${escapeHtml(phone || '—')}</p><p><b>Email:</b> ${escapeHtml(email || '—')}</p><p><b>Получение:</b> ${escapeHtml(delivery || 'не указано')}</p><p><b>Направление:</b> ${escapeHtml(productDirection || 'не выбрано')}</p><p><b>Контекст:</b> ${escapeHtml(context || 'не указан')}</p><p><b>Запрос:</b><br>${escapeHtml(requestMessage).replace(/\n/g, '<br>')}</p><hr><p>Источник: ${escapeHtml(source)}<br>Страница: ${escapeHtml(landingPage)}</p>`,
         attachments,
       })
       emailDelivered = true
@@ -174,7 +175,7 @@ export async function POST(request: Request) {
       const workflowPayload = JSON.stringify({
         event: 'website.request.created',
         occurredAt: new Date().toISOString(),
-        request: { id: created?.id || null, name, company, phone, email, message, context, productDirection, source, landingPage, fileIds: uploadedIds },
+        request: { id: created?.id || null, name, company, phone, email, message: requestMessage, delivery, context, productDirection, source, landingPage, fileIds: uploadedIds },
       })
       const signature = process.env.N8N_WEBHOOK_SECRET
         ? createHmac('sha256', process.env.N8N_WEBHOOK_SECRET).update(workflowPayload).digest('hex')

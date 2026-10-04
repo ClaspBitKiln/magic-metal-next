@@ -55,7 +55,7 @@ test('production loads the approved public state without critical resource failu
     await expect(page.getByRole('heading', { name: maintenanceTitle, exact: true })).toHaveCount(1)
     await expect(page.locator('main')).toBeVisible()
   } else {
-    expect(headingText).toContain('СЛОЖНЫЕ ПРОМЫШЛЕННЫЕ')
+    expect(headingText).toContain('Комплектуем сложные заявки')
     await expect(page.locator('#request')).toBeAttached()
 
     const hero = page.locator('.hero-picture img')
@@ -65,7 +65,7 @@ test('production loads the approved public state without critical resource failu
     expect(new URL(currentHero, origin).pathname).toMatch(/^\/images\/hero-mercedes-(640|1024|1440)\.webp$/)
     await expect(page.locator('#products')).toBeVisible()
 
-    await page.getByRole('link', { name: /Отправить заявку/i }).first().click()
+    await page.getByRole('link', { name: /Отправить спецификацию/i }).first().click()
     await expect(page.locator('#request')).toBeVisible()
   }
 
@@ -87,13 +87,14 @@ test('mobile receives the small hero and has no horizontal overflow', async ({ p
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
 })
 
-test('www hostname serves the same approved public state', async ({ page }) => {
+test('www hostname redirects to the canonical apex host', async ({ page }) => {
   const response = await page.goto('https://www.magicmet.ru/', { waitUntil: 'domcontentloaded' })
   expect(response?.status()).toBe(200)
+  expect(new URL(page.url()).hostname).toBe('magicmet.ru')
 
   const headingText = (await page.locator('h1').innerText()).trim()
   expect(
-    headingText === maintenanceTitle || headingText.includes('СЛОЖНЫЕ ПРОМЫШЛЕННЫЕ'),
+    headingText === maintenanceTitle || headingText.includes('Комплектуем сложные заявки'),
   ).toBe(true)
   expect(await page.evaluate(() => getComputedStyle(document.body).margin)).toBe('0px')
 })
@@ -104,7 +105,7 @@ test('critical public content stays visible when JavaScript is unavailable', asy
   const response = await page.goto(baseURL!, { waitUntil: 'domcontentloaded' })
 
   expect(response?.status()).toBe(200)
-  await expect(page.getByRole('heading', { name: /СЛОЖНЫЕ ПРОМЫШЛЕННЫЕ/i })).toBeVisible()
+  await expect(page.getByRole('heading', { name: /Комплектуем сложные заявки/i })).toBeVisible()
   await expect(page.locator('#products')).toBeVisible()
   await expect(page.locator('#request')).toBeVisible()
   await expect(page.getByRole('link', { name: /\+7 922 711-73-63/ }).first()).toBeVisible()
