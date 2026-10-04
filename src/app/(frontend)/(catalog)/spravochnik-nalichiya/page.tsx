@@ -3,8 +3,6 @@ import Link from 'next/link'
 import MarketDirectory from '@/components/MarketDirectory'
 import CartLink from '@/components/CartLink'
 import QuoteDock from '@/components/QuoteDock'
-import '../styles.css'
-
 export const metadata: Metadata = {
   title: 'Размеры и наличие металлопроката | Мэджик Металл',
   description: 'Размеры и наличие металлопроката с удобными фильтрами и формированием единого коммерческого предложения.',
