@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import React from 'react'
 import Analytics from '@/components/Analytics'
+import './styles.css'
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://magicmet.ru'),
