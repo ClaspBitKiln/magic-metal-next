@@ -26,7 +26,10 @@ test('production loads the approved public state without critical resource failu
 
   const response = await page.goto('/', { waitUntil: 'domcontentloaded' })
   expect(response?.status()).toBe(200)
-  expect((await response!.body()).byteLength).toBeLessThan(80_000)
+  // Firefox can fail while reading a navigation response body through the
+  // protocol even though the document loaded successfully. Measure the
+  // serialized document instead; this keeps the size budget browser-neutral.
+  expect(Buffer.byteLength(await page.content(), 'utf8')).toBeLessThan(80_000)
 
   const heading = page.locator('h1')
   await expect(heading).toBeVisible()
