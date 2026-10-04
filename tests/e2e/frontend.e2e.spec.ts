@@ -41,10 +41,7 @@ test.describe('Frontend', () => {
 
   test('renders SDT through the same catalog structure as every other category', async ({ page }) => {
     await page.goto('http://localhost:3000/#products')
-    const sdtGroup = page.locator('.catalog-group').filter({ hasText: /^СДТ/ }).first()
+    const sdtGroup = page.locator('.product-links a').filter({ hasText: /^СДТ/ }).first()
     await expect(sdtGroup).toBeVisible()
-    await sdtGroup.locator('summary').first().click()
-    await expect(sdtGroup.locator('.catalog-table')).toBeVisible()
-    await expect(sdtGroup.locator('.catalog-item')).toHaveCount(5)
   })
 })

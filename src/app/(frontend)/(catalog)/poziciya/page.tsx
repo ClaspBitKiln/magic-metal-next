@@ -2,8 +2,6 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import CatalogPosition from '@/components/CatalogPosition'
 import CartLink from '@/components/CartLink'
-import '../styles.css'
-
 export const metadata: Metadata = {
   title: 'Карточка позиции | Мэджик Металл',
   description: 'Размер, наличие, теоретическая масса и характеристики позиции металлопроката.',

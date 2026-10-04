@@ -13,5 +13,11 @@ export default defineConfig([
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
     },
   },
-  globalIgnores(['.next/**', 'src/payload-types.ts', 'src/payload-generated-schema.ts']),
+  globalIgnores([
+    '.next/**',
+    'playwright-report/**',
+    'test-results/**',
+    'src/payload-types.ts',
+    'src/payload-generated-schema.ts',
+  ]),
 ])
