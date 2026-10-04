@@ -20,6 +20,14 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: process.env.SIMPLE_PUBLIC_SITE_BUILD === '1',
   },
+  async redirects() {
+    return [{
+      source: '/:path*',
+      has: [{ type: 'host', value: 'www.magicmet.ru' }],
+      destination: 'https://magicmet.ru/:path*',
+      permanent: true,
+    }]
+  },
   async headers() {
     return [
       { source: '/images/:path*', headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }] },
