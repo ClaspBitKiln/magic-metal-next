@@ -1,4 +1,10 @@
 import { spawn } from 'node:child_process'
+import { copyFileSync } from 'node:fs'
+
+copyFileSync(
+  new URL('../src/app/(frontend)/styles.css', import.meta.url),
+  new URL('../public/site.css', import.meta.url),
+)
 
 // Public pages are statically generated and do not need a live database during
 // compilation. These values exist only in the build subprocess so a fresh

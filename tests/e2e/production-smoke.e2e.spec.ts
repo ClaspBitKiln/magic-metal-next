@@ -6,8 +6,14 @@ test('production loads the approved public state without critical resource failu
   const origin = new URL(baseURL!).origin
   const failures: string[] = []
   const translateRequests: string[] = []
+  let fullCssStatus: number | undefined
+  let fullCssType: string | undefined
 
   page.on('response', (response) => {
+    if (new URL(response.url()).pathname === '/site.css') {
+      fullCssStatus = response.status()
+      fullCssType = response.headers()['content-type']
+    }
     if (response.url().startsWith(origin) && response.status() >= 400) {
       failures.push(`HTTP ${response.status()} ${response.url()}`)
     }
@@ -23,6 +29,9 @@ test('production loads the approved public state without critical resource failu
     }
   })
   page.on('pageerror', (error) => failures.push(`PAGE_ERROR ${error.message}`))
+  page.on('console', (message) => {
+    if (message.type() === 'error') failures.push(`CONSOLE_ERROR ${message.text()}`)
+  })
 
   const response = await page.goto('/', { waitUntil: 'domcontentloaded' })
   expect(response?.status()).toBe(200)
@@ -55,7 +64,12 @@ test('production loads the approved public state without critical resource failu
   expect(criticalCss).not.toContain('fonts.googleapis.com')
   const fullCss = page.locator('link#full-site-css')
   await expect(fullCss).toHaveCount(1)
-  await expect(fullCss).toHaveAttribute('href', '/site.css')
+  await expect(fullCss).toHaveAttribute('href', '/site.css?v=20261005')
+  await expect.poll(() => fullCss.evaluate((link: HTMLLinkElement) => link.media)).toBe('all')
+  await expect.poll(() => fullCss.evaluate((link: HTMLLinkElement) => Boolean(link.sheet))).toBe(true)
+  expect(fullCssStatus).toBe(200)
+  expect(fullCssType).toContain('text/css')
+  expect(await page.locator('#products').evaluate((node) => getComputedStyle(node).position)).toBe('relative')
 
   if (isMaintenance) {
     await expect(page.getByRole('heading', { name: maintenanceTitle, exact: true })).toHaveCount(1)

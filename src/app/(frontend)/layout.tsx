@@ -3,8 +3,6 @@ import React from 'react'
 import Analytics from '@/components/Analytics'
 import './critical.css'
 
-/* eslint-disable @next/next/no-css-tags -- The complete non-critical design is intentionally loaded after first paint. */
-
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://magicmet.ru'),
   title: {
@@ -30,6 +28,7 @@ export const viewport: Viewport = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const fullCssHref = '/site.css?v=20261005'
   const organizationJsonLd = {
     '@context': 'https://schema.org', '@type': 'Organization', name: 'ООО «Мэджик Металл»', url: 'https://magicmet.ru',
     email: 'm1@magicmet.ru', telephone: '+7 922 711-73-63', logo: 'https://magicmet.ru/images/logo-transparent-v2.png',
@@ -44,9 +43,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ru">
       <head>
-        <link id="full-site-css" rel="stylesheet" href="/site.css" media="print" />
+        <link id="full-site-css" rel="stylesheet" href={fullCssHref} media="print" suppressHydrationWarning />
         <script id="full-site-css-loader" dangerouslySetInnerHTML={{ __html: `(()=>{const l=document.getElementById('full-site-css');if(!l)return;const a=()=>{l.media='all'};l.addEventListener('load',a,{once:true});if(l.sheet)a()})()` }} />
-        <noscript><link rel="stylesheet" href="/site.css" /></noscript>
+        <noscript><link rel="stylesheet" href={fullCssHref} /></noscript>
       </head>
       <body><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([organizationJsonLd, websiteJsonLd]).replace(/</g, '\\u003c') }} />{children}<Analytics /></body>
     </html>
