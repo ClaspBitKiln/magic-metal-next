@@ -1,4 +1,10 @@
 import { spawn } from 'node:child_process'
+import { copyFileSync } from 'node:fs'
+
+copyFileSync(
+  new URL('../src/app/(frontend)/styles.css', import.meta.url),
+  new URL('../public/site.css', import.meta.url),
+)
 
 const portArg = process.argv.indexOf('--port')
 const port = portArg >= 0 ? process.argv[portArg + 1] : '3000'

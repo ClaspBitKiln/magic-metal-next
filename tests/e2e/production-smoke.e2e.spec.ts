@@ -6,8 +6,14 @@ test('production loads the approved public state without critical resource failu
   const origin = new URL(baseURL!).origin
   const failures: string[] = []
   const translateRequests: string[] = []
+  let fullCssStatus: number | undefined
+  let fullCssType: string | undefined
 
   page.on('response', (response) => {
+    if (new URL(response.url()).pathname === '/site.css') {
+      fullCssStatus = response.status()
+      fullCssType = response.headers()['content-type']
+    }
     if (response.url().startsWith(origin) && response.status() >= 400) {
       failures.push(`HTTP ${response.status()} ${response.url()}`)
     }
@@ -23,15 +29,18 @@ test('production loads the approved public state without critical resource failu
     }
   })
   page.on('pageerror', (error) => failures.push(`PAGE_ERROR ${error.message}`))
+  page.on('console', (message) => {
+    if (message.type() === 'error') failures.push(`CONSOLE_ERROR ${message.text()}`)
+  })
 
   const response = await page.goto('/', { waitUntil: 'domcontentloaded' })
   expect(response?.status()).toBe(200)
   // Firefox can fail while reading a navigation response body through the
   // protocol even though the document loaded successfully. Measure the
   // serialized document instead; this keeps the size budget browser-neutral.
-  // The restored September design intentionally keeps the critical stylesheet
-  // inline so slow clients never wait on a second render-blocking request.
-  expect(Buffer.byteLength(await page.content(), 'utf8')).toBeLessThan(210_000)
+  // Only the first screen is inlined. The complete September design is loaded
+  // in the background so slow clients can paint useful content immediately.
+  expect(Buffer.byteLength(await page.content(), 'utf8')).toBeLessThan(90_000)
 
   const heading = page.locator('h1')
   await expect(heading).toBeVisible()
@@ -50,8 +59,17 @@ test('production loads the approved public state without critical resource failu
 
   const inlinedCss = page.locator('style[data-precedence="next"]')
   await expect(inlinedCss).toHaveCount(1)
-  expect(await inlinedCss.textContent()).not.toContain('fonts.googleapis.com')
-  await expect(page.locator('link[rel="stylesheet"]')).toHaveCount(0)
+  const criticalCss = await inlinedCss.textContent()
+  expect(Buffer.byteLength(criticalCss || '', 'utf8')).toBeLessThan(10_000)
+  expect(criticalCss).not.toContain('fonts.googleapis.com')
+  const fullCss = page.locator('link#full-site-css')
+  await expect(fullCss).toHaveCount(1)
+  await expect(fullCss).toHaveAttribute('href', '/site.css?v=20261005')
+  await expect.poll(() => fullCss.evaluate((link: HTMLLinkElement) => link.media)).toBe('all')
+  await expect.poll(() => fullCss.evaluate((link: HTMLLinkElement) => Boolean(link.sheet))).toBe(true)
+  expect(fullCssStatus).toBe(200)
+  expect(fullCssType).toContain('text/css')
+  expect(await page.locator('#products').evaluate((node) => getComputedStyle(node).position)).toBe('relative')
 
   if (isMaintenance) {
     await expect(page.getByRole('heading', { name: maintenanceTitle, exact: true })).toHaveCount(1)
