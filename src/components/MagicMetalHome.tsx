@@ -11,7 +11,12 @@ export default function MagicMetalHome() {
       <PublicHeader />
 
       <section className="hero" id="top" aria-labelledby="hero-title">
-        <Image className="hero-visual" src="/images/hero-mercedes-v5.webp" alt="Брендированный грузовой автомобиль Mercedes-Benz Мэджик Металл, промышленное производство, металлопрокат, трубы и детали трубопроводов" fill priority fetchPriority="high" sizes="100vw" unoptimized />
+        <picture>
+          <source media="(max-width: 700px)" srcSet="/images/hero-mercedes-640.webp" />
+          <source media="(max-width: 1200px)" srcSet="/images/hero-mercedes-1024.webp" />
+          <source srcSet="/images/hero-mercedes-1440.webp" />
+          <img className="hero-visual" src="/images/hero-mercedes-1440.webp" alt="Брендированный грузовой автомобиль Mercedes-Benz Мэджик Металл, промышленное производство, металлопрокат, трубы и детали трубопроводов" width="1440" height="810" fetchPriority="high" />
+        </picture>
         <div className="hero-copy" id="content">
           <p className="hero-label">
             <span>СРОЧНЫЕ ПОСТАВКИ:</span>

@@ -64,7 +64,7 @@ test('production loads the approved public state without critical resource failu
     await expect(hero).toBeVisible()
     await expect.poll(() => hero.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true)
     const currentHero = await hero.evaluate((image: HTMLImageElement) => image.currentSrc)
-    expect(new URL(currentHero, origin).pathname).toBe('/images/hero-mercedes-v5.webp')
+    expect(new URL(currentHero, origin).pathname).toMatch(/^\/images\/hero-mercedes-(640|1024|1440)\.webp$/)
     await expect(page.locator('#products')).toBeVisible()
 
     await page.getByRole('link', { name: /Отправить заявку/i }).first().click()
@@ -75,7 +75,7 @@ test('production loads the approved public state without critical resource failu
   expect(translateRequests, translateRequests.join('\n')).toEqual([])
 })
 
-test('mobile receives the direct hero and has no horizontal overflow', async ({ page, baseURL }) => {
+test('mobile receives the small hero and has no horizontal overflow', async ({ page, baseURL }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   const response = await page.goto(baseURL!, { waitUntil: 'domcontentloaded' })
   expect(response?.status()).toBe(200)
@@ -83,7 +83,7 @@ test('mobile receives the direct hero and has no horizontal overflow', async ({ 
   const hero = page.locator('.hero-visual')
   await expect(hero).toBeVisible()
   await expect.poll(() => hero.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true)
-  expect(new URL(await hero.evaluate((image: HTMLImageElement) => image.currentSrc)).pathname).toBe('/images/hero-mercedes-v5.webp')
+  expect(new URL(await hero.evaluate((image: HTMLImageElement) => image.currentSrc)).pathname).toBe('/images/hero-mercedes-640.webp')
   await expect(page.locator('#products')).toBeVisible()
   await expect(page.locator('#request')).toBeAttached()
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
