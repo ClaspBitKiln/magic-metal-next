@@ -8,12 +8,11 @@ const dirname = path.dirname(__filename)
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
-  // Keep the public site styled even when a regional network path delays
-  // requests to /_next/static CSS. Next emits the route CSS inside the HTML,
-  // removing a render-critical round trip for the homepage and catalog pages.
   experimental: {
     inlineCss: true,
   },
+  // Keep the first screen in the HTML and load the full stylesheet without
+  // blocking paint. This limits white-screen failures on slow regional paths.
   // The public launch is intentionally isolated from unfinished internal
   // procurement modules already present on main. Their type errors remain
   // visible in `tsc --noEmit` and must not block the static public website.
