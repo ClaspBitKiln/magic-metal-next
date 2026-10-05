@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from 'next'
 import React from 'react'
 import Analytics from '@/components/Analytics'
-import './styles.css'
+import './critical.css'
+
+/* eslint-disable @next/next/no-css-tags -- The complete non-critical design is intentionally loaded after first paint. */
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://magicmet.ru'),
@@ -41,6 +43,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   }
   return (
     <html lang="ru">
+      <head>
+        <link id="full-site-css" rel="stylesheet" href="/site.css" media="print" />
+        <script id="full-site-css-loader" dangerouslySetInnerHTML={{ __html: `(()=>{const l=document.getElementById('full-site-css');if(!l)return;const a=()=>{l.media='all'};l.addEventListener('load',a,{once:true});if(l.sheet)a()})()` }} />
+        <noscript><link rel="stylesheet" href="/site.css" /></noscript>
+      </head>
       <body><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([organizationJsonLd, websiteJsonLd]).replace(/</g, '\\u003c') }} />{children}<Analytics /></body>
     </html>
   )
