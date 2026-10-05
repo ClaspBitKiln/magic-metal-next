@@ -29,9 +29,9 @@ test('production loads the approved public state without critical resource failu
   // Firefox can fail while reading a navigation response body through the
   // protocol even though the document loaded successfully. Measure the
   // serialized document instead; this keeps the size budget browser-neutral.
-  // The restored September design intentionally keeps the critical stylesheet
-  // inline so slow clients never wait on a second render-blocking request.
-  expect(Buffer.byteLength(await page.content(), 'utf8')).toBeLessThan(210_000)
+  // Only the first screen is inlined. The complete September design is loaded
+  // in the background so slow clients can paint useful content immediately.
+  expect(Buffer.byteLength(await page.content(), 'utf8')).toBeLessThan(90_000)
 
   const heading = page.locator('h1')
   await expect(heading).toBeVisible()
@@ -50,8 +50,12 @@ test('production loads the approved public state without critical resource failu
 
   const inlinedCss = page.locator('style[data-precedence="next"]')
   await expect(inlinedCss).toHaveCount(1)
-  expect(await inlinedCss.textContent()).not.toContain('fonts.googleapis.com')
-  await expect(page.locator('link[rel="stylesheet"]')).toHaveCount(0)
+  const criticalCss = await inlinedCss.textContent()
+  expect(Buffer.byteLength(criticalCss || '', 'utf8')).toBeLessThan(10_000)
+  expect(criticalCss).not.toContain('fonts.googleapis.com')
+  const fullCss = page.locator('link#full-site-css')
+  await expect(fullCss).toHaveCount(1)
+  await expect(fullCss).toHaveAttribute('href', '/site.css')
 
   if (isMaintenance) {
     await expect(page.getByRole('heading', { name: maintenanceTitle, exact: true })).toHaveCount(1)
