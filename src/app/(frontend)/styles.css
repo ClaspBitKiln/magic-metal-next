@@ -313,8 +313,10 @@ body { top: 0 !important; }
   overflow: hidden;
 }
 .hero-visual {
+  position: absolute;
   z-index: -2;
   inset: 0 0 94px !important;
+  width: 100%;
   height: auto !important;
   object-fit: cover;
   object-position: right bottom;
