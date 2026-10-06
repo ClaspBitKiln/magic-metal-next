@@ -312,24 +312,30 @@ body { top: 0 !important; }
   background: #f7faff;
   overflow: hidden;
 }
+.hero > picture {
+  position: absolute;
+  z-index: 0;
+  inset: 0 0 94px;
+}
 .hero-visual {
   position: absolute;
-  z-index: -2;
-  inset: 0 0 94px !important;
+  inset: 0 !important;
   width: 100%;
-  height: auto !important;
+  height: 100% !important;
   object-fit: cover;
   object-position: right bottom;
 }
 .hero:after {
   content: '';
   position: absolute;
-  z-index: -1;
+  z-index: 1;
   inset: 0;
   background: linear-gradient(90deg, rgba(255, 255, 255, 0.23), transparent 48%);
   pointer-events: none;
 }
 .hero-copy {
+  position: relative;
+  z-index: 2;
   width: min(700px, 49vw);
   padding: clamp(62px, 8vh, 82px) 0 190px 5.5vw;
 }
@@ -1380,8 +1386,10 @@ h2 {
     min-height: calc(890px - 76px);
   }
   .hero-visual {
-    inset: 0 0 125px !important;
     object-position: 66% bottom;
+  }
+  .hero > picture {
+    inset-bottom: 125px;
   }
   .hero:after {
     background: linear-gradient(

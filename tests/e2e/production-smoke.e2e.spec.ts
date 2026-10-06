@@ -78,6 +78,11 @@ test('production loads the approved public state without critical resource failu
     expect(headingText).toContain('СЛОЖНЫЕ ПРОМЫШЛЕННЫЕ')
     await expect(page.locator('#request')).toBeAttached()
 
+    const logo = page.locator('.brand img')
+    await expect(logo).toBeVisible()
+    await expect.poll(() => logo.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth === 147)).toBe(true)
+    expect(new URL(await logo.evaluate((image: HTMLImageElement) => image.currentSrc), origin).pathname).toBe('/images/logo.png')
+
     const hero = page.locator('.hero-visual')
     await expect(hero).toBeVisible()
     await expect.poll(() => hero.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true)
@@ -129,6 +134,8 @@ test('critical public content stays visible when JavaScript is unavailable', asy
   await expect(page.locator('#products')).toBeVisible()
   await expect(page.locator('#request')).toBeVisible()
   await expect(page.getByRole('link', { name: /\+7 922 711-73-63/ }).first()).toBeVisible()
+  await expect(page.locator('.brand img')).toBeVisible()
+  await expect(page.locator('.hero-visual')).toBeVisible()
 
   await context.close()
 })

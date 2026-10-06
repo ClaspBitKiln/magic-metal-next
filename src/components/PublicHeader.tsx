@@ -16,7 +16,7 @@ export default function PublicHeader() {
 
   return (
     <header className="topbar">
-      <a className="brand" href="#top" aria-label="Мэджик Металл — главная"><Image src="/images/logo-transparent-v2.png" alt="Мэджик Металл" width={147} height={109} /></a>
+      <a className="brand" href="#top" aria-label="Мэджик Металл — главная"><Image src="/images/logo.png" alt="Мэджик Металл" width={147} height={109} loading="eager" fetchPriority="high" unoptimized /></a>
       <nav className={menuOpen ? 'nav open' : 'nav'} aria-label="Основная навигация">
         <a href="#about" onClick={() => setMenuOpen(false)}>О компании</a><a href="#products" onClick={() => setMenuOpen(false)}>Продукция</a><Link href="/spravochnik-gost">Справочник ГОСТ</Link><a href="#contacts" onClick={() => setMenuOpen(false)}>Контакты</a>
       </nav>
