@@ -40,7 +40,7 @@ test('production loads the approved public state without critical resource failu
   // serialized document instead; this keeps the size budget browser-neutral.
   // Only the first screen is inlined. The complete September design is loaded
   // in the background so slow clients can paint useful content immediately.
-  expect(Buffer.byteLength(await page.content(), 'utf8')).toBeLessThan(150_000)
+  expect(Buffer.byteLength(await page.content(), 'utf8')).toBeLessThan(110_000)
 
   const heading = page.locator('h1')
   await expect(heading).toBeVisible()
@@ -60,7 +60,7 @@ test('production loads the approved public state without critical resource failu
   const inlinedCss = page.locator('style[data-precedence="next"]')
   await expect(inlinedCss).toHaveCount(1)
   const criticalCss = await inlinedCss.textContent()
-  expect(Buffer.byteLength(criticalCss || '', 'utf8')).toBeLessThan(50_000)
+  expect(Buffer.byteLength(criticalCss || '', 'utf8')).toBeLessThan(15_000)
   expect(criticalCss).not.toContain('fonts.googleapis.com')
   const fullCss = page.locator('link#full-site-css')
   await expect(fullCss).toHaveCount(1)
@@ -81,7 +81,8 @@ test('production loads the approved public state without critical resource failu
     const logo = page.locator('.brand img')
     await expect(logo).toBeVisible()
     await expect.poll(() => logo.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth === 147)).toBe(true)
-    expect(await logo.evaluate((image: HTMLImageElement) => image.currentSrc.startsWith('data:image/png;base64,'))).toBe(true)
+    expect(await logo.getAttribute('src')).toContain('/images/logo.png?v=20261006-3')
+    await expect(page.locator('.brand-fallback')).toBeAttached()
 
     const hero = page.locator('.hero')
     await expect(hero).toBeVisible()
@@ -118,9 +119,8 @@ test('critical branding stays visible when standalone image requests fail', asyn
   expect(response?.status()).toBe(200)
   await expect(page.getByRole('heading', { name: /СЛОЖНЫЕ ПРОМЫШЛЕННЫЕ/i })).toBeVisible()
 
-  const logo = page.locator('.brand img')
-  await expect(logo).toBeVisible()
-  await expect.poll(() => logo.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth === 147)).toBe(true)
+  await expect(page.locator('.brand-fallback')).toBeVisible()
+  await expect(page.locator('.brand-fallback')).toContainText('Мэджик')
 
   const hero = page.locator('.hero')
   await expect(hero).toBeVisible()
