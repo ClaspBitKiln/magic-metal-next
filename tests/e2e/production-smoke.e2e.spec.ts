@@ -40,7 +40,7 @@ test('production loads the approved public state without critical resource failu
   // serialized document instead; this keeps the size budget browser-neutral.
   // Only the first screen is inlined. The complete September design is loaded
   // in the background so slow clients can paint useful content immediately.
-  expect(Buffer.byteLength(await page.content(), 'utf8')).toBeLessThan(90_000)
+  expect(Buffer.byteLength(await page.content(), 'utf8')).toBeLessThan(150_000)
 
   const heading = page.locator('h1')
   await expect(heading).toBeVisible()
@@ -60,7 +60,7 @@ test('production loads the approved public state without critical resource failu
   const inlinedCss = page.locator('style[data-precedence="next"]')
   await expect(inlinedCss).toHaveCount(1)
   const criticalCss = await inlinedCss.textContent()
-  expect(Buffer.byteLength(criticalCss || '', 'utf8')).toBeLessThan(10_000)
+  expect(Buffer.byteLength(criticalCss || '', 'utf8')).toBeLessThan(50_000)
   expect(criticalCss).not.toContain('fonts.googleapis.com')
   const fullCss = page.locator('link#full-site-css')
   await expect(fullCss).toHaveCount(1)
@@ -81,13 +81,12 @@ test('production loads the approved public state without critical resource failu
     const logo = page.locator('.brand img')
     await expect(logo).toBeVisible()
     await expect.poll(() => logo.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth === 147)).toBe(true)
-    expect(new URL(await logo.evaluate((image: HTMLImageElement) => image.currentSrc), origin).pathname).toBe('/images/logo.png')
+    expect(await logo.evaluate((image: HTMLImageElement) => image.currentSrc.startsWith('data:image/png;base64,'))).toBe(true)
 
-    const hero = page.locator('.hero-visual')
+    const hero = page.locator('.hero')
     await expect(hero).toBeVisible()
-    await expect.poll(() => hero.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true)
-    const currentHero = await hero.evaluate((image: HTMLImageElement) => image.currentSrc)
-    expect(new URL(currentHero, origin).pathname).toMatch(/^\/images\/hero-mercedes-(640|1024|1440)\.webp$/)
+    expect(await hero.evaluate((node) => getComputedStyle(node).backgroundImage.includes('data:image/webp;base64,'))).toBe(true)
+    await expect(page.locator('.hero-visual')).toHaveAttribute('loading', 'lazy')
     await expect(page.locator('#products')).toBeVisible()
 
     await page.getByRole('link', { name: /Отправить заявку/i }).first().click()
@@ -103,13 +102,29 @@ test('mobile receives the small hero and has no horizontal overflow', async ({ p
   const response = await page.goto(baseURL!, { waitUntil: 'domcontentloaded' })
   expect(response?.status()).toBe(200)
 
-  const hero = page.locator('.hero-visual')
+  const hero = page.locator('.hero')
   await expect(hero).toBeVisible()
-  await expect.poll(() => hero.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true)
-  expect(new URL(await hero.evaluate((image: HTMLImageElement) => image.currentSrc)).pathname).toBe('/images/hero-mercedes-640.webp')
+  expect(await hero.evaluate((node) => getComputedStyle(node).backgroundImage.includes('data:image/webp;base64,'))).toBe(true)
+  await expect(page.locator('.hero-visual')).toHaveAttribute('loading', 'lazy')
   await expect(page.locator('#products')).toBeVisible()
   await expect(page.locator('#request')).toBeAttached()
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
+})
+
+test('critical branding stays visible when standalone image requests fail', async ({ page, baseURL }) => {
+  await page.route('**/images/**', (route) => route.abort('failed'))
+  const response = await page.goto(baseURL!, { waitUntil: 'domcontentloaded' })
+
+  expect(response?.status()).toBe(200)
+  await expect(page.getByRole('heading', { name: /СЛОЖНЫЕ ПРОМЫШЛЕННЫЕ/i })).toBeVisible()
+
+  const logo = page.locator('.brand img')
+  await expect(logo).toBeVisible()
+  await expect.poll(() => logo.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth === 147)).toBe(true)
+
+  const hero = page.locator('.hero')
+  await expect(hero).toBeVisible()
+  expect(await hero.evaluate((node) => getComputedStyle(node).backgroundImage.includes('data:image/webp;base64,'))).toBe(true)
 })
 
 test('www hostname redirects to the canonical apex host', async ({ page }) => {
@@ -135,7 +150,7 @@ test('critical public content stays visible when JavaScript is unavailable', asy
   await expect(page.locator('#request')).toBeVisible()
   await expect(page.getByRole('link', { name: /\+7 922 711-73-63/ }).first()).toBeVisible()
   await expect(page.locator('.brand img')).toBeVisible()
-  await expect(page.locator('.hero-visual')).toBeVisible()
+  await expect(page.locator('.hero')).toBeVisible()
 
   await context.close()
 })
