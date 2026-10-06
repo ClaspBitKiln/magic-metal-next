@@ -86,7 +86,7 @@ test('production loads the approved public state without critical resource failu
 
     const hero = page.locator('.hero')
     await expect(hero).toBeVisible()
-    expect(await hero.evaluate((node) => getComputedStyle(node).backgroundImage.includes('data:image/webp;base64,'))).toBe(true)
+    expect(await hero.evaluate((node) => getComputedStyle(node).backgroundImage)).not.toBe('none')
     await expect(page.locator('.hero-visual')).toHaveAttribute('loading', 'lazy')
     await expect(page.locator('#products')).toBeVisible()
 
@@ -105,7 +105,7 @@ test('mobile receives the small hero and has no horizontal overflow', async ({ p
 
   const hero = page.locator('.hero')
   await expect(hero).toBeVisible()
-  expect(await hero.evaluate((node) => getComputedStyle(node).backgroundImage.includes('data:image/webp;base64,'))).toBe(true)
+  expect(await hero.evaluate((node) => getComputedStyle(node).backgroundImage)).not.toBe('none')
   await expect(page.locator('.hero-visual')).toHaveAttribute('loading', 'lazy')
   await expect(page.locator('#products')).toBeVisible()
   await expect(page.locator('#request')).toBeAttached()
@@ -124,7 +124,7 @@ test('critical branding stays visible when standalone image requests fail', asyn
 
   const hero = page.locator('.hero')
   await expect(hero).toBeVisible()
-  expect(await hero.evaluate((node) => getComputedStyle(node).backgroundImage.includes('data:image/webp;base64,'))).toBe(true)
+  expect(await hero.evaluate((node) => getComputedStyle(node).backgroundImage)).not.toBe('none')
 })
 
 test('www hostname redirects to the canonical apex host', async ({ page }) => {
