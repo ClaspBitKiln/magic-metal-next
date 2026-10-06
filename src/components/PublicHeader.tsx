@@ -4,7 +4,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
-import { inlineLogo } from '@/data/inlineLogo'
 
 export default function PublicHeader() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -17,7 +16,10 @@ export default function PublicHeader() {
 
   return (
     <header className="topbar">
-      <a className="brand" href="#top" aria-label="Мэджик Металл — главная"><Image src={inlineLogo} alt="Мэджик Металл" width={147} height={109} loading="eager" fetchPriority="high" unoptimized /></a>
+      <a className="brand" href="#top" aria-label="Мэджик Металл — главная">
+        <span className="brand-fallback" aria-hidden="true"><b>MM</b><span>Мэджик<br />Металл</span></span>
+        <Image className="brand-logo" src="/images/logo.png?v=20261006-3" alt="" width={147} height={109} loading="eager" fetchPriority="high" unoptimized />
+      </a>
       <nav className={menuOpen ? 'nav open' : 'nav'} aria-label="Основная навигация">
         <a href="#about" onClick={() => setMenuOpen(false)}>О компании</a><a href="#products" onClick={() => setMenuOpen(false)}>Продукция</a><Link href="/spravochnik-gost">Справочник ГОСТ</Link><a href="#contacts" onClick={() => setMenuOpen(false)}>Контакты</a>
       </nav>

@@ -3,7 +3,6 @@ import Link from 'next/link'
 import { homeCatalogGroups } from '@/data/homeCatalog'
 import PublicHeader from '@/components/PublicHeader'
 import RequestForm from '@/components/RequestForm'
-import styles from './MagicMetalHome.module.css'
 
 export default function MagicMetalHome() {
   return (
@@ -11,7 +10,7 @@ export default function MagicMetalHome() {
       <a className="skip-link" href="#content">К содержанию</a>
       <PublicHeader />
 
-      <section className={`hero ${styles.heroEmbedded}`} id="top" aria-labelledby="hero-title">
+      <section className="hero" id="top" aria-labelledby="hero-title">
         <picture>
           <source media="(max-width: 700px)" srcSet="/images/hero-mercedes-640.webp?v=20261006-2" />
           <source media="(max-width: 1200px)" srcSet="/images/hero-mercedes-1024.webp?v=20261006-2" />
