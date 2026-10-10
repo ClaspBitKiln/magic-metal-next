@@ -94,26 +94,10 @@ select:focus-visible {
 section[id] {
   scroll-margin-top: 96px;
 }
-.brand {
-  display: flex;
-  width: max-content;
-  align-items: center;
-  gap: 8px;
-  color: var(--navy);
-}
-.brand-mark {
-  color: var(--blue);
-  font-size: 30px;
-  font-weight: 900;
-  line-height: 1;
-  letter-spacing: -0.18em;
-  transform: skewX(-9deg);
-}
-.brand-name {
-  font-size: 15px;
-  font-weight: 800;
-  line-height: 0.9;
-  letter-spacing: -0.04em;
+.brand img {
+  width: 105px;
+  height: auto;
+  transform: translateY(-2px);
 }
 .nav {
   display: flex;
@@ -328,34 +312,30 @@ body { top: 0 !important; }
   background: #f7faff;
   overflow: hidden;
 }
-.hero-fallback-art,
-.hero-photo {
+.hero > picture {
   position: absolute;
   z-index: 0;
   inset: 0 0 94px;
 }
-.hero-fallback-art {
-  left: auto;
-  width: min(62vw, 900px);
-  height: calc(100% - 94px);
-  background: linear-gradient(135deg, #edf4ff, #dce8fa);
-}
-.hero-photo {
-  z-index: 1;
+.hero-visual {
+  position: absolute;
+  inset: 0 !important;
   width: 100%;
-  background: url('/images/hero-mercedes-1440.webp?v=20261006-2') right bottom / cover no-repeat;
+  height: 100% !important;
+  object-fit: cover;
+  object-position: right bottom;
 }
 .hero:after {
   content: '';
   position: absolute;
-  z-index: 2;
+  z-index: 1;
   inset: 0;
   background: linear-gradient(90deg, rgba(255, 255, 255, 0.23), transparent 48%);
   pointer-events: none;
 }
 .hero-copy {
   position: relative;
-  z-index: 3;
+  z-index: 2;
   width: min(700px, 49vw);
   padding: clamp(62px, 8vh, 82px) 0 190px 5.5vw;
 }
@@ -1362,11 +1342,9 @@ h2 {
     grid-template-columns: 1fr auto;
     gap: 8px;
   }
-  .brand-mark {
-    font-size: 25px;
-  }
-  .brand-name {
-    font-size: 12px;
+  .brand img {
+    width: 82px;
+    transform: translateY(-2px);
   }
   .nav {
     display: none;
@@ -1407,17 +1385,11 @@ h2 {
   .hero {
     min-height: calc(890px - 76px);
   }
-  .hero-fallback-art,
-  .hero-photo {
+  .hero-visual {
+    object-position: 66% bottom;
+  }
+  .hero > picture {
     inset-bottom: 125px;
-  }
-  .hero-fallback-art {
-    width: 100%;
-    height: calc(100% - 125px);
-  }
-  .hero-photo {
-    background-image: url('/images/hero-mercedes-640.webp?v=20261006-2');
-    background-position: 66% bottom;
   }
   .hero:after {
     background: linear-gradient(
