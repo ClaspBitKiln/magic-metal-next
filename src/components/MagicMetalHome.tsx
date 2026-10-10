@@ -11,16 +11,12 @@ export default function MagicMetalHome() {
       <PublicHeader />
 
       <section className="hero" id="top" aria-labelledby="hero-title">
-        <svg className="hero-fallback-art" viewBox="0 0 900 720" aria-hidden="true" focusable="false">
-          <defs><linearGradient id="steel" x1="0" y1="0" x2="1" y2="1"><stop stopColor="#d9e5f8"/><stop offset="1" stopColor="#8ba6d1"/></linearGradient></defs>
-          <path fill="#dbe7f8" d="M334 171h105v377H334zM466 93h68v455h-68zM560 231h148v317H560zM735 142h55v406h-55z"/>
-          <path fill="#b5c9e7" d="M277 548h566v41H277zM368 126h37v422h-37zM594 189h80v359h-80z"/>
-          <path fill="none" stroke="url(#steel)" strokeWidth="22" d="M310 512c118-99 184-92 292-11s170 50 258-33"/>
-          <path fill="none" stroke="#0757e8" strokeOpacity=".34" strokeWidth="7" d="M310 512c118-99 184-92 292-11s170 50 258-33"/>
-          <g fill="#718dbb"><circle cx="384" cy="205" r="12"/><circle cx="500" cy="154" r="10"/><circle cx="636" cy="278" r="13"/><circle cx="763" cy="196" r="9"/></g>
-          <path fill="#071c62" fillOpacity=".13" d="M244 589h656v131H244z"/>
-        </svg>
-        <span className="hero-photo" aria-hidden="true" />
+        <picture>
+          <source media="(max-width: 700px)" srcSet="/images/hero-mercedes-640.webp?v=20261006-2" />
+          <source media="(max-width: 1200px)" srcSet="/images/hero-mercedes-1024.webp?v=20261006-2" />
+          <source srcSet="/images/hero-mercedes-1440.webp?v=20261006-2" />
+          <img className="hero-visual" src="/images/hero-mercedes-1440.webp?v=20261006-2" alt="" aria-hidden="true" width="1440" height="810" loading="lazy" decoding="async" />
+        </picture>
         <div className="hero-copy" id="content">
           <p className="hero-label">
             <span>СРОЧНЫЕ ПОСТАВКИ:</span>
