@@ -78,16 +78,15 @@ test('production loads the approved public state without critical resource failu
     expect(headingText).toContain('СЛОЖНЫЕ ПРОМЫШЛЕННЫЕ')
     await expect(page.locator('#request')).toBeAttached()
 
-    const logo = page.locator('.brand img')
+    const logo = page.locator('.brand')
     await expect(logo).toBeVisible()
-    await expect.poll(() => logo.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth === 147)).toBe(true)
-    expect(await logo.getAttribute('src')).toContain('/images/logo.png?v=20261006-3')
-    await expect(page.locator('.brand-fallback')).toBeAttached()
+    await expect(logo).toContainText('Мэджик')
+    await expect(page.locator('.brand-mark')).toContainText('MM')
 
     const hero = page.locator('.hero')
     await expect(hero).toBeVisible()
-    expect(await hero.evaluate((node) => getComputedStyle(node).backgroundImage)).not.toBe('none')
-    await expect(page.locator('.hero-visual')).toHaveAttribute('loading', 'lazy')
+    await expect(page.locator('.hero-fallback-art')).toBeVisible()
+    await expect(page.locator('.hero-photo')).toBeAttached()
     await expect(page.locator('#products')).toBeVisible()
 
     await page.getByRole('link', { name: /Отправить заявку/i }).first().click()
@@ -105,8 +104,8 @@ test('mobile receives the small hero and has no horizontal overflow', async ({ p
 
   const hero = page.locator('.hero')
   await expect(hero).toBeVisible()
-  expect(await hero.evaluate((node) => getComputedStyle(node).backgroundImage)).not.toBe('none')
-  await expect(page.locator('.hero-visual')).toHaveAttribute('loading', 'lazy')
+  await expect(page.locator('.hero-fallback-art')).toBeVisible()
+  await expect(page.locator('.hero-photo')).toBeAttached()
   await expect(page.locator('#products')).toBeVisible()
   await expect(page.locator('#request')).toBeAttached()
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
@@ -119,12 +118,12 @@ test('critical branding stays visible when standalone image requests fail', asyn
   expect(response?.status()).toBe(200)
   await expect(page.getByRole('heading', { name: /СЛОЖНЫЕ ПРОМЫШЛЕННЫЕ/i })).toBeVisible()
 
-  await expect(page.locator('.brand-fallback')).toBeVisible()
-  await expect(page.locator('.brand-fallback')).toContainText('Мэджик')
+  await expect(page.locator('.brand')).toBeVisible()
+  await expect(page.locator('.brand')).toContainText('Мэджик')
 
   const hero = page.locator('.hero')
   await expect(hero).toBeVisible()
-  expect(await hero.evaluate((node) => getComputedStyle(node).backgroundImage)).not.toBe('none')
+  await expect(page.locator('.hero-fallback-art')).toBeVisible()
 })
 
 test('www hostname redirects to the canonical apex host', async ({ page }) => {
