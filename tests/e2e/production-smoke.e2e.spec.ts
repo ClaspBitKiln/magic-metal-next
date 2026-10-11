@@ -64,7 +64,7 @@ test('production loads the approved public state without critical resource failu
   expect(criticalCss).not.toContain('fonts.googleapis.com')
   const fullCss = page.locator('link#full-site-css')
   await expect(fullCss).toHaveCount(1)
-  await expect(fullCss).toHaveAttribute('href', '/site.css?v=20261005')
+  await expect(fullCss).toHaveAttribute('href', '/site.css?v=20261011-1')
   await expect.poll(() => fullCss.evaluate((link: HTMLLinkElement) => link.media)).toBe('all')
   await expect.poll(() => fullCss.evaluate((link: HTMLLinkElement) => Boolean(link.sheet))).toBe(true)
   expect(fullCssStatus).toBe(200)
@@ -81,6 +81,7 @@ test('production loads the approved public state without critical resource failu
     const logo = page.locator('.brand img')
     await expect(logo).toBeVisible()
     await expect.poll(() => logo.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth === 147)).toBe(true)
+    expect(await logo.evaluate((image) => image.getBoundingClientRect().width)).toBeGreaterThan(80)
     expect(await logo.getAttribute('src')).toContain('/images/logo.png?v=20261006-3')
     await expect(page.locator('.brand-fallback')).toBeAttached()
 
