@@ -135,7 +135,26 @@ test('mobile receives the small hero and has no horizontal overflow', async ({ p
   await expectDecodedHero(page, '/images/hero-mercedes-640.webp', 640, 360)
   await expect(page.locator('#products')).toBeVisible()
   await expect(page.locator('#request')).toBeAttached()
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1)
+})
+
+test('critical production assets are delivered completely and stay within budget', async ({ request, baseURL }) => {
+  const assets = [
+    ['/images/hero-mercedes-1440.webp?v=20261006-2', 'image/webp', 100_000, 120_000],
+    ['/images/hero-mercedes-640.webp?v=20261006-2', 'image/webp', 30_000, 40_000],
+    ['/images/logo.png?v=20261006-3', 'image/png', 10_000, 15_000],
+    ['/site.css?v=20261011-1', 'text/css', 75_000, 95_000],
+  ] as const
+
+  for (const [path, type, minBytes, maxBytes] of assets) {
+    const response = await request.get(new URL(path, baseURL!).toString(), { timeout: 20_000 })
+    expect(response.status(), path).toBe(200)
+    expect(response.headers()['content-type'], path).toContain(type)
+
+    const body = await response.body()
+    expect(body.byteLength, `${path}: truncated response`).toBeGreaterThan(minBytes)
+    expect(body.byteLength, `${path}: asset budget exceeded`).toBeLessThan(maxBytes)
+  }
 })
 
 test('all public images decode after a complete page traversal', async ({ page, baseURL }) => {
@@ -168,7 +187,11 @@ test('all public images decode after a complete page traversal', async ({ page, 
 })
 
 test('critical branding stays visible when standalone image requests fail', async ({ page, baseURL }) => {
-  await page.route('**/images/**', (route) => route.abort('failed'))
+  let blockedImages = 0
+  await page.route('**/images/**', (route) => {
+    blockedImages += 1
+    return route.abort('failed')
+  })
   const response = await page.goto(baseURL!, { waitUntil: 'domcontentloaded' })
 
   expect(response?.status()).toBe(200)
@@ -180,6 +203,8 @@ test('critical branding stays visible when standalone image requests fail', asyn
   const hero = page.locator('.hero')
   await expect(hero).toBeVisible()
   await expect(page.locator('.hero > picture')).toBeAttached()
+  expect(blockedImages).toBeGreaterThan(0)
+  expect(await page.locator('.hero-visual').evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth === 0)).toBe(true)
   expect(await hero.evaluate((node) => getComputedStyle(node).backgroundColor)).not.toBe('rgba(0, 0, 0, 0)')
   expect(await hero.evaluate((node) => getComputedStyle(node, '::after').backgroundImage)).not.toBe('none')
 })
