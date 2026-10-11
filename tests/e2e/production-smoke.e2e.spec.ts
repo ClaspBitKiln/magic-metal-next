@@ -1,6 +1,30 @@
-import { expect, test } from '@playwright/test'
+import { expect, test, type Page } from '@playwright/test'
 
 const maintenanceTitle = 'САЙТ НА РЕКОНСТРУКЦИИ'
+
+async function expectDecodedHero(page: Page, expectedFile: string, width: number, height: number) {
+  const heroVisual = page.locator('.hero-visual')
+
+  await expect(heroVisual).toBeVisible()
+  await expect(heroVisual).toHaveAttribute('loading', 'lazy')
+  await expect.poll(() => heroVisual.evaluate(async (image: HTMLImageElement) => {
+    try {
+      await image.decode()
+      return image.complete && image.naturalWidth > 0
+    } catch {
+      return false
+    }
+  })).toBe(true)
+
+  const image = await heroVisual.evaluate((node: HTMLImageElement) => ({
+    currentSrc: node.currentSrc,
+    naturalWidth: node.naturalWidth,
+    naturalHeight: node.naturalHeight,
+  }))
+  expect(image.currentSrc).toContain(expectedFile)
+  expect(image.naturalWidth).toBe(width)
+  expect(image.naturalHeight).toBe(height)
+}
 
 test('production loads the approved public state without critical resource failures', async ({ page, baseURL }) => {
   const origin = new URL(baseURL!).origin
@@ -69,7 +93,7 @@ test('production loads the approved public state without critical resource failu
   await expect.poll(() => fullCss.evaluate((link: HTMLLinkElement) => Boolean(link.sheet))).toBe(true)
   expect(fullCssStatus).toBe(200)
   expect(fullCssType).toContain('text/css')
-  expect(await page.locator('#products').evaluate((node) => getComputedStyle(node).position)).toBe('relative')
+  expect(await page.locator('#products').evaluate((node) => getComputedStyle(node).backgroundColor)).toBe('rgb(248, 250, 255)')
 
   if (isMaintenance) {
     await expect(page.getByRole('heading', { name: maintenanceTitle, exact: true })).toHaveCount(1)
@@ -87,8 +111,10 @@ test('production loads the approved public state without critical resource failu
 
     const hero = page.locator('.hero')
     await expect(hero).toBeVisible()
-    expect(await hero.evaluate((node) => getComputedStyle(node).backgroundImage)).not.toBe('none')
-    await expect(page.locator('.hero-visual')).toHaveAttribute('loading', 'lazy')
+    await expectDecodedHero(page, '/images/hero-mercedes-1440.webp', 1440, 810)
+    await expect(page.locator('.hero picture source').nth(0)).toHaveAttribute('srcset', /hero-mercedes-640\.webp/)
+    await expect(page.locator('.hero picture source').nth(1)).toHaveAttribute('srcset', /hero-mercedes-1024\.webp/)
+    await expect(page.locator('.hero picture source').nth(2)).toHaveAttribute('srcset', /hero-mercedes-1440\.webp/)
     await expect(page.locator('#products')).toBeVisible()
 
     await page.getByRole('link', { name: /Отправить заявку/i }).first().click()
@@ -106,15 +132,62 @@ test('mobile receives the small hero and has no horizontal overflow', async ({ p
 
   const hero = page.locator('.hero')
   await expect(hero).toBeVisible()
-  expect(await hero.evaluate((node) => getComputedStyle(node).backgroundImage)).not.toBe('none')
-  await expect(page.locator('.hero-visual')).toHaveAttribute('loading', 'lazy')
+  await expectDecodedHero(page, '/images/hero-mercedes-640.webp', 640, 360)
   await expect(page.locator('#products')).toBeVisible()
   await expect(page.locator('#request')).toBeAttached()
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1)
+})
+
+test('critical production assets are delivered completely and stay within budget', async ({ request, baseURL }) => {
+  const assets = [
+    ['/images/hero-mercedes-1440.webp?v=20261006-2', 'image/webp', 100_000, 120_000],
+    ['/images/hero-mercedes-640.webp?v=20261006-2', 'image/webp', 30_000, 40_000],
+    ['/images/logo.png?v=20261006-3', 'image/png', 10_000, 15_000],
+    ['/site.css?v=20261011-1', 'text/css', 75_000, 95_000],
+  ] as const
+
+  for (const [path, type, minBytes, maxBytes] of assets) {
+    const response = await request.get(new URL(path, baseURL!).toString(), { timeout: 20_000 })
+    expect(response.status(), path).toBe(200)
+    expect(response.headers()['content-type'], path).toContain(type)
+
+    const body = await response.body()
+    expect(body.byteLength, `${path}: truncated response`).toBeGreaterThan(minBytes)
+    expect(body.byteLength, `${path}: asset budget exceeded`).toBeLessThan(maxBytes)
+  }
+})
+
+test('all public images decode after a complete page traversal', async ({ page, baseURL }) => {
+  const failures: string[] = []
+  page.on('response', (response) => {
+    if (response.url().startsWith(new URL(baseURL!).origin) && response.status() >= 400) {
+      failures.push(`HTTP ${response.status()} ${response.url()}`)
+    }
+  })
+  const response = await page.goto(baseURL!, { waitUntil: 'domcontentloaded' })
+  expect(response?.status()).toBe(200)
+  await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight))
+  await expect(page.locator('#request')).toBeVisible()
+
+  await expect.poll(() => page.locator('img').evaluateAll(async (images: HTMLImageElement[]) => {
+    return (await Promise.all(images.map(async (image) => {
+      try {
+        await image.decode()
+      } catch {
+        return image.currentSrc || image.src || '(empty src)'
+      }
+      return image.complete && image.naturalWidth > 0 ? null : (image.currentSrc || image.src || '(empty src)')
+    }))).filter(Boolean)
+  }), { timeout: 10_000 }).toEqual([])
+  expect(failures, failures.join('\n')).toEqual([])
 })
 
 test('critical branding stays visible when standalone image requests fail', async ({ page, baseURL }) => {
-  await page.route('**/images/**', (route) => route.abort('failed'))
+  let blockedImages = 0
+  await page.route('**/images/**', (route) => {
+    blockedImages += 1
+    return route.abort('failed')
+  })
   const response = await page.goto(baseURL!, { waitUntil: 'domcontentloaded' })
 
   expect(response?.status()).toBe(200)
@@ -125,7 +198,11 @@ test('critical branding stays visible when standalone image requests fail', asyn
 
   const hero = page.locator('.hero')
   await expect(hero).toBeVisible()
-  expect(await hero.evaluate((node) => getComputedStyle(node).backgroundImage)).not.toBe('none')
+  await expect(page.locator('.hero > picture')).toBeAttached()
+  expect(blockedImages).toBeGreaterThan(0)
+  expect(await page.locator('.hero-visual').evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth === 0)).toBe(true)
+  expect(await hero.evaluate((node) => getComputedStyle(node).backgroundColor)).not.toBe('rgba(0, 0, 0, 0)')
+  expect(await hero.evaluate((node) => getComputedStyle(node, '::after').backgroundImage)).not.toBe('none')
 })
 
 test('www hostname redirects to the canonical apex host', async ({ page }) => {

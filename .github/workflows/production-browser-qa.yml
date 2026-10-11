@@ -3,6 +3,9 @@ name: Production browser QA
 on:
   workflow_dispatch:
   deployment_status:
+  pull_request:
+    branches:
+      - main
 
 concurrency:
   group: production-browser-qa
@@ -10,7 +13,7 @@ concurrency:
 
 jobs:
   browser-smoke:
-    if: github.event_name == 'workflow_dispatch' || (github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Production')
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'pull_request' || (github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Production')
     name: Playwright (${{ matrix.browser }})
     runs-on: ubuntu-latest
     timeout-minutes: 20
