@@ -1389,7 +1389,7 @@ h2 {
     object-position: 66% bottom;
   }
   .hero > picture {
-    inset-bottom: 125px;
+    bottom: 125px;
   }
   .hero:after {
     background: linear-gradient(
