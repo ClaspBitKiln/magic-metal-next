@@ -86,9 +86,12 @@ test('production loads the approved public state without critical resource failu
     await expect(page.locator('.brand-fallback')).toBeAttached()
 
     const hero = page.locator('.hero')
+    const heroVisual = page.locator('.hero-visual')
     await expect(hero).toBeVisible()
-    expect(await hero.evaluate((node) => getComputedStyle(node).backgroundImage)).not.toBe('none')
-    await expect(page.locator('.hero-visual')).toHaveAttribute('loading', 'lazy')
+    await expect(heroVisual).toBeVisible()
+    await expect(heroVisual).toHaveAttribute('loading', 'lazy')
+    await expect.poll(() => heroVisual.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true)
+    expect(await heroVisual.evaluate((image: HTMLImageElement) => image.currentSrc)).toContain('/images/hero-mercedes-1440.webp')
     await expect(page.locator('#products')).toBeVisible()
 
     await page.getByRole('link', { name: /Отправить заявку/i }).first().click()
@@ -105,9 +108,12 @@ test('mobile receives the small hero and has no horizontal overflow', async ({ p
   expect(response?.status()).toBe(200)
 
   const hero = page.locator('.hero')
+  const heroVisual = page.locator('.hero-visual')
   await expect(hero).toBeVisible()
-  expect(await hero.evaluate((node) => getComputedStyle(node).backgroundImage)).not.toBe('none')
-  await expect(page.locator('.hero-visual')).toHaveAttribute('loading', 'lazy')
+  await expect(heroVisual).toBeVisible()
+  await expect(heroVisual).toHaveAttribute('loading', 'lazy')
+  await expect.poll(() => heroVisual.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true)
+  expect(await heroVisual.evaluate((image: HTMLImageElement) => image.currentSrc)).toContain('/images/hero-mercedes-640.webp')
   await expect(page.locator('#products')).toBeVisible()
   await expect(page.locator('#request')).toBeAttached()
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
@@ -125,7 +131,9 @@ test('critical branding stays visible when standalone image requests fail', asyn
 
   const hero = page.locator('.hero')
   await expect(hero).toBeVisible()
-  expect(await hero.evaluate((node) => getComputedStyle(node).backgroundImage)).not.toBe('none')
+  await expect(page.locator('.hero > picture')).toBeAttached()
+  expect(await hero.evaluate((node) => getComputedStyle(node).backgroundColor)).not.toBe('rgba(0, 0, 0, 0)')
+  expect(await hero.evaluate((node) => getComputedStyle(node, '::after').backgroundImage)).not.toBe('none')
 })
 
 test('www hostname redirects to the canonical apex host', async ({ page }) => {
