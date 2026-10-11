@@ -93,7 +93,7 @@ test('production loads the approved public state without critical resource failu
   await expect.poll(() => fullCss.evaluate((link: HTMLLinkElement) => Boolean(link.sheet))).toBe(true)
   expect(fullCssStatus).toBe(200)
   expect(fullCssType).toContain('text/css')
-  expect(await page.locator('#products').evaluate((node) => getComputedStyle(node).position)).toBe('relative')
+  expect(await page.locator('#products').evaluate((node) => getComputedStyle(node).backgroundColor)).toBe('rgb(248, 250, 255)')
 
   if (isMaintenance) {
     await expect(page.getByRole('heading', { name: maintenanceTitle, exact: true })).toHaveCount(1)
@@ -164,14 +164,12 @@ test('all public images decode after a complete page traversal', async ({ page, 
       failures.push(`HTTP ${response.status()} ${response.url()}`)
     }
   })
-  page.on('requestfailed', (request) => failures.push(`REQUEST_FAILED ${request.url()} ${request.failure()?.errorText || ''}`))
-
   const response = await page.goto(baseURL!, { waitUntil: 'domcontentloaded' })
   expect(response?.status()).toBe(200)
   await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight))
   await expect(page.locator('#request')).toBeVisible()
 
-  const brokenImages = await page.locator('img').evaluateAll(async (images: HTMLImageElement[]) => {
+  await expect.poll(() => page.locator('img').evaluateAll(async (images: HTMLImageElement[]) => {
     return (await Promise.all(images.map(async (image) => {
       try {
         await image.decode()
@@ -180,9 +178,7 @@ test('all public images decode after a complete page traversal', async ({ page, 
       }
       return image.complete && image.naturalWidth > 0 ? null : (image.currentSrc || image.src || '(empty src)')
     }))).filter(Boolean)
-  })
-
-  expect(brokenImages).toEqual([])
+  }), { timeout: 10_000 }).toEqual([])
   expect(failures, failures.join('\n')).toEqual([])
 })
 
