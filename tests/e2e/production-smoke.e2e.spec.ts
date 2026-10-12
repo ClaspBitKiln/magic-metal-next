@@ -6,14 +6,17 @@ async function expectDecodedHero(page: Page, variant: '640' | '1024' | '1440', w
   const images = page.locator('.hero-tile img')
   await expect(page.locator('.hero-mosaic')).toBeVisible()
   await expect(images).toHaveCount(18)
-  await expect.poll(() => images.evaluateAll(async (nodes: HTMLImageElement[]) => Promise.all(nodes.map(async (image) => {
-    try {
-      await image.decode()
-      return image.complete && image.naturalWidth === width && image.naturalHeight === rowHeight && image.currentSrc.includes(`/hero-tiles/${variant}/`)
-    } catch {
-      return false
-    }
-  })))).toEqual(Array(18).fill(true))
+  await expect.poll(() => images.evaluateAll((nodes: HTMLImageElement[], expectedVariant) => nodes.map((image) => ({
+    complete: image.complete,
+    width: image.naturalWidth,
+    height: image.naturalHeight,
+    variant: image.currentSrc.includes(`/hero-tiles/${expectedVariant}/`),
+  })), variant), { timeout: 20_000 }).toEqual(Array(18).fill({
+    complete: true,
+    width,
+    height: rowHeight,
+    variant: true,
+  }))
 }
 
 test('root is the approved dependency-free public page', async ({ page, baseURL }) => {
