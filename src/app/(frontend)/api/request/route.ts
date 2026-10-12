@@ -2,13 +2,12 @@ import { getPayload } from 'payload'
 import { NextResponse } from 'next/server'
 import nodemailer from 'nodemailer'
 import { createHmac } from 'node:crypto'
-import { hasRequestConsent, REQUEST_CONSENT_ERROR } from '@/lib/requestValidation'
+import { hasRequestConsent, REQUEST_CONSENT_ERROR, REQUEST_FILE_EXTENSIONS, REQUEST_MAX_TOTAL_FILE_SIZE as MAX_TOTAL_FILE_SIZE } from '@/lib/requestValidation'
 
 export const runtime = 'nodejs'
 
-const MAX_TOTAL_FILE_SIZE = 25 * 1024 * 1024
 const MAX_REQUEST_SIZE = 28 * 1024 * 1024
-const ALLOWED_EXTENSIONS = new Set(['xlsx', 'xls', 'pdf', 'doc', 'docx', 'png', 'jpg', 'jpeg', 'webp', 'dwg', 'dxf', 'mp3', 'm4a', 'wav', 'ogg', 'webm'])
+const ALLOWED_EXTENSIONS = new Set<string>(REQUEST_FILE_EXTENSIONS)
 const requestLog = new Map<string, number[]>()
 
 type DeliveryFailure = 'smtp-not-configured' | 'smtp-auth' | 'smtp-connection' | 'smtp-timeout' | 'smtp-error'
@@ -54,11 +53,6 @@ function hasExpectedSignature(buffer: Buffer, extension: string) {
   if (['doc', 'xls'].includes(extension)) return starts(0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1)
   if (extension === 'dwg') return buffer.subarray(0, 4).toString() === 'AC10'
   if (extension === 'dxf') return buffer.subarray(0, 1024).toString('utf8').replace(/^\uFEFF/, '').trimStart().startsWith('0\nSECTION') || buffer.subarray(0, 1024).toString('utf8').replace(/^\uFEFF/, '').trimStart().startsWith('0\r\nSECTION')
-  if (extension === 'mp3') return buffer.subarray(0, 3).toString() === 'ID3' || (buffer[0] === 0xff && (buffer[1] & 0xe0) === 0xe0)
-  if (extension === 'm4a') return buffer.subarray(4, 8).toString() === 'ftyp'
-  if (extension === 'wav') return buffer.subarray(0, 4).toString() === 'RIFF' && buffer.subarray(8, 12).toString() === 'WAVE'
-  if (extension === 'ogg') return buffer.subarray(0, 4).toString() === 'OggS'
-  if (extension === 'webm') return starts(0x1a, 0x45, 0xdf, 0xa3)
   return false
 }
 
@@ -90,7 +84,7 @@ export async function POST(request: Request) {
   const requestMessage = [message || 'Требования приложены в файлах.', delivery ? `Получение: ${delivery}` : ''].filter(Boolean).join('\n\n')
 
   const totalSize = files.reduce((sum, file) => sum + file.size, 0)
-  if (totalSize > MAX_TOTAL_FILE_SIZE) return NextResponse.json({ error: 'Файлы превышают 25 МБ' }, { status: 413 })
+  if (totalSize > MAX_TOTAL_FILE_SIZE) return NextResponse.json({ error: 'Общий размер файлов превышает 4 МБ' }, { status: 413 })
   if (files.some((file) => !ALLOWED_EXTENSIONS.has(file.name.split('.').pop()?.toLowerCase() || ''))) return NextResponse.json({ error: 'Недопустимый тип файла' }, { status: 415 })
 
   const uploadedIds: number[] = []
@@ -115,11 +109,13 @@ export async function POST(request: Request) {
   try {
     const { default: config } = await import('@/payload.config')
     payload = await getPayload({ config })
-    for (const { file, buffer, filename } of preparedFiles) {
+    for (const { file, buffer, filename, extension } of preparedFiles) {
       const uploaded = await payload.create({
         collection: 'request-files',
         data: { description: `Заявка: ${company || requestName}` },
-        file: { data: buffer, mimetype: file.type || 'application/octet-stream', name: filename, size: file.size },
+        // Keep submitted WebP bytes intact: Payload otherwise re-encodes them.
+        // The email attachment retains its original image MIME type above.
+        file: { data: buffer, mimetype: extension === 'webp' ? 'application/octet-stream' : file.type || 'application/octet-stream', name: filename, size: file.size },
         overrideAccess: true,
       })
       uploadedIds.push(uploaded.id)

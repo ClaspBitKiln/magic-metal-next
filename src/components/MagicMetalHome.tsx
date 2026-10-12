@@ -24,7 +24,7 @@ export default function MagicMetalHome() {
           </p>
           <h1 id="hero-title">КОМПЛЕКТУЕМ <em>СЛОЖНЫЕ ПРОМЫШЛЕННЫЕ</em> ЗАЯВКИ</h1>
           <p className="hero-lead">Проверяем требования и актуальность ГОСТов, находим редкие позиции и технически обоснованные аналоги. Комплектуем металл и сопутствующие материалы с полным пакетом документов — для поставок по России и на экспорт.</p>
-          <div className="hero-actions"><a className="primary-button" href="#request">Отправить заявку <span>↗</span></a><span className="file-types">Excel · PDF · Word · фото · голосовое сообщение</span></div>
+          <div className="hero-actions"><a className="primary-button" href="#request">Отправить заявку <span>↗</span></a><span className="file-types">Excel · PDF · Word · фото</span></div>
         </div>
         <div className="hero-strip" id="delivery"><div className="delivery-title"><b>Авто · Ж/Д · Авиа</b><span>Срочная доставка снижает риск простоя оборудования и персонала, а также штрафных санкций за срыв сроков проекта</span></div></div>
       </section>
