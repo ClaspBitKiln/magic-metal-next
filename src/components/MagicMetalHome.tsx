@@ -4,8 +4,6 @@ import { homeCatalogGroups } from '@/data/homeCatalog'
 import PublicHeader from '@/components/PublicHeader'
 import RequestForm from '@/components/RequestForm'
 
-const heroTileRows = Array.from({ length: 18 }, (_, index) => String(index + 1).padStart(2, '0'))
-
 export default function MagicMetalHome() {
   return (
     <main className="public-home">
@@ -13,15 +11,12 @@ export default function MagicMetalHome() {
       <PublicHeader />
 
       <section className="hero" id="top" aria-labelledby="hero-title">
-        <div className="hero-mosaic" aria-hidden="true">
-          <div className="hero-mosaic-canvas">
-            {heroTileRows.map((row) => <picture className="hero-tile" key={row}>
-              <source media="(max-width: 700px)" srcSet={`/images/hero-tiles/640/${row}.webp?v=20261012-1`} />
-              <source media="(max-width: 1200px)" srcSet={`/images/hero-tiles/1024/${row}.webp?v=20261012-1`} />
-              <img src={`/images/hero-tiles/1440/${row}.webp?v=20261012-1`} alt="" width="1440" height="45" loading="eager" decoding="async" />
-            </picture>)}
-          </div>
-        </div>
+        <picture>
+          <source media="(max-width: 700px)" srcSet="/images/hero-mercedes-640.webp?v=20261006-2" />
+          <source media="(max-width: 1200px)" srcSet="/images/hero-mercedes-1024.webp?v=20261006-2" />
+          <source srcSet="/images/hero-mercedes-1440.webp?v=20261006-2" />
+          <img className="hero-visual" src="/images/hero-mercedes-1440.webp?v=20261006-2" alt="" aria-hidden="true" width="1440" height="810" loading="lazy" decoding="async" />
+        </picture>
         <div className="hero-copy" id="content">
           <p className="hero-label">
             <span>СРОЧНЫЕ ПОСТАВКИ:</span>
