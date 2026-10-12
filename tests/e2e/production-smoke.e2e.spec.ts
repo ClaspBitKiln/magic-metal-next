@@ -100,7 +100,7 @@ test('approved client emblems decode after lazy loading', async ({ page, baseURL
   await expect(logos).toHaveCount(5)
   await logos.first().scrollIntoViewIfNeeded()
   await expect.poll(() => logos.evaluateAll((nodes: HTMLImageElement[]) => nodes.map((image) => image.complete && image.naturalWidth > 0)), { timeout: 20_000 }).toEqual([true, true, true, true, true])
-  await expect(logos).toHaveAttribute('loading', 'lazy')
+  expect(await logos.evaluateAll((nodes: HTMLImageElement[]) => nodes.map((image) => image.loading))).toEqual(Array(5).fill('lazy'))
 })
 
 test('every catalog section stays on the lightweight page and prefills the request', async ({ page, baseURL }) => {
