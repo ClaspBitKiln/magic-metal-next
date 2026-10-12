@@ -16,11 +16,15 @@ export const RequestFiles: CollectionConfig = {
     mimeTypes: [
       'application/pdf',
       'application/msword',
+      // Payload detects legacy DOC/XLS containers as CFB and ASCII DXF as text.
+      // /api/request validates the extension and file signature before storage.
+      'application/x-cfb',
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
       'application/vnd.ms-excel',
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
       'image/*',
       'application/dxf',
+      'text/plain',
       'image/vnd.dwg',
       'application/octet-stream',
     ],

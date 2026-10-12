@@ -1255,6 +1255,26 @@ h2 {
 .request-form button span {
   font-size: 16px;
 }
+.form-hint {
+  margin: 0 0 14px;
+  color: #526079;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.field-error {
+  margin: 6px 0 14px;
+  color: #b42318;
+  font-size: 13px;
+  line-height: 1.45;
+}
+.request-form :is(input, textarea)[aria-invalid="true"],
+.request-form .file-field.has-error {
+  border-color: #b42318;
+}
+.request-form input[type="checkbox"][aria-invalid="true"] {
+  outline: 2px solid #b42318;
+  outline-offset: 2px;
+}
 .form-status {
   margin: 14px 0 0;
   font-size: 13px;

@@ -28,7 +28,7 @@ export const viewport: Viewport = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const fullCssHref = '/site.css?v=20261011-1'
+  const fullCssHref = '/site.css?v=20261012-form-validation'
   const organizationJsonLd = {
     '@context': 'https://schema.org', '@type': 'Organization', name: 'ООО «Мэджик Металл»', url: 'https://magicmet.ru',
     email: 'm1@magicmet.ru', telephone: '+7 922 711-73-63', logo: 'https://magicmet.ru/images/logo-transparent-v2.png',
