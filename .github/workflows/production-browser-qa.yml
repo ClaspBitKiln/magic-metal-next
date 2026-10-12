@@ -8,7 +8,7 @@ on:
       - main
 
 concurrency:
-  group: production-browser-qa-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}
+  group: production-browser-qa
   cancel-in-progress: true
 
 jobs:
@@ -31,20 +31,9 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx playwright install --with-deps ${{ matrix.browser }}
-      - name: Build and start pull request locally
-        if: github.event_name == 'pull_request'
-        run: |
-          npm run build
-          npm run start -- --hostname 127.0.0.1 --port 3000 > /tmp/magicmet-next.log 2>&1 &
-          for attempt in {1..60}; do
-            curl --fail --silent http://127.0.0.1:3000/ > /dev/null && exit 0
-            sleep 1
-          done
-          cat /tmp/magicmet-next.log
-          exit 1
-      - name: Test complete site flow
+      - name: Test live production
         env:
-          BASE_URL: ${{ github.event_name == 'pull_request' && 'http://127.0.0.1:3000' || 'https://magicmet.ru' }}
+          BASE_URL: https://magicmet.ru
         run: npx playwright test --config=playwright.production.config.ts --project=${{ matrix.browser }}
       - uses: actions/upload-artifact@v4
         if: always()

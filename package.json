@@ -5,7 +5,6 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "assets:hero-tiles": "node scripts/generate-hero-tiles.mjs",
     "build": "node scripts/build.mjs",
     "dev": "node scripts/dev.mjs",
     "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev",
