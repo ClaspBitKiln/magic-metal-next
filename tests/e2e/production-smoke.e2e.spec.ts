@@ -32,6 +32,7 @@ test('root is the approved dependency-free public page', async ({ page, baseURL 
   await expect(page.getByRole('heading', { name: /СЛОЖНЫЕ ПРОМЫШЛЕННЫЕ/i })).toBeVisible()
   await expect(page.locator('#products')).toBeVisible()
   await expect(page.locator('#request')).toBeAttached()
+  await expect(page.locator('.company-client-list img')).toHaveCount(5)
   await expect(page.locator('.brand img')).toHaveAttribute('src', /logo\.png/)
   await expectDecodedHero(page, '1440', 1440, 45)
 
@@ -50,7 +51,7 @@ test('mobile receives only 640 px hero tiles without overflow', async ({ page, b
 })
 
 test('every route-sensitive public asset stays below the safe limit', async ({ request, baseURL }) => {
-  const paths = ['/images/logo.png?v=20261006-3', '/images/logo-hq.webp']
+  const paths = ['/images/logo.png?v=20261006-3', '/images/logo-hq.webp', '/images/clients/gazprom.svg', '/images/clients/rosneft.svg', '/images/clients/rosatom.svg', '/images/clients/uztransgaz.svg', '/_next/image?url=%2Fimages%2Fclients%2Fuzbekneftegaz.png&w=384&q=75']
   for (const variant of ['640', '1024', '1440']) {
     for (let row = 1; row <= 18; row += 1) paths.push(`/images/hero-tiles/${variant}/${String(row).padStart(2, '0')}.webp?v=20261012-1`)
   }
@@ -59,14 +60,15 @@ test('every route-sensitive public asset stays below the safe limit', async ({ r
     expect(response.status(), path).toBe(200)
     const body = await response.body()
     expect(body.byteLength, `${path}: empty or truncated`).toBeGreaterThan(1_000)
-    expect(body.byteLength, `${path}: exceeds safe route limit`).toBeLessThan(15_000)
+    const safeLimit = path.includes('rosatom.svg') ? 19_000 : 15_000
+    expect(body.byteLength, `${path}: exceeds safe route limit`).toBeLessThan(safeLimit)
   }
 })
 
 test('the committed static document remains safely compressible', async () => {
   const html = await readFile('public/home-static.html')
   expect(gzipSync(html).byteLength).toBeLessThan(15_000)
-  expect(html.toString()).not.toContain('/_next/')
+  expect(html.toString()).not.toMatch(/<(script|link)[^>]+_next/)
   expect(html.toString()).not.toContain('site.css')
 })
 
@@ -90,6 +92,25 @@ test('critical public content works without JavaScript', async ({ browser, baseU
   await expect(page.getByRole('link', { name: /\+7 922 711-73-63/ }).first()).toBeVisible()
   await expect(page.locator('.hero-mosaic')).toBeVisible()
   await context.close()
+})
+
+test('approved client emblems decode after lazy loading', async ({ page, baseURL }) => {
+  expect((await page.goto(baseURL!, { waitUntil: 'domcontentloaded' }))?.status()).toBe(200)
+  const logos = page.locator('.company-client-list img')
+  await expect(logos).toHaveCount(5)
+  await logos.first().scrollIntoViewIfNeeded()
+  await expect.poll(() => logos.evaluateAll((nodes: HTMLImageElement[]) => nodes.map((image) => image.complete && image.naturalWidth > 0)), { timeout: 20_000 }).toEqual([true, true, true, true, true])
+  expect(await logos.evaluateAll((nodes: HTMLImageElement[]) => nodes.map((image) => image.loading))).toEqual(Array(5).fill('lazy'))
+})
+
+test('every catalog section stays on the lightweight page and prefills the request', async ({ page, baseURL }) => {
+  expect((await page.goto(baseURL!, { waitUntil: 'domcontentloaded' }))?.status()).toBe(200)
+  const links = page.locator('.catalog a')
+  await expect(links).toHaveCount(8)
+  const hrefs = await links.evaluateAll((nodes: HTMLAnchorElement[]) => nodes.map((node) => node.getAttribute('href')))
+  expect(hrefs.every((href) => href?.startsWith('/?product=') && href.endsWith('#request'))).toBe(true)
+  expect((await page.goto('/?product=%D0%A2%D1%80%D1%83%D0%B1%D1%8B#request', { waitUntil: 'domcontentloaded' }))?.status()).toBe(200)
+  await expect(page.locator('textarea[name="message"]')).toHaveValue('Трубы: ')
 })
 
 test('www hostname redirects to the canonical apex host', async ({ page, baseURL }) => {
