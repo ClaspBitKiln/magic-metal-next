@@ -6,9 +6,12 @@ const landingPage = document.querySelector('#landing-page')
 if (startedAt) startedAt.value = String(Date.now())
 if (landingPage) landingPage.value = location.href
 const params = new URLSearchParams(location.search)
-const selectedProduct = params.get('product') || params.get('material')
+const selectedProduct = ['product', 'detail', 'material', 'standard'].map((key) => params.get(key)).filter(Boolean).join('; ')
 const requestText = form?.querySelector('textarea[name="message"]')
 if (selectedProduct && requestText && !requestText.value) requestText.value = `${selectedProduct}: `
+const region = params.get('region')
+const delivery = form?.querySelector('input[name="delivery"]')
+if (region && delivery && !delivery.value) delivery.value = region === 'uzbekistan' ? 'Узбекистан' : region
 
 form?.addEventListener('submit', async (event) => {
   event.preventDefault()

@@ -87,6 +87,22 @@ test('search and existing material links retain the entered specification', asyn
   await expectRequest(page, '12Х1МФ')
 })
 
+test('reference pages and destination links keep their request context', async ({ page }) => {
+  for (const path of ['/spravochnik-gost/gost-30732-2020', '/spravochnik-materialov/stal-20']) {
+    await page.goto(path)
+    const action = page.getByRole('link', { name: 'Отправить заявку' }).first()
+    const url = new URL((await action.getAttribute('href'))!, 'http://test')
+    const specification = url.searchParams.get('standard') || url.searchParams.get('material')!
+    await action.click()
+    await expectRequest(page, specification)
+  }
+  await page.goto('/?product=Труба%2057×3&material=Ст20&standard=ГОСТ%208734#request')
+  await expectRequest(page, 'Труба 57×3; Ст20; ГОСТ 8734')
+  await page.goto('/?region=uzbekistan#request')
+  await expect(page.locator('#request-form input[name="delivery"]')).toHaveValue('Узбекистан')
+  await expect(page.locator('#request-form textarea')).toHaveValue('')
+})
+
 test('product pages pass readable names and the former cart redirects to the request', async ({ page }) => {
   for (const path of ['/produkciya/truby-elektrosvarnye', '/produkciya/truby-elektrosvarnye/vodogazoprovodnye', '/produkciya/sdt/otvody-besshovnye']) {
     await page.goto(path)

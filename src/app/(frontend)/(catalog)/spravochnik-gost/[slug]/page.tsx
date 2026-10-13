@@ -29,7 +29,7 @@ export default async function StandardPage({ params }: { params: Promise<{ slug:
   }
   return <main className="materials-page material-detail">
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
-    <header className="materials-header"><Link href="/spravochnik-gost"><b>←</b> Все стандарты</Link><LanguageSwitcher /><Link className="materials-cta" href={requestHref}>Отправить заявку ↗</Link></header>
+    <header className="materials-header"><Link href="/spravochnik-gost"><b>←</b> Все стандарты</Link><LanguageSwitcher /><a className="materials-cta" href={requestHref}>Отправить заявку ↗</a></header>
     <section className="material-hero material-hero-visual"><div><p>{standard.groupLabel} · {standard.status}</p><h1 className="standard-code">{standard.code}</h1><h2>{standard.title}</h2><span>{standard.summary}</span></div></section>
     <section className="material-content">
       <article className="material-intro"><p>Практическое применение</p><h2>Что регулирует документ</h2><span>Стандарт рассматривается вместе с другими нормативными документами на марку, сортамент и технические условия. Окончательный комплект требований определяется спецификацией и проектом.</span></article>
@@ -41,6 +41,6 @@ export default async function StandardPage({ params }: { params: Promise<{ slug:
     <StandardAssortment standard={standard} />
     {relatedMaterials.length > 0 && <section className="related-materials"><p>Связанные материалы</p><div>{relatedMaterials.map((material) => <Link href={`/spravochnik-materialov/${material.slug}`} key={material.slug}><b>{material.designation}</b><span>{material.name}</span></Link>)}</div></section>}
     <section className="material-products"><p>Связанные товарные направления</p><h2>Поставка по {standard.code}</h2><div>{standard.products.map((item) => <Link href={`/produkciya/${item.slug}`} key={item.slug}>{item.label}<b>↗</b></Link>)}</div></section>
-    <section className="materials-note"><p>Разбор заявки</p><h2>Нужна поставка по этому ГОСТ?</h2><span>Пришлите спецификацию. Проверим совместимость марки, сортамента, технических условий и требований к контролю.</span><Link href={requestHref}>Отправить заявку ↗</Link></section>
+    <section className="materials-note"><p>Разбор заявки</p><h2>Нужна поставка по этому ГОСТ?</h2><span>Пришлите спецификацию. Проверим совместимость марки, сортамента, технических условий и требований к контролю.</span><a href={requestHref}>Отправить заявку ↗</a></section>
   </main>
 }
