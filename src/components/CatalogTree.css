@@ -1,0 +1,27 @@
+.restored-catalog { color: #10182f; }
+.restored-catalog .catalog-group { border-top: 1px solid #d9e1ef; }
+.restored-catalog summary { list-style: none; cursor: pointer; }
+.restored-catalog summary::-webkit-details-marker { display: none; }
+.restored-catalog .catalog-group > summary { display: grid; grid-template-columns: 26px minmax(0, 1fr); align-items: center; gap: 18px; padding: 22px 8px; }
+.restored-catalog .catalog-group > summary strong { display: block; color: #071c62; font-size: 22px; }
+.restored-catalog .catalog-group > summary small { display: block; margin-top: 5px; color: #62708b; }
+.restored-catalog summary:focus-visible { outline: 2px solid #0757e8; outline-offset: -2px; }
+.restored-catalog summary:hover { background: #eef3fb; }
+.restored-catalog .catalog-toggle { position: relative; display: inline-block; flex-shrink: 0; width: 22px; height: 22px; border: 1px solid #0757e8; }
+.restored-catalog .catalog-toggle::before, .restored-catalog .catalog-toggle::after { position: absolute; top: 50%; left: 50%; width: 10px; height: 1px; background: #0757e8; content: ''; transform: translate(-50%, -50%); }
+.restored-catalog .catalog-toggle::after { transform: translate(-50%, -50%) rotate(90deg); }
+.restored-catalog details[open] > summary .catalog-toggle::after { display: none; }
+.restored-catalog .catalog-row { display: grid; grid-template-columns: 1.4fr .6fr 1fr 1.1fr; gap: 20px; align-items: center; padding: 18px 8px; font-size: 14px; overflow-wrap: anywhere; }
+.restored-catalog .catalog-row strong { display: flex; align-items: center; gap: 12px; color: #071c62; }
+.restored-catalog .catalog-labels { color: #62708b; font-size: 12px; }
+.restored-catalog .catalog-item { border-top: 1px solid #d9e1ef; }
+.restored-catalog .home-size-series { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; padding: 16px 8px 20px 42px; background: #eef3fb; }
+.restored-catalog .home-size-series > span { color: #62708b; font-size: 12px; }
+.restored-catalog .home-size-series a { color: #0757e8; font-size: 14px; font-weight: 650; }
+.restored-catalog .home-size-series a:hover { text-decoration: underline; }
+@media (max-width: 700px) {
+  .restored-catalog .catalog-labels { display: none; }
+  .restored-catalog .catalog-row { grid-template-columns: 1fr; gap: 8px; }
+  .restored-catalog .catalog-row > span { padding-left: 34px; }
+  .restored-catalog .home-size-series { flex-direction: column; align-items: flex-start; padding-left: 42px; }
+}

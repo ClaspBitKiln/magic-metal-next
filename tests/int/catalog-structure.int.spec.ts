@@ -2,10 +2,34 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { homeCatalogGroups, homeCatalogItemCount } from '@/data/homeCatalog'
+import { createElement } from 'react'
+import { renderToStaticMarkup } from 'react-dom/server'
+import CatalogTree from '@/components/CatalogTree'
+import { gzipSync } from 'node:zlib'
+import { sdtCatalog } from '@/data/sdtCatalog'
 
 const privateSupplierSnapshotPath = path.join(process.cwd(), 'private/data/23met-practical-snapshot.json')
 
 describe('unified homepage catalog', () => {
+  it('restores all existing categories and nomenclature in the served static homepage', () => {
+    const home = fs.readFileSync(path.join(process.cwd(), 'public/home-static.html'), 'utf8')
+    const markup = renderToStaticMarkup(createElement(CatalogTree))
+    expect(home).toContain(markup)
+    const tree = new DOMParser().parseFromString(markup, 'text/html')
+    expect(tree.querySelectorAll('.catalog-group')).toHaveLength(homeCatalogGroups.length)
+    expect(tree.querySelectorAll('.catalog-item')).toHaveLength(homeCatalogItemCount)
+    for (const [index, group] of homeCatalogGroups.entries()) {
+      const section = tree.querySelectorAll('.catalog-group')[index]
+      expect(section.querySelector('summary')?.textContent).toContain(group.title)
+      for (const item of group.items) {
+        const link = Array.from(section.querySelectorAll('a')).find((a) => a.getAttribute('href') === item.href)
+        expect(link).toBeDefined()
+      }
+    }
+    const sdt = homeCatalogGroups.find((group) => group.title === 'СДТ')!
+    expect(sdt.items.every((item) => sdtCatalog.some((detail) => item.href === `/produkciya/sdt/${detail.slug}`))).toBe(true)
+  })
+
   it('renders every category through one normalized data tree', () => {
     expect(homeCatalogGroups.map((group) => group.title)).toEqual([
       'Трубы',
@@ -23,22 +47,17 @@ describe('unified homepage catalog', () => {
     expect(homeCatalogGroups.every((group) => group.items.every((item) => item.title && item.size && item.standards && item.grades && item.href))).toBe(true)
   })
 
-  it('renders a simple public section list without detailed sizes or prices', () => {
-    const component = fs.readFileSync(path.join(process.cwd(), 'src/components/MagicMetalHome.tsx'), 'utf8')
-    expect(component).toContain('homeCatalogGroups.map')
-    expect(component).toContain('catalog-section-list')
-    expect(component).toContain('Что мы<br /><em>можем поставить</em>')
-    expect(component).not.toContain('item.size')
-    expect(component).not.toContain('item.standards')
-    expect(component).not.toContain('item.grades')
-    expect(component.match(/homeCatalogGroups\.map/g)).toHaveLength(1)
-  })
-
-  it('keeps the section list responsive and visually separated', () => {
-    const styles = fs.readFileSync(path.join(process.cwd(), 'src/app/(frontend)/styles.css'), 'utf8')
-    expect(styles).toContain('.catalog-section-list')
-    expect(styles).toContain('.catalog-section-card')
-    expect(styles).toContain('grid-template-columns: repeat(2, minmax(0, 1fr))')
+  it('keeps the restored tree small and usable without client JavaScript', () => {
+    const markup = renderToStaticMarkup(createElement(CatalogTree))
+    expect(gzipSync(markup).byteLength).toBeLessThan(10_000)
+    expect(markup).not.toContain('<script')
+    const tree = new DOMParser().parseFromString(markup, 'text/html')
+    expect(tree.querySelectorAll('.catalog-group[open]')).toHaveLength(1)
+    expect(tree.querySelectorAll('.catalog-item[open]')).toHaveLength(0)
+    for (const item of tree.querySelectorAll('.catalog-item')) {
+      expect(item.firstElementChild?.tagName).toBe('SUMMARY')
+      expect(item.querySelectorAll('.home-size-series a')).toHaveLength(2)
+    }
   })
 
   it('isolates the public launch from unfinished internal type errors', () => {

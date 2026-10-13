@@ -2697,6 +2697,10 @@ main select {
 .market-table-headings th:first-child,.market-table-filter-row th:first-child { width: 34%; }
 @media (max-width: 760px) {
   .market-product-cell { width: auto; min-width: 0; }
+  .market-table-wrap table { min-width: 0; }
+  .market-table-wrap td { overflow-wrap: anywhere; }
+  .market-category-title h2,
+  .market-group > summary b { overflow-wrap: anywhere; }
 }
 @media (min-width: 901px) {
   .market-content { width: 100%; max-width: none; padding-left: max(24px,2vw); padding-right: max(24px,2vw); }

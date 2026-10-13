@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { homeCatalogGroups } from '@/data/homeCatalog'
+import CatalogTree from './CatalogTree'
+import './CatalogTree.css'
 import PublicHeader from '@/components/PublicHeader'
 import RequestForm from '@/components/RequestForm'
 
@@ -74,14 +75,8 @@ export default function MagicMetalHome() {
         </div>
       <div className="product-unified" id="products" aria-labelledby="products-title">
       <div className="section catalog-section product-subsection">
-        <div className="catalog-head"><div><p className="product-subsection-label">Основные направления поставок</p><h2 id="products-title">Что мы<br /><em>можем поставить</em></h2></div><div className="catalog-head-actions"><p>Выберите нужный раздел. Размеры, марку стали, стандарт, цену, наличие и срок поставки подтвердим по вашей спецификации.</p><a className="catalog-main-cta" href="#request">Отправить заявку <span aria-hidden="true">→</span></a></div></div>
-        <div className="catalog-section-list" aria-label="Разделы поставок">
-          {homeCatalogGroups.map((group, index) => <Link className="catalog-section-card" href={`/?product=${encodeURIComponent(group.title)}#request`} aria-label={`Выбрать раздел «${group.title}» и перейти к заявке`} key={group.title}>
-            <span className="catalog-section-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
-            <div><h3>{group.title}</h3><p>{group.note}</p></div>
-            <span className="catalog-section-arrow" aria-hidden="true">→</span>
-          </Link>)}
-        </div>
+        <div className="catalog-head"><div><p className="product-subsection-label">Основные направления поставок</p><h2 id="products-title">Что мы<br /><em>можем поставить</em></h2></div><div className="catalog-head-actions"><p>Откройте категорию, затем нужную номенклатуру: размеры, ГОСТы, марки и исполнения. Наличие и срок поставки подтвердим по вашей спецификации.</p><a className="catalog-main-cta" href="#request">Отправить заявку <span aria-hidden="true">→</span></a></div></div>
+        <CatalogTree />
       </div>
       </div>
       </section>

@@ -287,6 +287,14 @@
   }
   .pipe-hero h1 {
     font-size: 43px;
+    overflow-wrap: anywhere;
+  }
+  .pipe-breadcrumb {
+    flex-wrap: wrap;
+  }
+  .pipe-breadcrumb > span {
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
   .pipe-intro,
   .pipe-spec,
@@ -303,7 +311,10 @@
   }
   .pipe-standards a,
   .pipe-standards > div:last-child > div {
-    grid-template-columns: 1fr 18px;
+    grid-template-columns: minmax(0, 1fr) 18px;
+  }
+  .pipe-standards span:not(.standard-code) {
+    overflow-wrap: anywhere;
   }
   .pipe-standards small {
     grid-column: 1;
