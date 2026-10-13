@@ -11,9 +11,8 @@ export default function CatalogTree() {
         {group.items.map((item) => <details className="catalog-item" key={item.title}>
           <summary className="catalog-row"><strong><span className="catalog-toggle" aria-hidden="true" />{item.title}</strong><span>{item.size}</span><span>{item.standards}</span><span>{item.grades}</span></summary>
           <div className="home-size-series">
-            <span>{item.practicalSeries ? 'Практический размерный ряд рынка' : item.requestOnly ? 'Исполнение и размеры по заявке' : 'Размеры из подтверждённого складского прайса'}</span>
-            <a href={item.requestOnly ? `/?product=${encodeURIComponent(item.availabilityQuery)}#request` : `/spravochnik-nalichiya?q=${encodeURIComponent(item.availabilityQuery)}`}>{item.requestOnly ? 'Запросить изготовление по ГОСТ / ТУ' : 'Показать практический ряд и наличие'} →</a>
-            <a href={item.href}>Характеристики продукции →</a>
+            <a href={item.href}>{item.href.startsWith('/produkciya/') ? 'Размеры, описание и ГОСТы' : 'Заявка на комплектацию'} →</a>
+            <a href={`/?product=${encodeURIComponent(`Заявка на производство — ${item.availabilityQuery}`)}#request`}>Заявка на производство →</a>
           </div>
         </details>)}
       </div>

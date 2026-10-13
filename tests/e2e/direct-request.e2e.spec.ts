@@ -8,14 +8,19 @@ async function expectRequest(page: Page, specification: string) {
 }
 
 for (const width of [390, 1440]) {
-  test(`catalog row goes straight to a prefilled request at ${width}px`, async ({ page }) => {
+  test(`homepage manufacturing and stock rows go straight to requests at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 })
     await page.goto('/')
     const pipes = page.locator('.catalog-group').first()
     await pipes.locator('summary').first().click()
     const item = pipes.locator('.catalog-item').filter({ hasText: 'Водогазопроводные' })
     await item.locator('summary').click()
-    await item.locator('a[href^="/spravochnik-nalichiya"]').click()
+    const manufacturing = item.getByRole('link', { name: 'Заявка на производство' })
+    const manufacturingSpec = new URL((await manufacturing.getAttribute('href'))!, 'http://test').searchParams.get('product')!
+    expect(manufacturingSpec).toBe('Заявка на производство — Водогазопроводные')
+    await manufacturing.click()
+    await expectRequest(page, manufacturingSpec)
+    await page.goto('/spravochnik-nalichiya?q=Водогазопроводные')
     const group = page.locator('.market-group').first()
     await expect(group).toBeVisible()
     if (await group.getAttribute('open') === null) await group.locator('summary').click()

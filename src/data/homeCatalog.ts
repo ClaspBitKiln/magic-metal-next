@@ -139,7 +139,7 @@ export const homeCatalogGroups: HomeCatalogGroup[] = [
       size: 'По техническому заданию',
       standards: 'По проекту и ТУ изготовителя',
       grades: 'Исполнение и комплектность по заявке',
-      href: '/?product=komplektuyushchie#request',
+      href: `/?product=${encodeURIComponent('Оборудование и комплектующие')}#request`,
       availabilityQuery: 'Оборудование и комплектующие',
     })],
   },
