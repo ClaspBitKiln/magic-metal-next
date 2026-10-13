@@ -4,7 +4,7 @@ import { homeCatalogGroups } from '@/data/homeCatalog'
 // Native disclosure elements work without client JavaScript.
 export default function CatalogTree() {
   return <div className="restored-catalog" aria-label="Каталог продукции">
-    {homeCatalogGroups.map((group, groupIndex) => <details className="catalog-group" key={group.title} open={groupIndex === 0}>
+    {homeCatalogGroups.map((group) => <details className="catalog-group" key={group.title}>
       <summary><span className="catalog-toggle" aria-hidden="true" /><span><strong>{group.title}</strong><small>{group.note}</small></span></summary>
       <div className="catalog-table" aria-label={group.title}>
         <div className="catalog-row catalog-labels" aria-hidden="true"><span>Номенклатура</span><span>Размеры</span><span>Стандарты</span><span>Марки / исполнение</span></div>

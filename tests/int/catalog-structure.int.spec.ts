@@ -52,7 +52,7 @@ describe('unified homepage catalog', () => {
     expect(gzipSync(markup).byteLength).toBeLessThan(10_000)
     expect(markup).not.toContain('<script')
     const tree = new DOMParser().parseFromString(markup, 'text/html')
-    expect(tree.querySelectorAll('.catalog-group[open]')).toHaveLength(1)
+    expect(tree.querySelectorAll('.catalog-group[open]')).toHaveLength(0)
     expect(tree.querySelectorAll('.catalog-item[open]')).toHaveLength(0)
     for (const item of tree.querySelectorAll('.catalog-item')) {
       expect(item.firstElementChild?.tagName).toBe('SUMMARY')

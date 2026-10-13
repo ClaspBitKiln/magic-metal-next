@@ -17,7 +17,7 @@
 .restored-catalog .catalog-item { border-top: 1px solid #d9e1ef; }
 .restored-catalog .home-size-series { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; padding: 16px 8px 20px 42px; background: #eef3fb; }
 .restored-catalog .home-size-series > span { color: #62708b; font-size: 12px; }
-.restored-catalog .home-size-series a { color: #0757e8; font-size: 14px; font-weight: 650; }
+.restored-catalog .home-size-series a { display: inline-flex; align-items: center; min-height: 44px; color: #0757e8; font-size: 14px; font-weight: 650; }
 .restored-catalog .home-size-series a:hover { text-decoration: underline; }
 @media (max-width: 700px) {
   .restored-catalog .catalog-labels { display: none; }
