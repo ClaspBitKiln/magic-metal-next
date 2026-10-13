@@ -123,7 +123,7 @@ test('request keeps specifications on failure and sends them with the attachment
   await form.locator('input[name="email"]').fill('browser-test@example.invalid')
   await form.locator('input[name="delivery"]').fill('Самовывоз')
   await form.locator('input[name="consent"]').check()
-  await form.locator('input[name="files"]').setInputFiles({ name: 'specification.txt', mimeType: 'text/plain', buffer: Buffer.from(message) })
+  await form.locator('input[name="files"]').setInputFiles({ name: 'specification.pdf', mimeType: 'application/pdf', buffer: Buffer.from(`%PDF-1.4\n${message}`) })
   const payloads: string[] = []
   await page.route('**/api/request', async (route) => {
     payloads.push(route.request().postDataBuffer()!.toString())
@@ -132,13 +132,14 @@ test('request keeps specifications on failure and sends them with the attachment
   await form.getByRole('button', { name: 'Отправить на расчёт' }).click()
   await expect(page.locator('#form-status')).toHaveText('Попробуйте позже')
   await expect(form.locator('textarea[name="message"]')).toHaveValue(message)
+  expect(await form.locator('input[name="files"]').evaluate((input: HTMLInputElement) => input.files?.[0]?.name)).toBe('specification.pdf')
   await expect(form.getByRole('button', { name: 'Отправить на расчёт' })).toBeEnabled()
   await form.getByRole('button', { name: 'Отправить на расчёт' }).click()
   await expect(page.locator('#form-status')).toHaveText('Заявка принята. Мы свяжемся с вами.')
   expect(payloads).toHaveLength(2)
   for (const payload of payloads) {
     expect(payload).toContain(message)
-    expect(payload).toContain('specification.txt')
+    expect(payload).toContain('specification.pdf')
     expect(payload).toContain('Самовывоз')
     expect(payload).toContain('name="consent"')
   }

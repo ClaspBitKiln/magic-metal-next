@@ -16,8 +16,14 @@ if (region && delivery && !delivery.value) delivery.value = region === 'uzbekist
 form?.addEventListener('submit', async (event) => {
   event.preventDefault()
   const data = new FormData(form)
-  if (!data.get('phone') && !data.get('email')) {
+  if (!String(data.get('phone') || '').trim() && !String(data.get('email') || '').trim()) {
     status.textContent = 'Укажите телефон или email.'
+    return
+  }
+  const hasFiles = data.getAll('files').some((file) => file instanceof File && file.size > 0)
+  if (!String(data.get('message') || '').trim() && !hasFiles) {
+    status.textContent = 'Прикрепите файл или опишите, что требуется.'
+    requestText?.focus()
     return
   }
   button.disabled = true
