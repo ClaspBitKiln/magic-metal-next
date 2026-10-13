@@ -44,8 +44,8 @@ export default function CatalogSearch() {
     <div className="search-filters" aria-label="Фильтр результатов">
       {([['all', 'Всё'], ['product', 'Продукция'], ['material', 'Материалы'], ['standard', 'ГОСТ']] as [Filter, string][]).map(([key, label]) => <button className={filter === key ? 'active' : ''} type="button" onClick={() => setFilter(key)} key={key}>{label}</button>)}
     </div>
-    <div className="search-summary"><span>{query ? `Найдено: ${results.length}` : `В индексе: ${searchIndex.length}`}</span>{query && <Link href={`/?material=${encodeURIComponent(query)}#request`}>Не нашли точное исполнение? Отправить заявку →</Link>}</div>
+    <div className="search-summary"><span>{query ? `Найдено: ${results.length}` : `В индексе: ${searchIndex.length}`}</span>{query && <a href={`/?product=${encodeURIComponent(query)}#request`}>Не нашли точное исполнение? Отправить заявку →</a>}</div>
     <div className="search-results"><div className="search-results-head"><span>Раздел</span><span>Позиция</span><span>Описание</span><i aria-hidden="true" /></div>{results.map(({ item }) => <Link href={item.href} aria-label={`Открыть: ${item.title}`} key={`${item.type}-${item.href}`}><small>{item.typeLabel}</small><h2>{item.title}</h2><span className="search-result-description"><h3>{item.subtitle}</h3><p>{item.description}</p></span><b aria-hidden="true">→</b></Link>)}</div>
-    {results.length === 0 && <div className="search-empty"><h2>Точного совпадения пока нет</h2><p>Попробуйте обозначение без года, размерности или пришлите спецификацию — мы разберём запрос вручную.</p><Link href={`/?material=${encodeURIComponent(query)}#request`}>Отправить заявку ↗</Link></div>}
+    {results.length === 0 && <div className="search-empty"><h2>Точного совпадения пока нет</h2><p>Попробуйте название продукции, марку или номер ГОСТ. Для поиска по размеру откройте справочник наличия или отправьте заявку — введённые параметры сохранятся.</p><a href={`/?product=${encodeURIComponent(query)}#request`}>Отправить заявку ↗</a></div>}
   </section>
 }

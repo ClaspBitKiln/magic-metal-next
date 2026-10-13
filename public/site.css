@@ -1694,7 +1694,7 @@ h2 {
 .market-table-wrap th { position: sticky; z-index: 2; top: 0; color: #50627f; background: #edf3fb; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; }
 .market-table-wrap td { color: #243858; font-size: 13px; }.market-table-wrap td:first-child { color: #092a72; font-size: 15px; font-weight: 800; }
 .market-row-action { width: 116px; text-align: right !important; }.market-row-action > span { color: #0757e8; font-size: 11px; font-weight: 800; white-space: nowrap; }
-.market-row-action .add-to-quote { justify-content: flex-end; }.add-to-quote.compact button { min-height: 34px; padding: 0 12px; font-size: 11px; white-space: nowrap; }
+.market-row-action .add-to-quote { justify-content: flex-end; }.add-to-quote.compact a { min-height: 44px; padding: 0 12px; font-size: 11px; white-space: nowrap; }
 .market-position-row { cursor: pointer; }
 .market-position-row:hover { background: #edf4ff; box-shadow: inset 4px 0 #0757e8; }
 .market-position-row:focus-visible { outline: 3px solid #2372ff; outline-offset: -3px; }
@@ -2529,10 +2529,13 @@ main select {
 .position-page { min-height: 100vh; background: #f4f7fc; color: #071d55; }
 .position-header { min-height: 76px; padding: 0 max(7vw, 24px); display: flex; align-items: center; justify-content: space-between; background: #fff; border-bottom: 1px solid #d8e1ef; }
 .position-header a { color: #083a9b; font-weight: 700; text-decoration: none; }
+@media (max-width: 640px) {
+  .market-header, .position-header { height: auto; min-height: 76px; flex-wrap: wrap; gap: 12px; padding-block: 16px; }
+}
 .position-hero, .position-spec-grid, .position-mass, .position-properties, .position-buy, .position-state { width: min(1500px, 86vw); margin-inline: auto; }
 .position-hero { padding: 72px 0 40px; }
 .position-hero > p, .position-properties header p, .position-buy p, .position-mass p:first-child { text-transform: uppercase; letter-spacing: .12em; font-size: 13px; font-weight: 800; color: #4e668f; }
-.position-hero h1 { margin: 12px 0 28px; max-width: 1000px; font-size: clamp(34px, 5vw, 72px); line-height: 1.02; }
+.position-hero h1 { margin: 12px 0 28px; max-width: 1000px; overflow-wrap: anywhere; font-size: clamp(34px, 5vw, 72px); line-height: 1.02; }
 .position-hero > div { display: flex; gap: 18px; align-items: center; }
 .position-hero > div > a, .position-buy > a { padding: 16px 24px; background: #0759ed; color: #fff; font-weight: 800; text-decoration: none; }
 .position-spec-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); background: #fff; border: 1px solid #d6dfed; }
@@ -2562,7 +2565,7 @@ main select {
 .cart-link { display: inline-flex; align-items: center; gap: 9px; }
 .cart-link b { min-width: 24px; height: 24px; padding: 0 7px; display: inline-grid; place-items: center; border-radius: 20px; background: #0759ed; color: #fff; font-size: 12px; }
 .add-to-quote { display: flex; gap: 8px; flex-wrap: wrap; }
-.add-to-quote button { min-height: 48px; padding: 0 20px; border: 1px solid #0759ed; background: #0759ed; color: #fff; font: inherit; font-weight: 800; cursor: pointer; }
+.add-to-quote a { display: inline-flex; align-items: center; text-decoration: none; min-height: 48px; padding: 0 20px; border: 1px solid #0759ed; background: #0759ed; color: #fff; font: inherit; font-weight: 800; cursor: pointer; }
 .add-to-quote .quote-secondary { background: #fff; color: #0759ed; }
 .quote-page { min-height: 100vh; background: #f4f7fc; color: #071d55; }
 .quote-layout { width: min(1600px, 90vw); margin: 56px auto 90px; display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(330px, .8fr); gap: 28px; align-items: start; }
@@ -2644,7 +2647,7 @@ main select {
 .market-position-row:hover { background: #e8f0f8; box-shadow: inset 3px 0 #527faa; }
 .stock-green { color: #2fbf71; }
 .stock-yellow { color: #a88b32; }
-.add-to-quote.compact button { border-color: #315f8c; background: #315f8c; }
+.add-to-quote.compact a { border-color: #315f8c; background: #315f8c; }
 .market-row-action > span { color: #315f8c; }
 .market-show-more { color: #315f8c; background: #edf2f7; }.market-show-more:hover { background: #e1e8f0; }
 .quote-dock { border-color: #587fa5; background: #102f52; }.quote-dock a { background: #315f8c; }
@@ -2676,12 +2679,12 @@ main select {
 .stock-green { color: var(--state-green); }
 .stock-yellow { color: var(--state-yellow); }
 .stock-red,.quote-error,.quote-items article > button { color: var(--state-red-dark); }
-.add-to-quote button,.add-to-quote.compact button,.quote-form button {
+.add-to-quote a,.add-to-quote.compact a,.quote-form button {
   border-color: var(--state-lime-border);
   background: var(--state-lime);
   color: var(--state-lime-text);
 }
-.add-to-quote button:hover,.quote-form button:hover { background: #cae6e0; }
+.add-to-quote a:hover,.quote-form button:hover { background: #cae6e0; }
 .add-to-quote .quote-secondary { border-color: #cddfdb; background: var(--state-green-soft); color: var(--state-lime-text); }
 .quote-dock { border-color: #bddbd5; background: #e7f4f1; color: var(--state-lime-text); box-shadow: 0 14px 42px rgba(38,75,68,.13); }
 .quote-dock div b { color: var(--state-green-dark); }

@@ -5,7 +5,8 @@ const startedAt = document.querySelector('#started-at')
 const landingPage = document.querySelector('#landing-page')
 if (startedAt) startedAt.value = String(Date.now())
 if (landingPage) landingPage.value = location.href
-const selectedProduct = new URLSearchParams(location.search).get('product')
+const params = new URLSearchParams(location.search)
+const selectedProduct = params.get('product') || params.get('material')
 const requestText = form?.querySelector('textarea[name="message"]')
 if (selectedProduct && requestText && !requestText.value) requestText.value = `${selectedProduct}: `
 

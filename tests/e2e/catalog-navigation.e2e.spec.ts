@@ -9,7 +9,7 @@ for (const width of [390, 1440]) {
         filterNavigations.push(request.url())
       }
     })
-    await page.goto('http://localhost:3000/spravochnik-nalichiya?q=Водогазопроводные')
+    await page.goto('/spravochnik-nalichiya?q=Водогазопроводные')
     const search = page.getByPlaceholder('Номенклатура, размер, марка или ГОСТ')
     await expect(search).toHaveValue('Водогазопроводные')
     await expect(page.locator('.market-group').first()).toBeVisible()
@@ -22,6 +22,7 @@ for (const width of [390, 1440]) {
     expect(filterNavigations).toEqual([])
     await group.locator('.market-position-row').first().click()
     await expect(page).toHaveURL(/\/poziciya\?id=/)
-    await expect(page.getByRole('button', { name: 'Добавить для КП' })).toBeVisible()
+    await expect(page.locator('.position-hero').getByRole('link', { name: 'Отправить заявку' })).toBeVisible()
+    expect(await page.locator('.position-hero h1').evaluate((heading) => heading.scrollWidth - heading.clientWidth)).toBeLessThanOrEqual(1)
   })
 }

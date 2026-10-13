@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 import { materialSpecs } from '@/data/materialSpecs'
 import { materials } from '@/data/materials'
-import AddToQuoteButton from '@/components/AddToQuoteButton'
+import RequestQuoteButton from '@/components/RequestQuoteButton'
 import { formatProductTitle } from '@/lib/catalogSearch'
 import { decodeCatalogSnapshot, type CatalogPriceRow as PriceRow } from '@/lib/catalogSnapshot'
 
@@ -77,7 +77,7 @@ export default function CatalogPosition() {
     <section className="position-hero">
       <p>{row.category}</p>
       <h1>{formatProductTitle(row.product)}</h1>
-      <div><span className="stock-green"><i />На складе</span><AddToQuoteButton item={{ id: row.id, product: row.product, size: row.size, designation: row.designation, standard: row.standard }} /></div>
+      <div><span className="stock-green"><i />На складе</span><RequestQuoteButton item={{ product: row.product, size: row.size, designation: row.designation, standard: row.standard }} /></div>
     </section>
     <section className="position-spec-grid">
       <div><span>Размер / обозначение</span><b>{row.size}</b></div>
@@ -97,6 +97,6 @@ export default function CatalogPosition() {
       <h3>Химический состав</h3><div className="position-chemistry">{spec.chemistry.map((item) => <span key={item.label}><b>{item.label}</b>{item.value}</span>)}</div>
       <aside>{spec.condition}. {spec.note} Стандарт и сертификат конкретной партии имеют приоритет.</aside>
     </section> : <section className="position-properties position-properties-empty"><h2>Свойства материала</h2><p>Укажите марку стали, чтобы получить химический состав и механические свойства.</p></section>}
-    <section className="position-buy"><div><p>Покупка</p><h2>Проверим остаток и подготовим предложение</h2><span>Уточним количество, длину, требования проекта, срок и адрес поставки.</span></div><Link href={`/?product=${encodeURIComponent(request)}#request`}>Отправить заявку ↗</Link></section>
+    <section className="position-buy"><div><p>Покупка</p><h2>Проверим остаток и подготовим предложение</h2><span>Уточним количество, длину, требования проекта, срок и адрес поставки.</span></div><a href={`/?product=${encodeURIComponent(request)}#request`}>Отправить заявку ↗</a></section>
   </>
 }
