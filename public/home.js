@@ -1,12 +1,3 @@
-const canvas = document.querySelector('.hero-canvas')
-for (let index = 1; index <= 18; index += 1) {
-  const row = String(index).padStart(2, '0')
-  const picture = document.createElement('picture')
-  picture.className = 'hero-tile'
-  picture.innerHTML = `<source media="(max-width:700px)" srcset="/images/hero-tiles/640/${row}.webp?v=20261012-1"><source media="(max-width:1200px)" srcset="/images/hero-tiles/1024/${row}.webp?v=20261012-1"><img src="/images/hero-tiles/1440/${row}.webp?v=20261012-1" alt="" width="1440" height="45">`
-  canvas?.append(picture)
-}
-
 const form = document.querySelector('#request-form')
 const status = document.querySelector('#form-status')
 const button = form?.querySelector('button')

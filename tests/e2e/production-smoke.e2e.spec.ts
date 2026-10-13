@@ -91,6 +91,7 @@ test('critical public content works without JavaScript', async ({ browser, baseU
   await expect(page.locator('#request')).toBeVisible()
   await expect(page.getByRole('link', { name: /\+7 922 711-73-63/ }).first()).toBeVisible()
   await expect(page.locator('.hero-mosaic')).toBeVisible()
+  await expectDecodedHero(page, '1440', 1440, 45)
   await context.close()
 })
 
@@ -103,12 +104,15 @@ test('approved client emblems decode after lazy loading', async ({ page, baseURL
   expect(await logos.evaluateAll((nodes: HTMLImageElement[]) => nodes.map((image) => image.loading))).toEqual(Array(5).fill('lazy'))
 })
 
-test('every catalog section stays on the lightweight page and prefills the request', async ({ page, baseURL }) => {
+test('the restored catalog exposes details and preserves request prefill', async ({ page, baseURL }) => {
   expect((await page.goto(baseURL!, { waitUntil: 'domcontentloaded' }))?.status()).toBe(200)
-  const links = page.locator('.catalog a')
-  await expect(links).toHaveCount(8)
+  await expect(page.locator('.catalog-group')).toHaveCount(10)
+  await expect(page.locator('.catalog-group[open]')).toHaveCount(0)
+  await expect(page.locator('.catalog-item')).toHaveCount(45)
+  const links = page.locator('.home-size-series a')
+  await expect(links).toHaveCount(90)
   const hrefs = await links.evaluateAll((nodes: HTMLAnchorElement[]) => nodes.map((node) => node.getAttribute('href')))
-  expect(hrefs.every((href) => href?.startsWith('/?product=') && href.endsWith('#request'))).toBe(true)
+  expect(hrefs.every((href) => href?.startsWith('/produkciya/') || href?.startsWith('/spravochnik-nalichiya?q=') || (href?.startsWith('/?product=') && href.endsWith('#request')))).toBe(true)
   expect((await page.goto('/?product=%D0%A2%D1%80%D1%83%D0%B1%D1%8B#request', { waitUntil: 'domcontentloaded' }))?.status()).toBe(200)
   await expect(page.locator('textarea[name="message"]')).toHaveValue('Трубы: ')
 })

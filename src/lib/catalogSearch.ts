@@ -100,6 +100,9 @@ export const formatProductTitle = (value: string) => {
 
 export const normalizeCatalogText = (value: string) => {
   let normalized = value.toLocaleLowerCase('ru').replaceAll('ё', 'е').replace(/(\d),(\d)/g, '$1.$2').replace(/[×хx]/g, 'x')
+  normalized = normalized
+    .replace(/(?<![\p{L}\p{N}])труб[аы](?![\p{L}\p{N}])/gu, 'трубы')
+    .replace(/(?<![\p{L}\p{N}])сталь\s*(\d{1,2})(?![\p{L}\p{N}])/gu, 'ст$1')
   replacements.forEach(([pattern, replacement]) => { normalized = normalized.replace(pattern, replacement) })
   return normalized.replace(/[^0-9a-zа-я./-]+/g, ' ').replace(/\s+/g, ' ').trim()
 }
@@ -119,7 +122,9 @@ export const matchesCatalogQuery = (row: CatalogSearchRow, query: string) => {
     if (!requestedDimensions.every((dimension) => rowDimensions.includes(dimension))) return false
   }
   const haystack = normalizeCatalogText(`${row.category} ${row.product} ${formatProductTitle(row.product)} ${row.designation} ${row.size} ${row.standard}`)
-  const tokens = normalizeCatalogText(query.replace(dimensionPattern, ' ')).split(' ').filter((token) => token && !stopWords.has(token))
+  const tokens = normalizeCatalogText(query.replace(dimensionPattern, ' ')).split(' ').filter((token) =>
+    token && !stopWords.has(token) && !(requestedDimensions.length && /^(?:мм|mm)\.?$/.test(token)),
+  )
   const haystackTokens = haystack.split(' ')
   return tokens.every((token) => haystackTokens.some((candidate) => candidate === token || candidate.startsWith(token)))
 }
