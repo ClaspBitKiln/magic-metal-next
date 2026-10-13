@@ -89,7 +89,6 @@ function MarketProductGroup({ group, globalSearch, openByDefault, filtersActive,
 }
 
 export default function MarketDirectory() {
-  const router = useRouter()
   const [snapshot, setSnapshot] = useState<Snapshot | null>(null)
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState('Трубы')
@@ -148,15 +147,14 @@ export default function MarketDirectory() {
 
   useEffect(() => {
     if (!snapshot) return
-    const timer = window.setTimeout(() => {
-      const params = new URLSearchParams(window.location.search)
-      if (query.trim()) params.set('q', query)
-      else params.delete('q')
-      params.set('category', category)
-      router.replace(`/spravochnik-nalichiya?${params.toString()}`, { scroll: false })
-    }, 250)
-    return () => window.clearTimeout(timer)
-  }, [category, query, router, snapshot])
+    const params = new URLSearchParams(window.location.search)
+    if (query.trim()) params.set('q', query)
+    else params.delete('q')
+    params.set('category', category)
+    // Keep filter state in the URL without a server navigation that can race
+    // with a user's transition to a product card.
+    window.history.replaceState(null, '', `/spravochnik-nalichiya?${params.toString()}`)
+  }, [category, query, snapshot])
 
   const selectCategory = (value: string) => {
     setCategory(value)
