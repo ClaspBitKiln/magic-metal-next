@@ -3,17 +3,14 @@ name: Site QA
 on:
   workflow_dispatch:
   deployment_status:
-  push:
-    branches:
-      - main
 
 concurrency:
-  group: site-qa-production
+  group: site-qa-production-${{ github.event.deployment.environment || 'manual' }}
   cancel-in-progress: true
 
 jobs:
   audit:
-    if: github.event_name != 'deployment_status' || github.event.deployment_status.state == 'success'
+    if: github.event_name == 'workflow_dispatch' || (github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Production')
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
@@ -34,18 +31,6 @@ jobs:
 
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
-
-      - name: Wait for production
-        if: github.event_name == 'push'
-        run: |
-          for attempt in {1..12}; do
-            if curl --fail --silent --show-error https://magic-metal-next.vercel.app/ > /dev/null; then
-              sleep 20
-              exit 0
-            fi
-            sleep 10
-          done
-          exit 1
 
       - name: Run production QA agents
         id: qa
