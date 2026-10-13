@@ -10,6 +10,29 @@ const snapshot = decodeCatalogSnapshot(JSON.parse(fs.readFileSync(path.join(proc
 const count = (query: string) => snapshot.rows.filter((row) => matchesCatalogQuery(row, query)).length
 
 describe('catalog search links', () => {
+  it.each(['57х3', '57 х 3', '57×3', '57x3', '57 X 3', '57×3,0'])(
+    'matches the exact diameter and wall for %s', (query) => {
+      const found = snapshot.rows.filter((row) => matchesCatalogQuery(row, query))
+      expect(found).toHaveLength(5)
+      expect(found.every((row) => /^57(?:[.,]0+)?[х×x]3(?:[.,]0+)?$/iu.test(row.size.replace(/\s/g, '')))).toBe(true)
+    },
+  )
+
+  it.each(['57х3,5', '57 х 3,5', '57×3.5', '57x3.50'])(
+    'finds the same exact decimal dimensions for %s', (query) => {
+      expect(snapshot.rows.filter((row) => matchesCatalogQuery(row, query))).toHaveLength(6)
+    },
+  )
+
+  it('combines exact dimensions with material and standard requirements', () => {
+    const row: CatalogSearchRow = { category: 'Трубы', product: 'Трубы бесшовные', designation: '09Г2С', size: '57×3,5', standard: 'ГОСТ 8734-75' }
+    expect(matchesCatalogQuery(row, '57 x 3.5 09Г2С ГОСТ 8734')).toBe(true)
+    expect(matchesCatalogQuery(row, '57 x 3.5 12Х18Н10Т')).toBe(false)
+    expect(matchesCatalogQuery({ ...row, size: '57×3' }, '57×3,5')).toBe(false)
+    expect(matchesCatalogQuery({ ...row, size: '157×3,5' }, '57×3,5')).toBe(false)
+    expect(matchesCatalogQuery({ ...row, size: '57×3,5×6000' }, '57×3,5')).toBe(false)
+  })
+
   it.each([
     ['Водогазопроводные', 50],
     ['Бесшовные холоднодеформированные', 200],
