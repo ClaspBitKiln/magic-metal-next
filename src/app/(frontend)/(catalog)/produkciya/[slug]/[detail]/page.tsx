@@ -13,6 +13,11 @@ import './pipe-detail.css'
 
 export const dynamicParams = false
 
+const profileSizePages: Record<string, string[]> = {
+  'krug-i-kvadrat': ['krug-goryachekatanyj', 'kvadrat'],
+  'balka-shveller-ugolok': ['balka-dvutavrovaya', 'shveller', 'ugolok'],
+}
+
 export function generateStaticParams() {
   return [...pipeCatalog, ...productDetailCatalog].map(({ categorySlug, slug }) => ({ slug: categorySlug, detail: slug }))
 }
@@ -41,6 +46,12 @@ export default async function PipeDetailPage({ params }: { params: Promise<{ slu
   const siblings = [...getPipeItemsByCategory(item.categorySlug).map((pipe) => ({ ...pipe, image: `/product/pipes/${pipe.imageKind}.svg` })), ...getProductDetailsByCategory(item.categorySlug)]
   const categoryLabel = getSeoCategory(item.categorySlug)?.title || 'Продукция'
   const requestHref = `/?product=${encodeURIComponent(item.title)}#request`
+  const sizeProfiles = item.categorySlug === 'sortovoy-i-fasonny-prokat'
+    ? (profileSizePages[item.slug] || []).flatMap((profileSlug) => {
+      const profile = getProductDetailItem(item.categorySlug, profileSlug)
+      return profile ? [profile] : []
+    })
+    : []
   const jsonLd = {
     '@context': 'https://schema.org', '@type': 'Product', name: item.title, description: item.description,
     category: categoryLabel, brand: { '@type': 'Brand', name: 'Мэджик Металл' },
@@ -54,6 +65,14 @@ export default async function PipeDetailPage({ params }: { params: Promise<{ slu
     <header className="pipe-nav"><Link href={`/produkciya/${item.categorySlug}`}><b>←</b> {categoryLabel}</Link><LanguageSwitcher /><a href={requestHref}>Отправить заявку ↗</a></header>
     <section className="pipe-hero"><div><p>{categoryLabel}</p><h1>{item.title}</h1><span>{item.description}</span></div></section>
     <nav className="pipe-breadcrumb" aria-label="Хлебные крошки"><Link href="/">Главная</Link><b>/</b><Link href={`/produkciya/${item.categorySlug}`}>{categoryLabel}</Link><b>/</b><span>{item.shortTitle}</span></nav>
+    {sizeProfiles.length > 0 && <section className="product-size-series" id="sizes" aria-labelledby="profile-sizes-title">
+      <h2 id="profile-sizes-title">Размерный ряд по ГОСТ</h2>
+      <p className="size-series-intro">Выберите вид профиля, чтобы открыть его размеры, серии и стандарты.</p>
+      <a className="size-series-request" href={requestHref}>Отправить заявку ↗</a>
+      <nav className="size-series-nav" aria-label="Размерные таблицы по видам профиля">
+        {sizeProfiles.map((profile) => <a key={profile.slug} href={`/produkciya/${profile.categorySlug}/${profile.slug}#sizes`}>{profile.shortTitle} →</a>)}
+      </nav>
+    </section>}
     <ProductSizeSeries series={getProductSizeSeries(item.categorySlug, item.slug)} requestHref={requestHref} />
     <section className="pipe-intro"><h2>Подбор по назначению, а не только по размеру</h2><div><p>{item.intro}</p><a href={requestHref}>Отправить заявку →</a></div></section>
     <section className="pipe-spec"><div><p>Продукция</p><h2>Основные параметры</h2></div><dl>{item.range.map((row) => <div key={row.label}><dt>{row.label}</dt><dd>{row.value}</dd></div>)}</dl></section>

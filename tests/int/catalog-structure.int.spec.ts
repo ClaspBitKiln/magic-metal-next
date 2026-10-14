@@ -11,10 +11,32 @@ import { productSizeSeries, getProductSizeSeries } from '@/data/productSizeSerie
 import { productDetailCatalog } from '@/data/productDetailCatalog'
 import { pipeCatalog } from '@/data/pipeCatalog'
 import ProductSizeSeries from '@/components/ProductSizeSeries'
+import ProductDetailPage from '@/app/(frontend)/(catalog)/produkciya/[slug]/[detail]/page'
+import StandardAssortment from '@/components/StandardAssortment'
+import { findStandard } from '@/data/standards'
 
 const privateSupplierSnapshotPath = path.join(process.cwd(), 'private/data/23met-practical-snapshot.json')
 
 describe('unified homepage catalog', () => {
+  it.each([
+    ['krug-i-kvadrat', ['krug-goryachekatanyj', 'kvadrat']],
+    ['balka-shveller-ugolok', ['balka-dvutavrovaya', 'shveller', 'ugolok']],
+  ] as const)('opens verified size tables from the %s overview without duplicating them', async (detail, profiles) => {
+    const category = 'sortovoy-i-fasonny-prokat'
+    const page = await ProductDetailPage({ params: Promise.resolve({ slug: category, detail }) })
+    const tree = new DOMParser().parseFromString(renderToStaticMarkup(page), 'text/html')
+    const links = [...tree.querySelectorAll('#sizes .size-series-nav a')]
+    expect(links.map((link) => link.getAttribute('href'))).toEqual(profiles.map((profile) => `/produkciya/${category}/${profile}#sizes`))
+    for (const profile of profiles) {
+      expect(getProductSizeSeries(category, profile).length).toBeGreaterThan(0)
+    }
+    expect(tree.querySelectorAll('#sizes')).toHaveLength(1)
+    expect(tree.querySelectorAll('#sizes table')).toHaveLength(0)
+    const request = tree.querySelector<HTMLAnchorElement>('#sizes .size-series-request')!
+    expect(new URL(request.getAttribute('href')!, 'https://magicmet.ru').searchParams.get('product'))
+      .toBe(productDetailCatalog.find((item) => item.categorySlug === category && item.slug === detail)!.title)
+  })
+
   it('restores all existing categories and nomenclature in the served static homepage', () => {
     const home = fs.readFileSync(path.join(process.cwd(), 'public/home-static.html'), 'utf8')
     const markup = renderToStaticMarkup(createElement(CatalogTree))
@@ -74,6 +96,18 @@ describe('unified homepage catalog', () => {
 })
 
 describe('normative product size tables', () => {
+  it('uses the same verified sizes in the GOST handbook without stock signals', () => {
+    const standard = findStandard('ГОСТ 8732-2025')!
+    expect(standard).toBeDefined()
+    const markup = renderToStaticMarkup(createElement(StandardAssortment, { standard }))
+    const tree = new DOMParser().parseFromString(markup, 'text/html')
+    const tables = productSizeSeries.filter((table) => table.standard === standard.code)
+    expect(tree.querySelectorAll('table tbody tr')).toHaveLength(tables.reduce((sum, table) => sum + table.rows.length, 0))
+    expect(tree.querySelectorAll('.size-series-standard')).toHaveLength(tables.length)
+    expect(markup).not.toMatch(/Наличие|доступность|assortment-legend|signal-/i)
+    expect([...tree.querySelectorAll('a')].every((link) => !/^https?:/.test(link.getAttribute('href') || ''))).toBe(true)
+  })
+
   it('links directly to every beam type inside its native disclosure', () => {
     const series = getProductSizeSeries('sortovoy-i-fasonny-prokat', 'balka-dvutavrovaya')
     const markup = renderToStaticMarkup(createElement(ProductSizeSeries, { series, requestHref: '/?product=beam#request' }))
