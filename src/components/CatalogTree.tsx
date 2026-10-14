@@ -12,7 +12,6 @@ export default function CatalogTree() {
           <summary className="catalog-row"><strong><span className="catalog-toggle" aria-hidden="true" />{item.title}</strong><span>{item.size}</span><span>{item.standards}</span><span>{item.grades}</span></summary>
           <div className="home-size-series">
             <a href={item.href}>{item.href.startsWith('/produkciya/') ? 'Размеры, описание и ГОСТы' : 'Заявка на комплектацию'} →</a>
-            <a href={`/?product=${encodeURIComponent(`Заявка на производство — ${item.availabilityQuery}`)}#request`}>Заявка на производство →</a>
           </div>
         </details>)}
       </div>

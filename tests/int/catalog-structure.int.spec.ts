@@ -7,6 +7,10 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import CatalogTree from '@/components/CatalogTree'
 import { gzipSync } from 'node:zlib'
 import { sdtCatalog } from '@/data/sdtCatalog'
+import { productSizeSeries, getProductSizeSeries } from '@/data/productSizeSeries'
+import { productDetailCatalog } from '@/data/productDetailCatalog'
+import { pipeCatalog } from '@/data/pipeCatalog'
+import ProductSizeSeries from '@/components/ProductSizeSeries'
 
 const privateSupplierSnapshotPath = path.join(process.cwd(), 'private/data/23met-practical-snapshot.json')
 
@@ -27,7 +31,7 @@ describe('unified homepage catalog', () => {
       }
     }
     const sdt = homeCatalogGroups.find((group) => group.title === 'СДТ')!
-    expect(sdt.items.every((item) => sdtCatalog.some((detail) => item.href === `/produkciya/sdt/${detail.slug}`))).toBe(true)
+    expect(sdt.items.every((item) => sdtCatalog.some((detail) => item.href.split('#')[0] === `/produkciya/sdt/${detail.slug}`))).toBe(true)
   })
 
   it('renders every category through one normalized data tree', () => {
@@ -56,7 +60,8 @@ describe('unified homepage catalog', () => {
     expect(tree.querySelectorAll('.catalog-item[open]')).toHaveLength(0)
     for (const item of tree.querySelectorAll('.catalog-item')) {
       expect(item.firstElementChild?.tagName).toBe('SUMMARY')
-      expect(item.querySelectorAll('.home-size-series a')).toHaveLength(2)
+      expect(item.querySelectorAll('.home-size-series a')).toHaveLength(1)
+      expect(item.textContent).not.toContain('Заявка на производство')
     }
   })
 
@@ -65,6 +70,40 @@ describe('unified homepage catalog', () => {
     const build = fs.readFileSync(path.join(process.cwd(), 'scripts/build.mjs'), 'utf8')
     expect(config).toContain("ignoreBuildErrors: process.env.SIMPLE_PUBLIC_SITE_BUILD === '1'")
     expect(build).toContain("SIMPLE_PUBLIC_SITE_BUILD: process.env.SIMPLE_PUBLIC_SITE_BUILD || '1'")
+  })
+})
+
+describe('normative product size tables', () => {
+  it('keeps table dimensions complete, traceable and attached to existing products', () => {
+    const routes = new Set([
+      ...productDetailCatalog.map((item) => `${item.categorySlug}/${item.slug}`),
+      ...pipeCatalog.map((item) => `${item.categorySlug}/${item.slug}`),
+      ...sdtCatalog.map((item) => `sdt/${item.slug}`),
+    ])
+    expect(productSizeSeries.length).toBeGreaterThan(0)
+    for (const table of productSizeSeries) {
+      expect(routes.has(`${table.categorySlug}/${table.productSlug}`)).toBe(true)
+      expect(table.standard).toMatch(/ГОСТ/)
+      expect(table.scope.length).toBeGreaterThan(20)
+      expect(table.source.url).toMatch(/^https:\/\//)
+      expect(table.source.url).not.toContain('23met.ru')
+      expect(table.rows.length).toBeGreaterThan(0)
+      expect(new Set(table.rows.map((row) => row.join('|'))).size).toBe(table.rows.length)
+      expect(table.rows.every((row) => row.length === table.columns.length && row.every((cell) => cell.trim().length > 0))).toBe(true)
+    }
+  })
+
+  it('shows the verified inclined-flange beam dimensions with units and a direct request', () => {
+    const beam = getProductSizeSeries('sortovoy-i-fasonny-prokat', 'balka-dvutavrovaya').find((table) => table.standard === 'ГОСТ 8239-89')!
+    expect(beam.rows).toHaveLength(17)
+    expect(beam.rows.find((row) => row[0] === '30')).toEqual(['30', '300', '135', '6,5', '10,2', '36,50'])
+    const markup = renderToStaticMarkup(createElement(ProductSizeSeries, { series: [beam], requestHref: '/?product=beam#request' }))
+    const tree = new DOMParser().parseFromString(markup, 'text/html')
+    expect(tree.querySelector('#sizes table tbody')?.children).toHaveLength(17)
+    expect(tree.querySelectorAll('th[scope="col"]')).toHaveLength(6)
+    expect(tree.querySelector('.size-series-request')?.getAttribute('href')).toBe('/?product=beam#request')
+    expect(markup).not.toContain('<script')
+    expect(markup).not.toContain(beam.source.url)
   })
 })
 

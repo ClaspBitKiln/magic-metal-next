@@ -290,8 +290,11 @@
   }
   .sdt-standards a,
   .sdt-standards > div:last-child > div {
-    grid-template-columns: 1fr 18px;
+    grid-template-columns: minmax(0, 1fr) 18px;
   }
+  .sdt-standards { grid-template-columns: minmax(0, 1fr); }
+  .sdt-standards > div { min-width: 0; }
+  .sdt-standards .standard-code { white-space: normal; overflow-wrap: anywhere; }
   .sdt-standards small {
     grid-column: 1;
   }

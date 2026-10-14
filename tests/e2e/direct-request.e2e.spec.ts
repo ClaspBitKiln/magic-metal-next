@@ -8,18 +8,17 @@ async function expectRequest(page: Page, specification: string) {
 }
 
 for (const width of [390, 1440]) {
-  test(`homepage manufacturing and stock rows go straight to requests at ${width}px`, async ({ page }) => {
+  test(`homepage details and stock rows preserve direct requests at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 })
     await page.goto('/')
     const pipes = page.locator('.catalog-group').first()
     await pipes.locator('summary').first().click()
     const item = pipes.locator('.catalog-item').filter({ hasText: 'Водогазопроводные' })
     await item.locator('summary').click()
-    const manufacturing = item.getByRole('link', { name: 'Заявка на производство' })
-    const manufacturingSpec = new URL((await manufacturing.getAttribute('href'))!, 'http://test').searchParams.get('product')!
-    expect(manufacturingSpec).toBe('Заявка на производство — Водогазопроводные')
-    await manufacturing.click()
-    await expectRequest(page, manufacturingSpec)
+    await expect(page.getByRole('link', { name: 'Заявка на производство' })).toHaveCount(0)
+    await item.getByRole('link', { name: 'Размеры, описание и ГОСТы' }).click()
+    await expect(page).toHaveURL(/\/produkciya\/truby-elektrosvarnye\/vodogazoprovodnye(?:#sizes)?$/)
+    await expect(page.locator('h1')).toContainText('водогазопроводные')
     await page.goto('/spravochnik-nalichiya?q=Водогазопроводные')
     const group = page.locator('.market-group').first()
     await expect(group).toBeVisible()
@@ -44,6 +43,24 @@ for (const width of [390, 1440]) {
     await page.getByRole('button', { name: 'Отправить на расчёт' }).click()
     await expect(page.locator('#form-status')).toHaveText('Укажите телефон или email.')
     expect(submissions).toBe(0)
+  })
+
+  test(`homepage beam link opens normative dimensions at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 })
+    await page.goto('/')
+    const sections = page.locator('.catalog-group').filter({ has: page.locator('summary strong', { hasText: 'Сортовой и фасонный прокат' }) })
+    await sections.locator('summary').first().click()
+    const beam = sections.locator('.catalog-item').filter({ has: page.locator('summary strong', { hasText: 'Балка двутавровая' }) })
+    await beam.locator('summary').click()
+    await beam.getByRole('link', { name: 'Размеры, описание и ГОСТы' }).click()
+    await expect(page).toHaveURL(/\/balka-dvutavrovaya#sizes$/)
+    await expect(page.locator('#size-series-title')).toBeInViewport()
+    const table = page.locator('#sizes details').filter({ has: page.locator('summary', { hasText: 'ГОСТ 8239-89' }) })
+    await expect(table.locator('tbody tr')).toHaveCount(17)
+    await expect(table.locator('caption')).toContainText('ГОСТ 8239-89')
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
+    await page.locator('.size-series-request').click()
+    await expectRequest(page, 'Балка двутавровая')
   })
 
   test(`position and empty stock search preserve specifications at ${width}px`, async ({ page }) => {

@@ -7,6 +7,8 @@ import { getPipeCatalogItem, getPipeItemsByCategory, pipeCatalog } from '@/data/
 import { getProductDetailItem, getProductDetailsByCategory, productDetailCatalog, type ProductDetailItem } from '@/data/productDetailCatalog'
 import { getSeoCategory } from '@/data/seoCatalog'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
+import ProductSizeSeries from '@/components/ProductSizeSeries'
+import { getProductSizeSeries } from '@/data/productSizeSeries'
 import './pipe-detail.css'
 
 export const dynamicParams = false
@@ -52,6 +54,7 @@ export default async function PipeDetailPage({ params }: { params: Promise<{ slu
     <header className="pipe-nav"><Link href={`/produkciya/${item.categorySlug}`}><b>←</b> {categoryLabel}</Link><LanguageSwitcher /><a href={requestHref}>Отправить заявку ↗</a></header>
     <section className="pipe-hero"><div><p>{categoryLabel}</p><h1>{item.title}</h1><span>{item.description}</span></div></section>
     <nav className="pipe-breadcrumb" aria-label="Хлебные крошки"><Link href="/">Главная</Link><b>/</b><Link href={`/produkciya/${item.categorySlug}`}>{categoryLabel}</Link><b>/</b><span>{item.shortTitle}</span></nav>
+    <ProductSizeSeries series={getProductSizeSeries(item.categorySlug, item.slug)} requestHref={requestHref} />
     <section className="pipe-intro"><h2>Подбор по назначению, а не только по размеру</h2><div><p>{item.intro}</p><a href={requestHref}>Отправить заявку →</a></div></section>
     <section className="pipe-spec"><div><p>Продукция</p><h2>Основные параметры</h2></div><dl>{item.range.map((row) => <div key={row.label}><dt>{row.label}</dt><dd>{row.value}</dd></div>)}</dl></section>
     <section className="pipe-facts"><div className="pipe-facts-heading"><p>Сводные характеристики</p><h2>Поставка и применение</h2></div><dl><div><dt>Марки и материалы</dt><dd>{item.grades.map((value) => <span key={value}>{value}</span>)}</dd></div><div><dt>Применение</dt><dd>{item.applications.map((value) => <span key={value}>{value}</span>)}</dd></div></dl></section>
