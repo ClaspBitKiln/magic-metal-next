@@ -74,6 +74,37 @@ describe('unified homepage catalog', () => {
 })
 
 describe('normative product size tables', () => {
+  it('separates sheet nominal series from thickness-dependent formats', () => {
+    const numbers = (value: string) => [...value.matchAll(/\d+(?:[.,]\d+)?/g)].map((match) => Number(match[0].replace(',', '.')))
+    const sheets = ['goryachekatanyj', 'holodnokatanyj'].map((slug) => getProductSizeSeries('listovoy-prokat', slug))
+    for (const [index, tables] of sheets.entries()) {
+      expect(tables).toHaveLength(2)
+      const thicknesses = tables[0].rows.filter((row) => row[0] === 'Толщина').flatMap((row) => numbers(row[1]))
+      expect(thicknesses).toHaveLength(index === 0 ? 117 : 34)
+      expect(new Set(thicknesses).size).toBe(thicknesses.length)
+      expect(thicknesses[0]).toBe(index === 0 ? 0.4 : 0.35)
+      expect(thicknesses.at(-1)).toBe(index === 0 ? 160 : 5)
+      expect(thicknesses).not.toContain(index === 0 ? 12.7 : 0.3)
+      expect(tables[1].scope).toContain('справочного приложения')
+    }
+    const format = (rows: string[][], thickness: number, width: number) => rows.find((row) => {
+      const bounds = numbers(row[0])
+      return thickness >= bounds[0] && thickness <= (bounds[1] ?? bounds[0]) && numbers(row[1]).includes(width)
+    })
+    const hot = sheets[0][1].rows
+    expect(format(hot, 0.4, 500)?.slice(2)).toEqual(['1200', '1200'])
+    expect(format(hot, 1, 710)?.slice(2)).toEqual(['1420', '2000'])
+    expect(format(hot, 2, 900)?.slice(2)).toEqual(['1800', '6000'])
+    expect(format(hot, 0.4, 4400)).toBeUndefined()
+    expect(format(hot, 160, 500)).toBeUndefined()
+    const cold = sheets[1][1].rows
+    expect(format(cold, 2.5, 1000)?.slice(2)).toEqual(['1500', '4000'])
+    expect(format(cold, 1.4, 2300)?.slice(2)).toEqual(['2200', '3500'])
+    expect(format(cold, 2, 2300)?.slice(2)).toEqual(['2000', '3500'])
+    expect(format(cold, 0.35, 2350)).toBeUndefined()
+    expect(format(cold, 5, 1000)).toBeUndefined()
+  })
+
   it('separates modern beam types and preserves complete profile designations', () => {
     const tables = getProductSizeSeries('sortovoy-i-fasonny-prokat', 'balka-dvutavrovaya')
     const modern = tables.filter((table) => table.standard === 'ГОСТ 35087-2024')
