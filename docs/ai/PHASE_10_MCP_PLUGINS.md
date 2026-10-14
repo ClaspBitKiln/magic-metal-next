@@ -9,7 +9,7 @@
 |---|---|---|---|
 | GitHub | active | код и документация | read / write |
 | Obsidian Gateway | planned | база знаний | search / read / append |
-| Firecrawl | planned | публичные источники | search / read |
+| Firecrawl | REST API verified 2026-10-14; MCP planned | публичные источники вне сайта | scrape / read |
 | Activepieces | planned | автоматизация | trigger |
 
 ## Правила
@@ -21,6 +21,17 @@
 
 ## Результат этапа
 Есть единый простой реестр подключений и понятные права доступа. Реальные подключения выполняются отдельно, когда соответствующий инструмент готов к использованию.
+
+## Проверка Firecrawl 14.10.2026
+
+Проверен ранее предоставленный пользователем Firecrawl REST API: проверка
+доступа HTTP 200 / success=true, публичная страница Metal100 получена через
+`/v2/scrape` с исходным HTTP 200. MCP-инструмент Firecrawl в этой сессии
+не предоставлен; REST API не считается установленным MCP-плагином.
+Ключ используется только для исследовательских запросов к Firecrawl и не
+переносится в Git, заметки Obsidian или JavaScript сайта. Прямая запись в
+Obsidian пока не подтверждена; итоговая заметка подготовлена в
+`OBSIDIAN_PENDING_RF_CATALOG_AND_CONNECTIONS_2026-10-14.md`.
 
 ## Следующий этап
 Этап 11 — Autonomous Workflow.

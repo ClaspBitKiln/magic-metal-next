@@ -74,6 +74,36 @@ describe('unified homepage catalog', () => {
 })
 
 describe('normative product size tables', () => {
+  it('links directly to every beam type inside its native disclosure', () => {
+    const series = getProductSizeSeries('sortovoy-i-fasonny-prokat', 'balka-dvutavrovaya')
+    const markup = renderToStaticMarkup(createElement(ProductSizeSeries, { series, requestHref: '/?product=beam#request' }))
+    const tree = new DOMParser().parseFromString(markup, 'text/html')
+    const links = [...tree.querySelectorAll('.size-series-nav a')]
+    expect(links).toHaveLength(8)
+    expect(links.slice(0, 7).map((link) => link.textContent)).toEqual(['Тип Б', 'Тип Ш', 'Тип К', 'Тип С', 'Тип ДБ', 'Тип ДК', 'Тип У'])
+    for (const [index, link] of links.entries()) {
+      const target = tree.getElementById(link.getAttribute('href')!.slice(1))!
+      expect(target.textContent).toBe(series[index].scope)
+      expect(target.closest('details')).toBe(tree.querySelectorAll('#sizes details')[index])
+    }
+    expect(tree.querySelectorAll('#sizes details[open]')).toHaveLength(1)
+    expect(markup).not.toContain('<script')
+  })
+
+  it('keeps numeric lists intact and explains restrictions before the table', () => {
+    const coil = getProductSizeSeries('listovoy-prokat', 'holodnokatanyj').find((table) => table.title.includes('рулона'))!
+    const markup = renderToStaticMarkup(createElement(ProductSizeSeries, { series: [coil], requestHref: '/?product=coil#request' }))
+    const tree = new DOMParser().parseFromString(markup, 'text/html')
+    const row = [...tree.querySelectorAll('tbody tr')].find((item) => item.querySelector('th')?.textContent === '1800')!
+    expect(row.querySelectorAll('td.size-series-list')).toHaveLength(2)
+    expect([...row.querySelectorAll('td')].map((cell) => cell.textContent)).toEqual(coil.rows.find((item) => item[0] === '1800')!.slice(1))
+    const legend = tree.querySelector('.size-series-legend')!
+    expect(legend.textContent).toBe(coil.notes[0])
+    expect(legend.nextElementSibling?.className).toBe('size-series-scroll')
+    expect(tree.querySelector('caption')?.textContent).toContain(coil.standard)
+    expect(tree.querySelectorAll('.size-series-nav')).toHaveLength(0)
+  })
+
   it('separates sheet nominal series from thickness-dependent formats', () => {
     const numbers = (value: string) => [...value.matchAll(/\d+(?:[.,]\d+)?/g)].map((match) => Number(match[0].replace(',', '.')))
     const sheets = ['goryachekatanyj', 'holodnokatanyj'].map((slug) => getProductSizeSeries('listovoy-prokat', slug))
