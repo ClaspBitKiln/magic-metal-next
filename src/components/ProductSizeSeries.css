@@ -12,7 +12,7 @@
 .product-size-series th, .product-size-series td { padding: 9px 8px; border-bottom: 1px solid #d9e1ef; text-align: left; }
 .product-size-series thead { color: #071c62; background: #e8effa; }
 .product-size-series thead th { position: sticky; top: 0; z-index: 1; background: #e8effa; }
-.product-size-series tbody th { font-weight: 600; }
+.product-size-series tbody th { font-weight: 600; white-space: nowrap; }
 .product-size-series .size-series-note { color: #536481; font-size: 13px; }
 .product-size-series a { color: #0757e8; text-decoration: underline; }
 .product-size-series .size-series-request { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 16px; color: #fff; background: #0757e8; font-weight: 650; text-decoration: none; }

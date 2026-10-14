@@ -74,6 +74,26 @@ describe('unified homepage catalog', () => {
 })
 
 describe('normative product size tables', () => {
+  it('keeps the hot-rolled square nominal series distinct from intermediate order sizes', () => {
+    const table = getProductSizeSeries('sortovoy-i-fasonny-prokat', 'kvadrat').find((table) => table.standard === 'ГОСТ 2591-2006')!
+    expect(table.rows).toHaveLength(65)
+    const sides = table.rows.map((row) => Number(row[0].replace(',', '.')))
+    expect(sides[0]).toBe(6)
+    expect(sides.at(-1)).toBe(200)
+    expect(sides).toContain(32)
+    expect(sides).not.toContain(31)
+  })
+
+  it('uses the current hot-deformed pipe standard and preserves agreement-only dimensions', () => {
+    const tables = getProductSizeSeries('truby-besshovnye', 'goryachedeformirovannye')
+    expect(tables.length).toBeGreaterThan(0)
+    expect(tables.every((table) => table.standard === 'ГОСТ 8732-2025')).toBe(true)
+    const numbers = (value: string) => [...value.matchAll(/\d+(?:[.,]\d+)?/g)].map((match) => Number(match[0].replace(',', '.')))
+    const smallest = tables.flatMap((table) => table.rows).find((row) => numbers(row[0])[0] === 20)!
+    expect(numbers(smallest[1])).toEqual([2.5, 2.6, 2.8, 3, 3.2, 3.5, 4])
+    expect(tables.flatMap((table) => table.notes).join(' ')).toMatch(/согласованию/)
+  })
+
   it('keeps table dimensions complete, traceable and attached to existing products', () => {
     const routes = new Set([
       ...productDetailCatalog.map((item) => `${item.categorySlug}/${item.slug}`),
