@@ -74,6 +74,29 @@ describe('unified homepage catalog', () => {
 })
 
 describe('normative product size tables', () => {
+  it('separates modern beam types and preserves complete profile designations', () => {
+    const tables = getProductSizeSeries('sortovoy-i-fasonny-prokat', 'balka-dvutavrovaya')
+    const modern = tables.filter((table) => table.standard === 'ГОСТ 35087-2024')
+    expect(tables[0].title).toContain('тип Б')
+    expect(modern.map((table) => table.rows.length)).toEqual([49, 74, 51, 14, 77, 37, 17])
+    const profiles = modern.flatMap((table) => table.rows.map((row) => row[0]))
+    expect(new Set(profiles).size).toBe(319)
+    expect(profiles).toContain('35К1,5')
+    expect(profiles).toContain('40К4,5')
+    expect(profiles).toContain('10У')
+    expect(modern[0].rows[0]).toEqual(['10Б1', '100,0', '55,0', '4,1', '5,7', '8,10'])
+    expect(tables.find((table) => table.standard === 'ГОСТ 8239-89')?.rows).toHaveLength(17)
+  })
+
+  it('labels cold-deformed special sizes without inventing the full nominal series', () => {
+    const table = getProductSizeSeries('truby-besshovnye', 'holodnodeformirovannye')[0]
+    expect(table.title).toContain('Дополнительные размеры')
+    expect(table.scope).toContain('Основной размерный ряд таблицы 1 в этот список не включён')
+    expect(table.rows).toContainEqual(['32', '8,5'])
+    expect(table.rows).toContainEqual(['4', '0,2–1,2 (диапазон)'])
+    expect(table.rows.filter((row) => row[0] === '46').map((row) => row[1])).toEqual(['3,0', '6,0'])
+  })
+
   it('keeps the hot-rolled square nominal series distinct from intermediate order sizes', () => {
     const table = getProductSizeSeries('sortovoy-i-fasonny-prokat', 'kvadrat').find((table) => table.standard === 'ГОСТ 2591-2006')!
     expect(table.rows).toHaveLength(65)
