@@ -78,7 +78,7 @@ describe('normative product size tables', () => {
     const numbers = (value: string) => [...value.matchAll(/\d+(?:[.,]\d+)?/g)].map((match) => Number(match[0].replace(',', '.')))
     const sheets = ['goryachekatanyj', 'holodnokatanyj'].map((slug) => getProductSizeSeries('listovoy-prokat', slug))
     for (const [index, tables] of sheets.entries()) {
-      expect(tables).toHaveLength(2)
+      expect(tables).toHaveLength(3)
       const thicknesses = tables[0].rows.filter((row) => row[0] === 'Толщина').flatMap((row) => numbers(row[1]))
       expect(thicknesses).toHaveLength(index === 0 ? 117 : 34)
       expect(new Set(thicknesses).size).toBe(thicknesses.length)
@@ -103,6 +103,28 @@ describe('normative product size tables', () => {
     expect(format(cold, 2, 2300)?.slice(2)).toEqual(['2000', '3500'])
     expect(format(cold, 0.35, 2350)).toBeUndefined()
     expect(format(cold, 5, 1000)).toBeUndefined()
+  })
+
+  it('preserves coil combinations and low-carbon-only restrictions separately from sheets', () => {
+    const numbers = (value: string) => [...value.matchAll(/\d+(?:[.,]\d+)?/g)].map((match) => Number(match[0].replace(',', '.')))
+    const hot = getProductSizeSeries('listovoy-prokat', 'goryachekatanyj').find((table) => table.title.includes('рулона'))!
+    const cold = getProductSizeSeries('listovoy-prokat', 'holodnokatanyj').find((table) => table.title.includes('рулона'))!
+    expect(hot.rows).toHaveLength(27)
+    expect(cold.rows).toHaveLength(25)
+    const thicknesses = (table: typeof hot, width: string, column = 1) => numbers(table.rows.find((row) => row[0] === width)![column])
+    expect(thicknesses(hot, '550')).not.toContain(11)
+    expect(thicknesses(hot, '500')).toContain(11)
+    expect(thicknesses(hot, '(710)')).toContain(1.5)
+    expect(thicknesses(hot, '2100')).toEqual([7, 7.5, 8, 8.5, 9, 9.5, 10])
+    expect(thicknesses(hot, '500')).not.toContain(0.4)
+    expect(thicknesses(cold, '1800')).not.toContain(0.8)
+    expect(thicknesses(cold, '1800', 2)).toContain(0.8)
+    expect(thicknesses(cold, '1900')).toEqual([2.2, 2.5])
+    expect(thicknesses(cold, '1900', 2)).toEqual([0.9, 1, 1.1, 1.2, 1.3, 1.4])
+    expect(thicknesses(cold, '2300')).toEqual([2.2, 2.5])
+    expect(cold.rows.some((row) => row[0] === '2350')).toBe(false)
+    expect(cold.notes.join(' ')).toContain('Только для низкоуглеродистых')
+    expect(cold.columns.some((column) => /Длина/.test(column))).toBe(false)
   })
 
   it('separates modern beam types and preserves complete profile designations', () => {
@@ -175,9 +197,22 @@ describe('normative product size tables', () => {
     const tree = new DOMParser().parseFromString(markup, 'text/html')
     expect(tree.querySelector('#sizes table tbody')?.children).toHaveLength(17)
     expect(tree.querySelectorAll('th[scope="col"]')).toHaveLength(6)
+    expect(tree.querySelectorAll('thead .size-series-number')).toHaveLength(5)
+    expect(tree.querySelectorAll('tbody tr:first-child td.size-series-number')).toHaveLength(5)
     expect(tree.querySelector('.size-series-request')?.getAttribute('href')).toBe('/?product=beam#request')
     expect(markup).not.toContain('<script')
     expect(markup).not.toContain(beam.source.url)
+  })
+
+  it('keeps dimension lists left-aligned while preserving native table semantics', () => {
+    const coil = getProductSizeSeries('listovoy-prokat', 'holodnokatanyj').find((table) => table.title.includes('рулона'))!
+    const markup = renderToStaticMarkup(createElement(ProductSizeSeries, { series: [coil], requestHref: '/?product=coil#request' }))
+    const tree = new DOMParser().parseFromString(markup, 'text/html')
+    expect(tree.querySelectorAll('.size-series-number')).toHaveLength(0)
+    expect(tree.querySelectorAll('tbody th[scope="row"]')).toHaveLength(25)
+    expect(tree.querySelector('.size-series-scroll')?.getAttribute('tabindex')).toBe('0')
+    expect(tree.querySelector('.size-series-mobile-help')?.textContent).toContain('прокручивать вбок')
+    expect(markup).not.toContain('<script')
   })
 })
 
