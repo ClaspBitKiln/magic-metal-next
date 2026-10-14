@@ -4,8 +4,9 @@ import { otherSizeSeries } from './otherSizeSeries'
 import { sdtSizeSeries } from './sdtSizeSeries'
 import { sheetSizeSeries } from './sheetSizeSeries'
 import { coilSizeSeries } from './coilSizeSeries'
+import { profileSizeSeries } from './profileSizeSeries'
 
-export const productSizeSeries = [...sectionSizeSeries, ...pipeSizeSeries, ...otherSizeSeries, ...sdtSizeSeries, ...sheetSizeSeries, ...coilSizeSeries]
+export const productSizeSeries = [...sectionSizeSeries, ...pipeSizeSeries, ...otherSizeSeries, ...sdtSizeSeries, ...sheetSizeSeries, ...coilSizeSeries, ...profileSizeSeries]
 
 export const getProductSizeSeries = (categorySlug: string, productSlug: string) => productSizeSeries.filter((table) => table.categorySlug === categorySlug && table.productSlug === productSlug)
 

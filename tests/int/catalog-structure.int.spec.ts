@@ -205,6 +205,36 @@ describe('normative product size tables', () => {
     expect(tables.find((table) => table.standard === 'ГОСТ 8239-89')?.rows).toHaveLength(17)
   })
 
+  it('keeps construction profile combinations distinct and preserves gaps in the normative wall series', () => {
+    const all = getProductSizeSeries('truby-elektrosvarnye', 'profilnye')
+    const construction = all.filter((table) => table.standard === 'ГОСТ 30245-2003')
+    expect(construction).toHaveLength(2)
+    expect(all.some((table) => table.standard === 'ГОСТ 8639-82')).toBe(true)
+    expect(all.some((table) => table.standard === 'ГОСТ 8645-68')).toBe(true)
+    const walls = (section: string) => {
+      const row = construction.flatMap((table) => table.rows).find((row) => row[0] === section)!
+      return row[1].split(';').map((value) => Number(value.trim().replace(',', '.')))
+    }
+    expect(walls('40×40')).toEqual([2, 2.5, 3, 3.5, 4])
+    expect(walls('50×30')).toEqual([2, 2.5, 3, 3.5, 4, 5])
+    expect(walls('50×30')).not.toContain(4.5)
+    expect(walls('380×220')).toEqual([6, 6.5, 7, 7.5, 8])
+    expect(walls('400×200')).toEqual([10, 10.5, 11, 11.5, 12])
+    expect(walls('400×200')).not.toContain(8)
+    expect(construction.flatMap((table) => table.columns).some((column) => /Масса/.test(column))).toBe(false)
+  })
+
+  it('renders the construction handbook with the two exact GOST tables and no other pipe assortment', () => {
+    const standard = findStandard('ГОСТ 30245-2003')!
+    const tables = productSizeSeries.filter((table) => table.standard === standard.code)
+    const tree = new DOMParser().parseFromString(renderToStaticMarkup(createElement(StandardAssortment, { standard })), 'text/html')
+    expect(tree.querySelectorAll('#sizes table')).toHaveLength(2)
+    expect([...tree.querySelectorAll('caption')].every((caption) => caption.textContent?.includes(standard.code))).toBe(true)
+    expect(tree.querySelectorAll('tbody tr')).toHaveLength(tables.reduce((count, table) => count + table.rows.length, 0))
+    expect(tree.querySelectorAll('#sizes a[href^="https:"]')).toHaveLength(0)
+    expect(tree.querySelectorAll('script')).toHaveLength(0)
+  })
+
   it('labels cold-deformed special sizes without inventing the full nominal series', () => {
     const table = getProductSizeSeries('truby-besshovnye', 'holodnodeformirovannye')[0]
     expect(table.title).toContain('Дополнительные размеры')
