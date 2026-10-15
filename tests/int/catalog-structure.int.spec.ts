@@ -282,6 +282,26 @@ describe('normative product size tables', () => {
     expect(sides).not.toContain(31)
   })
 
+  it('keeps calibrated square sizes and tolerances separate from hot-rolled square', () => {
+    const tables = getProductSizeSeries('sortovoy-i-fasonny-prokat', 'kvadrat')
+    expect(tables[0].standard).toBe('ГОСТ 2591-2006')
+    const table = tables.find((table) => table.standard === 'ГОСТ 8559-75')!
+    expect(table.rows).toHaveLength(55)
+    const sides = table.rows.map((row) => Number(row[0].replace(',', '.')))
+    expect(sides[0]).toBe(3)
+    expect(sides.at(-1)).toBe(100)
+    expect(sides).toContain(6.3)
+    expect(sides).not.toContain(6.5)
+    expect(sides).not.toContain(99)
+    expect(table.rows.find((row) => row[0] === '3,2')).toEqual(['3,2', '−0,048', '−0,075'])
+    expect(table.rows.find((row) => row[0] === '65')).toEqual(['65', '−0,120', '−0,190'])
+    expect(table.rows.find((row) => row[0] === '70')).toEqual(['70', '—', '−0,190'])
+    expect(table.rows.find((row) => row[0] === '100')).toEqual(['100', '—', '−0,220'])
+    expect(table.columns.join(' ')).not.toMatch(/h9|h12|Масса/)
+    const item = productDetailCatalog.find((item) => item.categorySlug === 'sortovoy-i-fasonny-prokat' && item.slug === 'kvadrat')!
+    expect(item.range[0].value).toContain('3–100')
+  })
+
   it('uses the current hot-deformed pipe standard and preserves agreement-only dimensions', () => {
     const tables = getProductSizeSeries('truby-besshovnye', 'goryachedeformirovannye')
     expect(tables.length).toBeGreaterThan(0)
