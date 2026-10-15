@@ -13,11 +13,27 @@ import { pipeCatalog } from '@/data/pipeCatalog'
 import ProductSizeSeries from '@/components/ProductSizeSeries'
 import ProductDetailPage from '@/app/(frontend)/(catalog)/produkciya/[slug]/[detail]/page'
 import StandardAssortment from '@/components/StandardAssortment'
+import CategoryPage from '@/app/(frontend)/(catalog)/produkciya/[slug]/page'
 import { findStandard } from '@/data/standards'
 
 const privateSupplierSnapshotPath = path.join(process.cwd(), 'private/data/23met-practical-snapshot.json')
 
 describe('unified homepage catalog', () => {
+  it('puts six section products before explanatory copy and preserves overview links', async () => {
+    const page = await CategoryPage({ params: Promise.resolve({ slug: 'sortovoy-i-fasonny-prokat' }) })
+    const markup = renderToStaticMarkup(page)
+    const tree = new DOMParser().parseFromString(markup, 'text/html')
+    const links = [...tree.querySelectorAll('.sc-list li > a')]
+    expect(links).toHaveLength(6)
+    expect(links.map((a) => a.querySelector('strong')?.textContent)).toContain('Круг горячекатаный')
+    expect(links.every((a) => a.getAttribute('href')?.startsWith('/produkciya/sortovoy-i-fasonny-prokat/'))).toBe(true)
+    expect(links.every((a) => a.querySelector('.sc-dimension')?.textContent && a.querySelector('.sc-standards')?.textContent)).toBe(true)
+    expect(tree.querySelectorAll('.sc-overviews a')).toHaveLength(2)
+    expect(markup.indexOf('class="sc-products"')).toBeLessThan(markup.indexOf('class="sc-info"'))
+    const request = tree.querySelector('.sc-aside a')!.getAttribute('href')!
+    expect(new URL(request, 'https://magicmet.ru').searchParams.get('product')).toBe('Сортовой и фасонный прокат')
+  })
+
   it.each([
     ['krug-i-kvadrat', ['krug-goryachekatanyj', 'kvadrat']],
     ['balka-shveller-ugolok', ['balka-dvutavrovaya', 'shveller', 'ugolok']],
@@ -96,6 +112,28 @@ describe('unified homepage catalog', () => {
 })
 
 describe('normative product size tables', () => {
+  it('keeps stainless hot-deformed wall pairs and length agreements distinct on both existing cards', () => {
+    const table = getProductSizeSeries('truby-besshovnye', 'nerzhaveyushchie')[0]
+    const second = getProductSizeSeries('nerzhaveyushchaya-stal', 'truby')[0]
+    expect(table.standard).toBe('ГОСТ 9940-81')
+    expect(table.rows).toBe(second.rows)
+    expect(table.rows).toHaveLength(25)
+    const values = (text: string) => text === '—' ? [] : text.split('; ').map((s) => Number(s.replace(',', '.')))
+    expect(table.rows.reduce((n, row) => n + values(row[1]).length, 0)).toBe(474)
+    expect(table.rows.reduce((n, row) => n + values(row[2]).length, 0)).toBe(59)
+    for (const row of table.rows) expect(values(row[2]).every((s) => values(row[1]).includes(s))).toBe(true)
+    const row73 = table.rows.find((row) => row[0] === '73')!
+    expect(values(row73[1])).not.toContain(3.5)
+    expect(values(row73[1])).not.toContain(4)
+    expect(values(row73[2])).toContain(10)
+    expect(table.rows.find((row) => row[0] === '146')![2]).toBe('28')
+    expect(values(table.rows.find((row) => row[0] === '146')![1])).not.toContain(30)
+    expect(table.rows.find((row) => row[0] === '325')![1]).toBe('12; 13; 14; 15; 16')
+    expect(table.notes.join(' ')).toContain('159×9')
+    expect(table.notes.join(' ')).toContain('освоения оборудования')
+    expect(table.summary).toBeUndefined()
+  })
+
   it('uses the same verified sizes in the GOST handbook without stock signals', () => {
     const standard = findStandard('ГОСТ 8732-2025')!
     expect(standard).toBeDefined()

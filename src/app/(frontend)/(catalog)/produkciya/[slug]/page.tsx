@@ -9,6 +9,7 @@ import { sdtCatalog } from '@/data/sdtCatalog'
 import { getPipeItemsByCategory } from '@/data/pipeCatalog'
 import { getProductDetailsByCategory } from '@/data/productDetailCatalog'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
+import SectionCatalog from '@/components/SectionCatalog'
 import './product.css'
 
 export function generateStaticParams() {
@@ -30,6 +31,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   const category = getSeoCategory((await params).slug)
   if (!category) notFound()
   const relatedMaterials = materials.filter((material) => material.relatedProducts.some((product) => product.slug === category.slug)).slice(0, 8)
+  if (category.slug === 'sortovoy-i-fasonny-prokat') return <SectionCatalog category={category} relatedMaterials={relatedMaterials} />
   const requestHref = `/?product=${encodeURIComponent(category.title)}#request`
   const detailItems = [...getPipeItemsByCategory(category.slug), ...getProductDetailsByCategory(category.slug)]
   return (
