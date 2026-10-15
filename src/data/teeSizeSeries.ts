@@ -1,6 +1,7 @@
 import type { SizeSeries } from './sizeSeriesTypes'
 
 // Normative source metadata is internal. Paired wall thicknesses are not cross-multiplied.
+// This batch covers execution 2 only; execution 1 has a separate normative table.
 export const teeSizeSeries: SizeSeries[] = [
   {
     "categorySlug": "sdt",
