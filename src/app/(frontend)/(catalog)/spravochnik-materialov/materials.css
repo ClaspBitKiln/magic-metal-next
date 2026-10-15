@@ -661,6 +661,7 @@
   margin-top: 32px;
   color: #8db7ff;
   font-size: clamp(18px, 2vw, 30px);
+  overflow-wrap: anywhere;
 }
 .material-hero > span {
   display: block;

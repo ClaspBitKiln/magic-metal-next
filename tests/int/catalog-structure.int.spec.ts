@@ -235,8 +235,36 @@ describe('normative product size tables', () => {
     expect(tree.querySelectorAll('script')).toHaveLength(0)
   })
 
-  it('labels cold-deformed special sizes without inventing the full nominal series', () => {
-    const table = getProductSizeSeries('truby-besshovnye', 'holodnodeformirovannye')[0]
+  it('preserves the complete cold-deformed matrix without filling gaps or mixing special sizes', () => {
+    const tables = getProductSizeSeries('truby-besshovnye', 'holodnodeformirovannye')
+    const main = tables[0]
+    expect(main.title).toContain('Основной размерный ряд')
+    expect(main.standard).toBe('ГОСТ 8734-75')
+    expect(main.rows).toHaveLength(71)
+    const walls = (diameter: number) => main.rows.find((row) => Number(row[0]) === diameter)?.[1]
+      .split(';').map((value) => Number(value.trim().replace(',', '.'))) || []
+    expect(main.rows.reduce((count, row) => count + row[1].split(';').length, 0)).toBe(1733)
+    expect(walls(5)).toContain(1.5)
+    expect(walls(5)).not.toContain(1.6)
+    expect(walls(6)).toContain(2)
+    expect(walls(6)).not.toContain(2.2)
+    for (const diameter of [17, 18, 19, 28]) expect(walls(diameter)).not.toContain(7.5)
+    expect(walls(32)).toContain(8)
+    expect(walls(32)).not.toContain(8.5)
+    expect(walls(160)).toContain(22)
+    expect(walls(160)).not.toContain(24)
+    expect(walls(170)).toContain(24)
+    expect(walls(250)).toContain(4.5)
+    expect(walls(250)).toContain(24)
+    expect(walls(250)).not.toContain(4)
+    expect(walls(125)).toEqual([])
+    expect(walls(133)).toEqual([])
+    expect(main.notes.join(' ')).toContain('D/s > 50')
+    expect(main.notes.join(' ')).toContain('D/s < 4')
+  })
+
+  it('keeps cold-deformed special sizes separate from the full nominal series', () => {
+    const table = getProductSizeSeries('truby-besshovnye', 'holodnodeformirovannye').find((table) => table.title.includes('Дополнительные размеры'))!
     expect(table.title).toContain('Дополнительные размеры')
     expect(table.scope).toContain('Основной размерный ряд таблицы 1 в этот список не включён')
     expect(table.rows).toContainEqual(['32', '8,5'])
