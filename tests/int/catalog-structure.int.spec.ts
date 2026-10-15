@@ -112,6 +112,33 @@ describe('unified homepage catalog', () => {
 })
 
 describe('normative product size tables', () => {
+  it('preserves current stainless cold-deformed wall pairs with their individual maximum measured lengths', () => {
+    const tables = getProductSizeSeries('truby-besshovnye', 'nerzhaveyushchie')
+    expect(tables.map((table) => table.standard)).toEqual(['ГОСТ 9940-81', 'ГОСТ 9941-2022'])
+    const table = tables[1]
+    expect(table.rows).toHaveLength(152)
+    const pairs = table.rows.flatMap(([D, walls, length]) => walls.split('; ').map((s) => [Number(D.replace(',', '.')), Number(s.replace(',', '.')), Number(length.replace(',', '.'))]))
+    expect(pairs).toHaveLength(1521)
+    expect(new Set(pairs.map(([D]) => D)).size).toBe(73)
+    expect(new Set(pairs.map(([D, s]) => `${D}×${s}`)).size).toBe(1521)
+    expect(pairs.every(([D, s, length]) => D > 2 * s && length >= 0.6)).toBe(true)
+    expect(pairs).toContainEqual([5, 0.2, 5])
+    expect(pairs).toContainEqual([273, 6, 6.5])
+    expect(pairs).toContainEqual([325, 8, 10])
+    expect(pairs).toContainEqual([377, 8, 12])
+    expect(pairs).toContainEqual([426, 40, 4])
+    expect(pairs.some(([D, s]) => D === 325 && [8.5, 9, 9.5].includes(s))).toBe(false)
+    expect(table.notes.join(' ')).toContain('Прочерк')
+    expect(table.notes.join(' ')).toContain('по согласованию')
+    expect(getProductSizeSeries('nerzhaveyushchaya-stal', 'truby')[1].rows).toBe(table.rows)
+    const markup = renderToStaticMarkup(createElement(ProductSizeSeries, { series: tables, requestHref: '/?product=stainless#request' }))
+    const tree = new DOMParser().parseFromString(markup, 'text/html')
+    expect(tree.querySelectorAll('details[open]')).toHaveLength(1)
+    expect(tree.querySelectorAll('.size-series-nav a')).toHaveLength(2)
+    expect(tree.querySelectorAll('details')[1].querySelectorAll('tbody tr')).toHaveLength(152)
+    expect(markup).not.toContain(table.source.url)
+  })
+
   it('keeps stainless hot-deformed wall pairs and length agreements distinct on both existing cards', () => {
     const table = getProductSizeSeries('truby-besshovnye', 'nerzhaveyushchie')[0]
     const second = getProductSizeSeries('nerzhaveyushchaya-stal', 'truby')[0]
