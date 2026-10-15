@@ -9,8 +9,9 @@ import { coldPipeSizeSeries } from './coldPipeSizeSeries'
 import { calibratedSquareSizeSeries } from './calibratedSquareSizeSeries'
 import { stainlessHotPipeSizeSeries } from './stainlessHotPipeSizeSeries'
 import { stainlessColdPipeSizeSeries } from './stainlessColdPipeSizeSeries'
+import { teeSizeSeries } from './teeSizeSeries'
 
-export const productSizeSeries = [...sectionSizeSeries, ...coldPipeSizeSeries, ...pipeSizeSeries, ...otherSizeSeries, ...sdtSizeSeries, ...sheetSizeSeries, ...coilSizeSeries, ...profileSizeSeries, ...calibratedSquareSizeSeries, ...stainlessHotPipeSizeSeries, ...stainlessColdPipeSizeSeries]
+export const productSizeSeries = [...sectionSizeSeries, ...coldPipeSizeSeries, ...pipeSizeSeries, ...otherSizeSeries, ...sdtSizeSeries, ...sheetSizeSeries, ...coilSizeSeries, ...profileSizeSeries, ...calibratedSquareSizeSeries, ...stainlessHotPipeSizeSeries, ...stainlessColdPipeSizeSeries, ...teeSizeSeries]
 
 export const getProductSizeSeries = (categorySlug: string, productSlug: string) => productSizeSeries.filter((table) => table.categorySlug === categorySlug && table.productSlug === productSlug)
 

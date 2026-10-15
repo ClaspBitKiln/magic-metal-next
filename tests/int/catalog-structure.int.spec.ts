@@ -112,6 +112,30 @@ describe('unified homepage catalog', () => {
 })
 
 describe('normative product size tables', () => {
+  it('keeps execution 2 tee wall thicknesses paired and preserves added nominal groups', () => {
+    const [equal, reducing] = getProductSizeSeries('sdt', 'troyniki-besshovnye')
+    expect(equal.standard).toBe('ГОСТ 17376-2001')
+    expect(equal.rows).toHaveLength(17)
+    expect(reducing.rows).toHaveLength(29)
+    const values = (text: string) => text.split('; ').map((v) => Number(v.replace(',', '.')))
+    expect(equal.rows.reduce((n, row) => n + values(row[2]).length, 0)).toBe(65)
+    expect(reducing.rows.reduce((n, row) => n + row[3].split('; ').length, 0)).toBe(115)
+    expect(equal.rows[0]).toEqual(['15', '20', '2; 3; 4', '25', '15', '—'])
+    expect(equal.rows.find((row) => row[1] === '57')![4]).toBe('45')
+    expect(equal.rows.find((row) => row[1] === '114')).toEqual(['100', '114', '4; 5; 6; 9', '100', '90', '5'])
+    const pair57 = reducing.rows.find((row) => row[1] === '57' && row[2] === '45')!
+    expect(pair57[3].split('; ')).toEqual(['3/2,5', '4/3', '5/4'])
+    expect(pair57[3]).not.toContain('4/2,5')
+    expect(reducing.rows.every((row) => Number(row[1]) > Number(row[2]))).toBe(true)
+    expect(equal.source.url).not.toContain('23met')
+    const markup = renderToStaticMarkup(createElement(ProductSizeSeries, { series: [equal, reducing], requestHref: '/?product=tee#request' }))
+    const tree = new DOMParser().parseFromString(markup, 'text/html')
+    expect(tree.querySelectorAll('details[open]')).toHaveLength(1)
+    expect(tree.querySelectorAll('.size-series-nav a')).toHaveLength(2)
+    expect(tree.querySelectorAll('tbody tr')).toHaveLength(46)
+    expect(markup).not.toContain(equal.source.url)
+  })
+
   it('preserves current stainless cold-deformed wall pairs with their individual maximum measured lengths', () => {
     const tables = getProductSizeSeries('truby-besshovnye', 'nerzhaveyushchie')
     expect(tables.map((table) => table.standard)).toEqual(['ГОСТ 9940-81', 'ГОСТ 9941-2022'])
