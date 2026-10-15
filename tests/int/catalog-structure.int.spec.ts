@@ -112,6 +112,26 @@ describe('unified homepage catalog', () => {
 })
 
 describe('normative product size tables', () => {
+  it('keeps reducer wall pairs tied to their normative lengths in execution 2', () => {
+    const [table] = getProductSizeSeries('sdt', 'perekhody-besshovnye')
+    expect(table.standard).toBe('ГОСТ 17378-2001')
+    expect(table.rows).toHaveLength(78)
+    expect(table.rows.reduce((n, row) => n + row[3].split('; ').length, 0)).toBe(375)
+    expect(table.rows[0]).toEqual(['32', '38', '25', '2/1,6; 3/3; 4/3', '30'])
+    const alternative = table.rows.filter((row) => row[1] === '133' && row[2] === '108')
+    expect(alternative.map((row) => row[4])).toEqual(['80', '100'])
+    expect(alternative[0][3]).toBe('5/4; 6/5; 8/7; 10/9')
+    expect(alternative[1][3]).toBe('5/4; 8/6; 8/8; 10/9')
+    expect(alternative[1][3]).not.toContain('5/8')
+    expect(table.rows.every((row) => Number(row[1]) > Number(row[2]))).toBe(true)
+    expect(table.rows.at(-1)).toEqual(['500', '530', '426', '12/10; 14/12; 16/16; 20/16; 22/20; 26/22', '300'])
+    const markup = renderToStaticMarkup(createElement(ProductSizeSeries, { series: [table], requestHref: '/?product=reducer#request' }))
+    const tree = new DOMParser().parseFromString(markup, 'text/html')
+    expect(tree.querySelectorAll('details[open]')).toHaveLength(1)
+    expect(tree.querySelectorAll('tbody tr')).toHaveLength(78)
+    expect(markup).not.toContain(table.source.url)
+  })
+
   it('preserves execution 1 tee wall pairs and unspecified large-diameter walls', () => {
     const tables = getProductSizeSeries('sdt', 'troyniki-besshovnye')
     const [equal, reducing] = tables.slice(2)
