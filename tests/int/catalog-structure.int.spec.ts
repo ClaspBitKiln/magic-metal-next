@@ -272,6 +272,28 @@ describe('normative product size tables', () => {
     expect(table.rows.filter((row) => row[0] === '46').map((row) => row[1])).toEqual(['3,0', '6,0'])
   })
 
+  it('uses the current round bar nominal series without inventing agreement-only diameters', () => {
+    const table = getProductSizeSeries('sortovoy-i-fasonny-prokat', 'krug-goryachekatanyj')[0]
+    expect(table.standard).toBe('ГОСТ 2590-2006')
+    expect(table.rows).toHaveLength(101)
+    const diameters = table.rows.map((row) => Number(row[0].replace(',', '.')))
+    expect(diameters[0]).toBe(5)
+    expect(diameters.at(-1)).toBe(270)
+    expect(diameters.slice(diameters.indexOf(72), diameters.indexOf(75) + 1)).toEqual([72, 73, 75])
+    expect(diameters).toContain(6.3)
+    expect(diameters).toContain(6.5)
+    expect(diameters).not.toContain(49)
+    expect(diameters).not.toContain(300)
+    expect(diameters).not.toContain(330)
+    expect(table.notes[0]).toContain('свыше 270 до 330')
+    expect(table.notes[1]).toContain('ближайшему меньшему диаметру')
+    expect(table.notes[1]).not.toContain('свыше 100')
+    const item = productDetailCatalog.find((item) => item.slug === 'krug-goryachekatanyj')!
+    expect(item.standards).toContain(table.standard)
+    expect(item.title).toContain('5–270')
+    expect(item.range[0].value).toContain('по согласованной спецификации')
+  })
+
   it('keeps the hot-rolled square nominal series distinct from intermediate order sizes', () => {
     const table = getProductSizeSeries('sortovoy-i-fasonny-prokat', 'kvadrat').find((table) => table.standard === 'ГОСТ 2591-2006')!
     expect(table.rows).toHaveLength(65)
