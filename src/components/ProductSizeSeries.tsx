@@ -2,6 +2,7 @@ import type { SizeSeries } from '@/data/sizeSeriesTypes'
 import './ProductSizeSeries.css'
 
 const dimensionList = /^\d+(?:[.,]\d+)?(?:;\s*\d+(?:[.,]\d+)?)+$/
+const wallPairList = /^\d+(?:[.,]\d+)?\/\d+(?:[.,]\d+)?(?:;\s*\d+(?:[.,]\d+)?\/\d+(?:[.,]\d+)?)*$/
 const tableLabel = (table: SizeSeries) => {
   const type = table.title.match(/тип\s+([А-ЯA-Z0-9]+)/iu)?.[1]
   if (type) return `Тип ${type}`
@@ -31,7 +32,7 @@ export default function ProductSizeSeries({ series, requestHref }: { series: Siz
           <table>
             <caption>{table.title} — {table.standard}</caption>
             <thead><tr>{table.columns.map((column, columnIndex) => <th scope="col" key={column} className={numericColumns[columnIndex] ? 'size-series-number' : undefined}>{column}</th>)}</tr></thead>
-            <tbody>{table.rows.map((row) => <tr key={row.join('|')}>{row.map((cell, column) => column === 0 ? <th scope="row" key={column}>{cell}</th> : <td key={column} className={numericColumns[column] ? 'size-series-number' : dimensionList.test(cell) ? 'size-series-list' : undefined}>{cell}</td>)}</tr>)}</tbody>
+            <tbody>{table.rows.map((row) => <tr key={row.join('|')}>{row.map((cell, column) => column === 0 ? <th scope="row" key={column}>{cell}</th> : <td key={column} className={numericColumns[column] ? 'size-series-number' : dimensionList.test(cell) || wallPairList.test(cell) ? 'size-series-list' : undefined}>{cell}</td>)}</tr>)}</tbody>
           </table>
         </div>
         {table.notes.slice(1).map((note) => <p className="size-series-note" key={note}>{note}</p>)}

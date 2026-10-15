@@ -112,6 +112,30 @@ describe('unified homepage catalog', () => {
 })
 
 describe('normative product size tables', () => {
+  it('preserves execution 1 tee wall pairs and unspecified large-diameter walls', () => {
+    const tables = getProductSizeSeries('sdt', 'troyniki-besshovnye')
+    const [equal, reducing] = tables.slice(2)
+    expect(tables).toHaveLength(4)
+    expect(equal.rows).toHaveLength(23)
+    expect(reducing.rows).toHaveLength(52)
+    const numericPairs = (rows: string[][], column: number) => rows.flatMap((row) => row[column] === '—' ? [] : row[column].split('; '))
+    expect(numericPairs(equal.rows, 2)).toHaveLength(47)
+    expect(numericPairs(reducing.rows, 3)).toHaveLength(124)
+    expect(equal.rows.find((row) => row[1] === '60,3')).toEqual(['50', '60,3', '2,9/2,3; 4/3,2; 5,6/4,5', '64', '64'])
+    expect(equal.rows.filter((row) => row[2] === '—').map((row) => row[0])).toEqual(['700', '800', '900', '1000'])
+    expect(equal.rows.at(-1)).toEqual(['1000', '1016', '—', '749', '749'])
+    expect(reducing.rows.every((row) => Number(row[1].replace(',', '.')) > Number(row[2].replace(',', '.')))).toBe(true)
+    expect(reducing.rows.find((row) => row[1] === '60,3' && row[2] === '48,3')![3]).toBe('2,9/2,6; 4/3,6; 5,6/5')
+    expect(equal.notes.join(' ')).toContain('не означает нулевую толщину')
+    const markup = renderToStaticMarkup(createElement(ProductSizeSeries, { series: tables, requestHref: '/?product=tee#request' }))
+    const tree = new DOMParser().parseFromString(markup, 'text/html')
+    expect(tree.querySelectorAll('details[open]')).toHaveLength(1)
+    expect(tree.querySelectorAll('.size-series-nav a')).toHaveLength(4)
+    expect(tree.querySelectorAll('tbody tr')).toHaveLength(121)
+    expect(tree.querySelectorAll('details')[3].querySelector('tbody tr td:nth-child(4)')?.classList.contains('size-series-list')).toBe(true)
+    expect(markup).not.toContain(equal.source.url)
+  })
+
   it('keeps execution 2 tee wall thicknesses paired and preserves added nominal groups', () => {
     const [equal, reducing] = getProductSizeSeries('sdt', 'troyniki-besshovnye')
     expect(equal.standard).toBe('ГОСТ 17376-2001')
