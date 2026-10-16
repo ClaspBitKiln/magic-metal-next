@@ -10,6 +10,7 @@ import { sdtCatalog } from '@/data/sdtCatalog'
 import { productSizeSeries, getProductSizeSeries } from '@/data/productSizeSeries'
 import { productDetailCatalog } from '@/data/productDetailCatalog'
 import { pipeCatalog } from '@/data/pipeCatalog'
+import { dimensionGuides, getDimensionGuide } from '@/data/dimensionGuides'
 import ProductSizeSeries from '@/components/ProductSizeSeries'
 import ProductDetailPage from '@/app/(frontend)/(catalog)/produkciya/[slug]/[detail]/page'
 import StandardAssortment from '@/components/StandardAssortment'
@@ -112,6 +113,56 @@ describe('unified homepage catalog', () => {
 })
 
 describe('normative product size tables', () => {
+  it('gives all 51 product cards either scoped numeric tables or explicit specification guidance', () => {
+    const cards = [...pipeCatalog, ...productDetailCatalog, ...sdtCatalog.map((item) => ({ ...item, categorySlug: 'sdt' }))]
+      .filter((item) => !['krug-i-kvadrat', 'balka-shveller-ugolok'].includes(item.slug))
+    expect(cards).toHaveLength(51)
+    expect(cards.filter((item) => getProductSizeSeries(item.categorySlug, item.slug).length)).toHaveLength(34)
+    expect(cards.filter((item) => !getProductSizeSeries(item.categorySlug, item.slug).length && getDimensionGuide(item.categorySlug, item.slug))).toHaveLength(17)
+    expect(cards.filter((item) => !getProductSizeSeries(item.categorySlug, item.slug).length && !getDimensionGuide(item.categorySlug, item.slug))).toEqual([])
+    expect(new Set(dimensionGuides.map((g) => `${g.categorySlug}/${g.productSlug}`)).size).toBe(dimensionGuides.length)
+  })
+
+  it('renders drawing guidance without pretending it is a numeric GOST table', () => {
+    const guide = getDimensionGuide('pokovki-i-zagotovki', 'po-chertezhu')!
+    const markup = renderToStaticMarkup(createElement(ProductSizeSeries, { series: [], guide, requestHref: '/?product=forging#request' }))
+    const tree = new DOMParser().parseFromString(markup, 'text/html')
+    expect(tree.querySelector('#sizes h2')?.textContent).toBe('Размеры по спецификации')
+    expect(tree.querySelectorAll('table')).toHaveLength(0)
+    expect(tree.querySelectorAll('.size-series-guide li')).toHaveLength(guide.parameters.length)
+    expect(tree.querySelector('.size-series-request')?.getAttribute('href')).toBe('/?product=forging#request')
+    expect(markup).not.toContain(guide.source.url)
+    expect(renderToStaticMarkup(createElement(ProductSizeSeries, { series: [], requestHref: '/#request' }))).toBe('')
+  })
+
+  it('keeps PPU shell types separate and wire diameters scoped to steel welding wire', () => {
+    const [pe, steel] = getProductSizeSeries('truby-i-sdt-v-izolyacii', 'ppu')
+    expect(pe.rows).toHaveLength(23)
+    expect(steel.rows).toHaveLength(23)
+    expect(pe.rows[0]).toEqual(['32', '90; 110; 125', '—'])
+    expect(steel.rows[0]).toEqual(['32', '—', '125'])
+    expect(steel.rows.at(-1)).toEqual(['1420', '1575; 1600', '—'])
+    const [wire] = getProductSizeSeries('metizy-i-svarochnye-materialy', 'svarochnye-materialy')
+    expect(wire.rows).toHaveLength(17)
+    expect(wire.rows[0]).toEqual(['0,3', '−0,05'])
+    expect(wire.rows.at(-1)).toEqual(['12,0', '−0,24'])
+    expect(wire.notes.join(' ')).toContain('только к стальной сварочной проволоке')
+  })
+
+  it('keeps nonferrous semi-finished product dimensions and current aluminium edition distinct', () => {
+    const slugs = ['med', 'latun', 'bronza', 'alyuminij', 'titan', 'nihrom']
+    const tables = slugs.map((slug) => getProductSizeSeries('cvetnye-metally', slug)[0])
+    expect(tables.map((table) => table.rows.length)).toEqual([31, 9, 5, 33, 33, 5])
+    expect(tables[0].rows[0]).toEqual(['20', '2000–5000'])
+    expect(tables[0].rows.at(-1)).toEqual(['180', '500–2000'])
+    expect(tables[3].standard).toBe('ГОСТ 21488-2025')
+    expect(tables[4].rows.at(-1)).toEqual(['150', '500–2000'])
+    for (const slug of ['olovo', 'svinec', 'cink', 'babbit']) {
+      expect(getProductSizeSeries('cvetnye-metally', slug)).toHaveLength(0)
+      expect(getDimensionGuide('cvetnye-metally', slug)?.parameters.length).toBeGreaterThan(0)
+    }
+  })
+
   it('separates spiral general-purpose and mainline standards without inventing wall combinations', () => {
     const [spiral, mainlineSpiral] = getProductSizeSeries('truby-elektrosvarnye', 'spiraleshovnye')
     const [mainline] = getProductSizeSeries('truby-elektrosvarnye', 'magistralnye')

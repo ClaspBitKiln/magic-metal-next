@@ -6,6 +6,7 @@ import { findStandard } from '@/data/standards'
 import { getSdtCatalogItem, sdtCatalog } from '@/data/sdtCatalog'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
 import ProductSizeSeries from '@/components/ProductSizeSeries'
+import { getDimensionGuide } from '@/data/dimensionGuides'
 import { getProductSizeSeries } from '@/data/productSizeSeries'
 import './sdt-detail.css'
 
@@ -45,7 +46,7 @@ export default async function SdtDetailPage({ params }: { params: Promise<{ deta
         <div><p>Соединительные детали трубопроводов</p><h1>{item.title}</h1><span>{item.description}</span></div>
       </section>
       <nav className="sdt-breadcrumb" aria-label="Хлебные крошки"><Link href="/">Главная</Link><b>/</b><Link href="/produkciya/sdt">СДТ</Link><b>/</b><span>{item.shortTitle}</span></nav>
-      <ProductSizeSeries series={getProductSizeSeries('sdt', item.slug)} requestHref={requestHref} />
+      <ProductSizeSeries series={getProductSizeSeries('sdt', item.slug)} guide={getDimensionGuide('sdt', item.slug)} requestHref={requestHref} />
       <section className="sdt-intro"><h2>Подбор по проекту и спецификации</h2><p>{item.intro}</p><a href={requestHref}>Отправить заявку →</a></section>
       <section className="sdt-grid"><div className="sdt-grid-heading"><p>Сводные характеристики</p><h2>Исполнения и материалы</h2></div><dl>
         <div><dt>Исполнения</dt><dd>{item.execution.map((value) => <span key={value}>{value}</span>)}</dd></div>

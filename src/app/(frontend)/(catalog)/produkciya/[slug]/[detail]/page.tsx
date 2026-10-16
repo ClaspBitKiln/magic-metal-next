@@ -9,6 +9,7 @@ import { getSeoCategory } from '@/data/seoCatalog'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
 import ProductSizeSeries from '@/components/ProductSizeSeries'
 import { getProductSizeSeries } from '@/data/productSizeSeries'
+import { getDimensionGuide } from '@/data/dimensionGuides'
 import './pipe-detail.css'
 
 export const dynamicParams = false
@@ -73,7 +74,7 @@ export default async function PipeDetailPage({ params }: { params: Promise<{ slu
         {sizeProfiles.map((profile) => <a key={profile.slug} href={`/produkciya/${profile.categorySlug}/${profile.slug}#sizes`}>{profile.shortTitle} →</a>)}
       </nav>
     </section>}
-    <ProductSizeSeries series={getProductSizeSeries(item.categorySlug, item.slug)} requestHref={requestHref} />
+    <ProductSizeSeries series={getProductSizeSeries(item.categorySlug, item.slug)} guide={getDimensionGuide(item.categorySlug, item.slug)} requestHref={requestHref} />
     <section className="pipe-intro"><h2>Подбор по назначению, а не только по размеру</h2><div><p>{item.intro}</p><a href={requestHref}>Отправить заявку →</a></div></section>
     <section className="pipe-spec"><div><p>Продукция</p><h2>Основные параметры</h2></div><dl>{item.range.map((row) => <div key={row.label}><dt>{row.label}</dt><dd>{row.value}</dd></div>)}</dl></section>
     <section className="pipe-facts"><div className="pipe-facts-heading"><p>Сводные характеристики</p><h2>Поставка и применение</h2></div><dl><div><dt>Марки и материалы</dt><dd>{item.grades.map((value) => <span key={value}>{value}</span>)}</dd></div><div><dt>Применение</dt><dd>{item.applications.map((value) => <span key={value}>{value}</span>)}</dd></div></dl></section>

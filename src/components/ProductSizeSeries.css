@@ -35,6 +35,7 @@
 .product-size-series .size-series-legend { padding: 8px 10px; border-left: 2px solid #d9e1ef; background: #f8faff; }
 .product-size-series a { color: #0757e8; text-decoration: underline; }
 .product-size-series .size-series-request { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 16px; color: #fff; background: #0757e8; font-weight: 650; text-decoration: none; }
+.pipe-detail .standard-code, .sdt-detail .standard-code { white-space: normal; overflow-wrap: anywhere; }
 @media (max-width: 700px) {
   .product-size-series { padding: 28px 20px; }
   .product-size-series details { padding-inline: 8px; }

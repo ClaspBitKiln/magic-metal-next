@@ -1,4 +1,5 @@
 import type { SizeSeries } from '@/data/sizeSeriesTypes'
+import type { ProductDimensionGuide } from '@/data/productDimensionGuides'
 import './ProductSizeSeries.css'
 
 const dimensionList = /^\d+(?:[.,]\d+)?(?:;\s*\d+(?:[.,]\d+)?)+$/
@@ -12,12 +13,12 @@ const tableLabel = (table: SizeSeries) => {
   return table.title
 }
 
-export default function ProductSizeSeries({ series, requestHref }: { series: SizeSeries[]; requestHref: string }) {
-  if (!series.length) return null
+export default function ProductSizeSeries({ series, requestHref, guide }: { series: SizeSeries[]; requestHref: string; guide?: ProductDimensionGuide }) {
+  if (!series.length && !guide) return null
   return <section className="product-size-series" id="sizes" aria-labelledby="size-series-title">
-    <h2 id="size-series-title">Размерный ряд по ГОСТ</h2>
-    <p className="size-series-intro">Выберите стандарт и исполнение, затем нужный размер. Укажите их в заявке или приложите спецификацию.</p>
-    <p className="size-series-mobile-help">Широкие таблицы можно прокручивать вбок. Первый столбец и заголовки остаются видны.</p>
+    <h2 id="size-series-title">{series.length ? 'Размерный ряд по ГОСТ' : 'Размеры по спецификации'}</h2>
+    <p className="size-series-intro">{series.length ? 'Выберите стандарт и исполнение, затем нужный размер. Укажите их в заявке или приложите спецификацию.' : 'Укажите размеры и требования к изделию или приложите чертёж. Проверим их по выбранному стандарту и техническим условиям.'}</p>
+    {series.length > 0 && <p className="size-series-mobile-help">Широкие таблицы можно прокручивать вбок. Первый столбец и заголовки остаются видны.</p>}
     <a className="size-series-request" href={requestHref}>Отправить заявку ↗</a>
     {series.length > 1 && <nav className="size-series-nav" aria-label="Выбор размерной таблицы">
       {series.map((table, index) => <a key={`${table.standard}-${table.title}`} href={`#sizes-series-${index + 1}`}>{tableLabel(table)}</a>)}
@@ -38,5 +39,11 @@ export default function ProductSizeSeries({ series, requestHref }: { series: Siz
         {table.notes.slice(1).map((note) => <p className="size-series-note" key={note}>{note}</p>)}
       </details>
     })}
+    {guide && <div className="size-series-guide">
+      <h3>{guide.title}</h3>
+      <p className="size-series-note">{guide.standard}</p>
+      <p className="size-series-legend">{guide.note}</p>
+      <ul>{guide.parameters.map(parameter => <li key={parameter}>{parameter}</li>)}</ul>
+    </div>}
   </section>
 }
