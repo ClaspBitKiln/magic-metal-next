@@ -112,6 +112,32 @@ describe('unified homepage catalog', () => {
 })
 
 describe('normative product size tables', () => {
+  it('keeps galvanized product ranges distinct from coil diameters and fixed sheet formats', () => {
+    const tables = getProductSizeSeries('listovoy-prokat', 'ocinkovannyj')
+    expect(tables).toHaveLength(2)
+    const [sizes, coils] = tables
+    expect(sizes.standard).toBe('ГОСТ 14918-2020')
+    expect(sizes.rows).toEqual([
+      ['Лист', '0,22–4,50', '700–1800'],
+      ['Рулон проката', '0,22–4,50', '600–1800'],
+      ['Лента из рулона', '0,22–4,50', 'От 30 до менее 600'],
+    ])
+    expect(sizes.notes.join(' ')).toContain('включает толщину покрытия')
+    expect(sizes.notes.join(' ')).toContain('Длину листа указывают в заказе')
+    expect(sizes.scope).toContain('не перечень фиксированных форматов')
+    expect(coils.rows).toEqual([
+      ['Внутренний Ø', '500; 508; 600; 610; 750', '300–750'],
+      ['Отклонение Øвн', '±20', '±20'],
+      ['Наружный Ø, макс.', '1850', '1850'],
+    ])
+    const markup = renderToStaticMarkup(createElement(ProductSizeSeries, { series: tables, requestHref: '/?product=galvanized#request' }))
+    const tree = new DOMParser().parseFromString(markup, 'text/html')
+    expect(tree.querySelectorAll('details[open]')).toHaveLength(1)
+    expect(tree.querySelectorAll('.size-series-nav a')).toHaveLength(2)
+    expect(tree.querySelectorAll('tbody tr')).toHaveLength(6)
+    expect(markup).not.toContain(sizes.source.url)
+  })
+
   it('preserves execution 1 reducer dimensions and missing large-end walls', () => {
     const tables = getProductSizeSeries('sdt', 'perekhody-besshovnye')
     const table = tables[1]
