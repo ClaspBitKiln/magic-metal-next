@@ -112,6 +112,27 @@ describe('unified homepage catalog', () => {
 })
 
 describe('normative product size tables', () => {
+  it('separates spiral general-purpose and mainline standards without inventing wall combinations', () => {
+    const [spiral, mainlineSpiral] = getProductSizeSeries('truby-elektrosvarnye', 'spiraleshovnye')
+    const [mainline] = getProductSizeSeries('truby-elektrosvarnye', 'magistralnye')
+    const pairs = (rows: string[][]) => rows.flatMap((row) => row[1].split('; ').map((s) => [Number(row[0]), Number(s.replace(',', '.'))]))
+    expect(spiral.standard).toBe('ГОСТ 8696-74')
+    expect(spiral.rows).toHaveLength(21)
+    expect(pairs(spiral.rows)).toHaveLength(143)
+    expect(pairs(spiral.rows)).not.toContainEqual([159, 9])
+    expect(spiral.scope).toContain('не распространяется на магистральные')
+    expect(pairs(mainline.rows)).toHaveLength(604)
+    expect(mainline.rows).toHaveLength(24)
+    expect(mainline.rows.at(-1)![0]).toBe('1420')
+    expect(mainlineSpiral.rows).toHaveLength(19)
+    expect(pairs(mainlineSpiral.rows)).toHaveLength(518)
+    expect(mainline.rows.find((r) => r[0] === '114')![2]).toBe('1')
+    const [cracking] = getProductSizeSeries('truby-besshovnye', 'krekingovye')
+    expect(cracking.standard).toBe('ГОСТ 550-2020')
+    expect(cracking.rows).toEqual([['Горячий', '25–550', '2,5–40,0', '2,5–12,2'], ['Холодный', '11–250', '1,5–24,0', '2,5–12,2']])
+    expect(cracking.scope).toContain('не матрица всех сочетаний')
+  })
+
   it('limits stainless sheet nominal thicknesses by production method and technical standard', () => {
     const [thin, thick] = getProductSizeSeries('nerzhaveyushchaya-stal', 'list')
     expect(thin.standard).toBe('ГОСТ 5582-75')
