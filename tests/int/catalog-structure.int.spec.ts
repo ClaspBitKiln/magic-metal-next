@@ -112,6 +112,23 @@ describe('unified homepage catalog', () => {
 })
 
 describe('normative product size tables', () => {
+  it('limits stainless sheet nominal thicknesses by production method and technical standard', () => {
+    const [thin, thick] = getProductSizeSeries('nerzhaveyushchaya-stal', 'list')
+    expect(thin.standard).toBe('ГОСТ 5582-75')
+    expect(thick.standard).toBe('ГОСТ 7350-77')
+    expect(thin.rows.map((row) => row[1])).toEqual(['1,5–3,9', '0,5–3,9'])
+    expect(thick.rows.map((row) => row[1])).toEqual(['4–50', '4–5'])
+    const values = (text: string) => text.split('; ').map((v) => Number(v.replace(',', '.')))
+    expect(thin.rows.map((row) => values(row[2]).length)).toEqual([12, 26])
+    expect(thick.rows.map((row) => values(row[2]).length)).toEqual([59, 5])
+    expect(values(thin.rows[0][2])).not.toContain(1.4)
+    expect(values(thin.rows[1][2])).not.toContain(0.45)
+    expect(values(thick.rows[0][2])).not.toContain(55)
+    expect(values(thick.rows[1][2])).toEqual([4, 4.2, 4.5, 4.8, 5])
+    expect(thick.notes.join(' ')).toContain('более 20 мм с обрезной кромкой')
+    expect(thick.notes.join(' ')).toContain('1 января 2027')
+  })
+
   it('keeps galvanized product ranges distinct from coil diameters and fixed sheet formats', () => {
     const tables = getProductSizeSeries('listovoy-prokat', 'ocinkovannyj')
     expect(tables).toHaveLength(2)
