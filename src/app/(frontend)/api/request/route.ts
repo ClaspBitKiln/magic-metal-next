@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 import nodemailer from 'nodemailer'
 import { createHmac } from 'node:crypto'
 import { hasRequestConsent, REQUEST_CONSENT_ERROR } from '@/lib/requestValidation'
+import { getRequestSpamReason } from '@/lib/requestSpam'
 
 export const runtime = 'nodejs'
 
@@ -85,6 +86,10 @@ export async function POST(request: Request) {
   const files = form.getAll('files').filter((value): value is File => value instanceof File && value.size > 0)
   if (!phone && !email) return NextResponse.json({ error: 'Укажите телефон или email' }, { status: 400 })
   if (!message && files.length === 0) return NextResponse.json({ error: 'Прикрепите заявку или опишите задачу' }, { status: 400 })
+  const spamReason = getRequestSpamReason({ name, company, message, delivery, context, productDirection, hasAttachments: files.length > 0 })
+  if (spamReason) return NextResponse.json({ error: spamReason === 'seo-advertising'
+    ? 'Форма предназначена для заявок на продукцию. Рекламные предложения через неё не принимаются.'
+    : 'Опишите нужную продукцию или прикрепите спецификацию.' }, { status: 400 })
   const requestName = name || company || 'Клиент сайта'
   const requestPhone = phone || email
   const requestMessage = [message || 'Требования приложены в файлах.', delivery ? `Получение: ${delivery}` : ''].filter(Boolean).join('\n\n')
