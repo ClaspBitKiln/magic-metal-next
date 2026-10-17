@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Три варианта подбора размера — Мэджик Металл</title>
+<link rel="stylesheet" href="/catalog-variants.css">
+<script src="/catalog-variants.js" defer></script>
+</head>
+<body>
+<header class="top"><a class="brand" href="/">Мэджик Металл</a><a href="tel:+79227117363">+7 922 711-73-63</a></header>
+<main>
+<div class="heading"><div><p class="eyebrow">Трубы бесшовные · ГОСТ 8734-75</p><h1>Найдите размер<br>из спецификации</h1><p class="lead">Размеры в миллиметрах. Марку, объём и условия поставки укажите в заявке.</p></div><a class="spec" href="/?product=%D0%A2%D1%80%D1%83%D0%B1%D1%8B%20%D0%B1%D0%B5%D1%81%D1%88%D0%BE%D0%B2%D0%BD%D1%8B%D0%B5%20%D1%85%D0%BE%D0%BB%D0%BE%D0%B4%D0%BD%D0%BE%D0%B4%D0%B5%D1%84%D0%BE%D1%80%D0%BC%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D1%8B%D0%B5#request">Прикрепить спецификацию <span>Excel, PDF, Word или фото →</span></a></div>
+<p class="compare-label">Попробуйте три способа выбора одного и того же размера</p>
+<nav class="views" aria-label="Вариант подбора"><a href="#search" data-view="search">1. Ввести размер</a><a href="#steps" data-view="steps">2. Выбрать по шагам</a><a href="#matrix" data-view="matrix">3. Посмотреть матрицу</a></nav>
+<p id="load-status" role="status">Загружаем размеры…</p>
+<noscript><p>Для интерактивного сравнения включите JavaScript. <a href="/produkciya/truby-besshovnye/holodnodeformirovannye#sizes">Открыть полную таблицу размеров</a> или прикрепите спецификацию по ссылке выше.</p></noscript>
+<section id="search" class="view" hidden aria-labelledby="search-title"><h2 id="search-title">Уже знаете размер?</h2><p class="hint">Введите диаметр × стенку, например 108×4. Можно использовать х, x или ×.</p>
+<form id="size-search"><label for="size-query">Размер из спецификации</label><div class="search-line"><input id="size-query" name="size" placeholder="108×4" autocomplete="off" spellcheck="false"><button type="submit">Найти размер</button></div></form>
+<div class="examples" aria-label="Примеры размеров"><span>Попробуйте:</span><button type="button" data-query="57×3">57×3</button><button type="button" data-query="108×4">108×4</button><button type="button" data-query="108×0,3">108×0,3</button></div>
+<p id="search-status" class="feedback" role="status"></p><div id="search-results" class="results"></div></section>
+<section id="steps" class="view" hidden aria-labelledby="steps-title"><h2 id="steps-title">Подберите размер по двум параметрам</h2><div class="step-layout"><div class="step"><h3><span>1</span> Наружный диаметр, мм</h3><label class="sr-only" for="diameter-search">Найти диаметр</label><input id="diameter-search" type="search" inputmode="decimal" placeholder="Найти диаметр, например 108" autocomplete="off"><div id="diameters" class="chips" aria-label="Наружный диаметр"></div><button type="button" id="all-diameters" class="text-button">Все диаметры</button></div><div class="step"><h3><span>2</span> Толщина стенки, мм</h3><p id="wall-hint" class="hint">Сначала выберите диаметр.</p><div id="walls" class="chips" aria-label="Толщина стенки"></div></div></div><div id="step-result" class="results"></div></section>
+<section id="matrix" class="view" hidden aria-labelledby="matrix-title"><h2 id="matrix-title">Сравните соседние размеры</h2><p class="hint">Пересечение означает сочетание в таблице ГОСТ. Сведения о наличии здесь не показаны. Таблицу можно прокручивать вбок.</p><label for="matrix-diameter">Перейти к диаметру, мм</label><select id="matrix-diameter"></select><p id="matrix-range" class="hint"></p><div id="matrix-grid" class="matrix-scroll" tabindex="0" role="region" aria-label="Диаметр и толщина стенки"></div><div id="matrix-result" class="results"></div></section>
+<details id="norms" class="norms"><summary>ГОСТ, размеры и условия изготовления</summary><p id="norm-scope"></p><ul id="norm-notes"></ul><a href="/produkciya/truby-besshovnye/holodnodeformirovannye#sizes">Полный размерный ряд →</a></details>
+</main>
+<footer>Мэджик Металл · Комплексные поставки металлопроката</footer>
+</body></html>

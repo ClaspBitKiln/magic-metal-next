@@ -113,6 +113,16 @@ describe('unified homepage catalog', () => {
 })
 
 describe('normative product size tables', () => {
+  it('keeps the buyer comparison variants on the verified normative source without stock or public source links', () => {
+    const review = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'public/data/catalog-variant-pipes.json'), 'utf8'))
+    const table = getProductSizeSeries('truby-besshovnye', 'holodnodeformirovannye')[0]
+    expect(review.standard).toBe(table.standard)
+    expect(review.scope).toBe(table.scope)
+    expect(review.rows).toEqual(table.rows)
+    expect(review.notes).toEqual(table.notes)
+    expect(Object.keys(review).sort()).toEqual(['notes', 'product', 'rows', 'scope', 'standard'])
+  })
+
   it('opens sheet combinations first and offers exact thickness groups without removing the full table', () => {
     const tables = getProductSizeSeries('listovoy-prokat', 'goryachekatanyj')
     const tree = document.createElement('div')
