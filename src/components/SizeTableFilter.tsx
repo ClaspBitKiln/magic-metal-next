@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useId, useRef } from 'react'
 
 const numericSize = (value: string) => Number(value.trim().replace(/[()]/g, '').replace(',', '.')).toString()
+const sectionKey = (value: string) => value.split(/\s*×\s*/u).map(numericSize).join('x')
 const wallValues = (row: HTMLTableRowElement, columns: number[]) => columns.flatMap(column => (row.cells[column]?.textContent || '').split(';').filter(value => /^\s*(?:\d+(?:[.,]\d+)?|\(\d+(?:[.,]\d+)?\))\s*$/.test(value)).map(numericSize))
 
 const seriesKey = (element: HTMLDivElement | null) => element?.closest('details')?.querySelector('.size-series-scope')?.id.replace('sizes-series-', '')
@@ -23,7 +24,9 @@ export default function SizeTableFilter({ column, values, total, wallColumns = [
   const referenceButton = useRef<HTMLButtonElement>(null)
   const query = useRef<HTMLInputElement>(null)
   const fallback = useRef<HTMLAnchorElement>(null)
-  const quickSearch = wallColumns.length > 0 && /диаметр/iu.test(column) && values.every(value => /^\d+(?:[.,]\d+)?$/.test(value))
+  const profileSearch = wallColumns.length > 0 && /сечение/iu.test(column) && values.every(value => /^\d+(?:[.,]\d+)?\s*×\s*\d+(?:[.,]\d+)?$/u.test(value.replace(/[()]/g, '')))
+  const quickSearch = profileSearch || (wallColumns.length > 0 && /диаметр/iu.test(column) && values.every(value => /^\d+(?:[.,]\d+)?$/.test(value)))
+  const dimensions = profileSearch ? 'высоту × ширину × стенку' : 'диаметр × стенку'
 
   const refreshWalls = useCallback((requested = '') => {
     const table = root.current?.closest('details')?.querySelector('table')
@@ -44,7 +47,7 @@ export default function SizeTableFilter({ column, values, total, wallColumns = [
     if (fallback.current) fallback.current.hidden = true
     if (query.current) query.current.value = size ? `${size}${thickness ? `×${thickness.replace('.', ',')}` : ''}` : ''
     let visible = 0
-    let bracketed = false
+    let bracketed = size.includes('(')
     const conditions = new Set<string>()
     for (const row of Array.from(table.tBodies[0].rows)) {
       for (const index of wallColumns) {
@@ -150,18 +153,23 @@ export default function SizeTableFilter({ column, values, total, wallColumns = [
         filter()
         return
       }
-      const match = value.replace(/\s*(?:мм|mm)\.?\s*$/iu, '').replace(/^[Ø⌀]\s*/u, '').match(/^(\d+(?:[.,]\d+)?)(?:\s*[xх×*]\s*(\d+(?:[.,]\d+)?))?$/iu)
-      const size = match && values.find(candidate => numericSize(candidate) === numericSize(match[1]))
+      const withoutUnits = value.replace(/\s*(?:мм|mm)\.?\s*$/iu, '')
+      const clean = profileSearch ? withoutUnits : withoutUnits.replace(/^[Ø⌀]\s*/u, '')
+      const parts = clean.match(/^(?:\d+(?:[.,]\d+)?|\(\d+(?:[.,]\d+)?\))(?:\s*[xх×*]\s*(?:\d+(?:[.,]\d+)?|\(\d+(?:[.,]\d+)?\))){0,2}$/iu)?.[0].split(/\s*[xх×*]\s*/iu).map(numericSize)
+      const count = profileSearch ? 2 : 1
+      const match = parts && (parts.length === count || parts.length === count + 1) ? parts : null
+      const key = match?.slice(0, count).join('x')
+      const size = match && (values.find(candidate => sectionKey(candidate) === key) || (profileSearch && values.find(candidate => sectionKey(candidate) === match.slice(0, count).reverse().join('x'))))
       if (size && select.current) {
         select.current.value = size
-        refreshWalls(match?.[2] ? numericSize(match[2]) : '')
+        refreshWalls(match?.[count] || '')
         filter()
       } else {
         if (select.current) select.current.value = ''
         refreshWalls()
         filter()
         if (query.current) query.current.value = value
-        if (result.current) result.current.textContent = match ? 'Диаметра нет в этой таблице. Отправьте спецификацию: проверим другое исполнение.' : 'Введите диаметр × стенку, например 108×4 мм, или отправьте спецификацию.'
+        if (result.current) result.current.textContent = match ? `${profileSearch ? 'Сечения' : 'Диаметра'} нет в этой таблице. Отправьте спецификацию: проверим другое исполнение.` : `Введите ${dimensions} в миллиметрах или отправьте спецификацию.`
         if (fallback.current && requestHref) {
           const url = new URL(requestHref, window.location.origin)
           url.searchParams.set('product', `${url.searchParams.get('product') || ''} — проверить размер ${value.slice(0, 200)}; ${context}`)
@@ -171,8 +179,8 @@ export default function SizeTableFilter({ column, values, total, wallColumns = [
       }
     }}>
       <label htmlFor={`${id}-query`}>Размер из спецификации</label>
-      <div><input id={`${id}-query`} ref={query} placeholder="Например, 108×4 мм" autoComplete="off" spellCheck={false} maxLength={200} /><button type="submit">Найти размер</button></div>
-      <p>Введите диаметр × стенку или выберите параметры ниже.</p>
+      <div><input id={`${id}-query`} ref={query} placeholder={profileSearch ? 'Высота×ширина×стенка, мм' : 'Например, 108×4 мм'} autoComplete="off" spellCheck={false} maxLength={200} /><button type="submit">Найти размер</button></div>
+      <p>Введите {dimensions} или выберите параметры ниже.</p>
     </form>}
     <div>
       <label htmlFor={id}>{column}</label>

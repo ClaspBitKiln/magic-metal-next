@@ -113,6 +113,18 @@ describe('unified homepage catalog', () => {
 })
 
 describe('normative product size tables', () => {
+  it('offers specification search in every main profile series while retaining short special rows directly', () => {
+    const tables = getProductSizeSeries('truby-elektrosvarnye', 'profilnye')
+    const tree = document.createElement('div')
+    tree.innerHTML = renderToStaticMarkup(createElement(ProductSizeSeries, { series: tables, requestHref: '/#request' }))
+    const details = tree.querySelectorAll('details')
+    expect(details).toHaveLength(6)
+    tables.forEach((table, index) => {
+      expect(Boolean(details[index].querySelector('.size-series-quick-search'))).toBe(!table.title.includes('специальные'))
+      expect(Array.from(details[index].querySelectorAll('tbody tr'), row => Array.from(row.children, cell => cell.textContent))).toEqual(table.rows)
+    })
+  })
+
   it('keeps the buyer comparison variants on the verified normative source without stock or public source links', () => {
     const review = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'public/data/catalog-variant-pipes.json'), 'utf8'))
     const table = getProductSizeSeries('truby-besshovnye', 'holodnodeformirovannye')[0]
