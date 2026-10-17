@@ -140,8 +140,8 @@ describe('normative product size tables', () => {
     const cards = [...pipeCatalog, ...productDetailCatalog, ...sdtCatalog.map((item) => ({ ...item, categorySlug: 'sdt' }))]
       .filter((item) => !['krug-i-kvadrat', 'balka-shveller-ugolok'].includes(item.slug))
     expect(cards).toHaveLength(51)
-    expect(cards.filter((item) => getProductSizeSeries(item.categorySlug, item.slug).length)).toHaveLength(34)
-    expect(cards.filter((item) => !getProductSizeSeries(item.categorySlug, item.slug).length && getDimensionGuide(item.categorySlug, item.slug))).toHaveLength(17)
+    expect(cards.filter((item) => getProductSizeSeries(item.categorySlug, item.slug).length)).toHaveLength(35)
+    expect(cards.filter((item) => !getProductSizeSeries(item.categorySlug, item.slug).length && getDimensionGuide(item.categorySlug, item.slug))).toHaveLength(16)
     expect(cards.filter((item) => !getProductSizeSeries(item.categorySlug, item.slug).length && !getDimensionGuide(item.categorySlug, item.slug))).toEqual([])
     expect(new Set(dimensionGuides.map((g) => `${g.categorySlug}/${g.productSlug}`)).size).toBe(dimensionGuides.length)
   })
@@ -626,6 +626,30 @@ describe('normative product size tables', () => {
     const smallest = tables.flatMap((table) => table.rows).find((row) => numbers(row[0])[0] === 20)!
     expect(numbers(smallest[1])).toEqual([2.5, 2.6, 2.8, 3, 3.2, 3.5, 4])
     expect(tables.flatMap((table) => table.notes).join(' ')).toMatch(/согласованию/)
+  })
+
+  it('distinguishes the original hot precision pipe contour from agreement sizes and parentheses', () => {
+    const [table] = getProductSizeSeries('truby-besshovnye', 'precizionnye')
+    const values = (cell: string) => cell === '—' ? [] : cell.split('; ')
+    const plain = (cell: string) => cell.replace(/[()]/g, '')
+    expect(table.rows).toHaveLength(37)
+    expect(table.rows.reduce((n, row) => n + values(row[1]).length, 0)).toBe(405)
+    expect(table.rows.reduce((n, row) => n + values(row[2]).length, 0)).toBe(452)
+    expect(table.rows.flatMap(row => [...values(row[1]), ...values(row[2])]).filter(value => value.startsWith('('))).toHaveLength(222)
+    for (const row of table.rows) {
+      const inside = values(row[1]).map(plain)
+      const agreement = values(row[2]).map(plain)
+      expect(inside.filter(value => agreement.includes(value))).toEqual([])
+    }
+    for (const [diameter, wall] of [['89', '20'], ['194', '45'], ['127', '13'], ['146', '15']]) {
+      expect(values(table.rows.find(row => row[0] === diameter)![1]).map(plain)).toContain(wall)
+    }
+    for (const [diameter, wall] of [['127', '12'], ['146', '14'], ['203', '45']]) {
+      expect(values(table.rows.find(row => row[0] === diameter)![2]).map(plain)).toContain(wall)
+    }
+    expect(table.rows.find(row => row[0] === '25')![2]).toContain('(7,5)')
+    expect(table.scope).toContain('Холоднодеформированный сортамент в эту таблицу не входит')
+    expect(getDimensionGuide('truby-besshovnye', 'precizionnye')!.note).toContain('таблице 2')
   })
 
   it('keeps table dimensions complete, traceable and attached to existing products', () => {
