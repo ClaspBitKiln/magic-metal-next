@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { isRecordedRequest, trackAnalyticsGoal } from '@/lib/analytics'
 import { FormEvent, useEffect, useRef, useState } from 'react'
 import { hasRequestConsent, REQUEST_CONSENT_ERROR } from '@/lib/requestValidation'
 
@@ -39,10 +40,7 @@ export default function RequestForm() {
   }
 
   function trackFormEvent(goal: 'request_started' | 'request_step_2') {
-    const analytics = window as Window & { ym?: (id: number, action: string, goal: string) => void; gtag?: (action: string, event: string) => void }
-    const metrikaId = Number(process.env.NEXT_PUBLIC_YANDEX_METRIKA_ID || 0)
-    if (metrikaId) analytics.ym?.(metrikaId, 'reachGoal', goal)
-    analytics.gtag?.('event', goal)
+    trackAnalyticsGoal(goal)
   }
 
   function trackFormStart() {
@@ -84,8 +82,8 @@ export default function RequestForm() {
     for (const key of ['utm_source', 'utm_medium', 'utm_campaign']) data.set(key, params.get(key) || '')
     try {
       const response = await fetch('/api/request', { method: 'POST', body: data })
+      const result = await response.json().catch(() => null) as { error?: string } | null
       if (!response.ok) {
-        const result = await response.json().catch(() => null) as { error?: string } | null
         throw new Error(result?.error || 'Не удалось отправить заявку')
       }
       form.reset()
@@ -93,11 +91,9 @@ export default function RequestForm() {
       setFormError('')
       setFormStep(1)
       setStatus('success')
-      const analytics = window as Window & { ym?: (id: number, action: string, goal: string) => void; gtag?: (action: string, event: string, params?: Record<string, unknown>) => void }
-      const metrikaId = Number(process.env.NEXT_PUBLIC_YANDEX_METRIKA_ID || 0)
-      if (metrikaId) analytics.ym?.(metrikaId, 'reachGoal', 'request_sent')
-      analytics.gtag?.('event', 'generate_lead', { product_direction: String(data.get('productDirection') || ''), context: String(data.get('context') || '') })
+      if (isRecordedRequest(result)) trackAnalyticsGoal('request_sent')
     } catch (error) {
+      trackAnalyticsGoal('request_error')
       setFormError(error instanceof Error ? error.message : 'Не удалось отправить заявку. Попробуйте ещё раз или позвоните нам.')
       setStatus('error')
     }
@@ -107,7 +103,7 @@ export default function RequestForm() {
     <form className="request-form" onSubmit={submitRequest} onFocusCapture={trackFormStart} encType="multipart/form-data" noValidate>
       {selectedProduct && <p className="selected-product">Выбран раздел: <strong>{selectedProduct}</strong></p>}
       <div className="form-stage" hidden={formStep !== 1}>
-        <label className="file-field"><span className="file-button">Прикрепить файл</span><input name="files" type="file" multiple accept=".xlsx,.xls,.pdf,.doc,.docx,.png,.jpg,.jpeg,.webp,.dwg,.dxf,.mp3,.m4a,.wav,.ogg,.webm,audio/*" onChange={(event) => setSelectedFiles(event.currentTarget.files?.length || 0)} />{selectedFiles > 0 && <strong>{`Выбрано файлов: ${selectedFiles}`}</strong>}<small>Excel, PDF, Word, фото, чертежи или аудио · до 25 МБ</small></label>
+        <label className="file-field"><span className="file-button">Прикрепить файл</span><input name="files" type="file" multiple accept=".xlsx,.xls,.pdf,.doc,.docx,.png,.jpg,.jpeg,.webp,.dwg,.dxf,.mp3,.m4a,.wav,.ogg,.webm,audio/*" onChange={(event) => { const count = event.currentTarget.files?.length || 0; setSelectedFiles(count); if (count) trackAnalyticsGoal('specification_attached') }} />{selectedFiles > 0 && <strong>{`Выбрано файлов: ${selectedFiles}`}</strong>}<small>Excel, PDF, Word, фото, чертежи или аудио · до 25 МБ</small></label>
         <div className="form-or"><span>или</span></div>
         <label>Опишите, что требуется<textarea name="message" rows={3} placeholder="Наименование, размер, ГОСТ/ТУ, количество" /></label>
         <button className="form-next" type="button" onClick={continueRequest}>Продолжить <span>→</span></button>

@@ -13,6 +13,14 @@ const region = params.get('region')
 const delivery = form?.querySelector('input[name="delivery"]')
 if (region && delivery && !delivery.value) delivery.value = region === 'uzbekistan' ? 'Узбекистан' : region
 
+const track = (goal) => document.dispatchEvent(new CustomEvent('magicmet:goal', { detail: goal }))
+let formStarted = false
+form?.addEventListener('focusin', () => {
+  if (!formStarted) { formStarted = true; track('request_started') }
+})
+form?.querySelector('input[type="file"]')?.addEventListener('change', (event) => {
+  if (event.target.files?.length) track('specification_attached')
+})
 form?.addEventListener('submit', async (event) => {
   event.preventDefault()
   const data = new FormData(form)
@@ -26,15 +34,21 @@ form?.addEventListener('submit', async (event) => {
     requestText?.focus()
     return
   }
+  data.set('referrer', document.referrer)
+  for (const key of ['utm_source', 'utm_medium', 'utm_campaign']) data.set(key, params.get(key) || '')
+  data.set('context', ['product', 'detail', 'material', 'standard'].map((key) => params.get(key)).filter(Boolean).join('; '))
   button.disabled = true
   status.textContent = 'Отправляем…'
   try {
     const response = await fetch('/api/request', { method: 'POST', body: data })
     const result = await response.json().catch(() => ({}))
     if (!response.ok) throw new Error(result.error || 'Не удалось отправить заявку')
+    const recorded = result.ok === true && (typeof result.id === 'number' || (typeof result.id === 'string' && result.id.length > 0) || result.emailDelivered === true || result.crmDelivered === true)
+    if (recorded) track('request_sent')
     form.reset()
     status.textContent = 'Заявка принята. Мы свяжемся с вами.'
   } catch (error) {
+    track('request_error')
     status.textContent = error.message || 'Не удалось отправить. Напишите на m1@magicmet.ru.'
   } finally {
     button.disabled = false
