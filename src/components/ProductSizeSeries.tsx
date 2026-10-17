@@ -4,6 +4,7 @@ import './ProductSizeSeries.css'
 import SizeTableFilter from './SizeTableFilter'
 
 const dimensionList = /^\d+(?:[.,]\d+)?(?:;\s*\d+(?:[.,]\d+)?)+$/
+const numericWalls = /^(?:(?:\d+(?:[.,]\d+)?|\(\d+(?:[.,]\d+)?\))(?:;\s*(?:\d+(?:[.,]\d+)?|\(\d+(?:[.,]\d+)?\)))*|—)$/
 const wallPairList = /^\d+(?:[.,]\d+)?\/\d+(?:[.,]\d+)?(?:;\s*\d+(?:[.,]\d+)?\/\d+(?:[.,]\d+)?)*$/
 const tableLabel = (table: SizeSeries) => {
   const type = table.title.match(/тип\s+([А-ЯA-Z0-9]+)/iu)?.[1]
@@ -33,11 +34,13 @@ export default function ProductSizeSeries({ series, requestHref, guide }: { seri
     </nav>}
     {series.map((table, index) => {
       const numericColumns = table.columns.map((_, column) => column > 0 && table.rows.every((row) => /^(?:[−-]?\d+(?:[.,]\d+)?|—)$/.test(row[column])))
+      const pipeTable = ['truby-elektrosvarnye', 'truby-besshovnye'].includes(table.categorySlug) || (table.categorySlug === 'nerzhaveyushchaya-stal' && table.productSlug === 'truby')
+      const wallColumns = pipeTable && /диаметр|сечение/iu.test(table.columns[0]) ? table.columns.flatMap((label, column) => column > 0 && /стенк/iu.test(label) && table.rows.every(row => numericWalls.test(row[column])) ? [column] : []) : []
       return <details key={`${table.standard}-${table.title}`} open={index === initiallyOpen}>
         <summary><span className="size-series-heading"><span>{table.title}</span><span className="size-series-standard">{table.standard}</span></span></summary>
         <p className="size-series-scope" id={`sizes-series-${index + 1}`}>{table.scope}</p>
         {table.notes[0] && <p className="size-series-note size-series-legend">{table.notes[0]}</p>}
-        {table.rows.length > 24 && <SizeTableFilter column={table.columns[0]} values={[...new Set(table.rows.map(row => row[0]))]} total={table.rows.length} />}
+        {table.rows.length > 24 && <SizeTableFilter column={table.columns[0]} values={[...new Set(table.rows.map(row => row[0]))]} total={table.rows.length} wallColumns={wallColumns} requestHref={requestHref} context={`${table.title}; ${table.standard}`} />}
         <div className="size-series-scroll" role="region" aria-label={table.title} tabIndex={0}>
           <table className={table.kind === 'requirements' ? 'size-series-requirements' : undefined}>
             <caption>{table.title} — {table.standard}</caption>

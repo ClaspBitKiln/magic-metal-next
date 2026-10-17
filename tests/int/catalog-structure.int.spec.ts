@@ -777,7 +777,7 @@ describe('normative product size tables', () => {
     expect(walls('15')).toContain(4.5)
     expect(walls('38')).toContain(3)
     expect(walls('710')).toEqual([2.8, 3, 3.2, 3.5, 4, 4.5, 5, 5.5, 6, 7, 8, 9, 10, 12, 14, 16, 18, 20, 22, 24, 28, 30, 32])
-    expect(cold.columns).toEqual(['Наружный Ø, мм', 'Номинальные стенки, мм'])
+    expect(cold.columns).toEqual(['Наружный диаметр D, мм', 'Номинальные стенки, мм'])
     expect(cold.notes.join(' ')).toContain('100–250 мм включительно при D/s > 50')
     expect(cold.notes.join(' ')).toContain('D/s < 4')
     expect(cold.notes.join(' ')).toContain('D/s ≥ 50')

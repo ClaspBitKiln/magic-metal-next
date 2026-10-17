@@ -55,3 +55,5 @@
   .product-size-series .size-series-mobile-help { display: block; }
   .product-size-series th, .product-size-series td { padding: 8px 4px; }
 }
+
+.product-size-series .size-series-selection-request:not([hidden]) { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 12px; border: 1px solid #0757e8; border-radius: 4px; color: #0757e8; background: #fff; font-size: 14px; font-weight: 650; text-decoration: none; }
