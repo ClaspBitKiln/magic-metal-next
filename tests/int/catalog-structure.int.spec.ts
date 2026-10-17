@@ -113,6 +113,12 @@ describe('unified homepage catalog', () => {
 })
 
 describe('normative product size tables', () => {
+  it('compares three designs against the same rectangular normative rows without public source or stock fields', () => {
+    const review = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'public/data/catalog-design-profiles.json'), 'utf8'))
+    const table = getProductSizeSeries('truby-elektrosvarnye', 'profilnye').find(item => item.standard === 'ГОСТ 8645-68' && !item.title.includes('специальные'))!
+    expect(review).toEqual({ title: table.title, standard: table.standard, rows: table.rows, notes: table.notes })
+  })
+
   it('offers specification search in every main profile series while retaining short special rows directly', () => {
     const tables = getProductSizeSeries('truby-elektrosvarnye', 'profilnye')
     const tree = document.createElement('div')
