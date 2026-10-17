@@ -1,7 +1,9 @@
 import type { SizeSeries } from '@/data/sizeSeriesTypes'
 import type { ProductDimensionGuide } from '@/data/productDimensionGuides'
+import { getCatalogStandardLinks } from '@/data/catalogStandards'
 import './ProductSizeSeries.css'
 import SizeTableFilter from './SizeTableFilter'
+import CompactSizeRows from './CompactSizeRows'
 
 const dimensionList = /^\d+(?:[.,]\d+)?(?:;\s*\d+(?:[.,]\d+)?)+$/
 const numericWalls = /^(?:(?:\d+(?:[.,]\d+)?|\(\d+(?:[.,]\d+)?\))(?:;\s*(?:\d+(?:[.,]\d+)?|\(\d+(?:[.,]\d+)?\)))*|—)$/
@@ -26,7 +28,7 @@ export default function ProductSizeSeries({ series, requestHref, guide }: { seri
   const heading = onlyRequirements ? 'Нормативные параметры' : hasRequirements ? 'Размеры и параметры' : 'Размерный ряд'
   return <section className="product-size-series" id="sizes" aria-labelledby="size-series-title">
     <h2 id="size-series-title">{series.length ? `${heading} по ${standardKind}` : 'Размеры по спецификации'}</h2>
-    <p className="size-series-intro">{onlyRequirements ? 'Сверьте форму поставки, числовые значения и условия применения. Укажите требования в заявке или приложите спецификацию.' : series.length ? 'Выберите исполнение и нужный размер. В длинных таблицах можно оставить строки одного размера. Укажите требования в заявке или приложите спецификацию.' : 'Укажите размеры и требования к изделию или приложите чертёж. Проверим их по выбранному стандарту и техническим условиям.'}</p>
+    <p className="size-series-intro">{onlyRequirements ? 'Сверьте форму поставки, числовые значения и условия применения. Укажите требования в заявке или приложите спецификацию.' : series.length ? 'Найдите нужное обозначение или выберите строку. Размеры и параметры попадут в заявку; спецификацию можно приложить файлом.' : 'Укажите размеры и требования к изделию или приложите чертёж. Проверим их по выбранному стандарту и техническим условиям.'}</p>
     {series.length > 0 && <p className="size-series-mobile-help">Широкие таблицы можно прокручивать вбок. Первый столбец и заголовки остаются видны.</p>}
     <a className="size-series-request" href={requestHref}>Отправить заявку ↗</a>
     {series.length > 1 && <nav className="size-series-nav" aria-label="Выбор размерной таблицы">
@@ -36,11 +38,13 @@ export default function ProductSizeSeries({ series, requestHref, guide }: { seri
       const numericColumns = table.columns.map((_, column) => column > 0 && table.rows.every((row) => /^(?:[−-]?\d+(?:[.,]\d+)?|—)$/.test(row[column])))
       const pipeTable = ['truby-elektrosvarnye', 'truby-besshovnye'].includes(table.categorySlug) || (table.categorySlug === 'nerzhaveyushchaya-stal' && table.productSlug === 'truby')
       const wallColumns = pipeTable && /диаметр|сечение/iu.test(table.columns[0]) ? table.columns.flatMap((label, column) => column > 0 && /стенк/iu.test(label) && table.rows.every(row => numericWalls.test(row[column])) ? [column] : []) : []
+      const pipeChoice = wallColumns.length > 0 && ((/диаметр/iu.test(table.columns[0]) && table.rows.every(row => /^\d+(?:[.,]\d+)?$/u.test(row[0]))) || (/сечение/iu.test(table.columns[0]) && table.rows.every(row => /^\d+(?:[.,]\d+)?\s*×\s*\d+(?:[.,]\d+)?$/u.test(row[0].replace(/[()]/g, ''))))) && (table.rows.length > 24 || !/специальн/iu.test(table.title))
+      const standardLinks = getCatalogStandardLinks(table.standard)
       return <details key={`${table.standard}-${table.title}`} open={index === initiallyOpen}>
-        <summary><span className="size-series-heading"><span>{table.title}</span><span className="size-series-standard">{table.standard}</span></span></summary>
+        <summary><span className="size-series-heading"><span>{table.title}</span><span className="size-series-standard">{standardLinks.length ? standardLinks.map(link => <a key={link.href} href={link.href} title={`Справочник: ${link.code}`}>{link.code}</a>) : table.standard}</span></span></summary>
         <p className="size-series-scope" id={`sizes-series-${index + 1}`}>{table.scope}</p>
         {table.notes[0] && <p className="size-series-note size-series-legend">{table.notes[0]}</p>}
-        {(table.rows.length > 24 || (wallColumns.length > 0 && /сечение/iu.test(table.columns[0]) && !/специальн/iu.test(table.title))) && <SizeTableFilter column={table.columns[0]} values={[...new Set(table.rows.map(row => row[0]))]} total={table.rows.length} wallColumns={wallColumns} requestHref={requestHref} context={`${table.title}; ${table.standard}`} standard={table.standard} />}
+        {pipeChoice ? <SizeTableFilter column={table.columns[0]} values={[...new Set(table.rows.map(row => row[0]))]} total={table.rows.length} wallColumns={wallColumns} requestHref={requestHref} context={`${table.title}; ${table.standard}`} standard={table.standard} /> : <CompactSizeRows column={table.columns[0]} values={table.rows.length > 24 ? [...new Set(table.rows.map(row => row[0]))] : []} total={table.rows.length} requestHref={requestHref} context={table.title} standard={table.standard} requirements={table.kind === 'requirements'} />}
         <div className="size-series-reference" id={`size-reference-${index + 1}`}>
         <div className="size-series-scroll" role="region" aria-label={table.title} tabIndex={0}>
           <table className={table.kind === 'requirements' ? 'size-series-requirements' : undefined}>
@@ -58,6 +62,7 @@ export default function ProductSizeSeries({ series, requestHref, guide }: { seri
       <p className="size-series-note">{guide.standard}</p>
       <p className="size-series-legend">{guide.note}</p>
       <ul>{guide.parameters.map(parameter => <li key={parameter}>{parameter}</li>)}</ul>
+      <a className="size-series-selection-request" href={requestHref}>Заявка по спецификации ↗</a>
     </div>}
   </section>
 }

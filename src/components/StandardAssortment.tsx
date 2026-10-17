@@ -1,9 +1,9 @@
-import { productSizeSeries } from '@/data/productSizeSeries'
+import { getSeriesForStandard } from '@/data/catalogStandards'
 import type { Standard } from '@/data/standards'
 import ProductSizeSeries from './ProductSizeSeries'
 
 export default function StandardAssortment({ standard }: { standard: Standard }) {
-  const series = productSizeSeries.filter((table) => table.standard === standard.code)
+  const series = getSeriesForStandard(standard.code)
   const requestHref = `/?standard=${encodeURIComponent(standard.code)}#request`
 
   if (series.length) return <ProductSizeSeries series={series} requestHref={requestHref} />

@@ -3,7 +3,8 @@ import Link from 'next/link'
 
 import DirectoryGroupNav from '@/components/DirectoryGroupNav'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
-import { standardGroups, standards } from '@/data/standards'
+import { standardGroups } from '@/data/standards'
+import { catalogStandards as standards } from '@/data/catalogStandards'
 import '../spravochnik-materialov/materials.css'
 
 export const metadata: Metadata = {
@@ -30,7 +31,7 @@ export default function StandardsDirectoryPage() {
               <span role="columnheader">Статус</span>
               <span aria-hidden="true" />
             </div>
-            {items.map((standard) => <Link href={`/spravochnik-gost/${standard.slug}`} role="row" aria-label={`${standard.code}: ${standard.title}`} key={standard.slug}>
+            {items.map((standard) => <Link prefetch={false} href={`/spravochnik-gost/${standard.slug}`} role="row" aria-label={`${standard.code}: ${standard.title}`} key={standard.slug}>
               <span className="standard-code" role="cell">{standard.code}</span>
               <span className="standards-table-description" role="cell"><h3>{standard.title}</h3><p>{standard.summary}</p></span>
               <small role="cell">{standard.status}</small>

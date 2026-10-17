@@ -16,6 +16,7 @@ import ProductDetailPage from '@/app/(frontend)/(catalog)/produkciya/[slug]/[det
 import StandardAssortment from '@/components/StandardAssortment'
 import CategoryPage from '@/app/(frontend)/(catalog)/produkciya/[slug]/page'
 import { findStandard } from '@/data/standards'
+import { findCatalogStandard, getCatalogStandard, getCatalogStandardLinks, getSeriesForStandard, getStandardReferences } from '@/data/catalogStandards'
 
 const privateSupplierSnapshotPath = path.join(process.cwd(), 'private/data/23met-practical-snapshot.json')
 
@@ -113,6 +114,23 @@ describe('unified homepage catalog', () => {
 })
 
 describe('normative product size tables', () => {
+  it('applies compact presentation to every catalog card while preserving all normative source rows', () => {
+    const cards = [...pipeCatalog, ...productDetailCatalog, ...sdtCatalog.map(item => ({ ...item, categorySlug: 'sdt' }))]
+      .filter(item => !['krug-i-kvadrat', 'balka-shveller-ugolok'].includes(item.slug))
+    for (const card of cards) {
+      const series = getProductSizeSeries(card.categorySlug, card.slug)
+      const guide = getDimensionGuide(card.categorySlug, card.slug)
+      const tree = document.createElement('div')
+      tree.innerHTML = renderToStaticMarkup(createElement(ProductSizeSeries, { series, guide, requestHref: '/#request' }))
+      expect(tree.querySelectorAll('.size-series-filter')).toHaveLength(series.length)
+      const references = tree.querySelectorAll('.size-series-reference')
+      series.forEach((table, index) => {
+        expect(Array.from(references[index].querySelectorAll('tbody tr'), row => Array.from(row.children, cell => cell.textContent))).toEqual(table.rows)
+      })
+      if (!series.length) expect(tree.querySelector('.size-series-guide .size-series-selection-request')?.getAttribute('href')).toBe('/#request')
+    }
+  })
+
   it('compares three designs against the same rectangular normative rows without public source or stock fields', () => {
     const review = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'public/data/catalog-design-profiles.json'), 'utf8'))
     const table = getProductSizeSeries('truby-elektrosvarnye', 'profilnye').find(item => item.standard === 'ГОСТ 8645-68' && !item.title.includes('специальные'))!
@@ -905,5 +923,26 @@ describe('public and SaaS supplier data separation', () => {
     expect(snapshot.source).toContain('23met.ru')
     expect(snapshot.sourceUrl).toBe('https://23met.ru/sitemap.xml')
     expect(snapshot.sizeCount).toBe(9989)
+  })
+})
+
+
+describe('exact standard reference navigation', () => {
+  it('links every table to its exact document edition and keeps both directions', () => {
+    for (const table of productSizeSeries) {
+      const links = getCatalogStandardLinks(table.standard)
+      expect(links.map(link => link.code)).toEqual(getStandardReferences(table.standard))
+      for (const link of links) {
+        const record = getCatalogStandard(link.href.split('/').pop()!)!
+        expect(record.code).toBe(link.code)
+        expect(getSeriesForStandard(record.code)).toContain(table)
+      }
+    }
+    expect(getCatalogStandardLinks('ГОСТ 8732-78')).toEqual([])
+    expect(findCatalogStandard('ГОСТ 8732-78')).toBeUndefined()
+    expect(findCatalogStandard('ГОСТ 8732-2025 — сортамент')?.code).toBe('ГОСТ 8732-2025')
+    expect(findCatalogStandard('ГОСТ 8732-20250')).toBeUndefined()
+    expect(getCatalogStandardLinks('ГОСТ 9567-75, таблица 1')[0]?.code).toBe('ГОСТ 9567-75')
+    expect(getSeriesForStandard('ГОСТ 9567-75').length).toBeGreaterThan(1)
   })
 })

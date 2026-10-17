@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 import { materials } from '@/data/materials'
-import { getStandard, standards } from '@/data/standards'
+import { getCatalogStandard as getStandard, catalogStandards as standards, getSeriesForStandard } from '@/data/catalogStandards'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
 import StandardAssortment from '@/components/StandardAssortment'
 import '../../spravochnik-materialov/materials.css'
@@ -20,6 +20,7 @@ export default async function StandardPage({ params }: { params: Promise<{ slug:
   const standard = getStandard((await params).slug)
   if (!standard) notFound()
   const relatedMaterials = materials.filter((material) => standard.materialSlugs.includes(material.slug))
+  const relatedProducts = [...new Map([...getSeriesForStandard(standard.code).map(table => ({ label: table.title, slug: `${table.categorySlug}/${table.productSlug}#sizes` })), ...standard.products].map(item => [item.slug, item])).values()]
   const requestHref = `/?standard=${encodeURIComponent(standard.code)}#request`
   const jsonLd = {
     '@context': 'https://schema.org', '@type': 'TechArticle', headline: `${standard.code} — ${standard.title}`,
@@ -39,8 +40,8 @@ export default async function StandardPage({ params }: { params: Promise<{ slug:
       </div>
     </section>
     <StandardAssortment standard={standard} />
-    {relatedMaterials.length > 0 && <section className="related-materials"><p>Связанные материалы</p><div>{relatedMaterials.map((material) => <Link href={`/spravochnik-materialov/${material.slug}`} key={material.slug}><b>{material.designation}</b><span>{material.name}</span></Link>)}</div></section>}
-    <section className="material-products"><p>Связанные товарные направления</p><h2>Поставка по {standard.code}</h2><div>{standard.products.map((item) => <Link href={`/produkciya/${item.slug}`} key={item.slug}>{item.label}<b>↗</b></Link>)}</div></section>
+    {relatedMaterials.length > 0 && <section className="related-materials"><p>Связанные материалы</p><div>{relatedMaterials.map((material) => <Link prefetch={false} href={`/spravochnik-materialov/${material.slug}`} key={material.slug}><b>{material.designation}</b><span>{material.name}</span></Link>)}</div></section>}
+    <section className="material-products"><p>Связанные товарные направления</p><h2>Поставка по {standard.code}</h2><div>{relatedProducts.map((item) => <Link prefetch={false} href={`/produkciya/${item.slug}`} key={item.slug}>{item.label}<b>↗</b></Link>)}</div></section>
     <section className="materials-note"><p>Разбор заявки</p><h2>Нужна поставка по этому ГОСТ?</h2><span>Пришлите спецификацию. Проверим совместимость марки, сортамента, технических условий и требований к контролю.</span><a href={requestHref}>Отправить заявку ↗</a></section>
   </main>
 }

@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation'
 
 import { getSeoCategory, seoCatalog } from '@/data/seoCatalog'
 import { materials } from '@/data/materials'
-import { findStandard } from '@/data/standards'
+import { findCatalogStandard as findStandard } from '@/data/catalogStandards'
 import { sdtCatalog } from '@/data/sdtCatalog'
 import { getPipeItemsByCategory } from '@/data/pipeCatalog'
 import { getProductDetailsByCategory } from '@/data/productDetailCatalog'
@@ -44,7 +44,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       <section className="product-hero"><div><p>Продукция · подбор по спецификации</p><h1>{category.title}</h1><span>{category.description}</span></div></section>
       <section className="product-body">
         <article><h2>Комплектуем поставку</h2><p>{category.intro}</p><a href={requestHref}>Отправить заявку <b>→</b></a></article>
-        <dl className="product-facts"><div><dt>Виды продукции</dt><dd>{category.products.map((item) => <span key={item}>{item}</span>)}</dd></div><div><dt>Стандарты</dt><dd>{category.standards.map((item) => { const standard = findStandard(item); return standard ? <Link className="fact-link standard-code" href={`/spravochnik-gost/${standard.slug}`} key={item}>{item} <b>→</b></Link> : <span className="standard-code" key={item}>{item}</span> })}</dd></div><div><dt>Марки и материалы</dt><dd>{category.grades.map((item) => <span key={item}>{item}</span>)}</dd></div></dl>
+        <dl className="product-facts"><div><dt>Виды продукции</dt><dd>{category.products.map((item) => <span key={item}>{item}</span>)}</dd></div><div><dt>Стандарты</dt><dd>{category.standards.map((item) => { const standard = findStandard(item); return standard ? <Link prefetch={false} className="fact-link standard-code" href={`/spravochnik-gost/${standard.slug}`} key={item}>{item} <b>→</b></Link> : <span className="standard-code" key={item}>{item}</span> })}</dd></div><div><dt>Марки и материалы</dt><dd>{category.grades.map((item) => <span key={item}>{item}</span>)}</dd></div></dl>
       </section>
       {category.slug === 'sdt' && <section className="product-subcatalog"><p>Каталог СДТ</p><h2>Выберите тип и исполнение детали</h2><div><div className="product-subcatalog-head"><span>Тип продукции</span><small>Стандарты</small><i aria-hidden="true" /></div>{sdtCatalog.map((item) => <Link href={`/produkciya/sdt/${item.slug}`} key={item.slug}><span>{item.shortTitle}</span><small>{item.standards.slice(0, 2).join(' · ')}</small><b>→</b></Link>)}</div></section>}
       {detailItems.length > 0 && <section className="product-subcatalog"><p>Подробный каталог</p><h2>Выберите товарную позицию</h2><div><div className="product-subcatalog-head"><span>Товарная позиция</span><small>Стандарты</small><i aria-hidden="true" /></div>{detailItems.map((item) => <Link href={`/produkciya/${item.categorySlug}/${item.slug}`} key={item.slug}><span>{item.shortTitle}</span><small>{item.standards.slice(0, 2).join(' · ')}</small><b>→</b></Link>)}</div></section>}

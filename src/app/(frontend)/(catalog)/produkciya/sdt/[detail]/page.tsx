@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
-import { findStandard } from '@/data/standards'
+import { findCatalogStandard as findStandard } from '@/data/catalogStandards'
 import { getSdtCatalogItem, sdtCatalog } from '@/data/sdtCatalog'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
 import ProductSizeSeries from '@/components/ProductSizeSeries'
@@ -53,7 +53,7 @@ export default async function SdtDetailPage({ params }: { params: Promise<{ deta
         <div><dt>Размерный охват</dt><dd>{item.range.map((value) => <span key={value}>{value}</span>)}<small>Диапазоны приведены для первичного поиска. Производимость и соответствие проекту подтверждаются до предложения.</small></dd></div>
         <div><dt>Материалы</dt><dd>{item.materials.map((value) => <span key={value}>{value}</span>)}</dd></div>
       </dl></section>
-      <section className="sdt-standards"><div><p>Документы</p><h2>Стандарты</h2></div><div>{item.standards.map((value) => { const standard = findStandard(value); return standard ? <Link href={`/spravochnik-gost/${standard.slug}`} key={value}><span className="standard-code">{value}</span><small>{standard.status}</small><b>↗</b></Link> : <div key={value}><span className="standard-code">{value}</span><small>По проекту</small></div> })}</div></section>
+      <section className="sdt-standards"><div><p>Документы</p><h2>Стандарты</h2></div><div>{item.standards.map((value) => { const standard = findStandard(value); return standard ? <Link prefetch={false} href={`/spravochnik-gost/${standard.slug}`} key={value}><span className="standard-code">{value}</span><small>{standard.status}</small><b>↗</b></Link> : <div key={value}><span className="standard-code">{value}</span><small>По проекту</small></div> })}</div></section>
       <section className="sdt-request"><div><p>Что указать в заявке</p><h2>Данные для точного расчёта</h2></div><ol>{item.requestFields.map((value, index) => <li key={value}><b>{String(index + 1).padStart(2, '0')}</b><span>{value}</span></li>)}</ol></section>
       <section className="sdt-more"><p>Другие соединительные детали</p><div>{sdtCatalog.filter(({ slug }) => slug !== item.slug).slice(0, 4).map((related) => <Link href={`/produkciya/sdt/${related.slug}`} key={related.slug}>{related.shortTitle}<b>↗</b></Link>)}</div></section>
       <section className="sdt-conversion"><p>Пришлите спецификацию, чертёж или фото маркировки</p><h2>Проверим размеры,<br />материал и стандарт</h2><a href={requestHref}>Отправить заявку ↗</a></section>
