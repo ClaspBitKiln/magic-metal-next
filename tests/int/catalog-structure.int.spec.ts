@@ -140,8 +140,13 @@ describe('normative product size tables', () => {
     const cards = [...pipeCatalog, ...productDetailCatalog, ...sdtCatalog.map((item) => ({ ...item, categorySlug: 'sdt' }))]
       .filter((item) => !['krug-i-kvadrat', 'balka-shveller-ugolok'].includes(item.slug))
     expect(cards).toHaveLength(51)
-    expect(cards.filter((item) => getProductSizeSeries(item.categorySlug, item.slug).length)).toHaveLength(36)
-    expect(cards.filter((item) => !getProductSizeSeries(item.categorySlug, item.slug).length && getDimensionGuide(item.categorySlug, item.slug))).toHaveLength(15)
+    expect(cards.filter((item) => getProductSizeSeries(item.categorySlug, item.slug).length)).toHaveLength(45)
+    expect(cards.filter((item) => getProductSizeSeries(item.categorySlug, item.slug).some((table) => table.kind !== 'requirements'))).toHaveLength(38)
+    expect(cards.filter((item) => {
+      const tables = getProductSizeSeries(item.categorySlug, item.slug)
+      return tables.length && tables.every((table) => table.kind === 'requirements')
+    })).toHaveLength(7)
+    expect(cards.filter((item) => !getProductSizeSeries(item.categorySlug, item.slug).length && getDimensionGuide(item.categorySlug, item.slug))).toHaveLength(6)
     expect(cards.filter((item) => !getProductSizeSeries(item.categorySlug, item.slug).length && !getDimensionGuide(item.categorySlug, item.slug))).toEqual([])
     expect(new Set(dimensionGuides.map((g) => `${g.categorySlug}/${g.productSlug}`)).size).toBe(dimensionGuides.length)
   })
@@ -181,9 +186,116 @@ describe('normative product size tables', () => {
     expect(tables[3].standard).toBe('ГОСТ 21488-2025')
     expect(tables[4].rows.at(-1)).toEqual(['150', '500–2000'])
     for (const slug of ['olovo', 'svinec', 'cink', 'babbit']) {
-      expect(getProductSizeSeries('cvetnye-metally', slug)).toHaveLength(0)
+      const requirements = getProductSizeSeries('cvetnye-metally', slug)
+      expect(requirements).toHaveLength(1)
+      expect(requirements[0].kind).toBe('requirements')
       expect(getDimensionGuide('cvetnye-metally', slug)?.parameters.length).toBeGreaterThan(0)
     }
+  })
+
+  it('distinguishes nonferrous mass requirements and block limits from finished ingot dimensions', () => {
+    const [tin] = getProductSizeSeries('cvetnye-metally', 'olovo')
+    const [lead] = getProductSizeSeries('cvetnye-metally', 'svinec')
+    const [zinc] = getProductSizeSeries('cvetnye-metally', 'cink')
+    const [babbit] = getProductSizeSeries('cvetnye-metally', 'babbit')
+    expect(tin.scope).toContain('О1 пч, О1 и О2')
+    expect(tin.rows).toEqual([['Блок', 'Длина', '≤1500'], ['Блок', 'Ширина', '≤1000'], ['Блок', 'Высота', '≤500']])
+    expect(lead.rows).toEqual([['Чушка', '30–40', 'Диапазон массы'], ['Блок', '1000', '±10 %'], ['Блок', '2000', '±10 %'], ['Блок', '3000', '±10 %']])
+    expect(zinc.rows).toEqual([
+      ['Кроме ЦВ00', 'Чушка', '19–25', 'Диапазон массы'],
+      ['Кроме ЦВ00', 'Блок', '500', '±10 %'],
+      ['Кроме ЦВ00', 'Блок', '1000', '±10 %'],
+      ['ЦВ00', 'Чушка', '4–5', 'Диапазон массы'],
+      ['ЦВ00', 'Чушка', '8–10', 'Диапазон массы'],
+    ])
+    expect(babbit.rows).toEqual([['Чушка', 'Масса', '≤22']])
+    expect(tin.notes.join(' ')).toContain('изложниц')
+    expect(babbit.notes.join(' ')).toContain('размеры чушек не контролируются')
+    for (const table of [tin, lead, zinc, babbit]) {
+      const markup = renderToStaticMarkup(createElement(ProductSizeSeries, { series: [table], requestHref: '/?product=nonferrous#request' }))
+      const tree = new DOMParser().parseFromString(markup, 'text/html')
+      expect(tree.querySelector('#sizes h2')?.textContent).toBe('Нормативные параметры по ГОСТ')
+      expect(tree.querySelectorAll('table.size-series-requirements')).toHaveLength(1)
+      expect(tree.querySelectorAll('tbody tr')).toHaveLength(table.rows.length)
+      expect(markup).not.toContain('Размерный ряд по ГОСТ')
+      expect(markup).not.toContain(table.source.url)
+    }
+  })
+
+  it('scopes stainless section dimensions by hot-rolled form without importing carbon-steel masses', () => {
+    const tables = getProductSizeSeries('nerzhaveyushchaya-stal', 'sortovoy-prokat')
+    expect(tables).toHaveLength(4)
+    expect(tables.map((table) => table.rows.length)).toEqual([94, 65, 40, 63])
+    const [round, square, strip, hexagon] = tables
+    expect(round.rows[0]).toEqual(['5'])
+    expect(round.rows.at(-1)).toEqual(['200'])
+    expect(square.rows[0]).toEqual(['6'])
+    expect(square.rows.at(-1)).toEqual(['200'])
+    expect(strip.rows[0]).toEqual(['10', '5'])
+    expect(strip.rows.find((row) => row[0] === '12')).toEqual(['12', '4; 5; 6; 8'])
+    expect(strip.scope).toContain('4405')
+    expect(hexagon.standard).toContain('ГОСТ 2879-2006')
+    expect(hexagon.rows[0]).toEqual(['8'])
+    expect(hexagon.rows.at(-1)).toEqual(['103'])
+    expect(hexagon.rows.map((row) => row[0])).toContain('42,5')
+    expect(hexagon.rows.map((row) => row[0])).toContain('47')
+    expect(hexagon.rows.map((row) => row[0])).not.toContain('45')
+    for (const table of tables) {
+      expect(table.standard).toContain('ГОСТ 5949-2018')
+      expect(table.columns.join(' ')).not.toMatch(/Масса|кг/)
+      expect(table.notes.join(' ')).toContain('Кованая, калиброванная')
+    }
+    expect(round.notes.join(' ')).toContain('свыше 200 до 350 мм')
+  })
+
+  it('keeps exterior coating minimums distinct from pipe sizes and application-specific approvals', () => {
+    const [polymer] = getProductSizeSeries('truby-i-sdt-v-izolyacii', 'vus')
+    const [epoxy] = getProductSizeSeries('truby-i-sdt-v-izolyacii', 'epoksidnaya')
+    const [shrink] = getProductSizeSeries('truby-i-sdt-v-izolyacii', 'tum-lenta')
+    expect(polymer.rows.map((row) => row.slice(1))).toEqual([['2,0', '60'], ['2,2', '60'], ['2,5', '60'], ['3,0', '60']])
+    expect(epoxy.rows).toEqual([['До 820 включ.', '0,35', '80']])
+    expect(shrink.rows.at(-1)).toEqual(['Св. 820 до 1420 включ.', '2,4', '2,0'])
+    expect(shrink.notes.join(' ')).toContain('100 °C')
+    expect(polymer.notes.join(' ')).toContain('820<D<1020')
+    for (const table of [polymer, epoxy, shrink]) {
+      expect(table.kind).toBe('requirements')
+      expect(table.standard).toBe('ГОСТ Р 51164-98, таблица 1')
+      expect(table.scope).toContain('Наружная')
+      expect(table.scope).toContain('Не применять автоматически к теплопроводам')
+      expect(table.scope).toContain('внутренней поверхности')
+    }
+  })
+
+  it('separates recommended PPU elbow shells and angle lengths without extending them to every insulated fitting', () => {
+    const [shells, lengths] = getProductSizeSeries('truby-i-sdt-v-izolyacii', 'sdt-v-izolyacii')
+    expect(shells.rows).toHaveLength(23)
+    expect(lengths.rows).toHaveLength(28)
+    expect(shells.rows[0]).toEqual(['32', '125', '—', '—', '125'])
+    expect(shells.rows.at(-1)).toEqual(['1420', '1600', '—', '1575; 1600', '—'])
+    expect(shells.rows.find((row) => row[0] === '920')).toEqual(['920', '1100', '1200', '1075; 1100', '—'])
+    expect(shells.notes.join(' ')).toMatch(/920[\s\S]*1075/)
+    expect(shells.notes.join(' ')).toMatch(/сварн/iu)
+    const rows = (diameter: string) => lengths.rows.filter((row) => row[0] === diameter)
+    expect(rows('630')).toEqual([
+      ['630', 'По таблице Д.1', '1300', '945', '848', '761'],
+      ['630', 'Сварной', '1280', '1014', '911', '819'],
+    ])
+    expect(rows('920')).toEqual([
+      ['920', 'По таблице Д.1', '1772', '1132', '1032', '846'],
+      ['920', 'Сварной', '1570', '1132', '1032', '846'],
+    ])
+    expect(rows('1020')).toEqual([
+      ['1020', 'По таблице Д.1', '1924', '1189', '1022', '874'],
+      ['1020', 'Сварной', '1620', '1189', '1022', '874'],
+    ])
+    expect(lengths.rows.at(-1)).toEqual(['1420', 'Сварной', '2020', '1420', '1188', '980'])
+    for (const table of [shells, lengths]) {
+      expect(table.kind).toBe('dimensions')
+      expect(table.scope).toContain('Приложение Д рекомендуемое')
+      expect(table.title).toContain('отводы')
+      expect(table.scope).toContain('не распространяется на все системы изоляции')
+    }
+    expect(lengths.rows.filter((row) => row[1] === 'Сварной')).toHaveLength(7)
   })
 
   it('separates spiral general-purpose and mainline standards without inventing wall combinations', () => {

@@ -1,3 +1,4 @@
+import { remainingCoatingSizeSeries } from './remainingCoatingSizeSeries'
 import { sectionSizeSeries } from './sectionSizeSeries'
 import { pipeSizeSeries } from './pipeSizeSeries'
 import { otherSizeSeries } from './otherSizeSeries'
@@ -21,8 +22,10 @@ import { specialProductSizeSeries } from './specialProductSizeSeries'
 import { precisionHotPipeSizeSeries } from './precisionHotPipeSizeSeries'
 import { precisionColdPipeSizeSeries } from './precisionColdPipeSizeSeries'
 import { boilerPipeSizeSeries } from './boilerPipeSizeSeries'
+import { remainingNonferrousRequirements } from './remainingNonferrousRequirements'
+import { stainlessSectionSizeSeries } from './stainlessSectionSizeSeries'
 
-export const productSizeSeries = [...sectionSizeSeries, ...coldPipeSizeSeries, ...pipeSizeSeries, ...otherSizeSeries, ...sdtSizeSeries, ...sheetSizeSeries, ...coilSizeSeries, ...profileSizeSeries, ...calibratedSquareSizeSeries, ...stainlessHotPipeSizeSeries, ...stainlessColdPipeSizeSeries, ...teeSizeSeries, ...teeExecution1SizeSeries, ...reducerSizeSeries, ...reducerExecution1SizeSeries, ...galvanizedSizeSeries, ...stainlessSheetSizeSeries, ...additionalPipeSizeSeries, ...nonferrousSizeSeries, ...specialProductSizeSeries, ...precisionHotPipeSizeSeries, ...precisionColdPipeSizeSeries, ...boilerPipeSizeSeries]
+export const productSizeSeries = [...sectionSizeSeries, ...coldPipeSizeSeries, ...pipeSizeSeries, ...otherSizeSeries, ...sdtSizeSeries, ...sheetSizeSeries, ...coilSizeSeries, ...profileSizeSeries, ...calibratedSquareSizeSeries, ...stainlessHotPipeSizeSeries, ...stainlessColdPipeSizeSeries, ...teeSizeSeries, ...teeExecution1SizeSeries, ...reducerSizeSeries, ...reducerExecution1SizeSeries, ...galvanizedSizeSeries, ...stainlessSheetSizeSeries, ...additionalPipeSizeSeries, ...nonferrousSizeSeries, ...specialProductSizeSeries, ...precisionHotPipeSizeSeries, ...precisionColdPipeSizeSeries, ...boilerPipeSizeSeries, ...remainingNonferrousRequirements, ...stainlessSectionSizeSeries, ...remainingCoatingSizeSeries]
 
 export const getProductSizeSeries = (categorySlug: string, productSlug: string) => productSizeSeries.filter((table) => table.categorySlug === categorySlug && table.productSlug === productSlug)
 

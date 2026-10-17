@@ -36,6 +36,7 @@
 .product-size-series .size-series-number { text-align: right; }
 .product-size-series tbody .size-series-number { white-space: nowrap; }
 .product-size-series .size-series-list { overflow-wrap: normal; word-break: normal; line-height: 1.65; color: #23416c; }
+.product-size-series .size-series-requirements tbody th { white-space: normal; overflow-wrap: anywhere; max-width: 14ch; }
 @media (hover: hover) {
   .product-size-series tbody tr:hover { --size-row-bg: #e8effa; }
 }

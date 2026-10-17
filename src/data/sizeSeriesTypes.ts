@@ -1,4 +1,5 @@
 export type SizeSeries = {
+  kind?: 'dimensions' | 'requirements'
   categorySlug: string
   productSlug: string
   title: string
