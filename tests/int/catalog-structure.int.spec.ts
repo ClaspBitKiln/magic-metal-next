@@ -113,6 +113,29 @@ describe('unified homepage catalog', () => {
 })
 
 describe('normative product size tables', () => {
+  it('opens sheet combinations first and offers exact thickness groups without removing the full table', () => {
+    const tables = getProductSizeSeries('listovoy-prokat', 'goryachekatanyj')
+    const tree = document.createElement('div')
+    tree.innerHTML = renderToStaticMarkup(createElement(ProductSizeSeries, { series: tables, requestHref: '/#request' }))
+    const details = tree.querySelectorAll('details')
+    const formatIndex = tables.findIndex(table => table.title.startsWith('Форматы'))
+    expect(details[formatIndex].hasAttribute('open')).toBe(true)
+    expect(details[0].hasAttribute('open')).toBe(false)
+    const formats = tables[formatIndex]
+    const select = details[formatIndex].querySelector('select')!
+    expect(Array.from(select.options).slice(1).map(option => option.value)).toEqual([...new Set(formats.rows.map(row => row[0]))])
+    expect(details[formatIndex].querySelector('.size-series-filter')?.hasAttribute('hidden')).toBe(true)
+    expect(details[formatIndex].querySelectorAll('tbody tr')).toHaveLength(formats.rows.length)
+  })
+
+  it('keeps short tables directly readable without a redundant size selector', () => {
+    const table = getProductSizeSeries('sortovoy-i-fasonny-prokat', 'balka-dvutavrovaya').find(table => table.standard === 'ГОСТ 8239-89')!
+    const tree = document.createElement('div')
+    tree.innerHTML = renderToStaticMarkup(createElement(ProductSizeSeries, { series: [table], requestHref: '/#request' }))
+    expect(tree.querySelector('select')).toBeNull()
+    expect(tree.querySelectorAll('tbody tr')).toHaveLength(table.rows.length)
+  })
+
   it('gives all 51 product cards either scoped numeric tables or explicit specification guidance', () => {
     const cards = [...pipeCatalog, ...productDetailCatalog, ...sdtCatalog.map((item) => ({ ...item, categorySlug: 'sdt' }))]
       .filter((item) => !['krug-i-kvadrat', 'balka-shveller-ugolok'].includes(item.slug))
@@ -404,7 +427,7 @@ describe('normative product size tables', () => {
     expect([...row.querySelectorAll('td')].map((cell) => cell.textContent)).toEqual(coil.rows.find((item) => item[0] === '1800')!.slice(1))
     const legend = tree.querySelector('.size-series-legend')!
     expect(legend.textContent).toBe(coil.notes[0])
-    expect(legend.nextElementSibling?.className).toBe('size-series-scroll')
+    expect(legend.compareDocumentPosition(tree.querySelector('.size-series-scroll')!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
     expect(tree.querySelector('caption')?.textContent).toContain(coil.standard)
     expect(tree.querySelectorAll('.size-series-nav')).toHaveLength(0)
   })

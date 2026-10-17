@@ -25,6 +25,14 @@
 .product-size-series tbody th { position: sticky; left: 0; z-index: 1; border-right: 1px solid #d9e1ef; font-weight: 600; white-space: nowrap; }
 .product-size-series tbody td, .product-size-series tbody th { background: var(--size-row-bg, #fff); }
 .product-size-series tbody tr:nth-child(even) { --size-row-bg: #f4f7fc; }
+.product-size-series tbody tr[hidden] { display: none; }
+.size-series-filter:not([hidden]) { display: flex; align-items: end; flex-wrap: wrap; gap: 12px; padding: 14px; margin: 14px 0; background: #f4f7fc; border: 1px solid #d9e1ef; border-radius: 6px; }
+.size-series-filter label { display: block; margin-bottom: 6px; color: #071c62; font-size: 14px; font-weight: 600; }
+.size-series-filter select, .size-series-filter button { min-height: 44px; padding: 8px 12px; border: 1px solid #b8c7df; border-radius: 4px; color: #071c62; background: #fff; font: inherit; font-size: 14px; }
+.size-series-filter select { min-width: 180px; max-width: 100%; }
+.size-series-filter button { cursor: pointer; }
+.size-series-filter output { align-self: center; color: #536481; font-size: 13px; }
+.size-series-filter select:focus-visible, .size-series-filter button:focus-visible { outline: 2px solid #0757e8; outline-offset: 2px; }
 .product-size-series .size-series-number { text-align: right; }
 .product-size-series tbody .size-series-number { white-space: nowrap; }
 .product-size-series .size-series-list { overflow-wrap: normal; word-break: normal; line-height: 1.65; color: #23416c; }
@@ -39,7 +47,10 @@
 @media (max-width: 700px) {
   .product-size-series { padding: 28px 20px; }
   .product-size-series details { padding-inline: 8px; }
-  .product-size-series table { font-size: 12px; }
+  .product-size-series table { font-size: 14px; }
+  .size-series-filter:not([hidden]) { padding: 10px; gap: 10px; }
+  .size-series-filter > div { flex: 1 1 160px; min-width: 0; }
+  .size-series-filter select { width: 100%; min-width: 0; }
   .product-size-series .size-series-mobile-help { display: block; }
   .product-size-series th, .product-size-series td { padding: 8px 4px; }
 }

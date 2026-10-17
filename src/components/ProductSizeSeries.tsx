@@ -1,6 +1,7 @@
 import type { SizeSeries } from '@/data/sizeSeriesTypes'
 import type { ProductDimensionGuide } from '@/data/productDimensionGuides'
 import './ProductSizeSeries.css'
+import SizeTableFilter from './SizeTableFilter'
 
 const dimensionList = /^\d+(?:[.,]\d+)?(?:;\s*\d+(?:[.,]\d+)?)+$/
 const wallPairList = /^\d+(?:[.,]\d+)?\/\d+(?:[.,]\d+)?(?:;\s*\d+(?:[.,]\d+)?\/\d+(?:[.,]\d+)?)*$/
@@ -15,9 +16,11 @@ const tableLabel = (table: SizeSeries) => {
 
 export default function ProductSizeSeries({ series, requestHref, guide }: { series: SizeSeries[]; requestHref: string; guide?: ProductDimensionGuide }) {
   if (!series.length && !guide) return null
+  const formatIndex = series.findIndex(table => table.title.startsWith('Форматы'))
+  const initiallyOpen = formatIndex < 0 ? 0 : formatIndex
   return <section className="product-size-series" id="sizes" aria-labelledby="size-series-title">
     <h2 id="size-series-title">{series.length ? 'Размерный ряд по ГОСТ' : 'Размеры по спецификации'}</h2>
-    <p className="size-series-intro">{series.length ? 'Выберите стандарт и исполнение, затем нужный размер. Укажите их в заявке или приложите спецификацию.' : 'Укажите размеры и требования к изделию или приложите чертёж. Проверим их по выбранному стандарту и техническим условиям.'}</p>
+    <p className="size-series-intro">{series.length ? 'Выберите исполнение и нужный размер. В длинных таблицах можно оставить строки одного размера. Укажите требования в заявке или приложите спецификацию.' : 'Укажите размеры и требования к изделию или приложите чертёж. Проверим их по выбранному стандарту и техническим условиям.'}</p>
     {series.length > 0 && <p className="size-series-mobile-help">Широкие таблицы можно прокручивать вбок. Первый столбец и заголовки остаются видны.</p>}
     <a className="size-series-request" href={requestHref}>Отправить заявку ↗</a>
     {series.length > 1 && <nav className="size-series-nav" aria-label="Выбор размерной таблицы">
@@ -25,10 +28,11 @@ export default function ProductSizeSeries({ series, requestHref, guide }: { seri
     </nav>}
     {series.map((table, index) => {
       const numericColumns = table.columns.map((_, column) => column > 0 && table.rows.every((row) => /^(?:[−-]?\d+(?:[.,]\d+)?|—)$/.test(row[column])))
-      return <details key={`${table.standard}-${table.title}`} open={index === 0}>
+      return <details key={`${table.standard}-${table.title}`} open={index === initiallyOpen}>
         <summary><span className="size-series-heading"><span>{table.title}</span><span className="size-series-standard">{table.standard}</span></span></summary>
         <p className="size-series-scope" id={`sizes-series-${index + 1}`}>{table.scope}</p>
         {table.notes[0] && <p className="size-series-note size-series-legend">{table.notes[0]}</p>}
+        {table.rows.length > 24 && <SizeTableFilter column={table.columns[0]} values={[...new Set(table.rows.map(row => row[0]))]} total={table.rows.length} />}
         <div className="size-series-scroll" role="region" aria-label={table.title} tabIndex={0}>
           <table>
             <caption>{table.title} — {table.standard}</caption>
