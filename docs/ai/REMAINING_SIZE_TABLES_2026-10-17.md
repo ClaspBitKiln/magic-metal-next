@@ -83,3 +83,23 @@ ERR_TUNNEL_CONNECTION_FAILED, таймауты); интерактивный ин
 модули не добавлены. Локальные страницы: 15306–25804 байт gzip; число
 скриптов локально 13, на прежней публикации 14 из-за платформенного скрипта.
 Это измерение объёма HTML, не замер LCP/INP и не полевая скорость сети.
+
+Публикация кода: `86a4b52`, Vercel — success. Проверка опубликованных
+страниц использует Chromium и прокси запросов через Node fetch с обычной
+проверкой TLS; POST блокируется. Это функциональная проверка реальных
+ответов сайта, а не тест пропускной способности браузерной сети.
+
+Все 18 опубликованных сценариев (9 карточек, 390 px, JS/без JS) прошли.
+- /: HTTP 200, 12077 байт gzip (+21), 1 скрипт(ов).
+- /produkciya/cvetnye-metally/olovo: HTTP 200, 15457 байт gzip (+1148), 14 скрипт(ов).
+- /produkciya/cvetnye-metally/svinec: HTTP 200, 15250 байт gzip (+1118), 14 скрипт(ов).
+- /produkciya/cvetnye-metally/cink: HTTP 200, 15374 байт gzip (+1245), 14 скрипт(ов).
+- /produkciya/cvetnye-metally/babbit: HTTP 200, 15356 байт gzip (+925), 14 скрипт(ов).
+- /produkciya/nerzhaveyushchaya-stal/sortovoy-prokat: HTTP 200, 25758 байт gzip (+11074), 14 скрипт(ов).
+- /produkciya/truby-i-sdt-v-izolyacii/vus: HTTP 200, 17918 байт gzip (+2996), 14 скрипт(ов).
+- /produkciya/truby-i-sdt-v-izolyacii/epoksidnaya: HTTP 200, 17632 байт gzip (+2662), 14 скрипт(ов).
+- /produkciya/truby-i-sdt-v-izolyacii/tum-lenta: HTTP 200, 16471 байт gzip (+1830), 14 скрипт(ов).
+- /produkciya/truby-i-sdt-v-izolyacii/sdt-v-izolyacii: HTTP 200, 22276 байт gzip (+7257), 14 скрипт(ов).
+
+Главная сохранила бюджет <15000 байт и один скрипт; на товарных страницах
+число скриптов осталось 14. Рост HTML связан с новыми серверными таблицами.
