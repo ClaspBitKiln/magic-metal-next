@@ -31,6 +31,12 @@
 .size-series-filter select, .size-series-filter button { min-height: 44px; padding: 8px 12px; border: 1px solid #b8c7df; border-radius: 4px; color: #071c62; background: #fff; font: inherit; font-size: 14px; }
 .size-series-filter select { min-width: 180px; max-width: 100%; }
 .size-series-filter button { cursor: pointer; }
+.size-series-quick-search { flex: 1 0 100%; min-width: 0; }
+.size-series-quick-search > div { display: flex; flex-wrap: wrap; gap: 8px; }
+.size-series-quick-search input { flex: 1 1 180px; min-width: 0; min-height: 44px; padding: 8px 12px; border: 1px solid #b8c7df; border-radius: 4px; background: #fff; color: #071c62; font: inherit; font-size: 16px; }
+.size-series-quick-search input:focus-visible { outline: 2px solid #0757e8; outline-offset: 2px; }
+.size-series-quick-search button { background: #0757e8; border-color: #0757e8; color: #fff; }
+.product-size-series .size-series-quick-search p { margin: 6px 0 0; color: #536481; font-size: 13px; }
 .size-series-filter output { align-self: center; color: #536481; font-size: 13px; }
 .size-series-filter select:focus-visible, .size-series-filter button:focus-visible { outline: 2px solid #0757e8; outline-offset: 2px; }
 .product-size-series .size-series-number { text-align: right; }

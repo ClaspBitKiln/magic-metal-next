@@ -21,12 +21,28 @@ export default function SizeTableFilter({ column, values, total, wallColumns = [
   const selectionResult = useRef<HTMLDivElement>(null)
   const selectionSize = useRef<HTMLElement>(null)
   const referenceButton = useRef<HTMLButtonElement>(null)
+  const query = useRef<HTMLInputElement>(null)
+  const fallback = useRef<HTMLAnchorElement>(null)
+  const quickSearch = wallColumns.length > 0 && /диаметр/iu.test(column) && values.every(value => /^\d+(?:[.,]\d+)?$/.test(value))
+
+  const refreshWalls = useCallback((requested = '') => {
+    const table = root.current?.closest('details')?.querySelector('table')
+    if (!wall.current || !table) return
+    const size = select.current?.value || ''
+    const rows = Array.from(table.tBodies[0].rows).filter(row => !size || row.cells[0].textContent === size)
+    const walls = [...new Set(rows.flatMap(row => wallValues(row, wallColumns)))].sort((a, b) => Number(a) - Number(b))
+    wall.current.replaceChildren(new Option('Выберите стенку', ''), ...walls.map(value => new Option(value.replace('.', ','), value)))
+    if (requested && !walls.includes(requested)) wall.current.add(new Option(`${requested.replace('.', ',')} — нет сочетания`, requested))
+    wall.current.value = requested
+  }, [wallColumns])
 
   const filter = useCallback((updateUrl = true) => {
     const table = root.current?.closest('details')?.querySelector('table')
     if (!table) return
     const size = select.current?.value || ''
     const thickness = wall.current?.value || ''
+    if (fallback.current) fallback.current.hidden = true
+    if (query.current) query.current.value = size ? `${size}${thickness ? `×${thickness.replace('.', ',')}` : ''}` : ''
     let visible = 0
     let bracketed = false
     const conditions = new Set<string>()
@@ -65,6 +81,12 @@ export default function SizeTableFilter({ column, values, total, wallColumns = [
       }
     }
     const complete = Boolean(size && thickness && visible)
+    if (size && thickness && !visible && fallback.current && requestHref) {
+      const url = new URL(requestHref, window.location.origin)
+      url.searchParams.set('product', `${url.searchParams.get('product') || ''} — проверить размер ${size} × ${thickness.replace('.', ',')} мм; ${context}`)
+      fallback.current.href = url.pathname + url.search + url.hash
+      fallback.current.hidden = false
+    }
     if (selectionResult.current) selectionResult.current.hidden = !complete
     if (selectionSize.current) selectionSize.current.textContent = `${size} × ${thickness.replace('.', ',')} мм`
     const reference = table.closest<HTMLElement>('.size-series-reference')
@@ -97,11 +119,6 @@ export default function SizeTableFilter({ column, values, total, wallColumns = [
   }, [wallColumns, requestHref, context, total])
 
   useEffect(() => {
-    const table = root.current?.closest('details')?.querySelector('table')
-    if (wall.current && table) {
-      const sizes = [...new Set(Array.from(table.tBodies[0].rows).flatMap(row => wallValues(row, wallColumns)))].sort((a, b) => Number(a) - Number(b))
-      wall.current.replaceChildren(new Option('Все стенки', ''), ...sizes.map(value => new Option(value.replace('.', ','), value)))
-    }
     function restore() {
       const key = seriesKey(root.current)
       if (!key) return
@@ -110,9 +127,9 @@ export default function SizeTableFilter({ column, values, total, wallColumns = [
       const wallValue = params.get(`wall_${key}`) || ''
       const validSize = !sizeValue || values.includes(sizeValue)
       const normalizedWall = /^\d+(?:[.,]\d+)?$/.test(wallValue) ? numericSize(wallValue) : ''
-      const validWall = !wallValue || Boolean(wall.current && Array.from(wall.current.options).some(option => option.value === normalizedWall) && normalizedWall)
+      const validWall = !wallValue || Boolean(wall.current && normalizedWall && Number(normalizedWall) > 0)
       if (select.current) select.current.value = validSize ? sizeValue : ''
-      if (wall.current) wall.current.value = validWall ? normalizedWall : ''
+      refreshWalls(validWall ? normalizedWall : '')
       if (sizeValue || wallValue) root.current?.closest('details')?.setAttribute('open', '')
       filter(false)
       if ((!validSize || !validWall) && result.current) result.current.textContent += '. Часть размеров из ссылки не распознана. Проверьте выбор.'
@@ -121,12 +138,45 @@ export default function SizeTableFilter({ column, values, total, wallColumns = [
     if (root.current) root.current.hidden = false
     window.addEventListener('popstate', restore)
     return () => window.removeEventListener('popstate', restore)
-  }, [wallColumns, values, filter])
+  }, [refreshWalls, values, filter])
 
   return <div className="size-series-filter" hidden ref={root}>
+    {quickSearch && <form className="size-series-quick-search" onSubmit={event => {
+      event.preventDefault()
+      const value = query.current?.value.trim() || ''
+      if (!value) {
+        if (select.current) select.current.value = ''
+        refreshWalls()
+        filter()
+        return
+      }
+      const match = value.replace(/\s*(?:мм|mm)\.?\s*$/iu, '').replace(/^[Ø⌀]\s*/u, '').match(/^(\d+(?:[.,]\d+)?)(?:\s*[xх×*]\s*(\d+(?:[.,]\d+)?))?$/iu)
+      const size = match && values.find(candidate => numericSize(candidate) === numericSize(match[1]))
+      if (size && select.current) {
+        select.current.value = size
+        refreshWalls(match?.[2] ? numericSize(match[2]) : '')
+        filter()
+      } else {
+        if (select.current) select.current.value = ''
+        refreshWalls()
+        filter()
+        if (query.current) query.current.value = value
+        if (result.current) result.current.textContent = match ? 'Диаметра нет в этой таблице. Отправьте спецификацию: проверим другое исполнение.' : 'Введите диаметр × стенку, например 108×4 мм, или отправьте спецификацию.'
+        if (fallback.current && requestHref) {
+          const url = new URL(requestHref, window.location.origin)
+          url.searchParams.set('product', `${url.searchParams.get('product') || ''} — проверить размер ${value.slice(0, 200)}; ${context}`)
+          fallback.current.href = url.pathname + url.search + url.hash
+          fallback.current.hidden = false
+        }
+      }
+    }}>
+      <label htmlFor={`${id}-query`}>Размер из спецификации</label>
+      <div><input id={`${id}-query`} ref={query} placeholder="Например, 108×4 мм" autoComplete="off" spellCheck={false} maxLength={200} /><button type="submit">Найти размер</button></div>
+      <p>Введите диаметр × стенку или выберите параметры ниже.</p>
+    </form>}
     <div>
       <label htmlFor={id}>{column}</label>
-      <select id={id} ref={select} onChange={() => filter()}>
+      <select id={id} ref={select} onChange={() => { refreshWalls(); filter() }}>
         <option value="">Все размеры</option>
         {values.map(value => <option key={value} value={value}>{value}</option>)}
       </select>
@@ -137,10 +187,11 @@ export default function SizeTableFilter({ column, values, total, wallColumns = [
     </div>}
     <button type="button" onClick={() => {
       if (select.current) select.current.value = ''
-      if (wall.current) wall.current.value = ''
+      refreshWalls()
       filter()
     }}>Показать все</button>
     <output ref={result} aria-live="polite">Показано строк: {total} из {total}</output>
+    {wallColumns.length > 0 && requestHref && <a className="size-series-selection-request" hidden ref={fallback} href={requestHref}>Отправить спецификацию на проверку ↗</a>}
     <a className="size-series-selection-link" hidden ref={selectionLink}>Ссылка на подбор ↗</a>
     {wallColumns.length > 0 && requestHref && <div className="size-series-selection-result" hidden ref={selectionResult}>
       <strong ref={selectionSize} />
