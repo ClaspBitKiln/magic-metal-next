@@ -18,8 +18,10 @@ export default function ProductSizeSeries({ series, requestHref, guide }: { seri
   if (!series.length && !guide) return null
   const formatIndex = series.findIndex(table => table.title.startsWith('Форматы'))
   const initiallyOpen = formatIndex < 0 ? 0 : formatIndex
+  const hasTu = series.some(table => table.standard.startsWith('ТУ '))
+  const standardKind = hasTu ? (series.every(table => table.standard.startsWith('ТУ ')) ? 'ТУ' : 'ГОСТ и ТУ') : 'ГОСТ'
   return <section className="product-size-series" id="sizes" aria-labelledby="size-series-title">
-    <h2 id="size-series-title">{series.length ? 'Размерный ряд по ГОСТ' : 'Размеры по спецификации'}</h2>
+    <h2 id="size-series-title">{series.length ? `Размерный ряд по ${standardKind}` : 'Размеры по спецификации'}</h2>
     <p className="size-series-intro">{series.length ? 'Выберите исполнение и нужный размер. В длинных таблицах можно оставить строки одного размера. Укажите требования в заявке или приложите спецификацию.' : 'Укажите размеры и требования к изделию или приложите чертёж. Проверим их по выбранному стандарту и техническим условиям.'}</p>
     {series.length > 0 && <p className="size-series-mobile-help">Широкие таблицы можно прокручивать вбок. Первый столбец и заголовки остаются видны.</p>}
     <a className="size-series-request" href={requestHref}>Отправить заявку ↗</a>

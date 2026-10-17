@@ -140,8 +140,8 @@ describe('normative product size tables', () => {
     const cards = [...pipeCatalog, ...productDetailCatalog, ...sdtCatalog.map((item) => ({ ...item, categorySlug: 'sdt' }))]
       .filter((item) => !['krug-i-kvadrat', 'balka-shveller-ugolok'].includes(item.slug))
     expect(cards).toHaveLength(51)
-    expect(cards.filter((item) => getProductSizeSeries(item.categorySlug, item.slug).length)).toHaveLength(35)
-    expect(cards.filter((item) => !getProductSizeSeries(item.categorySlug, item.slug).length && getDimensionGuide(item.categorySlug, item.slug))).toHaveLength(16)
+    expect(cards.filter((item) => getProductSizeSeries(item.categorySlug, item.slug).length)).toHaveLength(36)
+    expect(cards.filter((item) => !getProductSizeSeries(item.categorySlug, item.slug).length && getDimensionGuide(item.categorySlug, item.slug))).toHaveLength(15)
     expect(cards.filter((item) => !getProductSizeSeries(item.categorySlug, item.slug).length && !getDimensionGuide(item.categorySlug, item.slug))).toEqual([])
     expect(new Set(dimensionGuides.map((g) => `${g.categorySlug}/${g.productSlug}`)).size).toBe(dimensionGuides.length)
   })
@@ -676,6 +676,34 @@ describe('normative product size tables', () => {
     }
   })
 
+  it('separates boiler TU dimensions by process and grade and preserves source gaps', () => {
+    const tables = getProductSizeSeries('truby-besshovnye', 'kotelnye')
+    expect(tables).toHaveLength(5)
+    expect(tables.map(table => table.rows.reduce((n, row) => n + row[1].split('; ').length, 0))).toEqual([965, 589, 374, 291, 171])
+    const walls = (index: number, diameter: string) => tables[index].rows.find(row => row[0] === diameter)![1].split('; ').map(value => Number(value.replace(',', '.')))
+    expect(walls(0, '159')).toContain(5.5)
+    expect(walls(2, '54')).toContain(11)
+    expect(walls(0, '465')).toEqual([16, 17, 18, 19, 20, 22, 24, 25, 26, 27, 28, 30, 32, 34, 36, 38, 40, 56, 65, 75])
+    expect(walls(0, '530')).toEqual([25, 26, 28, 30, 32, 40, 65])
+    expect(walls(2, '25')).not.toContain(6.5)
+    expect(walls(2, '22')).toContain(2)
+    expect(walls(4, '22')).not.toContain(2)
+    expect(tables[0].scope).toContain('15Х1М1Ф')
+    expect(tables[2].scope).not.toContain('15Х1М1Ф')
+    expect(tables[2].scope).not.toContain('12Х1МФ')
+    expect(tables[3].scope).toContain('12Х1МФ-ПВ')
+    expect(tables[3].rows.at(-1)![0]).toBe('70')
+    expect(tables[3].rows.some(row => row[0] === '73')).toBe(false)
+    expect(tables[0].notes[0]).toContain('менее 57 мм')
+    expect(tables[0].notes[0]).toContain('аттестационных испытаний')
+    const tree = document.createElement('div')
+    tree.innerHTML = renderToStaticMarkup(createElement(ProductSizeSeries, { series: tables, requestHref: '/#request' }))
+    expect(tree.querySelector('h2')?.textContent).toBe('Размерный ряд по ТУ')
+    expect(tree.querySelectorAll('.size-series-nav a')).toHaveLength(5)
+    expect(tree.querySelector('a[href^="https:"]')).toBeNull()
+    expect(pipeCatalog.find(item => item.slug === 'kotelnye')!.standards.join(' ')).not.toContain('5520')
+  })
+
   it('keeps table dimensions complete, traceable and attached to existing products', () => {
     const routes = new Set([
       ...productDetailCatalog.map((item) => `${item.categorySlug}/${item.slug}`),
@@ -685,7 +713,7 @@ describe('normative product size tables', () => {
     expect(productSizeSeries.length).toBeGreaterThan(0)
     for (const table of productSizeSeries) {
       expect(routes.has(`${table.categorySlug}/${table.productSlug}`)).toBe(true)
-      expect(table.standard).toMatch(/ГОСТ/)
+      expect(table.standard).toMatch(/^(ГОСТ|ТУ)/)
       expect(table.scope.length).toBeGreaterThan(20)
       expect(table.source.url).toMatch(/^https:\/\//)
       expect(table.source.url).not.toContain('23met.ru')
