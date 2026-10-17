@@ -41,6 +41,7 @@ export default function ProductSizeSeries({ series, requestHref, guide }: { seri
         <p className="size-series-scope" id={`sizes-series-${index + 1}`}>{table.scope}</p>
         {table.notes[0] && <p className="size-series-note size-series-legend">{table.notes[0]}</p>}
         {table.rows.length > 24 && <SizeTableFilter column={table.columns[0]} values={[...new Set(table.rows.map(row => row[0]))]} total={table.rows.length} wallColumns={wallColumns} requestHref={requestHref} context={`${table.title}; ${table.standard}`} />}
+        <div className="size-series-reference" id={`size-reference-${index + 1}`}>
         <div className="size-series-scroll" role="region" aria-label={table.title} tabIndex={0}>
           <table className={table.kind === 'requirements' ? 'size-series-requirements' : undefined}>
             <caption>{table.title} — {table.standard}</caption>
@@ -49,6 +50,7 @@ export default function ProductSizeSeries({ series, requestHref, guide }: { seri
           </table>
         </div>
         {table.notes.slice(1).map((note) => <p className="size-series-note" key={note}>{note}</p>)}
+        </div>
       </details>
     })}
     {guide && <div className="size-series-guide">

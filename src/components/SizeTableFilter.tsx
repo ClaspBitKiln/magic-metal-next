@@ -18,6 +18,9 @@ export default function SizeTableFilter({ column, values, total, wallColumns = [
   const result = useRef<HTMLOutputElement>(null)
   const request = useRef<HTMLAnchorElement>(null)
   const selectionLink = useRef<HTMLAnchorElement>(null)
+  const selectionResult = useRef<HTMLDivElement>(null)
+  const selectionSize = useRef<HTMLElement>(null)
+  const referenceButton = useRef<HTMLButtonElement>(null)
 
   const filter = useCallback((updateUrl = true) => {
     const table = root.current?.closest('details')?.querySelector('table')
@@ -61,6 +64,19 @@ export default function SizeTableFilter({ column, values, total, wallColumns = [
         request.current.href = url.pathname + url.search + url.hash
       }
     }
+    const complete = Boolean(size && thickness && visible)
+    if (selectionResult.current) selectionResult.current.hidden = !complete
+    if (selectionSize.current) selectionSize.current.textContent = `${size} × ${thickness.replace('.', ',')} мм`
+    const reference = table.closest<HTMLElement>('.size-series-reference')
+    if (reference && selectionResult.current) {
+      reference.hidden = complete
+      if (referenceButton.current) {
+        referenceButton.current.setAttribute('aria-controls', reference.id)
+        referenceButton.current.setAttribute('aria-expanded', String(!complete))
+        referenceButton.current.textContent = complete ? 'Строка ГОСТ и условия' : 'Скрыть таблицу и примечания'
+      }
+    }
+    if (complete && result.current) result.current.textContent = `Сочетание найдено в таблице${bracketed ? '. Размер в скобках — см. примечания.' : ''}`
     const key = seriesKey(root.current)
     if (key) {
       const url = new URL(window.location.href)
@@ -126,6 +142,17 @@ export default function SizeTableFilter({ column, values, total, wallColumns = [
     }}>Показать все</button>
     <output ref={result} aria-live="polite">Показано строк: {total} из {total}</output>
     <a className="size-series-selection-link" hidden ref={selectionLink}>Ссылка на подбор ↗</a>
-    {wallColumns.length > 0 && requestHref && <a className="size-series-selection-request" hidden ref={request} href={requestHref}>Заявка на выбранный размер ↗</a>}
+    {wallColumns.length > 0 && requestHref && <div className="size-series-selection-result" hidden ref={selectionResult}>
+      <strong ref={selectionSize} />
+      <p className="size-series-result-context">{context}</p>
+      <a className="size-series-selection-request" hidden ref={request} href={requestHref}>Заявка на выбранный размер ↗</a>
+      <button type="button" className="size-series-reference-toggle" ref={referenceButton} aria-expanded="false" onClick={() => {
+        const reference = root.current?.closest('details')?.querySelector<HTMLElement>('.size-series-reference')
+        if (!reference || !referenceButton.current) return
+        reference.hidden = !reference.hidden
+        referenceButton.current.setAttribute('aria-expanded', String(!reference.hidden))
+        referenceButton.current.textContent = reference.hidden ? 'Строка ГОСТ и условия' : 'Скрыть таблицу и примечания'
+      }}>Строка ГОСТ и условия</button>
+    </div>}
   </div>
 }
