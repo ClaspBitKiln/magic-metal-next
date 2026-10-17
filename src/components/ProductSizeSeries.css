@@ -57,3 +57,6 @@
 }
 
 .product-size-series .size-series-selection-request:not([hidden]) { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 12px; border: 1px solid #0757e8; border-radius: 4px; color: #0757e8; background: #fff; font-size: 14px; font-weight: 650; text-decoration: none; }
+.product-size-series .size-series-selection-link:not([hidden]) { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; }
+
+.product-size-series .size-series-selected-wall { color: #071c62; background: #dceaff; outline: 1px solid #8db3f5; border-radius: 2px; }
