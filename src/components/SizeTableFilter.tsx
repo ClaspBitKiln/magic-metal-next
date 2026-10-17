@@ -9,8 +9,8 @@ const wallValues = (row: HTMLTableRowElement, columns: number[]) => columns.flat
 const seriesKey = (element: HTMLDivElement | null) => element?.closest('details')?.querySelector('.size-series-scope')?.id.replace('sizes-series-', '')
 
 /** Enhances the existing server table; does not duplicate its rows or request data. */
-export default function SizeTableFilter({ column, values, total, wallColumns = [], requestHref, context }: {
-  column: string; values: string[]; total: number; wallColumns?: number[]; requestHref?: string; context?: string
+export default function SizeTableFilter({ column, values, total, wallColumns = [], requestHref, context, standard }: {
+  column: string; values: string[]; total: number; wallColumns?: number[]; requestHref?: string; context?: string; standard?: string
 }) {
   const id = useId()
   const root = useRef<HTMLDivElement>(null)
@@ -24,12 +24,15 @@ export default function SizeTableFilter({ column, values, total, wallColumns = [
   const referenceButton = useRef<HTMLButtonElement>(null)
   const query = useRef<HTMLInputElement>(null)
   const fallback = useRef<HTMLAnchorElement>(null)
+  const pairList = useRef<HTMLDivElement>(null)
+  const more = useRef<HTMLButtonElement>(null)
+  const limit = useRef(20)
   const profileSearch = wallColumns.length > 0 && /сечение/iu.test(column) && values.every(value => /^\d+(?:[.,]\d+)?\s*×\s*\d+(?:[.,]\d+)?$/u.test(value.replace(/[()]/g, '')))
   const quickSearch = profileSearch || (wallColumns.length > 0 && /диаметр/iu.test(column) && values.every(value => /^\d+(?:[.,]\d+)?$/.test(value)))
   const dimensions = profileSearch ? 'высоту × ширину × стенку' : 'диаметр × стенку'
 
   const refreshWalls = useCallback((requested = '') => {
-    const table = root.current?.closest('details')?.querySelector('table')
+    const table = root.current?.closest('details')?.querySelector<HTMLTableElement>('.size-series-reference table')
     if (!wall.current || !table) return
     const size = select.current?.value || ''
     const rows = Array.from(table.tBodies[0].rows).filter(row => !size || row.cells[0].textContent === size)
@@ -39,9 +42,10 @@ export default function SizeTableFilter({ column, values, total, wallColumns = [
     wall.current.value = requested
   }, [wallColumns])
 
-  const filter = useCallback((updateUrl = true) => {
-    const table = root.current?.closest('details')?.querySelector('table')
+  const filter = useCallback((updateUrl = true, expand = false) => {
+    const table = root.current?.closest('details')?.querySelector<HTMLTableElement>('.size-series-reference table')
     if (!table) return
+    if (!expand) limit.current = 20
     const size = select.current?.value || ''
     const thickness = wall.current?.value || ''
     if (fallback.current) fallback.current.hidden = true
@@ -84,6 +88,52 @@ export default function SizeTableFilter({ column, values, total, wallColumns = [
       }
     }
     const complete = Boolean(size && thickness && visible)
+    const showList = Boolean(quickSearch && requestHref && visible && !complete)
+    const listScroll = pairList.current?.scrollTop || 0
+    if (pairList.current) {
+      pairList.current.hidden = !showList
+      pairList.current.replaceChildren()
+    }
+    if (more.current) more.current.hidden = true
+    if (showList && pairList.current && requestHref) {
+      const compact = document.createElement('table')
+      compact.createCaption().textContent = `${context} — компактный список размеров`
+      const head = compact.createTHead().insertRow()
+      for (const text of [profileSearch ? 'Сечение, мм' : 'Диаметр, мм', 'Стенка, мм', 'Стандарт', 'Заявка']) {
+        const th = document.createElement('th'); th.scope = 'col'; th.textContent = text; head.append(th)
+      }
+      const body = compact.createTBody()
+      let pairs = 0
+      for (const row of Array.from(table.tBodies[0].rows).filter(row => !row.hidden)) {
+        for (const value of [...new Set(wallValues(row, wallColumns))].filter(value => !thickness || value === thickness).sort((a, b) => Number(a) - Number(b))) {
+          pairs++
+          if (pairs > limit.current) continue
+          const notes = new Set<string>()
+          let inBrackets = row.cells[0].textContent?.includes('(')
+          for (const index of wallColumns) if (wallValues(row, [index]).includes(value)) {
+            notes.add(table.tHead?.rows[0].cells[index]?.textContent || '')
+            if ((row.cells[index].textContent || '').split(';').some(item => item.trim().startsWith('(') && numericSize(item) === value)) inBrackets = true
+          }
+          if (inBrackets) notes.add('Размер в скобках — см. примечания к таблице')
+          const tr = body.insertRow(), first = document.createElement('th')
+          first.scope = 'row'; first.textContent = row.cells[0].textContent; tr.append(first)
+          const cell = tr.insertCell(); cell.textContent = value.replace('.', ',')
+          if (inBrackets || wallColumns.length > 1) {
+            const note = document.createElement('small'); note.className = 'size-series-pair-condition'; note.textContent = [...notes].filter(Boolean).join('; '); first.append(note)
+          }
+          tr.insertCell().textContent = standard || ''
+          const link = document.createElement('a'), url = new URL(requestHref, window.location.origin)
+          url.searchParams.set('product', `${url.searchParams.get('product') || ''} — ${row.cells[0].textContent} × ${value.replace('.', ',')} мм; ${context}; ${[...notes].filter(Boolean).join('; ')}`)
+          link.href = url.pathname + url.search + url.hash
+          link.textContent = 'Заявка →'; link.setAttribute('aria-label', `Заявка на ${row.cells[0].textContent} × ${value.replace('.', ',')} мм`)
+          tr.insertCell().append(link)
+        }
+      }
+      pairList.current.append(compact)
+      pairList.current.scrollTop = expand ? listScroll : 0
+      if (result.current) result.current.textContent = `Показано размеров: ${Math.min(pairs, limit.current)} из ${pairs}`
+      if (more.current) { more.current.hidden = pairs <= limit.current; more.current.textContent = `Ещё размеры (${pairs - limit.current})` }
+    }
     if (size && thickness && !visible && fallback.current && requestHref) {
       const url = new URL(requestHref, window.location.origin)
       url.searchParams.set('product', `${url.searchParams.get('product') || ''} — проверить размер ${size} × ${thickness.replace('.', ',')} мм; ${context}`)
@@ -94,11 +144,11 @@ export default function SizeTableFilter({ column, values, total, wallColumns = [
     if (selectionSize.current) selectionSize.current.textContent = `${size} × ${thickness.replace('.', ',')} мм`
     const reference = table.closest<HTMLElement>('.size-series-reference')
     if (reference && selectionResult.current) {
-      reference.hidden = complete
+      reference.hidden = complete || showList
       if (referenceButton.current) {
         referenceButton.current.setAttribute('aria-controls', reference.id)
-        referenceButton.current.setAttribute('aria-expanded', String(!complete))
-        referenceButton.current.textContent = complete ? 'Строка ГОСТ и условия' : 'Скрыть таблицу и примечания'
+        referenceButton.current.setAttribute('aria-expanded', String(!reference.hidden))
+        referenceButton.current.textContent = reference.hidden ? 'Полная таблица и условия ГОСТ' : 'Скрыть таблицу и примечания'
       }
     }
     if (complete && result.current) result.current.textContent = `Сочетание найдено в таблице${bracketed ? '. Размер в скобках — см. примечания.' : ''}`
@@ -119,7 +169,7 @@ export default function SizeTableFilter({ column, values, total, wallColumns = [
     }
     const scroll = table.closest('.size-series-scroll')
     if (scroll) scroll.scrollTop = 0
-  }, [wallColumns, requestHref, context, total])
+  }, [wallColumns, requestHref, context, total, standard, quickSearch, profileSearch])
 
   useEffect(() => {
     function restore() {
@@ -168,6 +218,8 @@ export default function SizeTableFilter({ column, values, total, wallColumns = [
         if (select.current) select.current.value = ''
         refreshWalls()
         filter()
+        if (pairList.current) pairList.current.hidden = true
+        if (more.current) more.current.hidden = true
         if (query.current) query.current.value = value
         if (result.current) result.current.textContent = match ? `${profileSearch ? 'Сечения' : 'Диаметра'} нет в этой таблице. Отправьте спецификацию: проверим другое исполнение.` : `Введите ${dimensions} в миллиметрах или отправьте спецификацию.`
         if (fallback.current && requestHref) {
@@ -197,21 +249,23 @@ export default function SizeTableFilter({ column, values, total, wallColumns = [
       if (select.current) select.current.value = ''
       refreshWalls()
       filter()
-    }}>Показать все</button>
+    }}>{quickSearch ? 'Сбросить подбор' : 'Показать все'}</button>
     <output ref={result} aria-live="polite">Показано строк: {total} из {total}</output>
     {wallColumns.length > 0 && requestHref && <a className="size-series-selection-request" hidden ref={fallback} href={requestHref}>Отправить спецификацию на проверку ↗</a>}
     <a className="size-series-selection-link" hidden ref={selectionLink}>Ссылка на подбор ↗</a>
+    {quickSearch && <div className="size-series-pair-list size-series-scroll" ref={pairList} hidden role="region" aria-label="Компактный список размеров" tabIndex={0} />}
+    {quickSearch && <button type="button" className="size-series-more" hidden ref={more} onClick={() => { limit.current += 20; filter(false, true) }}>Ещё размеры</button>}
     {wallColumns.length > 0 && requestHref && <div className="size-series-selection-result" hidden ref={selectionResult}>
       <strong ref={selectionSize} />
       <p className="size-series-result-context">{context}</p>
       <a className="size-series-selection-request" hidden ref={request} href={requestHref}>Заявка на выбранный размер ↗</a>
-      <button type="button" className="size-series-reference-toggle" ref={referenceButton} aria-expanded="false" onClick={() => {
+    </div>}
+    {wallColumns.length > 0 && requestHref && <button type="button" className="size-series-reference-toggle" ref={referenceButton} aria-expanded="false" onClick={() => {
         const reference = root.current?.closest('details')?.querySelector<HTMLElement>('.size-series-reference')
         if (!reference || !referenceButton.current) return
         reference.hidden = !reference.hidden
         referenceButton.current.setAttribute('aria-expanded', String(!reference.hidden))
-        referenceButton.current.textContent = reference.hidden ? 'Строка ГОСТ и условия' : 'Скрыть таблицу и примечания'
-      }}>Строка ГОСТ и условия</button>
-    </div>}
+        referenceButton.current.textContent = reference.hidden ? 'Полная таблица и условия ГОСТ' : 'Скрыть таблицу и примечания'
+      }}>Полная таблица и условия ГОСТ</button>}
   </div>
 }
