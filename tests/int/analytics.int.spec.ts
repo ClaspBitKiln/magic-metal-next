@@ -6,12 +6,14 @@ import { GET } from '@/app/(frontend)/route'
 afterEach(() => vi.unstubAllEnvs())
 
 describe('optional lightweight analytics', () => {
-  it('loads no counter without a valid public ID and keeps the static homepage', async () => {
-    for (const id of ['', '0', '123<script>', '-1', '123abc']) {
+  it('uses the confirmed site counter, supports overrides and rejects invalid IDs', async () => {
+    for (const id of ['0', '123<script>', '-1', '123abc']) {
       vi.stubEnv('NEXT_PUBLIC_YANDEX_METRIKA_ID', id)
       const response = await GET()
       expect(await response.text()).not.toContain('magicmet-analytics')
     }
+    vi.stubEnv('NEXT_PUBLIC_YANDEX_METRIKA_ID', '')
+    expect(await (await GET()).text()).toContain('id=113661397')
     vi.stubEnv('NEXT_PUBLIC_YANDEX_METRIKA_ID', '123456789')
     const response = await GET()
     const html = await response.text()
