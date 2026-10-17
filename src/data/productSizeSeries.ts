@@ -19,8 +19,9 @@ import { additionalPipeSizeSeries } from './additionalPipeSizeSeries'
 import { nonferrousSizeSeries } from './nonferrousSizeSeries'
 import { specialProductSizeSeries } from './specialProductSizeSeries'
 import { precisionHotPipeSizeSeries } from './precisionHotPipeSizeSeries'
+import { precisionColdPipeSizeSeries } from './precisionColdPipeSizeSeries'
 
-export const productSizeSeries = [...sectionSizeSeries, ...coldPipeSizeSeries, ...pipeSizeSeries, ...otherSizeSeries, ...sdtSizeSeries, ...sheetSizeSeries, ...coilSizeSeries, ...profileSizeSeries, ...calibratedSquareSizeSeries, ...stainlessHotPipeSizeSeries, ...stainlessColdPipeSizeSeries, ...teeSizeSeries, ...teeExecution1SizeSeries, ...reducerSizeSeries, ...reducerExecution1SizeSeries, ...galvanizedSizeSeries, ...stainlessSheetSizeSeries, ...additionalPipeSizeSeries, ...nonferrousSizeSeries, ...specialProductSizeSeries, ...precisionHotPipeSizeSeries]
+export const productSizeSeries = [...sectionSizeSeries, ...coldPipeSizeSeries, ...pipeSizeSeries, ...otherSizeSeries, ...sdtSizeSeries, ...sheetSizeSeries, ...coilSizeSeries, ...profileSizeSeries, ...calibratedSquareSizeSeries, ...stainlessHotPipeSizeSeries, ...stainlessColdPipeSizeSeries, ...teeSizeSeries, ...teeExecution1SizeSeries, ...reducerSizeSeries, ...reducerExecution1SizeSeries, ...galvanizedSizeSeries, ...stainlessSheetSizeSeries, ...additionalPipeSizeSeries, ...nonferrousSizeSeries, ...specialProductSizeSeries, ...precisionHotPipeSizeSeries, ...precisionColdPipeSizeSeries]
 
 export const getProductSizeSeries = (categorySlug: string, productSlug: string) => productSizeSeries.filter((table) => table.categorySlug === categorySlug && table.productSlug === productSlug)
 

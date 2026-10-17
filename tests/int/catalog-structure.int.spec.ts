@@ -649,7 +649,31 @@ describe('normative product size tables', () => {
     }
     expect(table.rows.find(row => row[0] === '25')![2]).toContain('(7,5)')
     expect(table.scope).toContain('Холоднодеформированный сортамент в эту таблицу не входит')
-    expect(getDimensionGuide('truby-besshovnye', 'precizionnye')!.note).toContain('таблице 2')
+    expect(getDimensionGuide('truby-besshovnye', 'precizionnye')!.note).toContain('отдельных таблицах')
+  })
+
+  it('restores the complete nominal cold precision series including columns missing from HTML', () => {
+    const tables = getProductSizeSeries('truby-besshovnye', 'precizionnye')
+    expect(tables).toHaveLength(2)
+    const cold = tables[1]
+    const walls = (diameter: string) => cold.rows.find(row => row[0] === diameter)![1].split('; ').map(value => Number(value.replace(',', '.')))
+    expect(cold.rows).toHaveLength(85)
+    expect(cold.rows.reduce((n, row) => n + row[1].split('; ').length, 0)).toBe(2016)
+    expect(walls('12')).not.toContain(4)
+    expect(walls('13')).toContain(4)
+    expect(walls('14')).not.toContain(4.5)
+    expect(walls('15')).toContain(4.5)
+    expect(walls('38')).toContain(3)
+    expect(walls('710')).toEqual([2.8, 3, 3.2, 3.5, 4, 4.5, 5, 5.5, 6, 7, 8, 9, 10, 12, 14, 16, 18, 20, 22, 24, 28, 30, 32])
+    expect(cold.columns).toEqual(['Наружный Ø, мм', 'Номинальные стенки, мм'])
+    expect(cold.notes.join(' ')).toContain('100–250 мм включительно при D/s > 50')
+    expect(cold.notes.join(' ')).toContain('D/s < 4')
+    expect(cold.notes.join(' ')).toContain('D/s ≥ 50')
+    for (const row of cold.rows) {
+      const values = walls(row[0])
+      expect(new Set(values).size).toBe(values.length)
+      expect(values.every((wall, index) => wall > 0 && wall < Number(row[0]) / 2 && (index === 0 || wall > values[index - 1]))).toBe(true)
+    }
   })
 
   it('keeps table dimensions complete, traceable and attached to existing products', () => {
