@@ -113,10 +113,26 @@ describe('unified homepage catalog', () => {
   })
 })
 
+describe('rope stock assortment', () => {
+  it('keeps six stock rows separate from normative tables and transfers exact execution into the request', async () => {
+    const page = await ProductDetailPage({ params: Promise.resolve({ slug: 'metizy-i-svarochnye-materialy', detail: 'kanaty' }) })
+    const tree = new DOMParser().parseFromString(renderToStaticMarkup(page), 'text/html')
+    const rows = [...tree.querySelectorAll('#stock-assortment tbody tr')]
+    expect(rows).toHaveLength(6)
+    expect(rows.map(row => row.querySelector('th')?.textContent)).toEqual(['13', '24', '2', '15', '18', '20'])
+    expect(tree.querySelector('#stock-assortment')?.textContent).not.toMatch(/₽|руб\.|RUB|НДС|Цена/)
+    const selected = new URL(rows[2].querySelector('a')!.getAttribute('href')!, 'https://magicmet.ru')
+    expect(selected.hash).toBe('#request')
+    expect(selected.searchParams.get('product')).toContain('ГОСТ 3063-80 полимерн. покр 2/3 уценка; размерное обозначение 2; единица учёта м')
+    expect(tree.querySelectorAll('#sizes')).toHaveLength(0)
+    expect(getProductSizeSeries('metizy-i-svarochnye-materialy', 'kanaty')).toEqual([])
+  })
+})
+
 describe('normative product size tables', () => {
   it('applies compact presentation to every catalog card while preserving all normative source rows', () => {
     const cards = [...pipeCatalog, ...productDetailCatalog, ...sdtCatalog.map(item => ({ ...item, categorySlug: 'sdt' }))]
-      .filter(item => !['krug-i-kvadrat', 'balka-shveller-ugolok'].includes(item.slug))
+      .filter(item => !['krug-i-kvadrat', 'balka-shveller-ugolok', 'kanaty'].includes(item.slug))
     for (const card of cards) {
       const series = getProductSizeSeries(card.categorySlug, card.slug)
       const guide = getDimensionGuide(card.categorySlug, card.slug)
@@ -182,9 +198,9 @@ describe('normative product size tables', () => {
     expect(tree.querySelectorAll('tbody tr')).toHaveLength(table.rows.length)
   })
 
-  it('gives all 51 product cards either scoped numeric tables or explicit specification guidance', () => {
+  it('preserves the 51 normative cards alongside the separate stock assortment', () => {
     const cards = [...pipeCatalog, ...productDetailCatalog, ...sdtCatalog.map((item) => ({ ...item, categorySlug: 'sdt' }))]
-      .filter((item) => !['krug-i-kvadrat', 'balka-shveller-ugolok'].includes(item.slug))
+      .filter((item) => !['krug-i-kvadrat', 'balka-shveller-ugolok', 'kanaty'].includes(item.slug))
     expect(cards).toHaveLength(51)
     expect(cards.filter((item) => getProductSizeSeries(item.categorySlug, item.slug).length)).toHaveLength(45)
     expect(cards.filter((item) => getProductSizeSeries(item.categorySlug, item.slug).some((table) => table.kind !== 'requirements'))).toHaveLength(38)

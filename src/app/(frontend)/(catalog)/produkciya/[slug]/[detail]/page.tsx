@@ -10,6 +10,7 @@ import LanguageSwitcher from '@/components/LanguageSwitcher'
 import ProductSizeSeries from '@/components/ProductSizeSeries'
 import { getProductSizeSeries } from '@/data/productSizeSeries'
 import { getDimensionGuide } from '@/data/dimensionGuides'
+import { ropeStockAssortment, ropeStockRequestHref } from '@/data/ropeStockAssortment.server'
 import './pipe-detail.css'
 
 export const dynamicParams = false
@@ -73,6 +74,22 @@ export default async function PipeDetailPage({ params }: { params: Promise<{ slu
       <nav className="size-series-nav" aria-label="Размерные таблицы по видам профиля">
         {sizeProfiles.map((profile) => <a key={profile.slug} href={`/produkciya/${profile.categorySlug}/${profile.slug}#sizes`}>{profile.shortTitle} →</a>)}
       </nav>
+    </section>}
+    {item.categorySlug === 'metizy-i-svarochnye-materialy' && item.slug === 'kanaty' && <section className="product-size-series" id="stock-assortment" aria-labelledby="rope-stock-title">
+      <h2 id="rope-stock-title">Позиции складского ассортимента</h2>
+      <p className="size-series-intro">Стандартный складской ассортимент. Доступное количество, состояние и срок поставки подтвердим по заявке.</p>
+      <p>Выберите позицию: обозначение и исполнение попадут в заявку. Диаметр и единицу размера уточним по спецификации.</p>
+      <div className="size-series-scroll" tabIndex={0} role="region" aria-label="Складской ассортимент канатов">
+        <table className="size-series-generic-list">
+          <caption>Канаты: размерные обозначения, исполнение и выбор для заявки</caption>
+          <thead><tr><th scope="col">Размерное обозначение</th><th scope="col">Исполнение</th><th scope="col">Выбрать</th></tr></thead>
+          <tbody>{ropeStockAssortment.map(row => <tr key={row.id}>
+            <th scope="row">{row.sizeDesignation}</th>
+            <td>{row.description}<br /><small>Единица учёта: {row.unit}</small></td>
+            <td><a href={ropeStockRequestHref(row)} aria-label={`Запросить канат: ${row.description}, размерное обозначение ${row.sizeDesignation}`}>В заявку →</a></td>
+          </tr>)}</tbody>
+        </table>
+      </div>
     </section>}
     <ProductSizeSeries series={getProductSizeSeries(item.categorySlug, item.slug)} guide={getDimensionGuide(item.categorySlug, item.slug)} requestHref={requestHref} />
     <section className="pipe-intro"><h2>Подбор по назначению, а не только по размеру</h2><div><p>{item.intro}</p><a href={requestHref}>Отправить заявку →</a></div></section>
