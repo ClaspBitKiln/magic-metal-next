@@ -11,14 +11,29 @@ export function searchDimensionTables(query: string): SearchItem[] {
     if (table.kind === 'requirements') continue
     const path = `/produkciya/${table.categorySlug}/${table.productSlug}`
     const product = searchIndex.find(item => item.type === 'product' && item.href === path)
-    const haystack = normalizeSearch(`${product?.title || ''} ${product?.searchText || ''} ${table.standard} ${table.title}`)
-    if (normalizeSearch(parsed.remainder).split(' ').filter(Boolean).some(token => !haystack.includes(token))) continue
+    const haystack = normalizeSearch(`${product?.title || ''} ${product?.searchText || ''} ${table.standard} ${table.title} ${table.scope}`)
+    // The card can mention several standards. A result must belong to the
+    // requested standard's own table, not another table on the same card.
+    const standardPattern = /(?:ГОСТ(?:\s+Р)?|ТУ)\s*\d+(?:[.\-][\p{L}\d]+)*/giu
+    const standardKey = (value: string) => normalizeSearch(value).replace(/\s/g, '')
+    const requestedStandards = [...normalizeSearch(parsed.remainder).matchAll(standardPattern)].map(match => standardKey(match[0]))
+    const tableStandards = [...normalizeSearch(table.standard).matchAll(standardPattern)].map(match => standardKey(match[0]))
+    if (requestedStandards.some(requested => !tableStandards.some(standard => standard === requested || (!requested.includes('-') && standard.startsWith(`${requested}-`))))) continue
+    const remainder = normalizeSearch(parsed.remainder).replace(standardPattern, '')
+    const gradeKey = (value: string) => value.replace(/^ст(?=\d)/u, '')
+    const tokens = remainder.split(' ').filter(token => token && !/^(?:сталь|стали|марка|марки)$/u.test(token)).map(gradeKey)
+    const words = (haystack.match(/[\p{L}\d]+(?:[.,-][\p{L}\d]+)*/gu) || []).map(gradeKey)
+    // Numeric/alphanumeric qualifiers must be whole tokens: 873 is not 8734,
+    // and 12Х1МФ is not a different grade with the same prefix.
+    if (tokens.some(token => /\d/u.test(token) ? !words.includes(token) : !haystack.includes(token))) continue
+    const gradeScope = normalizeSearch(table.scope).match(/^марки стали:\s*([^.]*)/u)?.[1].split(',').map(value => gradeKey(value.trim()))
+    if (gradeScope && tokens.some(token => /\d/u.test(token) && !gradeScope.includes(token))) continue
     const [first, second, third] = parsed.values
     let matches = false
     let selectedSize = ''
     let selectedWall = ''
     const cellHas = (value: string, expected: string) => value.split(';').some(part => /^\s*\(?\d+(?:[.,]\d+)?\)?\s*$/.test(part) && numericSizeKey(part) === expected)
-    if (parsed.kind === 'pipe' && table.categorySlug.startsWith('truby')) {
+    if (parsed.kind === 'pipe' && (table.categorySlug.startsWith('truby') || (table.categorySlug === 'nerzhaveyushchaya-stal' && table.productSlug === 'truby'))) {
       const walls = table.columns.map((name, index) => /стен/iu.test(name) ? index : -1).filter(index => index >= 0)
       const section = third ? `${first}x${second}` : first
       const wall = third || second

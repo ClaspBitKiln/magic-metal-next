@@ -1,0 +1,118 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+
+const mocks = vi.hoisted(() => ({
+  getPayload: vi.fn(),
+  create: vi.fn(),
+  update: vi.fn(),
+  createTransport: vi.fn(),
+  sendMail: vi.fn(),
+  fetch: vi.fn(),
+}))
+
+vi.mock('@/payload.config', () => ({ default: {} }))
+vi.mock('payload', () => ({ getPayload: mocks.getPayload }))
+vi.mock('nodemailer', () => ({ default: { createTransport: mocks.createTransport } }))
+
+import { POST } from '@/app/(frontend)/api/request/route'
+
+let requestNumber = 0
+
+function submit() {
+  const form = new FormData()
+  for (const [key, value] of Object.entries({
+    consent: 'on',
+    email: 'buyer@example.invalid',
+    message: 'Труба 57×3, 12 метров',
+    startedAt: '1',
+  })) form.set(key, value)
+
+  return POST({
+    headers: new Headers({ 'x-forwarded-for': `192.0.2.${++requestNumber}` }),
+    formData: async () => form,
+  } as Request)
+}
+
+describe('request delivery failover without external services', () => {
+  beforeEach(() => {
+    vi.resetAllMocks()
+    vi.stubGlobal('fetch', mocks.fetch)
+    for (const [key, value] of Object.entries({
+      SMTP_HOST: 'smtp.example.invalid',
+      SMTP_PORT: '587',
+      SMTP_SECURE: 'false',
+      SMTP_USER: 'sender@example.invalid',
+      SMTP_PASSWORD: 'offline-test-only',
+      REQUEST_TO_EMAIL: 'recipient@example.invalid',
+      N8N_WEBHOOK_URL: '',
+      CRM_WEBHOOK_URL: 'https://crm.example.invalid/request',
+      N8N_WEBHOOK_SECRET: '',
+    })) vi.stubEnv(key, value)
+    vi.spyOn(console, 'error').mockImplementation(() => {})
+    mocks.getPayload.mockResolvedValue({ create: mocks.create, update: mocks.update })
+    mocks.create.mockResolvedValue({ id: 42 })
+    mocks.update.mockResolvedValue({ id: 42 })
+    mocks.createTransport.mockReturnValue({ sendMail: mocks.sendMail })
+    mocks.sendMail.mockResolvedValue({ messageId: 'offline-test-only' })
+    mocks.fetch.mockResolvedValue({ ok: false, status: 503 })
+  })
+
+  afterEach(() => {
+    vi.unstubAllEnvs()
+    vi.unstubAllGlobals()
+    vi.restoreAllMocks()
+  })
+
+  it('accepts SMTP delivery when database initialization fails', async () => {
+    mocks.getPayload.mockRejectedValue(new Error('Offline database failure'))
+
+    const response = await submit()
+
+    expect(response.status).toBe(200)
+    expect(await response.json()).toEqual({ ok: true, id: null, emailDelivered: true, crmDelivered: false })
+    expect(mocks.sendMail).toHaveBeenCalledOnce()
+    expect(mocks.create).not.toHaveBeenCalled()
+    expect(mocks.update).not.toHaveBeenCalled()
+  })
+
+  it('returns 503 when database, SMTP and CRM all fail', async () => {
+    mocks.getPayload.mockRejectedValue(new Error('Offline database failure'))
+    mocks.sendMail.mockRejectedValue(Object.assign(new Error('Offline SMTP failure'), { code: 'ECONNREFUSED' }))
+    mocks.fetch.mockRejectedValue(new Error('Offline CRM failure'))
+
+    const response = await submit()
+
+    expect(response.status).toBe(503)
+    expect(await response.json()).toEqual({
+      error: 'Не удалось сохранить или доставить заявку. Позвоните нам или напишите на m1@magicmet.ru.',
+      deliveryFailure: 'smtp-connection',
+    })
+    expect(mocks.sendMail).toHaveBeenCalledOnce()
+    expect(mocks.fetch).toHaveBeenCalledOnce()
+    expect(mocks.update).not.toHaveBeenCalled()
+  })
+
+  it('keeps a saved request accepted when SMTP fails and CRM returns non-2xx', async () => {
+    mocks.sendMail.mockRejectedValue(new Error('Offline SMTP failure'))
+
+    const response = await submit()
+
+    expect(response.status).toBe(200)
+    expect(await response.json()).toEqual({ ok: true, id: 42, emailDelivered: false, crmDelivered: false })
+    expect(mocks.create).toHaveBeenCalledWith(expect.objectContaining({ collection: 'requests', overrideAccess: true }))
+    expect(mocks.fetch).toHaveBeenCalledWith('https://crm.example.invalid/request', expect.objectContaining({ method: 'POST' }))
+    expect(mocks.update).not.toHaveBeenCalled()
+  })
+
+  it('keeps acceptance when recording successful delivery flags fails', async () => {
+    mocks.update.mockRejectedValue(new Error('Offline status update failure'))
+
+    const response = await submit()
+
+    expect(response.status).toBe(200)
+    expect(await response.json()).toEqual({ ok: true, id: 42, emailDelivered: true, crmDelivered: false })
+    expect(mocks.sendMail).toHaveBeenCalledOnce()
+    expect(mocks.update).toHaveBeenCalledWith({
+      collection: 'requests', id: 42, data: { emailDelivered: true, crmDelivered: false }, overrideAccess: true,
+    })
+  })
+})
