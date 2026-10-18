@@ -3,6 +3,9 @@ import Link from 'next/link'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
 
 import CatalogSearch from '@/components/CatalogSearch'
+import { catalogStandards } from '@/data/catalogStandards'
+import { standards } from '@/data/standards'
+import type { SearchItem } from '@/data/searchIndex'
 import './search.css'
 
 export const metadata: Metadata = {
@@ -12,9 +15,14 @@ export const metadata: Metadata = {
 }
 
 export default function SearchPage() {
+  const originalSlugs = new Set(standards.map(item => item.slug))
+  const extraStandards: SearchItem[] = catalogStandards.filter(item => !originalSlugs.has(item.slug)).map(item => ({
+    type: 'standard', typeLabel: 'ГОСТ', title: item.code, subtitle: item.title, description: item.summary,
+    href: `/spravochnik-gost/${item.slug}`, searchText: [item.code, item.title, item.summary, ...item.scope].join(' '),
+  }))
   return <main className="search-page">
     <header className="search-header"><Link href="/"><b>←</b> На главную</Link><LanguageSwitcher /><Link href="/#request">Отправить заявку ↗</Link></header>
     <section className="search-hero"><p>Единый технический поиск</p><h1>Найти<br /><em>точное исполнение</em></h1><span>Ищите по названию продукции, марке стали или сплава, номеру ГОСТ и области применения.</span></section>
-    <CatalogSearch />
+    <CatalogSearch extraStandards={extraStandards} />
   </main>
 }

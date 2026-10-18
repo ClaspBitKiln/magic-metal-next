@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: 'Политика обработки персональных данных | Мэджик Металл',
   description: 'Политика обработки и защиты персональных данных посетителей сайта Мэджик Металл.',
   robots: { index: true, follow: true },
+  alternates: { canonical: '/politika-konfidencialnosti' },
 }
 
 export default function PrivacyPolicyPage() {

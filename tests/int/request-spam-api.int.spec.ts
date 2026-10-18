@@ -33,4 +33,30 @@ describe('request spam rejection precedes delivery', () => {
     expect(mocks.sendMail).not.toHaveBeenCalled()
     expect(mocks.fetch).not.toHaveBeenCalled()
   })
+
+  it('rejects an unusable contact before storage or delivery', async () => {
+    const response = await submit({ phone: 'не телефон', email: '', message: 'Труба 57×3, 12 метров' })
+    expect(response.status).toBe(400)
+    expect(mocks.getPayload).not.toHaveBeenCalled()
+    expect(mocks.sendMail).not.toHaveBeenCalled()
+    expect(mocks.fetch).not.toHaveBeenCalled()
+  })
+
+  it('rejects an oversized attachment before reading, storage or delivery', async () => {
+    const form = new FormData()
+    for (const [key, value] of Object.entries({ ...defaults, message: 'Труба 57×3' })) form.set(key, value)
+    form.set('files', new File([new Uint8Array(4 * 1024 * 1024 + 1)], 'specification.pdf', { type: 'application/pdf' }))
+    const response = await POST({ headers: new Headers({ 'x-forwarded-for': `192.0.2.${++ip}` }), formData: async () => form } as Request)
+    expect(response.status).toBe(413)
+    expect(mocks.getPayload).not.toHaveBeenCalled()
+    expect(mocks.sendMail).not.toHaveBeenCalled()
+    expect(mocks.fetch).not.toHaveBeenCalled()
+  })
+
+  it('handles malformed multipart without a server error or side effects', async () => {
+    const response = await POST({ headers: new Headers(), formData: async () => { throw new Error('Malformed multipart') } } as unknown as Request)
+    expect(response.status).toBe(400)
+    expect(mocks.getPayload).not.toHaveBeenCalled()
+    expect(mocks.sendMail).not.toHaveBeenCalled()
+  })
 })

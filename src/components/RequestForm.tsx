@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { isRecordedRequest, trackAnalyticsGoal } from '@/lib/analytics'
 import { FormEvent, useEffect, useRef, useState } from 'react'
-import { hasRequestConsent, REQUEST_CONSENT_ERROR } from '@/lib/requestValidation'
+import { hasRequestConsent, hasValidRequestContact, REQUEST_CONSENT_ERROR, REQUEST_CONTACT_ERROR } from '@/lib/requestValidation'
 
 export default function RequestForm() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
@@ -68,6 +68,16 @@ export default function RequestForm() {
       setFormError('Укажите телефон или email, чтобы мы могли отправить расчёт.')
       return
     }
+    if (!hasValidRequestContact(phone, email)) {
+      setStatus('error')
+      setFormError(REQUEST_CONTACT_ERROR)
+      return
+    }
+    if (data.getAll('files').reduce((sum, value) => sum + (value instanceof File ? value.size : 0), 0) > 4 * 1024 * 1024) {
+      setStatus('error')
+      setFormError('Файлы — суммарно до 4 МБ. Большие файлы отправьте на m1@magicmet.ru.')
+      return
+    }
     if (!message && !hasFiles) {
       setStatus('error')
       setFormError('Прикрепите заявку или кратко опишите, что требуется.')
@@ -81,7 +91,7 @@ export default function RequestForm() {
     data.set('context', params.get('material') || params.get('standard') || params.get('product') || params.get('region') || '')
     for (const key of ['utm_source', 'utm_medium', 'utm_campaign']) data.set(key, params.get(key) || '')
     try {
-      const response = await fetch('/api/request', { method: 'POST', body: data })
+      const response = await fetch('/api/request', { method: 'POST', body: data, signal: AbortSignal.timeout(45000) })
       const result = await response.json().catch(() => null) as { error?: string } | null
       if (!response.ok) {
         throw new Error(result?.error || 'Не удалось отправить заявку')
@@ -94,7 +104,7 @@ export default function RequestForm() {
       if (isRecordedRequest(result)) trackAnalyticsGoal('request_sent')
     } catch (error) {
       trackAnalyticsGoal('request_error')
-      setFormError(error instanceof Error ? error.message : 'Не удалось отправить заявку. Попробуйте ещё раз или позвоните нам.')
+      setFormError(error instanceof Error && error.name === 'TimeoutError' ? 'Время ожидания истекло. Заявка могла поступить — уточните по телефону или email перед повторной отправкой.' : error instanceof Error ? error.message : 'Не удалось отправить заявку. Попробуйте ещё раз или позвоните нам.')
       setStatus('error')
     }
   }
@@ -103,7 +113,7 @@ export default function RequestForm() {
     <form className="request-form" onSubmit={submitRequest} onFocusCapture={trackFormStart} encType="multipart/form-data" noValidate>
       {selectedProduct && <p className="selected-product">Выбран раздел: <strong>{selectedProduct}</strong></p>}
       <div className="form-stage" hidden={formStep !== 1}>
-        <label className="file-field"><span className="file-button">Прикрепить файл</span><input name="files" type="file" multiple accept=".xlsx,.xls,.pdf,.doc,.docx,.png,.jpg,.jpeg,.webp,.dwg,.dxf,.mp3,.m4a,.wav,.ogg,.webm,audio/*" onChange={(event) => { const count = event.currentTarget.files?.length || 0; setSelectedFiles(count); if (count) trackAnalyticsGoal('specification_attached') }} />{selectedFiles > 0 && <strong>{`Выбрано файлов: ${selectedFiles}`}</strong>}<small>Excel, PDF, Word, фото, чертежи или аудио · до 25 МБ</small></label>
+        <label className="file-field"><span className="file-button">Прикрепить файл</span><input name="files" type="file" multiple accept=".xlsx,.xls,.pdf,.doc,.docx,.png,.jpg,.jpeg,.webp,.dwg,.dxf,.mp3,.m4a,.wav,.ogg,.webm,audio/*" onChange={(event) => { const count = event.currentTarget.files?.length || 0; setSelectedFiles(count); if (count) trackAnalyticsGoal('specification_attached') }} />{selectedFiles > 0 && <strong>{`Выбрано файлов: ${selectedFiles}`}</strong>}<small>Excel, PDF, Word, фото, чертежи или аудио · до 4 МБ</small></label>
         <div className="form-or"><span>или</span></div>
         <label>Опишите, что требуется<textarea name="message" rows={3} placeholder="Наименование, размер, ГОСТ/ТУ, количество" /></label>
         <button className="form-next" type="button" onClick={continueRequest}>Продолжить <span>→</span></button>

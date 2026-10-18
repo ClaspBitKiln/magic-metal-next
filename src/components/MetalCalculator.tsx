@@ -2,8 +2,7 @@
 
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
-
-type Shape = 'pipe' | 'sheet' | 'round' | 'square'
+import { calculateMetalMass, formatMetalMass, type MetalShape } from '@/lib/metalCalculation'
 
 const densities = [
   ['carbon', 'Углеродистая / низколегированная сталь', 7850],
@@ -15,10 +14,8 @@ const densities = [
   ['titanium', 'Титан', 4500],
 ] as const
 
-const number = (value: string) => Math.max(0, Number(value.replace(',', '.')) || 0)
-
 export default function MetalCalculator() {
-  const [shape, setShape] = useState<Shape>('pipe')
+  const [shape, setShape] = useState<MetalShape>('pipe')
   const [density, setDensity] = useState(7850)
   const [diameter, setDiameter] = useState('219')
   const [wall, setWall] = useState('8')
@@ -29,32 +26,19 @@ export default function MetalCalculator() {
   const [length, setLength] = useState('12')
   const [quantity, setQuantity] = useState('1')
 
-  const result = useMemo(() => {
-    const rho = density
-    const qty = number(quantity)
-    if (shape === 'sheet') {
-      const piece = number(thickness) * number(width) * number(pieceLength) * rho * 1e-9
-      return { unit: piece, total: piece * qty, unitLabel: 'кг/лист' }
-    }
-    let kgPerMeter = 0
-    if (shape === 'pipe') {
-      const d = number(diameter); const t = Math.min(number(wall), d / 2)
-      kgPerMeter = Math.PI / 4 * (d * d - (d - 2 * t) ** 2) * rho * 1e-6
-    } else if (shape === 'round') {
-      const d = number(diameter); kgPerMeter = Math.PI / 4 * d * d * rho * 1e-6
-    } else {
-      kgPerMeter = number(side) ** 2 * rho * 1e-6
-    }
-    return { unit: kgPerMeter, total: kgPerMeter * number(length) * qty, unitLabel: 'кг/м' }
-  }, [density, diameter, length, pieceLength, quantity, shape, side, thickness, wall, width])
-
-  const formatKilograms = (value: number) => new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 }).format(Math.round(value))
-  const formatUnit = (value: number) => new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 3 }).format(value)
-  const requestContext = `${shape === 'pipe' ? `Труба ${diameter}×${wall} мм` : shape === 'sheet' ? `Лист ${thickness}×${width}×${pieceLength} мм` : shape === 'round' ? `Круг Ø${diameter} мм` : `Квадрат ${side} мм`}; расчётная масса ${formatKilograms(result.total)} кг`
+  const result = useMemo(() => calculateMetalMass({ shape, density, diameter, wall, thickness, width, pieceLength, side, length, quantity }), [density, diameter, length, pieceLength, quantity, shape, side, thickness, wall, width])
+  const material = densities.find(([, , value]) => value === density)?.[1] || ''
+  const requestContext = 'error' in result ? '' : [
+    shape === 'pipe' ? `Труба ${diameter}×${wall} мм` : shape === 'sheet' ? `Лист ${thickness}×${width}×${pieceLength} мм` : shape === 'round' ? `Круг Ø${diameter} мм` : `Квадрат ${side} мм`,
+    `материал: ${material}`, `плотность: ${density} кг/м³`,
+    ...(shape === 'sheet' ? [] : [`длина одной штуки: ${length} м`]),
+    `количество: ${quantity} шт.`, `масса ${shape === 'sheet' ? 'листа' : 'погонного метра'}: ${formatMetalMass(result.unit)} ${result.unitLabel}`,
+    `расчётная общая масса: ${formatMetalMass(result.total)} кг`,
+  ].join('; ')
 
   return <section className="calculator-workspace">
     <div className="calculator-controls">
-      <div className="calculator-tabs">{([['pipe', 'Труба'], ['sheet', 'Лист'], ['round', 'Круг'], ['square', 'Квадрат']] as [Shape, string][]).map(([key, label]) => <button type="button" className={shape === key ? 'active' : ''} onClick={() => setShape(key)} key={key}>{label}</button>)}</div>
+      <div className="calculator-tabs">{([['pipe', 'Труба'], ['sheet', 'Лист'], ['round', 'Круг'], ['square', 'Квадрат']] as [MetalShape, string][]).map(([key, label]) => <button type="button" className={shape === key ? 'active' : ''} aria-pressed={shape === key} onClick={() => setShape(key)} key={key}>{label}</button>)}</div>
       <label>Материал<select value={density} onChange={(event) => setDensity(Number(event.target.value))}>{densities.map(([key, label, value]) => <option value={value} key={key}>{label} — {value} кг/м³</option>)}</select></label>
       <div className="calculator-fields">
         {shape === 'pipe' && <><label>Наружный диаметр, мм<input inputMode="decimal" value={diameter} onChange={(event) => setDiameter(event.target.value)} /></label><label>Стенка, мм<input inputMode="decimal" value={wall} onChange={(event) => setWall(event.target.value)} /></label></>}
@@ -65,6 +49,6 @@ export default function MetalCalculator() {
         <label>{shape === 'sheet' ? 'Количество листов, шт.' : 'Количество одинаковых штук, шт.'}<input inputMode="numeric" value={quantity} onChange={(event) => setQuantity(event.target.value)} /></label>
       </div>
     </div>
-    <aside className="calculator-result"><p>Теоретическая масса</p><strong>{formatKilograms(result.total)} <small>кг</small></strong><span>{formatUnit(result.unit)} {result.unitLabel}</span><em>Расчёт справочный. Фактическая масса зависит от допусков, марки, состояния и стандарта на продукцию.</em><Link href={`/?product=${encodeURIComponent(requestContext)}#request`}>Отправить заявку ↗</Link></aside>
+    <aside className="calculator-result" aria-live="polite"><p>Теоретическая масса</p>{'error' in result ? <p className="calculator-error" role="alert">{result.error}</p> : <><strong>{formatMetalMass(result.total)} <small>кг</small></strong><span>{formatMetalMass(result.unit)} {result.unitLabel}</span></>}<em>Расчёт справочный. Фактическая масса зависит от допусков, марки, состояния и стандарта на продукцию.</em>{!('error' in result) && <Link href={`/?product=${encodeURIComponent(requestContext)}#request`}>Отправить заявку ↗</Link>}</aside>
   </section>
 }

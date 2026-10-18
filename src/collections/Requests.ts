@@ -11,7 +11,7 @@ export const Requests: CollectionConfig = {
   },
   access: {
     read: isAuthenticated,
-    create: () => true,
+    create: isAuthenticated,
     update: isAuthenticated,
     delete: isAuthenticated,
   },

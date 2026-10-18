@@ -108,6 +108,13 @@
   font: 600 15px/1.2 inherit;
   outline: none;
 }
+.calculator-controls,
+.calculator-result { min-width: 0; }
+.calculator-controls select,
+.calculator-fields input { box-sizing: border-box; min-width: 0; max-width: 100%; }
+.calculator-result .calculator-error { color: #fff; font-size: 16px; line-height: 1.5; letter-spacing: 0; text-transform: none; }
+.calculator-info > p,
+.calculator-info > div span { color: #fff; }
 .calculator-fields {
   margin-top: 24px;
   display: grid;
@@ -209,6 +216,8 @@
   .calculator-fields {
     grid-template-columns: 1fr;
   }
+  .calculator-tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .calculator-tabs button { min-width: 0; }
   .calculator-result {
     min-height: 320px;
     padding: 30px 24px;
@@ -270,3 +279,6 @@
     font-size: 12px;
   }
 }
+
+.calculator-info > p,
+.calculator-info > div span { color: #fff; }

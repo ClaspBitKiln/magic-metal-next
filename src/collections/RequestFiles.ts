@@ -7,7 +7,7 @@ export const RequestFiles: CollectionConfig = {
   admin: { group: 'Заявки' },
   access: {
     read: isAuthenticated,
-    create: () => true,
+    create: isAuthenticated,
     update: isAuthenticated,
     delete: isAuthenticated,
   },

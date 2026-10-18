@@ -2,13 +2,14 @@ import { getPayload } from 'payload'
 import { NextResponse } from 'next/server'
 import nodemailer from 'nodemailer'
 import { createHmac } from 'node:crypto'
-import { hasRequestConsent, REQUEST_CONSENT_ERROR } from '@/lib/requestValidation'
+import { hasRequestConsent, hasValidRequestContact, REQUEST_CONSENT_ERROR, REQUEST_CONTACT_ERROR } from '@/lib/requestValidation'
 import { getRequestSpamReason } from '@/lib/requestSpam'
 
 export const runtime = 'nodejs'
 
-const MAX_TOTAL_FILE_SIZE = 25 * 1024 * 1024
-const MAX_REQUEST_SIZE = 28 * 1024 * 1024
+// Leave room for multipart headers and text below Vercel's 4.5 MB body limit.
+const MAX_TOTAL_FILE_SIZE = 4 * 1024 * 1024
+const MAX_REQUEST_SIZE = 4500000
 const ALLOWED_EXTENSIONS = new Set(['xlsx', 'xls', 'pdf', 'doc', 'docx', 'png', 'jpg', 'jpeg', 'webp', 'dwg', 'dxf', 'mp3', 'm4a', 'wav', 'ogg', 'webm'])
 const requestLog = new Map<string, number[]>()
 
@@ -69,7 +70,12 @@ export async function POST(request: Request) {
   const ip = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'local'
   if (isRateLimited(ip)) return NextResponse.json({ error: 'Слишком много запросов' }, { status: 429 })
 
-  const form = await request.formData()
+  let form: FormData
+  try {
+    form = await request.formData()
+  } catch {
+    return NextResponse.json({ error: 'Не удалось прочитать форму. Проверьте файлы и повторите отправку.' }, { status: 400 })
+  }
   if (text(form, 'website', 200)) return NextResponse.json({ ok: true })
   if (!hasRequestConsent(form.get('consent'))) return NextResponse.json({ error: REQUEST_CONSENT_ERROR }, { status: 400 })
   const startedAt = Number(text(form, 'startedAt', 20))
@@ -85,6 +91,7 @@ export async function POST(request: Request) {
   const productDirection = text(form, 'productDirection', 80)
   const files = form.getAll('files').filter((value): value is File => value instanceof File && value.size > 0)
   if (!phone && !email) return NextResponse.json({ error: 'Укажите телефон или email' }, { status: 400 })
+  if (!hasValidRequestContact(phone, email)) return NextResponse.json({ error: REQUEST_CONTACT_ERROR }, { status: 400 })
   if (!message && files.length === 0) return NextResponse.json({ error: 'Прикрепите заявку или опишите задачу' }, { status: 400 })
   const spamReason = getRequestSpamReason({ name, company, message, delivery, context, productDirection, hasAttachments: files.length > 0 })
   if (spamReason) return NextResponse.json({ error: spamReason === 'seo-advertising'
@@ -95,7 +102,7 @@ export async function POST(request: Request) {
   const requestMessage = [message || 'Требования приложены в файлах.', delivery ? `Получение: ${delivery}` : ''].filter(Boolean).join('\n\n')
 
   const totalSize = files.reduce((sum, file) => sum + file.size, 0)
-  if (totalSize > MAX_TOTAL_FILE_SIZE) return NextResponse.json({ error: 'Файлы превышают 25 МБ' }, { status: 413 })
+  if (totalSize > MAX_TOTAL_FILE_SIZE) return NextResponse.json({ error: 'Файлы превышают 4 МБ. Отправьте большие файлы на m1@magicmet.ru.' }, { status: 413 })
   if (files.some((file) => !ALLOWED_EXTENSIONS.has(file.name.split('.').pop()?.toLowerCase() || ''))) return NextResponse.json({ error: 'Недопустимый тип файла' }, { status: 415 })
 
   const uploadedIds: number[] = []
@@ -157,6 +164,7 @@ export async function POST(request: Request) {
       const transporter = nodemailer.createTransport({
         host: process.env.SMTP_HOST, port: Number(process.env.SMTP_PORT || 587), secure: process.env.SMTP_SECURE === 'true',
         auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASSWORD }, disableFileAccess: true, disableUrlAccess: true,
+        connectionTimeout: 10000, greetingTimeout: 10000, socketTimeout: 20000,
       })
       await transporter.sendMail({
         from: process.env.SMTP_USER, to: process.env.REQUEST_TO_EMAIL || 'm1@magicmet.ru', replyTo: email || undefined,

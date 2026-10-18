@@ -24,8 +24,19 @@ form?.querySelector('input[type="file"]')?.addEventListener('change', (event) =>
 form?.addEventListener('submit', async (event) => {
   event.preventDefault()
   const data = new FormData(form)
-  if (!String(data.get('phone') || '').trim() && !String(data.get('email') || '').trim()) {
+  const phone = String(data.get('phone') || '').trim()
+  const email = String(data.get('email') || '').trim()
+  if (!phone && !email) {
     status.textContent = 'Укажите телефон или email.'
+    return
+  }
+  const digits = phone.replace(/\D/g, '').length
+  if ((phone && (!/^\+?[\d\s().-]+$/.test(phone) || digits < 7 || digits > 15)) || (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))) {
+    status.textContent = 'Проверьте телефон или email: укажите действительный способ связи.'
+    return
+  }
+  if (data.getAll('files').reduce((sum, file) => sum + (file instanceof File ? file.size : 0), 0) > 4 * 1024 * 1024) {
+    status.textContent = 'Файлы — суммарно до 4 МБ. Большие файлы отправьте на m1@magicmet.ru.'
     return
   }
   const hasFiles = data.getAll('files').some((file) => file instanceof File && file.size > 0)
@@ -40,17 +51,22 @@ form?.addEventListener('submit', async (event) => {
   button.disabled = true
   status.textContent = 'Отправляем…'
   try {
-    const response = await fetch('/api/request', { method: 'POST', body: data })
+    const response = await fetch('/api/request', { method: 'POST', body: data, signal: AbortSignal.timeout(45000) })
     const result = await response.json().catch(() => ({}))
     if (!response.ok) throw new Error(result.error || 'Не удалось отправить заявку')
     const recorded = result.ok === true && (typeof result.id === 'number' || (typeof result.id === 'string' && result.id.length > 0) || result.emailDelivered === true || result.crmDelivered === true)
     if (recorded) track('request_sent')
     form.reset()
-    status.textContent = 'Заявка принята. Мы свяжемся с вами.'
+    status.textContent = result.id ? `Заявка № ${result.id} принята. Мы свяжемся с вами.` : 'Заявка принята. Мы свяжемся с вами.'
   } catch (error) {
     track('request_error')
-    status.textContent = error.message || 'Не удалось отправить. Напишите на m1@magicmet.ru.'
+    status.textContent = error.name === 'TimeoutError' ? 'Время ожидания истекло. Заявка могла поступить — уточните по телефону или email перед повторной отправкой.' : error.message || 'Не удалось отправить. Напишите на m1@magicmet.ru.'
   } finally {
     button.disabled = false
   }
+})
+
+// Close the native menu after navigation, including same-page anchors.
+document.querySelector('.mobile-menu')?.addEventListener('click', event => {
+  if (event.target instanceof Element && event.target.closest('a')) event.currentTarget.open = false
 })

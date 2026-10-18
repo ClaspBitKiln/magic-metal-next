@@ -19,7 +19,7 @@ describe('optional lightweight analytics', () => {
     const html = await response.text()
     expect(html).toContain('src="/analytics.js?v=20261017-1&id=123456789" defer')
     expect(html).toContain('id="request-form"')
-    expect(html).toContain('/home.js?v=20261017-analytics1')
+    expect(html).toContain('/home.js?v=20261017-reliability1')
     expect(html).not.toContain('mc.yandex.ru')
   })
 
@@ -34,7 +34,7 @@ describe('optional lightweight analytics', () => {
     document.body.innerHTML = '<a href="tel:+79227117363">Телефон</a>'
     history.replaceState(null, '', '/?product=PRIVATE-SPEC&email=secret@example.com&message=PRIVATE-TEXT&utm_source=yandex&utm_campaign=metal')
     Object.defineProperty(document, 'readyState', { configurable: true, value: 'loading' })
-    let idle: (() => void) | undefined
+    let idle: IdleRequestCallback | undefined
     const browser = window as Window & { ym?: { a?: IArguments[] }; magicmetAnalyticsReady?: boolean; requestIdleCallback?: (callback: () => void) => number }
     browser.requestIdleCallback = (callback) => { idle = callback; return 1 }
     delete browser.ym
@@ -44,7 +44,7 @@ describe('optional lightweight analytics', () => {
     expect(document.querySelector('script[src*="mc.yandex.ru"]')).toBeNull()
     window.dispatchEvent(new Event('load'))
     expect(document.querySelector('script[src*="mc.yandex.ru"]')).toBeNull()
-    idle!()
+    idle!({ didTimeout: false, timeRemaining: () => 0 })
     const calls = () => (browser.ym?.a || []).map(args => Array.from(args))
     expect(calls()[0]).toEqual([123456789, 'init', expect.objectContaining({ defer: true, webvisor: false, clickmap: false, trackLinks: false })])
     const hit = calls().find(call => call[1] === 'hit')!

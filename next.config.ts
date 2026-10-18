@@ -20,7 +20,11 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: process.env.SIMPLE_PUBLIC_SITE_BUILD === '1',
   },
   async redirects() {
-    return [{
+    return [
+      { source: '/spravochnik-nalichiya', destination: '/#products', permanent: true },
+      { source: '/poziciya', destination: '/#products', permanent: true },
+      { source: '/korzina', destination: '/#request', permanent: true },
+      {
       source: '/:path*',
       has: [{ type: 'host', value: 'www.magicmet.ru' }],
       destination: 'https://magicmet.ru/:path*',

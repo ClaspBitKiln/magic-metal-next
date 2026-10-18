@@ -243,7 +243,7 @@
   background: #0757e8;
 }
 .pipe-conversion > p {
-  color: #bed2ff;
+  color: #fff;
 }
 .pipe-conversion h2 {
   font-size: clamp(42px, 5vw, 74px);
