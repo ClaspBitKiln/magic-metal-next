@@ -30,7 +30,7 @@ export default function SectionCatalog({ category, relatedMaterials }: { categor
               const dimension = item.slug === 'krug-goryachekatanyj' ? `Диаметр ${item.range[0].value.split(';')[0]}` : item.range[0].value
               return <li key={item.slug}><a className="sc-row" href={`/produkciya/${item.categorySlug}/${item.slug}`}>
                 <strong>{item.shortTitle}</strong><span className="sc-dimension">{dimension}</span>
-                <span className="sc-standards">{(standards.length ? standards : item.standards).map((code) => <span key={code}>{code}</span>)}</span>
+                <span className="sc-standards">{(standards.length ? standards : item.standards.length ? item.standards : ['По спецификации']).map((code) => <span key={code}>{code}</span>)}</span>
                 <span className="sc-arrow" aria-hidden="true">›</span><span className="sc-mobile-link">Размеры и характеристики →</span>
               </a></li>
             })}</ul>

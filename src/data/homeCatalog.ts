@@ -94,12 +94,12 @@ const sdtItems: HomeCatalogItem[] = [
 ]
 
 const detailGroupDefinitions = [
-  { title: 'Листовой и рулонный прокат', note: 'Горячекатаный, холоднокатаный, оцинкованный и прокат с покрытиями', categorySlug: 'listovoy-prokat' },
-  { title: 'Сортовой и фасонный прокат', note: 'Арматура, круг, квадрат, полоса, уголок, балка и швеллер', categorySlug: 'sortovoy-i-fasonny-prokat' },
+  { title: 'Листовой и рулонный прокат', note: 'Горячекатаный, холоднокатаный, оцинкованный прокат и профнастил', categorySlug: 'listovoy-prokat' },
+  { title: 'Сортовой и фасонный прокат', note: 'Арматура, катанка, круг, квадрат, полоса, уголок, балка и швеллер', categorySlug: 'sortovoy-i-fasonny-prokat' },
   { title: 'Нержавеющие и специальные стали', note: 'Лист, трубы, сортовой прокат и специальные марки', categorySlug: 'nerzhaveyushchaya-stal' },
   { title: 'Поковки и заготовки', note: 'Кольца, диски, валы, оси и поковки по чертежу', categorySlug: 'pokovki-i-zagotovki' },
   { title: 'Цветной металлопрокат', note: 'Алюминий и дюраль; медь, бронза и латунь; титан; олово; свинец; цинк; нихром; баббит', categorySlug: 'cvetnye-metally' },
-  { title: 'Метизы и сварочные материалы', note: 'Крепёж, канаты, сетка, лента, проволока, электроды и расходные материалы', categorySlug: 'metizy-i-svarochnye-materialy' },
+  { title: 'Метизы и сварочные материалы', note: 'Крепёж, канаты, сетки, упаковочная лента, проволока, электроды и расходные материалы', categorySlug: 'metizy-i-svarochnye-materialy' },
 ] as const
 
 const hiddenDetailSlugs = new Set(['krug-i-kvadrat', 'balka-shveller-ugolok'])
@@ -112,7 +112,7 @@ const detailGroups: HomeCatalogGroup[] = detailGroupDefinitions.map((group) => (
     .map((item) => catalogItem({
       title: item.shortTitle,
       size: item.range.map((entry) => entry.value).join(' · '),
-      standards: item.standards.join(' · '),
+      standards: item.standards.join(' · ') || 'По спецификации',
       grades: item.grades.join(' · '),
       href: `/produkciya/${item.categorySlug}/${item.slug}`,
       availabilityQuery: item.shortTitle,

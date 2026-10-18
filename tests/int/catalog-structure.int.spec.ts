@@ -21,12 +21,12 @@ import { findCatalogStandard, getCatalogStandard, getCatalogStandardLinks, getSe
 const privateSupplierSnapshotPath = path.join(process.cwd(), 'private/data/23met-practical-snapshot.json')
 
 describe('unified homepage catalog', () => {
-  it('puts six section products before explanatory copy and preserves overview links', async () => {
+  it('puts section products before explanatory copy and preserves overview links', async () => {
     const page = await CategoryPage({ params: Promise.resolve({ slug: 'sortovoy-i-fasonny-prokat' }) })
     const markup = renderToStaticMarkup(page)
     const tree = new DOMParser().parseFromString(markup, 'text/html')
     const links = [...tree.querySelectorAll('.sc-list li > a')]
-    expect(links).toHaveLength(6)
+    expect(links).toHaveLength(8)
     expect(links.map((a) => a.querySelector('strong')?.textContent)).toContain('Круг горячекатаный')
     expect(links.every((a) => a.getAttribute('href')?.startsWith('/produkciya/sortovoy-i-fasonny-prokat/'))).toBe(true)
     expect(links.every((a) => a.querySelector('.sc-dimension')?.textContent && a.querySelector('.sc-standards')?.textContent)).toBe(true)
@@ -113,6 +113,34 @@ describe('unified homepage catalog', () => {
   })
 })
 
+describe('additional stock assortment', () => {
+  it.each([
+    ['sortovoy-i-fasonny-prokat', 'armatura', 40],
+    ['sortovoy-i-fasonny-prokat', 'katanka', 9],
+    ['listovoy-prokat', 'profnastil', 106],
+    ['metizy-i-svarochnye-materialy', 'setki', 80],
+    ['metizy-i-svarochnye-materialy', 'lenta-upakovochnaya', 9],
+  ] as const)('renders verified %s/%s stock separately from normative tables', async (slug, detail, count) => {
+    const page = await ProductDetailPage({ params: Promise.resolve({ slug, detail }) })
+    const tree = new DOMParser().parseFromString(renderToStaticMarkup(page), 'text/html')
+    const rows = [...tree.querySelectorAll('#stock-assortment tbody tr')]
+    expect(rows).toHaveLength(count)
+    expect(tree.querySelector('#stock-assortment')?.textContent).not.toMatch(/₽|руб\.|RUB|НДС|Цена/)
+    expect(tree.querySelectorAll('#sizes')).toHaveLength(0)
+    expect(tree.querySelectorAll('.pipe-standards')).toHaveLength(0)
+    for (const row of rows) {
+      const request = new URL(row.querySelector('a')!.getAttribute('href')!, 'https://magicmet.ru')
+      expect(request.hash).toBe('#request')
+      expect(request.searchParams.get('product')).toContain('единица учёта')
+    }
+    if (detail === 'profnastil') {
+      expect(rows.every(row => row.textContent?.includes('Единица учёта: м'))).toBe(true)
+      expect(rows.some(row => row.textContent?.includes('Уценка'))).toBe(true)
+    }
+    if (detail === 'lenta-upakovochnaya') expect(rows.some(row => row.textContent?.includes('Ширина: 19'))).toBe(true)
+  })
+})
+
 describe('rope stock assortment', () => {
   it('keeps six stock rows separate from normative tables and transfers exact execution into the request', async () => {
     const page = await ProductDetailPage({ params: Promise.resolve({ slug: 'metizy-i-svarochnye-materialy', detail: 'kanaty' }) })
@@ -132,7 +160,7 @@ describe('rope stock assortment', () => {
 describe('normative product size tables', () => {
   it('applies compact presentation to every catalog card while preserving all normative source rows', () => {
     const cards = [...pipeCatalog, ...productDetailCatalog, ...sdtCatalog.map(item => ({ ...item, categorySlug: 'sdt' }))]
-      .filter(item => !['krug-i-kvadrat', 'balka-shveller-ugolok', 'kanaty'].includes(item.slug))
+      .filter(item => !['krug-i-kvadrat', 'balka-shveller-ugolok', 'kanaty', 'armatura', 'katanka', 'profnastil', 'setki', 'lenta-upakovochnaya'].includes(item.slug))
     for (const card of cards) {
       const series = getProductSizeSeries(card.categorySlug, card.slug)
       const guide = getDimensionGuide(card.categorySlug, card.slug)
@@ -200,7 +228,7 @@ describe('normative product size tables', () => {
 
   it('preserves the 51 normative cards alongside the separate stock assortment', () => {
     const cards = [...pipeCatalog, ...productDetailCatalog, ...sdtCatalog.map((item) => ({ ...item, categorySlug: 'sdt' }))]
-      .filter((item) => !['krug-i-kvadrat', 'balka-shveller-ugolok', 'kanaty'].includes(item.slug))
+      .filter((item) => !['krug-i-kvadrat', 'balka-shveller-ugolok', 'kanaty', 'armatura', 'katanka', 'profnastil', 'setki', 'lenta-upakovochnaya'].includes(item.slug))
     expect(cards).toHaveLength(51)
     expect(cards.filter((item) => getProductSizeSeries(item.categorySlug, item.slug).length)).toHaveLength(45)
     expect(cards.filter((item) => getProductSizeSeries(item.categorySlug, item.slug).some((table) => table.kind !== 'requirements'))).toHaveLength(38)

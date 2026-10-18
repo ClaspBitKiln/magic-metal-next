@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest'
 import { matchesCatalogQuery, type CatalogSearchRow } from '@/lib/catalogSearch'
 import { decodeCatalogSnapshot } from '@/lib/catalogSnapshot'
 import { catalogTreeDirectRequestQueries, catalogTreePipeQueries, requestOnlyDirectoryQueries } from '@/data/catalogAvailability'
+import { getCatalogStockAssortment } from '@/data/catalogStockAssortment.server'
 import { productDetailCatalog } from '@/data/productDetailCatalog'
 
 const snapshot = decodeCatalogSnapshot(JSON.parse(fs.readFileSync(path.join(process.cwd(), 'public/data/mc-price-snapshot.json'), 'utf8'))) as { rows: CatalogSearchRow[] }
@@ -87,10 +88,12 @@ describe('catalog search links', () => {
   it('covers every public catalog leaf with stock rows or an explicit RFQ route', () => {
     const hiddenSlugs = new Set(['krug-i-kvadrat', 'balka-shveller-ugolok'])
     const detailQueries = productDetailCatalog.filter((item) => !hiddenSlugs.has(item.slug)).map((item) => item.shortTitle)
+    const approvedStockQueries = new Set(productDetailCatalog.filter(item => getCatalogStockAssortment(item.categorySlug, item.slug).length > 0).map(item => item.shortTitle))
     const queries = [...catalogTreePipeQueries, ...detailQueries, ...catalogTreeDirectRequestQueries]
 
     expect(new Set(queries).size).toBe(queries.length)
     for (const query of queries) {
+      if (approvedStockQueries.has(query)) continue
       const matches = count(query)
       if (requestOnlyDirectoryQueries.has(query)) expect(matches, query).toBe(0)
       else expect(matches, query).toBeGreaterThan(0)
