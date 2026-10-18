@@ -1,10 +1,11 @@
 'use client'
 
 import { useCallback, useEffect, useId, useRef } from 'react'
+import { formatDimensionValue, sourceDimensionValue } from '@/lib/dimensionDisplay'
 
 const numericSize = (value: string) => Number(value.trim().replace(/[()]/g, '').replace(',', '.')).toString()
 const sectionKey = (value: string) => value.split(/\s*×\s*/u).map(numericSize).join('x')
-const wallValues = (row: HTMLTableRowElement, columns: number[]) => columns.flatMap(column => (row.cells[column]?.textContent || '').split(';').filter(value => /^\s*(?:\d+(?:[.,]\d+)?|\(\d+(?:[.,]\d+)?\))\s*$/.test(value)).map(numericSize))
+const wallValues = (row: HTMLTableRowElement, columns: number[]) => columns.flatMap(column => sourceDimensionValue(row.cells[column]).split(';').filter(value => /^\s*(?:\d+(?:[.,]\d+)?|\(\d+(?:[.,]\d+)?\))\s*$/.test(value)).map(numericSize))
 
 const seriesKey = (element: HTMLDivElement | null) => element?.closest('details')?.querySelector('.size-series-scope')?.id.replace('sizes-series-', '')
 
@@ -35,7 +36,7 @@ export default function SizeTableFilter({ column, values, total, wallColumns = [
     const table = root.current?.closest('details')?.querySelector<HTMLTableElement>('.size-series-reference table')
     if (!wall.current || !table) return
     const size = select.current?.value || ''
-    const rows = Array.from(table.tBodies[0].rows).filter(row => !size || row.cells[0].textContent === size)
+    const rows = Array.from(table.tBodies[0].rows).filter(row => !size || sourceDimensionValue(row.cells[0]) === size)
     const walls = [...new Set(rows.flatMap(row => wallValues(row, wallColumns)))].sort((a, b) => Number(a) - Number(b))
     wall.current.replaceChildren(new Option('Выберите стенку', ''), ...walls.map(value => new Option(value.replace('.', ','), value)))
     if (requested && !walls.includes(requested)) wall.current.add(new Option(`${requested.replace('.', ',')} — нет сочетания`, requested))
@@ -49,7 +50,7 @@ export default function SizeTableFilter({ column, values, total, wallColumns = [
     const size = select.current?.value || ''
     const thickness = wall.current?.value || ''
     if (fallback.current) fallback.current.hidden = true
-    if (query.current) query.current.value = size ? `${size}${thickness ? `×${thickness.replace('.', ',')}` : ''}` : ''
+    if (query.current) query.current.value = size ? `${formatDimensionValue(size)}${thickness ? `×${thickness.replace('.', ',')}` : ''}` : ''
     let visible = 0
     let bracketed = size.includes('(')
     const conditions = new Set<string>()
@@ -58,7 +59,7 @@ export default function SizeTableFilter({ column, values, total, wallColumns = [
         const cell = row.cells[index]
         if (cell.querySelector('.size-series-selected-wall')) cell.textContent = cell.textContent
       }
-      row.hidden = Boolean((size && row.cells[0].textContent !== size) || (thickness && !wallValues(row, wallColumns).includes(thickness)))
+      row.hidden = Boolean((size && sourceDimensionValue(row.cells[0]) !== size) || (thickness && !wallValues(row, wallColumns).includes(thickness)))
       if (!row.hidden) {
         visible++
         if (thickness) for (const index of wallColumns) {
@@ -83,7 +84,7 @@ export default function SizeTableFilter({ column, values, total, wallColumns = [
       request.current.hidden = !(size && thickness && visible)
       if (size && thickness && visible && requestHref) {
         const url = new URL(requestHref, window.location.origin)
-        url.searchParams.set('product', `${url.searchParams.get('product') || ''} — ${size} × ${thickness.replace('.', ',')} мм; ${context}; ${[...conditions].filter(Boolean).join("; ")}`)
+        url.searchParams.set('product', `${url.searchParams.get('product') || ''} — ${formatDimensionValue(size)} × ${thickness.replace('.', ',')} мм; ${context}; ${[...conditions].filter(Boolean).join("; ")}`)
         request.current.href = url.pathname + url.search + url.hash
       }
     }
@@ -116,16 +117,16 @@ export default function SizeTableFilter({ column, values, total, wallColumns = [
           }
           if (inBrackets) notes.add('Размер в скобках — см. примечания к таблице')
           const tr = body.insertRow(), first = document.createElement('th')
-          first.scope = 'row'; first.textContent = row.cells[0].textContent; tr.append(first)
+          first.scope = 'row'; first.textContent = formatDimensionValue(sourceDimensionValue(row.cells[0])); tr.append(first)
           const cell = tr.insertCell(); cell.textContent = value.replace('.', ',')
           if (inBrackets || wallColumns.length > 1) {
             const note = document.createElement('small'); note.className = 'size-series-pair-condition'; note.textContent = [...notes].filter(Boolean).join('; '); first.append(note)
           }
           tr.insertCell().textContent = standard || ''
           const link = document.createElement('a'), url = new URL(requestHref, window.location.origin)
-          url.searchParams.set('product', `${url.searchParams.get('product') || ''} — ${row.cells[0].textContent} × ${value.replace('.', ',')} мм; ${context}; ${[...notes].filter(Boolean).join('; ')}`)
+          url.searchParams.set('product', `${url.searchParams.get('product') || ''} — ${formatDimensionValue(sourceDimensionValue(row.cells[0]))} × ${value.replace('.', ',')} мм; ${context}; ${[...notes].filter(Boolean).join('; ')}`)
           link.href = url.pathname + url.search + url.hash
-          link.textContent = 'Заявка →'; link.setAttribute('aria-label', `Заявка на ${row.cells[0].textContent} × ${value.replace('.', ',')} мм`)
+          link.textContent = 'Заявка →'; link.setAttribute('aria-label', `Заявка на ${formatDimensionValue(sourceDimensionValue(row.cells[0]))} × ${value.replace('.', ',')} мм`)
           tr.insertCell().append(link)
         }
       }
@@ -136,12 +137,12 @@ export default function SizeTableFilter({ column, values, total, wallColumns = [
     }
     if (size && thickness && !visible && fallback.current && requestHref) {
       const url = new URL(requestHref, window.location.origin)
-      url.searchParams.set('product', `${url.searchParams.get('product') || ''} — проверить размер ${size} × ${thickness.replace('.', ',')} мм; ${context}`)
+      url.searchParams.set('product', `${url.searchParams.get('product') || ''} — проверить размер ${formatDimensionValue(size)} × ${thickness.replace('.', ',')} мм; ${context}`)
       fallback.current.href = url.pathname + url.search + url.hash
       fallback.current.hidden = false
     }
     if (selectionResult.current) selectionResult.current.hidden = !complete
-    if (selectionSize.current) selectionSize.current.textContent = `${size} × ${thickness.replace('.', ',')} мм`
+    if (selectionSize.current) selectionSize.current.textContent = `${formatDimensionValue(size)} × ${thickness.replace('.', ',')} мм`
     const reference = table.closest<HTMLElement>('.size-series-reference')
     if (reference && selectionResult.current) {
       reference.hidden = complete || showList
@@ -238,7 +239,7 @@ export default function SizeTableFilter({ column, values, total, wallColumns = [
         if (result.current) result.current.textContent = match ? `${profileSearch ? 'Сечения' : 'Диаметра'} нет в этой таблице. Отправьте спецификацию: проверим другое исполнение.` : `Введите ${dimensions} в миллиметрах или отправьте спецификацию.`
         if (fallback.current && requestHref) {
           const url = new URL(requestHref, window.location.origin)
-          url.searchParams.set('product', `${url.searchParams.get('product') || ''} — проверить размер ${value.slice(0, 200)}; ${context}`)
+          url.searchParams.set('product', `${url.searchParams.get('product') || ''} — проверить размер ${formatDimensionValue(value.slice(0, 200))}; ${context}`)
           fallback.current.href = url.pathname + url.search + url.hash
           fallback.current.hidden = false
         }
@@ -252,7 +253,7 @@ export default function SizeTableFilter({ column, values, total, wallColumns = [
       <label htmlFor={id}>{column}</label>
       <select id={id} ref={select} onChange={() => { refreshWalls(); filter() }}>
         <option value="">Все размеры</option>
-        {values.map(value => <option key={value} value={value}>{value}</option>)}
+        {values.map(value => <option key={value} value={value}>{formatDimensionValue(value)}</option>)}
       </select>
     </div>
     {wallColumns.length > 0 && <div>

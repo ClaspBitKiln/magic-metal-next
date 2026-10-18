@@ -41,7 +41,7 @@
 .product-size-series .size-series-quick-search p { margin: 6px 0 0; color: #536481; font-size: 13px; }
 .size-series-filter output { align-self: center; color: #536481; font-size: 13px; }
 .size-series-filter select:focus-visible, .size-series-filter button:focus-visible { outline: 2px solid #0757e8; outline-offset: 2px; }
-.product-size-series .size-series-number { text-align: right; }
+.product-size-series .size-series-number { text-align: left; font-variant-numeric: tabular-nums; }
 .product-size-series tbody .size-series-number { white-space: nowrap; }
 .product-size-series .size-series-list { overflow-wrap: normal; word-break: normal; line-height: 1.65; color: #23416c; }
 .product-size-series .size-series-requirements tbody th { white-space: normal; overflow-wrap: anywhere; max-width: 14ch; }
@@ -105,7 +105,7 @@
 .size-series-filter .size-series-pair-list { flex: 1 0 100%; width: 100%; max-height: 440px; border: 1px solid #d9e1ef; background: #fff; }
 .product-size-series .size-series-pair-list tbody th, .product-size-series .size-series-pair-list td { padding: 0 10px; vertical-align: middle; }
 .product-size-series .size-series-pair-list tbody th { font-weight: 500; }
-.product-size-series .size-series-pair-list td:nth-child(2), .product-size-series .size-series-pair-list thead th:nth-child(2) { text-align: right; font-variant-numeric: tabular-nums; }
+.product-size-series .size-series-pair-list td:nth-child(2), .product-size-series .size-series-pair-list thead th:nth-child(2) { text-align: left; font-variant-numeric: tabular-nums; }
 .product-size-series .size-series-pair-list a { display: inline-flex; align-items: center; min-height: 44px; white-space: nowrap; font-weight: 600; text-decoration: none; }
 .product-size-series .size-series-pair-condition { display: block; max-width: 28ch; padding: 4px 0; font-size: 12px; line-height: 1.35; white-space: normal; color: #536481; }
 @media (max-width: 700px) {

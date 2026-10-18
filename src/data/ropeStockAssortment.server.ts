@@ -1,3 +1,5 @@
+import { formatDimensionValue } from '@/lib/dimensionDisplay'
+
 // Imported only by the server-rendered product detail page. This small set is
 // separate from the normative tables and the complete stock dataset.
 // Verified source: metizy.xls, A160:D168; B161 has no dimension name or unit.
@@ -12,4 +14,4 @@ export const ropeStockAssortment = [
 ] as const
 
 export const ropeStockRequestHref = (row: typeof ropeStockAssortment[number]) =>
-  `/?product=${encodeURIComponent(`Канаты; ${row.description}; размерное обозначение ${row.sizeDesignation}; единица учёта ${row.unit}`)}#request`
+  `/?product=${encodeURIComponent(`Канаты; ${row.description}; размерное обозначение ${formatDimensionValue(row.sizeDesignation)}; единица учёта ${row.unit}`)}#request`

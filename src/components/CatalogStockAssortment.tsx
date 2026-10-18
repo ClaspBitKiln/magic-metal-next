@@ -1,3 +1,4 @@
+import { formatDimensionValue, formatDimensionDesignation } from '@/lib/dimensionDisplay'
 import { catalogStockRequestHref, getCatalogStockAssortment } from '@/data/catalogStockAssortment.server'
 
 export default function CatalogStockAssortment({ categorySlug, slug, title }: { categorySlug: string; slug: string; title: string }) {
@@ -12,9 +13,9 @@ export default function CatalogStockAssortment({ categorySlug, slug, title }: { 
         <caption>{title}: {rows.length} позиций</caption>
         <thead><tr><th scope="col">Размер и обозначение</th><th scope="col">Вид и исполнение</th><th scope="col">Выбрать</th></tr></thead>
         <tbody>{rows.map(row => <tr key={row.id}>
-          <th scope="row">{row.dimensionLabel || 'Размерное обозначение'}: {row.sizeDesignation || 'по спецификации'}</th>
-          <td>{row.group}<br />{row.description && <>{row.nameFieldLabel ? `${row.nameFieldLabel}: ` : ''}{row.description}<br /></>}<small>Единица учёта: {row.unit}</small></td>
-          <td><a href={catalogStockRequestHref(row, title)} aria-label={`Запросить: ${row.group}, ${row.description}, ${row.sizeDesignation}`}>В заявку →</a></td>
+          <th scope="row">{row.dimensionLabel || 'Размерное обозначение'}: {formatDimensionValue(row.sizeDesignation) || 'по спецификации'}</th>
+          <td>{row.group}<br />{row.description && <>{row.nameFieldLabel ? `${row.nameFieldLabel}: ` : ''}{formatDimensionDesignation(row.description)}<br /></>}<small>Единица учёта: {row.unit}</small></td>
+          <td><a href={catalogStockRequestHref(row, title)} aria-label={`Запросить: ${row.group}, ${formatDimensionDesignation(row.description)}, ${formatDimensionValue(row.sizeDesignation)}`}>В заявку →</a></td>
         </tr>)}</tbody>
       </table>
     </div>

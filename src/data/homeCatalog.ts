@@ -1,3 +1,4 @@
+import { formatDimensionSummary } from '@/lib/dimensionDisplay'
 import { pipeCatalog } from '@/data/pipeCatalog'
 import { productDetailCatalog } from '@/data/productDetailCatalog'
 import { getSizeSeriesSummary, hasProductSizeSeries } from '@/data/productSizeSeries'
@@ -69,7 +70,7 @@ const practicalSeriesQueries = new Set([
 const catalogItem = (item: Omit<HomeCatalogItem, 'requestOnly' | 'practicalSeries'>): HomeCatalogItem => ({
   ...item,
   href: hasProductSizeSeries(item.href) || hasDimensionGuide(item.href) ? `${item.href}#sizes` : item.href,
-  size: getSizeSeriesSummary(item.href) || item.size,
+  size: formatDimensionSummary(getSizeSeriesSummary(item.href) || item.size),
   requestOnly: requestOnlyQueries.has(item.availabilityQuery),
   practicalSeries: practicalSeriesQueries.has(item.availabilityQuery),
 })

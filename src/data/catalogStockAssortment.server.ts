@@ -1,3 +1,5 @@
+import { formatDimensionValue, formatDimensionDesignation } from '@/lib/dimensionDisplay'
+
 // Server-rendered catalog data: import only from server components/routes.
 // Source: MetalService XLS dated 2026-10-16; owner confirmed stock standard 2026-10-18.
 // Explicit source anchors only. Prices and tax calculations are intentionally absent.
@@ -523,8 +525,8 @@ export function catalogStockRequestHref(row: CatalogStockAssortmentRow, title: s
   const product = [
     title,
     row.group,
-    row.description ? `${row.nameFieldLabel ? `${row.nameFieldLabel}: ` : ''}${row.description}` : '',
-    row.sizeDesignation ? `${row.dimensionLabel || 'размерное обозначение'} ${row.sizeDesignation}` : '',
+    row.description ? `${row.nameFieldLabel ? `${row.nameFieldLabel}: ` : ''}${formatDimensionDesignation(row.description)}` : '',
+    row.sizeDesignation ? `${row.dimensionLabel || 'размерное обозначение'} ${formatDimensionValue(row.sizeDesignation)}` : '',
     `единица учёта ${row.unit}`,
   ].filter(Boolean).join('; ')
   return `/?product=${encodeURIComponent(product)}#request`

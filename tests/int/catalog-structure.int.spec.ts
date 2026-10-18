@@ -1,3 +1,4 @@
+import { formatDimensionValue, sourceDimensionValue } from '@/lib/dimensionDisplay'
 import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
@@ -169,7 +170,8 @@ describe('normative product size tables', () => {
       expect(tree.querySelectorAll('.size-series-filter')).toHaveLength(series.length)
       const references = tree.querySelectorAll('.size-series-reference')
       series.forEach((table, index) => {
-        expect(Array.from(references[index].querySelectorAll('tbody tr'), row => Array.from(row.children, cell => cell.textContent))).toEqual(table.rows)
+        expect(Array.from(references[index].querySelectorAll('tbody tr'), row => Array.from(row.children, sourceDimensionValue))).toEqual(table.rows)
+        expect(Array.from(references[index].querySelectorAll('tbody tr'), row => Array.from(row.children, cell => cell.textContent))).toEqual(table.rows.map(row => row.map(formatDimensionValue)))
       })
       if (!series.length) expect(tree.querySelector('.size-series-guide .size-series-selection-request')?.getAttribute('href')).toBe('/#request')
     }
@@ -189,7 +191,7 @@ describe('normative product size tables', () => {
     expect(details).toHaveLength(6)
     tables.forEach((table, index) => {
       expect(Boolean(details[index].querySelector('.size-series-quick-search'))).toBe(!table.title.includes('специальные'))
-      expect(Array.from(details[index].querySelectorAll('tbody tr'), row => Array.from(row.children, cell => cell.textContent))).toEqual(table.rows)
+      expect(Array.from(details[index].querySelectorAll('tbody tr'), row => Array.from(row.children, cell => cell.textContent))).toEqual(table.rows.map(row => row.map(formatDimensionValue)))
     })
   })
 

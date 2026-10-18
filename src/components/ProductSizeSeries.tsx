@@ -1,3 +1,4 @@
+import { formatDimensionValue } from '@/lib/dimensionDisplay'
 import type { SizeSeries } from '@/data/sizeSeriesTypes'
 import type { ProductDimensionGuide } from '@/data/productDimensionGuides'
 import { getCatalogStandardLinks } from '@/data/catalogStandards'
@@ -51,7 +52,7 @@ export default function ProductSizeSeries({ series, requestHref, guide }: { seri
           <table className={table.kind === 'requirements' ? 'size-series-requirements' : undefined}>
             <caption>{table.title} — {table.standard}</caption>
             <thead><tr>{table.columns.map((column, columnIndex) => <th scope="col" key={column} className={numericColumns[columnIndex] ? 'size-series-number' : undefined}>{column}</th>)}</tr></thead>
-            <tbody>{table.rows.map((row) => <tr key={row.join('|')}>{row.map((cell, column) => column === 0 ? <th scope="row" key={column}>{cell}</th> : <td key={column} className={numericColumns[column] ? 'size-series-number' : dimensionList.test(cell) || wallPairList.test(cell) ? 'size-series-list' : undefined}>{cell}</td>)}</tr>)}</tbody>
+            <tbody>{table.rows.map((row) => <tr key={row.join('|')}>{row.map((cell, column) => { const display = formatDimensionValue(cell); const source = display !== cell ? cell : undefined; return column === 0 ? <th scope="row" key={column} data-source-value={source}>{display}</th> : <td key={column} data-source-value={source} className={numericColumns[column] ? 'size-series-number' : dimensionList.test(cell) || wallPairList.test(cell) ? 'size-series-list' : undefined}>{display}</td> })}</tr>)}</tbody>
           </table>
         </div>
         {table.notes.slice(1).map((note) => <p className="size-series-note" key={note}>{note}</p>)}

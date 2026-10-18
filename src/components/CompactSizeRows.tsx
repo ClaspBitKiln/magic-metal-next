@@ -1,18 +1,19 @@
 'use client'
 
 import { useCallback, useEffect, useId, useRef } from 'react'
+import { formatDimensionValue, sourceDimensionValue } from '@/lib/dimensionDisplay'
 
 const normalized = (value: string) => value.toLowerCase().replace(/,/g, '.').replace(/[хx×]/g, 'x').replace(/\s+/g, ' ').trim()
-const tokens = (value: string) => normalized(value).match(/\d+(?:\.\d+)?|[a-zа-яё]+|[≤≥<>]/gu) || []
+const tokens = (value: string) => (normalized(value).match(/\d+(?:\.\d+)?|[a-zа-яё]+|[≤≥<>]/gu) || []).map(token => token.replace(/\.0+$/u, ''))
 const matches = (text: string, query: string) => {
   const available = tokens(text)
   const requested = tokens(query)
   return requested.length > 0 && requested.every(token => available.includes(token))
 }
-const rowText = (row: HTMLTableRowElement) => Array.from(row.cells, cell => cell.textContent || '').join(' ')
+const rowText = (row: HTMLTableRowElement) => Array.from(row.cells, cell => sourceDimensionValue(cell)).join(' ')
 const rowIdentity = (row: HTMLTableRowElement, scope: string) => {
   let hash = 2166136261
-  const text = scope + '\u001f' + Array.from(row.cells, cell => cell.textContent || '').join('\u001f')
+  const text = scope + '\u001f' + Array.from(row.cells, cell => sourceDimensionValue(cell)).join('\u001f')
   for (let index = 0; index < text.length; index++) hash = Math.imul(hash ^ text.charCodeAt(index), 16777619)
   return `r${(hash >>> 0).toString(36)}`
 }
@@ -45,7 +46,7 @@ export default function CompactSizeRows({ column, values, total, requestHref, co
     const index = key()
     if (!index) return
     const url = new URL(window.location.href)
-    const query = input.current?.value.trim() || ''
+    const query = select.current?.value || input.current?.value.trim() || ''
     if (query) url.searchParams.set(`size_${index}`, query)
     else url.searchParams.delete(`size_${index}`)
     if (selected.current) url.searchParams.set(`row_${index}`, selected.current)
@@ -57,7 +58,8 @@ export default function CompactSizeRows({ column, values, total, requestHref, co
     const source = table()
     if (!source || !card.current) return
     const labels = Array.from(source.tHead?.rows[0]?.cells || []).map(cell => cell.textContent || '')
-    const cells = Array.from(row.cells).map(cell => cell.textContent || '')
+    const sourceCells = Array.from(row.cells, cell => sourceDimensionValue(cell))
+    const cells = sourceCells.map(formatDimensionValue)
     const heading = document.createElement('strong')
     heading.textContent = `${labels[0]}: ${cells[0]}`
     const description = document.createElement('p')
@@ -113,10 +115,11 @@ export default function CompactSizeRows({ column, values, total, requestHref, co
     const query = input.current?.value.trim() || ''
     const selectedValue = select.current?.value || ''
     const rows = Array.from(source.tBodies[0]?.rows || [])
-    const filtered = rows.filter(row => (!selectedValue || row.cells[0]?.textContent === selectedValue) && (!query || matches(rowText(row), query)))
+    const filtered = rows.filter(row => (!selectedValue || sourceDimensionValue(row.cells[0]) === selectedValue) && (!query || matches(rowText(row), query)))
     body.current.replaceChildren()
     filtered.slice(0, limit.current).forEach(row => {
-      const cells = Array.from(row.cells).map(cell => cell.textContent || '')
+      const sourceCells = Array.from(row.cells, cell => sourceDimensionValue(cell))
+      const cells = sourceCells.map(formatDimensionValue)
       const output = document.createElement('tr')
       const first = document.createElement('th'); first.scope = 'row'
       const button = document.createElement('button'); button.type = 'button'; button.textContent = cells[0]
@@ -142,7 +145,7 @@ export default function CompactSizeRows({ column, values, total, requestHref, co
     }
     viewport.current.hidden = Boolean(card.current && !card.current.hidden)
     if (more.current) more.current.hidden = viewport.current.hidden || filtered.length <= limit.current
-    if (exact && query && filtered.length === 1 && normalized(filtered[0].cells[0]?.textContent || '') === normalized(query)) showCard(filtered[0])
+    if (exact && query && filtered.length === 1 && normalized(formatDimensionValue(sourceDimensionValue(filtered[0].cells[0]))) === normalized(formatDimensionValue(query))) showCard(filtered[0])
   }, [table, total, href, save, showCard, context, standard, column])
 
   useEffect(() => {
@@ -156,7 +159,7 @@ export default function CompactSizeRows({ column, values, total, requestHref, co
       const url = new URL(window.location.href)
       const query = url.searchParams.get(`size_${key()}`) || ''
       const row = url.searchParams.get(`row_${key()}`) || ''
-      if (input.current) input.current.value = query
+      if (input.current) input.current.value = formatDimensionValue(query)
       if (select.current) select.current.value = values.includes(query) ? query : ''
       limit.current = 20
       selected.current = row
@@ -186,7 +189,7 @@ export default function CompactSizeRows({ column, values, total, requestHref, co
       <label htmlFor={id}>Поиск по обозначению или параметру</label>
       <div><input id={id} ref={input} type="search" maxLength={200} onChange={() => { limit.current = 20; if (select.current) select.current.value = ''; render(true) }} /><button type="submit">Найти</button></div>
     </form>
-    {values.length > 0 && <label>{column} <select ref={select} onChange={() => { limit.current = 20; if (input.current) input.current.value = select.current?.value || ''; render(true, true) }}><option value="">Все значения</option>{values.map(value => <option key={value} value={value}>{value}</option>)}</select></label>}
+    {values.length > 0 && <label>{column} <select ref={select} onChange={() => { limit.current = 20; if (input.current) input.current.value = formatDimensionValue(select.current?.value || ''); render(true, true) }}><option value="">Все значения</option>{values.map(value => <option key={value} value={value}>{formatDimensionValue(value)}</option>)}</select></label>}
     <output ref={counter} aria-live="polite" />
     <p className="size-series-generic-help">Нажмите на обозначение в списке, чтобы открыть все параметры.</p>
     <div className="size-series-generic-list size-series-scroll" ref={viewport} role="region" aria-label={`${context}: компактный список`} tabIndex={0} />

@@ -1,3 +1,4 @@
+import { formatDimensionValue } from '@/lib/dimensionDisplay'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
@@ -85,7 +86,7 @@ export default async function PipeDetailPage({ params }: { params: Promise<{ slu
           <caption>Канаты: размерные обозначения, исполнение и выбор для заявки</caption>
           <thead><tr><th scope="col">Размерное обозначение</th><th scope="col">Исполнение</th><th scope="col">Выбрать</th></tr></thead>
           <tbody>{ropeStockAssortment.map(row => <tr key={row.id}>
-            <th scope="row">{row.sizeDesignation}</th>
+            <th scope="row">{formatDimensionValue(row.sizeDesignation)}</th>
             <td>{row.description}<br /><small>Единица учёта: {row.unit}</small></td>
             <td><a href={ropeStockRequestHref(row)} aria-label={`Запросить канат: ${row.description}, размерное обозначение ${row.sizeDesignation}`}>В заявку →</a></td>
           </tr>)}</tbody>
