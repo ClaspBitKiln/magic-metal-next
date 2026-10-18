@@ -2805,3 +2805,15 @@ main select {
   .public-home .top-cta-label-full { display: none; }
   .public-home .top-cta-label-short { display: inline; }
 }
+
+/* Compact card headings and fact labels must retain their component scale. */
+main:not(.public-home) .search-results h2 {
+  font-size: clamp(19px, 1.75vw, 28px) !important;
+  line-height: 1.1 !important;
+}
+main:not(.public-home) .material-facts h2,
+main:not(.public-home) .product-facts h2 {
+  font-size: 13px !important;
+  line-height: 1.35 !important;
+  letter-spacing: 0.08em !important;
+}

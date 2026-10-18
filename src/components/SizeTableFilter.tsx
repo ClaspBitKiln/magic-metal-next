@@ -172,6 +172,8 @@ export default function SizeTableFilter({ column, values, total, wallColumns = [
   }, [wallColumns, requestHref, context, total, standard, quickSearch, profileSearch])
 
   useEffect(() => {
+    const parent = root.current?.closest('details')
+    let initialized = false
     function restore() {
       const key = seriesKey(root.current)
       if (!key) return
@@ -182,15 +184,27 @@ export default function SizeTableFilter({ column, values, total, wallColumns = [
       const normalizedWall = /^\d+(?:[.,]\d+)?$/.test(wallValue) ? numericSize(wallValue) : ''
       const validWall = !wallValue || Boolean(wall.current && normalizedWall && Number(normalizedWall) > 0)
       if (select.current) select.current.value = validSize ? sizeValue : ''
+      if (sizeValue || wallValue) parent?.setAttribute('open', '')
+      // Closed tables keep their server HTML without scanning every cell or
+      // constructing a hidden compact list during initial hydration.
+      if (!parent?.open) { initialized = false; return }
+      initialized = true
       refreshWalls(validWall ? normalizedWall : '')
-      if (sizeValue || wallValue) root.current?.closest('details')?.setAttribute('open', '')
       filter(false)
       if ((!validSize || !validWall) && result.current) result.current.textContent += '. Часть размеров из ссылки не распознана. Проверьте выбор.'
     }
     restore()
     if (root.current) root.current.hidden = false
+    const toggle = () => {
+      if (!parent?.open) initialized = false
+      else if (!initialized) restore()
+    }
+    parent?.addEventListener('toggle', toggle)
     window.addEventListener('popstate', restore)
-    return () => window.removeEventListener('popstate', restore)
+    return () => {
+      parent?.removeEventListener('toggle', toggle)
+      window.removeEventListener('popstate', restore)
+    }
   }, [refreshWalls, values, filter])
 
   return <div className="size-series-filter" hidden ref={root}>

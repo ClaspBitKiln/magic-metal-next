@@ -400,3 +400,13 @@
     align-self: center;
   }
 }
+
+/* Let long Russian names wrap inside mobile grid tracks without shrinking text. */
+@media (max-width: 560px) {
+  .product-subcatalog a { grid-template-columns: minmax(0, 1fr) 18px; }
+  .product-subcatalog a > span { min-width: 0; overflow-wrap: anywhere; }
+}
+@media (max-width: 760px) {
+  .product-materials a { grid-template-columns: minmax(90px, .65fr) minmax(0, 1.35fr) 18px; }
+  .product-materials a > span { min-width: 0; overflow-wrap: anywhere; }
+}

@@ -14,3 +14,15 @@ main p, main li, main td, main th, main label, main input, main textarea, main s
   main:not(.public-home) h3 { font-size: clamp(18px, 5vw, 22px) !important; }
 }
 .product-body > article > h2, .product-facts h2 { font-size: 13px !important; line-height: 1.35 !important; letter-spacing: 0.08em !important; }
+
+/* Compact card headings and fact labels must retain their component scale. */
+main:not(.public-home) .search-results h2 {
+  font-size: clamp(19px, 1.75vw, 28px) !important;
+  line-height: 1.1 !important;
+}
+main:not(.public-home) .material-facts h2,
+main:not(.public-home) .product-facts h2 {
+  font-size: 13px !important;
+  line-height: 1.35 !important;
+  letter-spacing: 0.08em !important;
+}
