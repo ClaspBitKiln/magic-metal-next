@@ -301,6 +301,302 @@ const stockByRoute: Readonly<Record<string, readonly CatalogStockAssortmentRow[]
     // metizy.xls Лист1!A189:D189 (left)
     {"id": "5563ce1689274b8d5d99", "description": "32", "nameFieldLabel": "Ширина", "sizeDesignation": "0,7 ; 0,8", "dimensionLabel": "толщина", "unit": "т", "group": "ЛЕНТА Х/К УПАКОВОЧНАЯ"},
   ],
+  "sortovoy-i-fasonny-prokat/shveller-gnutyj": [
+    // sortovojprokat.xls Лист1!F245:I245 (right)
+    {"id": "4dd87993080a1a763ed4","description": "","nameFieldLabel": "","sizeDesignation": "60×50 × 3","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F246:I246 (right)
+    {"id": "de0d8ff6fd4dab160ba2","description": "","nameFieldLabel": "","sizeDesignation": "65×40 × 4","dimensionLabel": "размер профиля × толщина","unit": "т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F247:I247 (right)
+    {"id": "2dcec4f89ced9a3ddf05","description": "","nameFieldLabel": "","sizeDesignation": "80×32 × 4","dimensionLabel": "размер профиля × толщина","unit": "т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F248:I248 (right)
+    {"id": "6991eb4c7a5debfca930","description": "","nameFieldLabel": "","sizeDesignation": "80×40 × 3","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F249:I249 (right)
+    {"id": "9180b4eb26c5caa34a91","description": "","nameFieldLabel": "","sizeDesignation": "80×50 × 4","dimensionLabel": "размер профиля × толщина","unit": "т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F250:I250 (right)
+    {"id": "de10096355ba1baf905c","description": "","nameFieldLabel": "","sizeDesignation": "80×50 × 4","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F251:I251 (right)
+    {"id": "961bd8472150eda3a6b7","description": "","nameFieldLabel": "","sizeDesignation": "80×60 × 4","dimensionLabel": "размер профиля × толщина","unit": "т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F252:I252 (right)
+    {"id": "50af041f21a53554528f","description": "","nameFieldLabel": "","sizeDesignation": "80×60 × 4","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F253:I253 (right)
+    {"id": "1501c0a20f2c635e28c7","description": "","nameFieldLabel": "","sizeDesignation": "100×50 × 3","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F254:I254 (right)
+    {"id": "823c74e7ff4cfd2c2c7c","description": "","nameFieldLabel": "","sizeDesignation": "100×50 × 4 ; 5","dimensionLabel": "размер профиля × толщина","unit": "т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F255:I255 (right)
+    {"id": "e1c9ed1dd7f77c9808a5","description": "","nameFieldLabel": "","sizeDesignation": "120×50 × 3","dimensionLabel": "размер профиля × толщина","unit": "т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F256:I256 (right)
+    {"id": "424169b0b5b5c55f8d17","description": "","nameFieldLabel": "","sizeDesignation": "120×50 × 3","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F257:I257 (right)
+    {"id": "c152b2836bc0ae7f8943","description": "","nameFieldLabel": "","sizeDesignation": "120×60 × 4","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F258:I258 (right)
+    {"id": "a97985acb0355b60b102","description": "","nameFieldLabel": "","sizeDesignation": "120×60 × 5","dimensionLabel": "размер профиля × толщина","unit": "т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F259:I259 (right)
+    {"id": "b2d898ae86cc654f7fc4","description": "","nameFieldLabel": "","sizeDesignation": "120×80 × 4","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F260:I260 (right)
+    {"id": "979d9da8f91aaee455a8","description": "","nameFieldLabel": "","sizeDesignation": "120×80 × 5","dimensionLabel": "размер профиля × толщина","unit": "т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F261:I261 (right)
+    {"id": "4807952406864c9d7e56","description": "","nameFieldLabel": "","sizeDesignation": "140×50 × 4","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F262:I262 (right)
+    {"id": "c2d71ea716c56f9c185c","description": "","nameFieldLabel": "","sizeDesignation": "140×60 × 4","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F263:I263 (right)
+    {"id": "31920686815687a88c2c","description": "","nameFieldLabel": "","sizeDesignation": "140×60 × 5","dimensionLabel": "размер профиля × толщина","unit": "т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F264:I264 (right)
+    {"id": "2c708465b0132d21b9a9","description": "","nameFieldLabel": "","sizeDesignation": "140×60 × 5","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F265:I265 (right)
+    {"id": "00860513a2fc77566f85","description": "","nameFieldLabel": "","sizeDesignation": "140×60 × 6","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F266:I266 (right)
+    {"id": "ddcda6a216014fb3e95f","description": "","nameFieldLabel": "","sizeDesignation": "160×50 × 4","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F267:I267 (right)
+    {"id": "8e10ef7755dda21f0be7","description": "","nameFieldLabel": "","sizeDesignation": "160×50 × 5","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F268:I268 (right)
+    {"id": "86730c1f484d6ffbd2d4","description": "","nameFieldLabel": "","sizeDesignation": "160×60 × 4","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F269:I269 (right)
+    {"id": "aa024bbd9b1abed32038","description": "","nameFieldLabel": "","sizeDesignation": "160×60 × 5","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F270:I270 (right)
+    {"id": "75383f1e51e63be3df11","description": "","nameFieldLabel": "","sizeDesignation": "160×80 × 4","dimensionLabel": "размер профиля × толщина","unit": "т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F271:I271 (right)
+    {"id": "3ee3f73edf7abc1a856e","description": "","nameFieldLabel": "","sizeDesignation": "160×80 × 4","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F272:I272 (right)
+    {"id": "933dd82d6cc1289a3897","description": "","nameFieldLabel": "","sizeDesignation": "160×80 × 5 ; 6","dimensionLabel": "размер профиля × толщина","unit": "т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F273:I273 (right)
+    {"id": "54a8b15c91a26a0be662","description": "","nameFieldLabel": "","sizeDesignation": "180×50 × 4","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F274:I274 (right)
+    {"id": "ee95d648d015dd8e7a91","description": "","nameFieldLabel": "","sizeDesignation": "180×60 × 4","dimensionLabel": "размер профиля × толщина","unit": "т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F275:I275 (right)
+    {"id": "8a75595226e08cf13f8a","description": "","nameFieldLabel": "","sizeDesignation": "180×60 × 4","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F276:I276 (right)
+    {"id": "33c4c414cad30e73ca85","description": "","nameFieldLabel": "","sizeDesignation": "180×60 × 5","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F277:I277 (right)
+    {"id": "4a472b326b8c76653417","description": "","nameFieldLabel": "","sizeDesignation": "180×70 × 6","dimensionLabel": "размер профиля × толщина","unit": "т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F278:I278 (right)
+    {"id": "d1007b2b2c378bf1a6e5","description": "","nameFieldLabel": "","sizeDesignation": "180×70 × 6","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F279:I279 (right)
+    {"id": "871637c3aeea1714d9aa","description": "","nameFieldLabel": "","sizeDesignation": "180×80 × 5","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F280:I280 (right)
+    {"id": "e388e801ee757e6c4f45","description": "","nameFieldLabel": "","sizeDesignation": "200×100 × 5","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F281:I281 (right)
+    {"id": "f046f9772e5972bf30a5","description": "","nameFieldLabel": "","sizeDesignation": "200×100 × 6","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F282:I282 (right)
+    {"id": "1146ac30de89f0911f9e","description": "","nameFieldLabel": "","sizeDesignation": "200×50 × 4","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F283:I283 (right)
+    {"id": "ce0650189a32a3e5b9a4","description": "","nameFieldLabel": "","sizeDesignation": "200×60 × 4","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!F284:I284 (right)
+    {"id": "d59c90cd7c18a081004e","description": "","nameFieldLabel": "","sizeDesignation": "200×80 × 4 ; 5; 5; 6","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!A292:D292 (left)
+    {"id": "cee19554913a5e7c45b8","description": "","nameFieldLabel": "","sizeDesignation": "250×125 × 6","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!A293:D293 (left)
+    {"id": "420473d5f624a8c6066f","description": "","nameFieldLabel": "","sizeDesignation": "250×60 × 5","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!A294:D294 (left)
+    {"id": "bf46f23dacc62e94dc84","description": "","nameFieldLabel": "","sizeDesignation": "300×100 × 6","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!A295:D295 (left)
+    {"id": "20fab847c9ed5978e786","description": "","nameFieldLabel": "","sizeDesignation": "50×40 × 3","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!A296:D296 (left)
+    {"id": "26307c27e6d1d850b231","description": "","nameFieldLabel": "","sizeDesignation": "60×32 × 3","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!A297:D297 (left)
+    {"id": "6991eb4c7a5debfca930","description": "","nameFieldLabel": "","sizeDesignation": "80×40 × 3","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!A298:D298 (left)
+    {"id": "961bd8472150eda3a6b7","description": "","nameFieldLabel": "","sizeDesignation": "80×60 × 4","dimensionLabel": "размер профиля × толщина","unit": "т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!A299:D299 (left)
+    {"id": "424169b0b5b5c55f8d17","description": "","nameFieldLabel": "","sizeDesignation": "120×50 × 3","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!A300:D300 (left)
+    {"id": "c152b2836bc0ae7f8943","description": "","nameFieldLabel": "","sizeDesignation": "120×60 × 4","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!A301:D301 (left)
+    {"id": "7d74eb15dcb227a2398c","description": "","nameFieldLabel": "","sizeDesignation": "140×60 × 5 ; 6","dimensionLabel": "размер профиля × толщина","unit": "т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!A302:D302 (left)
+    {"id": "e388e801ee757e6c4f45","description": "","nameFieldLabel": "","sizeDesignation": "200×100 × 5","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+    // sortovojprokat.xls Лист1!A303:D303 (left)
+    {"id": "32cdad07634ce59ad6a6","description": "","nameFieldLabel": "","sizeDesignation": "200×80 × 6","dimensionLabel": "размер профиля × толщина","unit": "теор.т","group": "ШВЕЛЛЕР ГНУТЫЙ"},
+  ],
+  "sortovoy-i-fasonny-prokat/shestigrannik": [
+    // kachestvst.xls Лист1!A93:D93 (left)
+    {"id": "b4914d9a40ad200faf0b","description": "09Г2С","nameFieldLabel": "Марка","sizeDesignation": "14 ; 17; 19; 22","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ КОНСТР ШЕСТИГРАННИК"},
+    // kachestvst.xls Лист1!A97:D97 (left)
+    {"id": "ee855fb38ec4b5857680","description": "40Х","nameFieldLabel": "Марка","sizeDesignation": "14 ; 17; 19; 22","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ КОНСТР ШЕСТИГРАННИК"},
+    // kachestvst.xls Лист1!A99:D99 (left)
+    {"id": "273a7679500c4a50f4f0","description": "40Х","nameFieldLabel": "Марка","sizeDesignation": "55 ; 75","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ КОНСТР ШЕСТИГРАННИК"},
+    // kachestvst.xls Лист1!A100:D100 (left)
+    {"id": "20a266ceeb7f240128ed","description": "Ст20","nameFieldLabel": "Марка","sizeDesignation": "12 ; 14; 17; 19","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ КОНСТР ШЕСТИГРАННИК"},
+    // kachestvst.xls Лист1!A104:D104 (left)
+    {"id": "bea46beb872f41f6c792","description": "Ст35","nameFieldLabel": "Марка","sizeDesignation": "14 ; 17; 19; 22","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ КОНСТР ШЕСТИГРАННИК"},
+    // kachestvst.xls Лист1!A107:D107 (left)
+    {"id": "466f45c0049edb913ae6","description": "Ст45","nameFieldLabel": "Марка","sizeDesignation": "12 ; 14; 17; 19","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ КОНСТР ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!F35:I35 (right)
+    {"id": "fce1e6a59fd3c7fe413f","description": "40Х","nameFieldLabel": "Марка","sizeDesignation": "13 ; 14","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!F36:I36 (right)
+    {"id": "29f0f8d8c601fa3ae2e8","description": "40Х","nameFieldLabel": "Марка","sizeDesignation": "17 ; 19","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!F37:I37 (right)
+    {"id": "bb592796d0679743373d","description": "40Х","nameFieldLabel": "Марка","sizeDesignation": "22","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!F38:I38 (right)
+    {"id": "fc99f69f67e07e26d1d8","description": "40Х","nameFieldLabel": "Марка","sizeDesignation": "24 ; 27; 30","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!F39:I39 (right)
+    {"id": "09e4b878c63433e569c8","description": "40Х","nameFieldLabel": "Марка","sizeDesignation": "32","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!F40:I40 (right)
+    {"id": "8b392fdd0012d183387c","description": "40Х","nameFieldLabel": "Марка","sizeDesignation": "41 ; 46","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!F41:I41 (right)
+    {"id": "94c45d50ff52b3c3b142","description": "А-12","nameFieldLabel": "Марка","sizeDesignation": "8","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!F42:I42 (right)
+    {"id": "1319c0503d35a7841028","description": "А-12","nameFieldLabel": "Марка","sizeDesignation": "10","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!F43:I43 (right)
+    {"id": "85d71792ed8460009a9c","description": "А-12","nameFieldLabel": "Марка","sizeDesignation": "12 ; 13; 14; 17","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!F45:I45 (right)
+    {"id": "e68ea81d8f9010785ae2","description": "А-12","nameFieldLabel": "Марка","sizeDesignation": "22 ; 24","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!F46:I46 (right)
+    {"id": "91d2b8c7093315873140","description": "А-12","nameFieldLabel": "Марка","sizeDesignation": "27","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!F47:I47 (right)
+    {"id": "cd501723d50b5f3b4e13","description": "А-12","nameFieldLabel": "Марка","sizeDesignation": "30 ; 32","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!F48:I48 (right)
+    {"id": "2769728bc014bd8d78a6","description": "Ст10","nameFieldLabel": "Марка","sizeDesignation": "8","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!F49:I49 (right)
+    {"id": "95839e3b4f6236787d37","description": "Ст10","nameFieldLabel": "Марка","sizeDesignation": "13 ; 14; 17; 22","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!F51:I51 (right)
+    {"id": "6d1fcd032ccb4bac2d96","description": "Ст10","nameFieldLabel": "Марка","sizeDesignation": "27 ; 30","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!F52:I52 (right)
+    {"id": "24485a190cd17b8e7d61","description": "Ст10","nameFieldLabel": "Марка","sizeDesignation": "60","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!F53:I53 (right)
+    {"id": "ddff79220f0f0c6a61af","description": "Ст20","nameFieldLabel": "Марка","sizeDesignation": "6 ; 7","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!F54:I54 (right)
+    {"id": "583e528fdcac20637fc0","description": "Ст20","nameFieldLabel": "Марка","sizeDesignation": "8 ; 10; 11","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!F55:I55 (right)
+    {"id": "58ee55223c259b344ee9","description": "Ст20","nameFieldLabel": "Марка","sizeDesignation": "12","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!F56:I56 (right)
+    {"id": "1abcd355090ba50ca338","description": "Ст20","nameFieldLabel": "Марка","sizeDesignation": "13","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!F57:I57 (right)
+    {"id": "5fb41a99316e24ac6298","description": "Ст20","nameFieldLabel": "Марка","sizeDesignation": "14","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!F58:I58 (right)
+    {"id": "2054dd71d1aab47a0024","description": "Ст20","nameFieldLabel": "Марка","sizeDesignation": "17","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!F59:I59 (right)
+    {"id": "649aa0134b9c13d511ab","description": "Ст20","nameFieldLabel": "Марка","sizeDesignation": "19 ; 22; 24; 27","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!F61:I61 (right)
+    {"id": "02fb431c73c81ca917b0","description": "Ст20","nameFieldLabel": "Марка","sizeDesignation": "32","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!F62:I62 (right)
+    {"id": "27cccb86deaa53590075","description": "Ст20","nameFieldLabel": "Марка","sizeDesignation": "36","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!F63:I63 (right)
+    {"id": "ab96dc655bc0e3588299","description": "Ст20","nameFieldLabel": "Марка","sizeDesignation": "41","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!F64:I64 (right)
+    {"id": "d602526ac4ba5375138e","description": "Ст20","nameFieldLabel": "Марка","sizeDesignation": "50","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!F65:I65 (right)
+    {"id": "2951c75f451f03650dfd","description": "Ст20","nameFieldLabel": "Марка","sizeDesignation": "55","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!F66:I66 (right)
+    {"id": "6ed24ba073e5dd53696f","description": "Ст20","nameFieldLabel": "Марка","sizeDesignation": "60","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!F67:I67 (right)
+    {"id": "a59bcf9bb3717f5c3047","description": "Ст35","nameFieldLabel": "Марка","sizeDesignation": "8","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!F68:I68 (right)
+    {"id": "ee420518144c53fc5920","description": "Ст35","nameFieldLabel": "Марка","sizeDesignation": "10","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!A76:D76 (left)
+    {"id": "3afde1cee83f72590dfa","description": "Ст35","nameFieldLabel": "Марка","sizeDesignation": "12","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!A77:D77 (left)
+    {"id": "50d575a7a130ec8f0eba","description": "Ст35","nameFieldLabel": "Марка","sizeDesignation": "13","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!A78:D78 (left)
+    {"id": "61b747647853104d97c5","description": "Ст35","nameFieldLabel": "Марка","sizeDesignation": "14 ; 17; 19","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!A79:D79 (left)
+    {"id": "115300050c75fa91d3cd","description": "Ст35","nameFieldLabel": "Марка","sizeDesignation": "22","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!A80:D80 (left)
+    {"id": "500401e1986a771cf131","description": "Ст35","nameFieldLabel": "Марка","sizeDesignation": "24","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!A81:D81 (left)
+    {"id": "a9d54c918c3037ab12ad","description": "Ст35","nameFieldLabel": "Марка","sizeDesignation": "27","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!A82:D82 (left)
+    {"id": "8dd418a3e1ead5cd005d","description": "Ст35","nameFieldLabel": "Марка","sizeDesignation": "32 ; 41","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!A83:D83 (left)
+    {"id": "7fd1b6081161fa5780c5","description": "Ст35","nameFieldLabel": "Марка","sizeDesignation": "46","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!A84:D84 (left)
+    {"id": "a6bcaf858ed1528de7db","description": "Ст35","nameFieldLabel": "Марка","sizeDesignation": "50 ; 55","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!A85:D85 (left)
+    {"id": "3042ce6d03b533326e20","description": "Ст35","nameFieldLabel": "Марка","sizeDesignation": "60","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!A86:D86 (left)
+    {"id": "e989f376182082a7f6a8","description": "Ст45","nameFieldLabel": "Марка","sizeDesignation": "6","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!A87:D87 (left)
+    {"id": "b55f5808fe6cc5d50d34","description": "Ст45","nameFieldLabel": "Марка","sizeDesignation": "8","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!A88:D88 (left)
+    {"id": "506b56651cee340fdc14","description": "Ст45","nameFieldLabel": "Марка","sizeDesignation": "10","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!A89:D89 (left)
+    {"id": "558727b761708a01610b","description": "Ст45","nameFieldLabel": "Марка","sizeDesignation": "11","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!A90:D90 (left)
+    {"id": "0ade2f238fa97e25c177","description": "Ст45","nameFieldLabel": "Марка","sizeDesignation": "12 ; 13","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!A91:D91 (left)
+    {"id": "f0f8b785385ae2676b83","description": "Ст45","nameFieldLabel": "Марка","sizeDesignation": "14 ; 17","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!A92:D92 (left)
+    {"id": "bbbd99ec69ba2e7e051d","description": "Ст45","nameFieldLabel": "Марка","sizeDesignation": "19","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!A93:D93 (left)
+    {"id": "071f12f3e3296cdf152c","description": "Ст45","nameFieldLabel": "Марка","sizeDesignation": "22","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!A94:D94 (left)
+    {"id": "8bfd177d460e370978b0","description": "Ст45","nameFieldLabel": "Марка","sizeDesignation": "24","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!A95:D95 (left)
+    {"id": "5df635b0fb33c9639212","description": "Ст45","nameFieldLabel": "Марка","sizeDesignation": "27","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!A96:D96 (left)
+    {"id": "6078dc218cb4c6d5708d","description": "Ст45","nameFieldLabel": "Марка","sizeDesignation": "30","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!A97:D97 (left)
+    {"id": "d8c695dc62531449c2eb","description": "Ст45","nameFieldLabel": "Марка","sizeDesignation": "32","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!A98:D98 (left)
+    {"id": "7e04e8d0d7f96fd78c34","description": "Ст45","nameFieldLabel": "Марка","sizeDesignation": "36","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!A99:D99 (left)
+    {"id": "2cf9f3d551327d3cb23d","description": "Ст45","nameFieldLabel": "Марка","sizeDesignation": "41","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!A100:D100 (left)
+    {"id": "a587ac0950a0659c7199","description": "Ст45","nameFieldLabel": "Марка","sizeDesignation": "50","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!A101:D101 (left)
+    {"id": "3a89b7286c495cc60ca2","description": "Ст45","nameFieldLabel": "Марка","sizeDesignation": "55","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+    // metizy.xls Лист1!A102:D102 (left)
+    {"id": "82bcbeaff2f22dc38f4f","description": "Ст45","nameFieldLabel": "Марка","sizeDesignation": "60","dimensionLabel": "Размерное обозначение","unit": "т","group": "СТАЛЬ СОРТ Х/Т КАЛИБРОВКА ШЕСТИГРАННИК"},
+  ],
+  "listovoy-prokat/list-riflenyj": [
+    // listovojprokat.xls Лист1!F112:I112 (right)
+    {"id": "442089e99a03a88e0574","description": "ромб","nameFieldLabel": "Исполнение","sizeDesignation": "2.5","dimensionLabel": "размерное обозначение","unit": "шт","group": "ЛИСТ РИФЛЁНЫЙ"},
+    // listovojprokat.xls Лист1!F113:I113 (right)
+    {"id": "0d8950fb90f019580d41","description": "чечев","nameFieldLabel": "Исполнение","sizeDesignation": "2.5","dimensionLabel": "размерное обозначение","unit": "шт","group": "ЛИСТ РИФЛЁНЫЙ"},
+    // listovojprokat.xls Лист1!F114:I114 (right)
+    {"id": "c558654343f08debdd09","description": "чечев","nameFieldLabel": "Исполнение","sizeDesignation": "5","dimensionLabel": "размерное обозначение","unit": "т","group": "ЛИСТ РИФЛЁНЫЙ"},
+    // listovojprokat.xls Лист1!F115:I115 (right)
+    {"id": "61433e1ab15a3ca4ad67","description": "н/обр ромб","nameFieldLabel": "Исполнение","sizeDesignation": "2.5","dimensionLabel": "размерное обозначение","unit": "т","group": "ЛИСТ РИФЛЁНЫЙ"},
+    // listovojprokat.xls Лист1!F116:I116 (right)
+    {"id": "d3890deaf3fa93eef50f","description": "н/обр ромб","nameFieldLabel": "Исполнение","sizeDesignation": "3","dimensionLabel": "размерное обозначение","unit": "т","group": "ЛИСТ РИФЛЁНЫЙ"},
+    // listovojprokat.xls Лист1!F117:I117 (right)
+    {"id": "936ba3c2c4945ecbcb22","description": "н/обр ромб","nameFieldLabel": "Исполнение","sizeDesignation": "3 ; 4","dimensionLabel": "размерное обозначение","unit": "т","group": "ЛИСТ РИФЛЁНЫЙ"},
+    // listovojprokat.xls Лист1!F118:I118 (right)
+    {"id": "0e2c755fd414f9f11536","description": "н/обр ромб","nameFieldLabel": "Исполнение","sizeDesignation": "4","dimensionLabel": "размерное обозначение","unit": "т","group": "ЛИСТ РИФЛЁНЫЙ"},
+    // listovojprokat.xls Лист1!F119:I119 (right)
+    {"id": "bde6ec6112304c519691","description": "н/обр ромб","nameFieldLabel": "Исполнение","sizeDesignation": "5","dimensionLabel": "размерное обозначение","unit": "т","group": "ЛИСТ РИФЛЁНЫЙ"},
+    // listovojprokat.xls Лист1!F120:I120 (right)
+    {"id": "7f74d6def2625cc64220","description": "н/обр ромб","nameFieldLabel": "Исполнение","sizeDesignation": "5 ; 6; 6; 8; 10","dimensionLabel": "размерное обозначение","unit": "т","group": "ЛИСТ РИФЛЁНЫЙ"},
+    // listovojprokat.xls Лист1!F121:I121 (right)
+    {"id": "24431453e97be6ac88d3","description": "н/обр ромб","nameFieldLabel": "Исполнение","sizeDesignation": "12","dimensionLabel": "размерное обозначение","unit": "т","group": "ЛИСТ РИФЛЁНЫЙ"},
+    // listovojprokat.xls Лист1!F122:I122 (right)
+    {"id": "ed59817383d027b2e352","description": "н/обр чечев","nameFieldLabel": "Исполнение","sizeDesignation": "2","dimensionLabel": "размерное обозначение","unit": "т","group": "ЛИСТ РИФЛЁНЫЙ"},
+    // listovojprokat.xls Лист1!F123:I123 (right)
+    {"id": "2bad4b441a6f3ed80ab4","description": "н/обр чечев","nameFieldLabel": "Исполнение","sizeDesignation": "2.5 ; 3","dimensionLabel": "размерное обозначение","unit": "т","group": "ЛИСТ РИФЛЁНЫЙ"},
+    // listovojprokat.xls Лист1!F124:I124 (right); F125:I125 (right)
+    {"id": "7ab4f0e6b4b1e9fde3d4","description": "н/обр чечев","nameFieldLabel": "Исполнение","sizeDesignation": "4","dimensionLabel": "размерное обозначение","unit": "т","group": "ЛИСТ РИФЛЁНЫЙ"},
+    // listovojprokat.xls Лист1!F126:I126 (right)
+    {"id": "3e94ba23a8bfab724a58","description": "н/обр чечев","nameFieldLabel": "Исполнение","sizeDesignation": "4 ; 5","dimensionLabel": "размерное обозначение","unit": "т","group": "ЛИСТ РИФЛЁНЫЙ"},
+    // listovojprokat.xls Лист1!F127:I127 (right); F128:I128 (right)
+    {"id": "91a299b0869662680711","description": "н/обр чечев","nameFieldLabel": "Исполнение","sizeDesignation": "6","dimensionLabel": "размерное обозначение","unit": "т","group": "ЛИСТ РИФЛЁНЫЙ"},
+    // listovojprokat.xls Лист1!F129:I129 (right)
+    {"id": "08682076db297d01b82f","description": "н/обр чечев","nameFieldLabel": "Исполнение","sizeDesignation": "6 ; 8; 8; 10","dimensionLabel": "размерное обозначение","unit": "т","group": "ЛИСТ РИФЛЁНЫЙ"},
+    // listovojprokat.xls Лист1!F130:I130 (right)
+    {"id": "e64f0eb427c71590c873","description": "н/обр чечев","nameFieldLabel": "Исполнение","sizeDesignation": "12","dimensionLabel": "размерное обозначение","unit": "т","group": "ЛИСТ РИФЛЁНЫЙ"},
+  ],
+  "listovoy-prokat/list-pvl": [
+    // listovojprokat.xls Лист1!F133:I133 (right)
+    {"id": "6e544fc2cf18eefda4f2","description": "","nameFieldLabel": "","sizeDesignation": "204","dimensionLabel": "Обозначение ПВЛ","unit": "т","group": "ПРОСЕЧНО-ВЫТЯЖНОЙ ЛИСТ"},
+    // listovojprokat.xls Лист1!F134:I134 (right)
+    {"id": "e3a1ee12d30090b0ca17","description": "","nameFieldLabel": "","sizeDesignation": "206","dimensionLabel": "Обозначение ПВЛ","unit": "т","group": "ПРОСЕЧНО-ВЫТЯЖНОЙ ЛИСТ"},
+    // listovojprokat.xls Лист1!F135:I135 (right)
+    {"id": "21fedf87c7099648f13a","description": "","nameFieldLabel": "","sizeDesignation": "208","dimensionLabel": "Обозначение ПВЛ","unit": "т","group": "ПРОСЕЧНО-ВЫТЯЖНОЙ ЛИСТ"},
+    // listovojprokat.xls Лист1!F136:I136 (right)
+    {"id": "d93b1135d056d369a7c3","description": "","nameFieldLabel": "","sizeDesignation": "306","dimensionLabel": "Обозначение ПВЛ","unit": "т","group": "ПРОСЕЧНО-ВЫТЯЖНОЙ ЛИСТ"},
+    // listovojprokat.xls Лист1!F137:I137 (right)
+    {"id": "af94db24a01ca2a6bf88","description": "","nameFieldLabel": "","sizeDesignation": "406","dimensionLabel": "Обозначение ПВЛ","unit": "т","group": "ПРОСЕЧНО-ВЫТЯЖНОЙ ЛИСТ"},
+    // listovojprokat.xls Лист1!F138:I138 (right)
+    {"id": "c283ced1ddae111cb0a3","description": "","nameFieldLabel": "","sizeDesignation": "408","dimensionLabel": "Обозначение ПВЛ","unit": "т","group": "ПРОСЕЧНО-ВЫТЯЖНОЙ ЛИСТ"},
+    // listovojprokat.xls Лист1!F139:I139 (right)
+    {"id": "50e89d20b76ac5c9d0a9","description": "","nameFieldLabel": "","sizeDesignation": "410","dimensionLabel": "Обозначение ПВЛ","unit": "т","group": "ПРОСЕЧНО-ВЫТЯЖНОЙ ЛИСТ"},
+    // listovojprokat.xls Лист1!F140:I140 (right)
+    {"id": "d4446091409548978a08","description": "","nameFieldLabel": "","sizeDesignation": "506","dimensionLabel": "Обозначение ПВЛ","unit": "т","group": "ПРОСЕЧНО-ВЫТЯЖНОЙ ЛИСТ"},
+    // listovojprokat.xls Лист1!A148:D148 (left)
+    {"id": "377dc841e1b6b0476ec7","description": "","nameFieldLabel": "","sizeDesignation": "508","dimensionLabel": "Обозначение ПВЛ","unit": "т","group": "ПРОСЕЧНО-ВЫТЯЖНОЙ ЛИСТ"},
+    // listovojprokat.xls Лист1!A149:D149 (left)
+    {"id": "0142b962e8aba39dee41","description": "","nameFieldLabel": "","sizeDesignation": "510","dimensionLabel": "Обозначение ПВЛ","unit": "т","group": "ПРОСЕЧНО-ВЫТЯЖНОЙ ЛИСТ"},
+    // listovojprokat.xls Лист1!A150:D150 (left)
+    {"id": "ffcf840c184401d10346","description": "","nameFieldLabel": "","sizeDesignation": "606","dimensionLabel": "Обозначение ПВЛ","unit": "т","group": "ПРОСЕЧНО-ВЫТЯЖНОЙ ЛИСТ"},
+  ],
   "listovoy-prokat/profnastil": [
     // profnastil.xls Лист1!A9:D9 (left)
     {"id": "a35adc5e84f47908bfb5", "description": "Н75 750(800)-0.8 RAL 7038 Уценка", "nameFieldLabel": "Наименование", "sizeDesignation": "0.8", "dimensionLabel": "толщина", "unit": "м", "group": "ПРОФНАСТИЛ ОКРАШЕННЫЙ"},
