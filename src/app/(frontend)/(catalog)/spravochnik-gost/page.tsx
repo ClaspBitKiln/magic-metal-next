@@ -3,6 +3,7 @@ import Link from 'next/link'
 
 import DirectoryGroupNav from '@/components/DirectoryGroupNav'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
+import StandardsSearch from '@/components/StandardsSearch'
 import { standardGroups } from '@/data/standards'
 import { catalogStandards as standards } from '@/data/catalogStandards'
 import '../spravochnik-materialov/materials.css'
@@ -16,7 +17,8 @@ export const metadata: Metadata = {
 export default function StandardsDirectoryPage() {
   return <main className="materials-page">
     <header className="materials-header"><Link href="/"><b>←</b> На главную</Link><LanguageSwitcher /><Link className="materials-cta" href="/#request">Отправить заявку ↗</Link></header>
-    <section className="materials-hero"><p>Справочник · нормативные документы</p><h1>ГОСТ<br /><em>и стандарты</em></h1><span>Не просто номера документов: область применения, связь с материалами и продукцией, параметры, которые важно указать для корректного расчёта.</span></section>
+    <section className="materials-hero"><p>Справочник · нормативные документы</p><h1>ГОСТ<br /><em>и стандарты</em></h1><span>Не просто номера документов: область применения, связь с материалами и продукцией, параметры, которые важно указать для корректного расчёта.</span><Link className="materials-cta" href="/#request">Отправить заявку ↗</Link></section>
+    <StandardsSearch />
     <DirectoryGroupNav groups={standardGroups} label="Группы стандартов" />
     <section className="materials-directory">
       {standardGroups.map(([key, label], groupIndex) => {
