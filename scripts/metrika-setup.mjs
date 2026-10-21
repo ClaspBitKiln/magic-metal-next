@@ -2,7 +2,7 @@
 /** Minimal, idempotent Management API setup; no writes without --apply. */
 import { resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
-export const GOALS = Object.freeze(['phone_click', 'email_click', 'request_click', 'catalog_product_opened', 'standard_opened', 'size_filter_used', 'size_selected', 'request_started', 'request_step_2', 'specification_attached', 'request_sent', 'request_error'])
+export const GOALS = Object.freeze(['phone_click', 'email_click', 'request_click', 'catalog_product_opened', 'standard_opened', 'size_filter_used', 'size_selected', 'request_started', 'specification_attached', 'request_sent', 'request_error'])
 
 export function isTargetCounter(counter) {
   if (counter.status === 'Deleted') return false

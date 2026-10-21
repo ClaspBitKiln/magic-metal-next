@@ -51,4 +51,27 @@ describe('lazy dimension table enhancement', () => {
     act(() => { window.history.replaceState(null, '', '/?size_test=57&wall_test=9'); window.dispatchEvent(new PopStateEvent('popstate')) })
     expect(container.querySelector('output')?.textContent).toContain('такого сочетания нет')
   })
+
+  it('records each valid complete size and wall selection once without counting restored links', () => {
+    const goals: string[] = []
+    const record = ((event: CustomEvent<string>) => goals.push(event.detail)) as EventListener
+    document.addEventListener('magicmet:goal', record)
+    window.history.replaceState(null, '', '/?size_test=57&wall_test=4')
+    const details = mount()
+    expect(details.open).toBe(true)
+    expect(goals).toEqual([])
+
+    const [size, wall] = Array.from(container.querySelectorAll('select'))
+    act(() => {
+      size.value = '89'
+      size.dispatchEvent(new Event('change', { bubbles: true }))
+    })
+    act(() => {
+      wall.value = '4'
+      wall.dispatchEvent(new Event('change', { bubbles: true }))
+      wall.dispatchEvent(new Event('change', { bubbles: true }))
+    })
+    expect(goals).toEqual(['size_selected'])
+    document.removeEventListener('magicmet:goal', record)
+  })
 })

@@ -4,7 +4,7 @@
   const id = Number(new URL(script?.src || location.href).searchParams.get('id'))
   if (!Number.isSafeInteger(id) || id <= 0 || window.magicmetAnalyticsReady) return
   window.magicmetAnalyticsReady = true
-  const goals = new Set(['phone_click', 'email_click', 'request_click', 'catalog_product_opened', 'standard_opened', 'size_filter_used', 'size_selected', 'request_started', 'request_step_2', 'specification_attached', 'request_sent', 'request_error'])
+  const goals = new Set(['phone_click', 'email_click', 'request_click', 'catalog_product_opened', 'standard_opened', 'size_filter_used', 'size_selected', 'request_started', 'specification_attached', 'request_sent', 'request_error'])
   const ym = window.ym = window.ym || function () { (ym.a = ym.a || []).push(arguments) }
   ym.l = Date.now()
   let lastPath = ''

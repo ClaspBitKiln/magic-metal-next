@@ -17,7 +17,7 @@ describe('optional lightweight analytics', () => {
     vi.stubEnv('NEXT_PUBLIC_YANDEX_METRIKA_ID', '123456789')
     const response = await GET()
     const html = await response.text()
-    expect(html).toContain('src="/analytics.js?v=20261017-1&id=123456789" defer')
+    expect(html).toContain('src="/analytics.js?v=20261021-1&id=123456789" defer')
     expect(html).toContain('id="request-form"')
     expect(html).toContain('/home.js?v=20261017-reliability1')
     expect(html).not.toContain('mc.yandex.ru')
@@ -30,6 +30,7 @@ describe('optional lightweight analytics', () => {
 
   it('defers the external SDK, strips private query values and ignores arbitrary event data', () => {
     const source = fs.readFileSync('public/analytics.js', 'utf8')
+    expect(source).not.toContain('request_step_2')
     document.head.innerHTML = '<script id="magicmet-analytics" src="/analytics.js?id=123456789"></script>'
     document.body.innerHTML = '<a href="tel:+79227117363">Телефон</a>'
     history.replaceState(null, '', '/?product=PRIVATE-SPEC&email=secret@example.com&message=PRIVATE-TEXT&utm_source=yandex&utm_campaign=metal')

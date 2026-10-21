@@ -2,6 +2,11 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { setup, GOALS, isTargetCounter } from './metrika-setup.mjs'
 
+test('production setup contains exactly the eleven active goals', () => {
+  assert.equal(GOALS.length, 11)
+  assert.equal(GOALS.includes('request_step_2'), false)
+})
+
 test('counter matching rejects lookalike hosts and deleted counters', () => {
   assert.equal(isTargetCounter({ site2: { site: 'https://www.magicmet.ru/' } }), true)
   assert.equal(isTargetCounter({ site: 'magicmet.ru.evil.example' }), false)

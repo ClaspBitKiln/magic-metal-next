@@ -28,6 +28,7 @@ export default function SizeTableFilter({ column, values, total, wallColumns = [
   const pairList = useRef<HTMLDivElement>(null)
   const more = useRef<HTMLButtonElement>(null)
   const limit = useRef(20)
+  const trackedSelections = useRef(new Set<string>())
   const profileSearch = wallColumns.length > 0 && /сечение/iu.test(column) && values.every(value => /^\d+(?:[.,]\d+)?\s*×\s*\d+(?:[.,]\d+)?$/u.test(value.replace(/[()]/g, '')))
   const quickSearch = profileSearch || (wallColumns.length > 0 && /диаметр/iu.test(column) && values.every(value => /^\d+(?:[.,]\d+)?$/.test(value)))
   const dimensions = profileSearch ? 'высоту × ширину × стенку' : 'диаметр × стенку'
@@ -89,6 +90,13 @@ export default function SizeTableFilter({ column, values, total, wallColumns = [
       }
     }
     const complete = Boolean(size && thickness && visible)
+    if (complete && updateUrl) {
+      const selection = `${size}\u0000${thickness}`
+      if (!trackedSelections.current.has(selection)) {
+        trackedSelections.current.add(selection)
+        document.dispatchEvent(new CustomEvent('magicmet:goal', { detail: 'size_selected' }))
+      }
+    }
     const showList = Boolean(quickSearch && requestHref && visible && !complete)
     const listScroll = pairList.current?.scrollTop || 0
     if (pairList.current) {

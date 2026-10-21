@@ -36,17 +36,12 @@ export default function RequestForm() {
     setFormError('')
     setStatus('idle')
     setFormStep(2)
-    trackFormEvent('request_step_2')
-  }
-
-  function trackFormEvent(goal: 'request_started' | 'request_step_2') {
-    trackAnalyticsGoal(goal)
   }
 
   function trackFormStart() {
     if (formStarted.current) return
     formStarted.current = true
-    trackFormEvent('request_started')
+    trackAnalyticsGoal('request_started')
   }
 
   async function submitRequest(event: FormEvent<HTMLFormElement>) {
