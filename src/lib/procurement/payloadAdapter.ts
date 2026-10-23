@@ -1,4 +1,4 @@
-import type { Payload } from 'payload'
+import type { Payload, Where } from 'payload'
 import type { NormalizedRFQItem, Offer } from './types'
 import type { ProcurementAdapter } from './engine'
 import { normalizeProductIdentity } from './productIdentity'
@@ -27,7 +27,7 @@ const availability = (value: SupplierOfferDoc['availability']): Offer['availabil
   'market-listed': 'limited',
   'on-request': 'on-request',
   inactive: 'unknown',
-}[value])
+} as const)[value]
 
 const numberFrom = (value?: string) => {
   if (!value) return undefined
@@ -60,7 +60,7 @@ export function createPayloadOfferAdapter(payload: Payload): ProcurementAdapter 
         length: item.length.value,
       })
 
-      const and: Array<Record<string, unknown>> = [
+      const and: Where[] = [
         { active: { equals: true } },
         { productKey: { equals: identity.productKey } },
       ]

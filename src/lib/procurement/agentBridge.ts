@@ -1,4 +1,4 @@
-import type { AgentResult, AgentTask, Evidence, NextAction } from '../agents/contracts'
+import type { AgentResult, AgentTask, Evidence, NextAction, Warning } from '../agents/contracts'
 import { runProcurement, type ProcurementAdapter, type ProcurementResult } from './engine'
 
 export type ProcurementAgentOutput = ProcurementResult
@@ -33,7 +33,7 @@ export async function runProcurementAgentFlow(
       observedAt: result.rfq.parsedAt,
     },
   ]
-  const warnings = result.noRouteLines.map((line) => ({
+  const warnings: Warning[] = result.noRouteLines.map((line) => ({
     code: 'no-procurement-route' as const,
     message: `Для строки ${line} не найден реальный маршрут закупки.`,
     severity: 'critical' as const,

@@ -1,18 +1,18 @@
-const clean = (value?: string) => value?.trim().toLowerCase().replace(/ё/g, 'е').replace(/[^a-zа-я0-9]+/gi, '') ?? ''
-const cleanNumber = (value?: string | number) => {
-  if (value === undefined || value === '') return ''
+const clean = (value?: string | null) => value?.trim().toLowerCase().replace(/ё/g, 'е').replace(/[^a-zа-я0-9]+/gi, '') ?? ''
+const cleanNumber = (value?: string | number | null) => {
+  if (value == null || value === '') return ''
   const number = Number(String(value).trim().replace(',', '.'))
   return Number.isFinite(number) ? String(number) : clean(String(value))
 }
 
 export type ProductIdentityInput = {
-  product?: string
-  designation?: string
-  standard?: string
-  diameter?: string | number
-  wall?: string | number
-  thickness?: string | number
-  length?: string | number
+  product?: string | null
+  designation?: string | null
+  standard?: string | null
+  diameter?: string | number | null
+  wall?: string | number | null
+  thickness?: string | number | null
+  length?: string | number | null
 }
 
 export const normalizeProductIdentity = (input: ProductIdentityInput) => ({

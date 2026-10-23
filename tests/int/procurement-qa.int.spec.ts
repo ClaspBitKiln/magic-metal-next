@@ -4,12 +4,16 @@ import type { Offer } from '../../src/lib/procurement/types'
 
 const offer = (overrides: Partial<Offer> = {}): Offer => ({
   id: 'qa-1',
+  sourceId: 'test',
+  supplierId: 'supplier',
   product: 'Труба',
   grade: '20',
   standard: 'ГОСТ',
-  availability: 'confirmed',
+  availability: 'in-stock',
   currency: 'RUB',
   observedAt: new Date('2026-09-10T00:00:00Z').toISOString(),
+  match: 'exact',
+  confidence: 0.9,
   ...overrides,
 })
 
