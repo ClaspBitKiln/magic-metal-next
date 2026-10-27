@@ -13,9 +13,17 @@ export default function RequestForm() {
   const [selectedProduct, setSelectedProduct] = useState('')
   const [startedAt] = useState(() => Date.now())
   const formStarted = useRef(false)
+  const messageRef = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
-    const syncSelectedProduct = () => setSelectedProduct(new URLSearchParams(window.location.search).get('product')?.trim() || '')
+    const syncSelectedProduct = () => {
+      const product = new URLSearchParams(window.location.search).get('product')?.trim() || ''
+      setSelectedProduct(product)
+      // Preserve catalogue context when a visitor opens the request form from a product link.
+      if (product && messageRef.current && !messageRef.current.value.trim()) {
+        messageRef.current.value = `${product}: `
+      }
+    }
     syncSelectedProduct()
     window.addEventListener('popstate', syncSelectedProduct)
     return () => window.removeEventListener('popstate', syncSelectedProduct)
@@ -110,7 +118,7 @@ export default function RequestForm() {
       <div className="form-stage" hidden={formStep !== 1}>
         <label className="file-field"><span className="file-button">Прикрепить файл</span><input name="files" type="file" multiple accept=".xlsx,.xls,.pdf,.doc,.docx,.png,.jpg,.jpeg,.webp,.dwg,.dxf,.mp3,.m4a,.wav,.ogg,.webm,audio/*" onChange={(event) => { const count = event.currentTarget.files?.length || 0; setSelectedFiles(count); if (count) trackAnalyticsGoal('specification_attached') }} />{selectedFiles > 0 && <strong>{`Выбрано файлов: ${selectedFiles}`}</strong>}<small>Excel, PDF, Word, фото, чертежи или аудио · до 4 МБ</small></label>
         <div className="form-or"><span>или</span></div>
-        <label>Опишите, что требуется<textarea name="message" rows={3} placeholder="Наименование, размер, ГОСТ/ТУ, количество" /></label>
+        <label>Опишите, что требуется<textarea ref={messageRef} name="message" rows={3} placeholder="Наименование, размер, ГОСТ/ТУ, количество" /></label>
         <button className="form-next" type="button" onClick={continueRequest}>Продолжить <span>→</span></button>
       </div>
       <div className="form-stage" hidden={formStep !== 2}>
