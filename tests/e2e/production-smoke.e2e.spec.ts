@@ -3,25 +3,28 @@ import { readFile } from 'node:fs/promises'
 import { gzipSync } from 'node:zlib'
 
 async function expectDecodedHero(page: Page, variant: '640' | '1024' | '1440', width: number, height: number) {
-  const images = page.locator('.hero-image img')
+  const images = page.locator('.hero-tile img')
   await expect(page.locator('.hero-mosaic')).toBeVisible()
-  await expect(images).toHaveCount(1)
+  await expect(images).toHaveCount(18)
   await expect.poll(() => images.evaluateAll((nodes: HTMLImageElement[], expectedVariant) => nodes.map((image) => ({
     complete: image.complete,
     width: image.naturalWidth,
     height: image.naturalHeight,
-    variant: image.currentSrc.includes(`/hero-mercedes-${expectedVariant}.webp`),
-  })), variant), { timeout: 20_000 }).toEqual([{
+    variant: image.currentSrc.includes(`/hero-tiles/${expectedVariant}/`),
+  })), variant), { timeout: 20_000 }).toEqual(Array.from({ length: 18 }, () => ({
     complete: true,
     width,
     height,
     variant: true,
-  }])
+  })))
 }
 
 test('root is the approved dependency-free public page', async ({ page, baseURL }) => {
   const failures: string[] = []
-  page.on('requestfailed', (request) => failures.push(`${request.url()} ${request.failure()?.errorText || ''}`))
+  page.on('requestfailed', (request) => {
+    // Optional third-party analytics must not be a dependency of the public page.
+    if (new URL(request.url()).origin === new URL(baseURL!).origin) failures.push(`${request.url()} ${request.failure()?.errorText || ''}`)
+  })
   page.on('response', (response) => {
     if (response.url().startsWith(new URL(baseURL!).origin) && response.status() >= 400) failures.push(`HTTP ${response.status()} ${response.url()}`)
   })
@@ -34,7 +37,7 @@ test('root is the approved dependency-free public page', async ({ page, baseURL 
   await expect(page.locator('#request')).toBeAttached()
   await expect(page.locator('.company-client-list img')).toHaveCount(5)
   await expect(page.locator('.brand img')).toHaveAttribute('src', /logo\.png/)
-  await expectDecodedHero(page, '1440', 1440, 810)
+  await expectDecodedHero(page, '1440', 1440, 45)
 
   expect(await page.locator('script[src*="_next"]').count()).toBe(0)
   expect(await page.locator('link[href*="_next"]').count()).toBe(0)
@@ -43,22 +46,39 @@ test('root is the approved dependency-free public page', async ({ page, baseURL 
   expect(failures, failures.join('\n')).toEqual([])
 })
 
-test('mobile receives one 640 px hero image without overflow', async ({ page, baseURL }) => {
+test('mobile receives eighteen 640 px hero tiles without overflow', async ({ page, baseURL }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   expect((await page.goto(baseURL!, { waitUntil: 'domcontentloaded' }))?.status()).toBe(200)
-  await expectDecodedHero(page, '640', 640, 360)
+  await expectDecodedHero(page, '640', 640, 20)
   expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1)
+})
+
+test('tablet receives eighteen 1024 px hero tiles', async ({ page, baseURL }) => {
+  await page.setViewportSize({ width: 900, height: 1000 })
+  expect((await page.goto(baseURL!, { waitUntil: 'domcontentloaded' }))?.status()).toBe(200)
+  await expectDecodedHero(page, '1024', 1024, 32)
 })
 
 test('every route-sensitive public asset stays below the safe limit', async ({ request, baseURL }) => {
   const paths = ['/images/logo.png?v=20261006-3', '/images/logo-hq.webp', '/images/clients/gazprom.svg', '/images/clients/rosneft.svg', '/images/clients/rosatom.svg', '/images/clients/uztransgaz.svg', '/_next/image?url=%2Fimages%2Fclients%2Fuzbekneftegaz.png&w=384&q=75']
-  for (const variant of ['640', '1024', '1440']) paths.push(`/images/hero-mercedes-${variant}.webp?v=20261021-1`)
+  const html = await readFile('public/home-static.html', 'utf8')
+  const heroPaths = [...new Set(Array.from(html.matchAll(/(?:src|srcset)="(\/images\/hero-tiles\/[^"]+)"/g), (match) => match[1]))]
+  expect(heroPaths).toHaveLength(54)
+  for (const variant of ['640', '1024', '1440']) {
+    expect(heroPaths.filter((path) => path.includes(`/hero-tiles/${variant}/`))).toHaveLength(18)
+  }
+  paths.push(...heroPaths)
   for (const path of paths) {
     const response = await request.get(new URL(path, baseURL!).toString(), { timeout: 20_000 })
     expect(response.status(), path).toBe(200)
     const body = await response.body()
     expect(body.byteLength, `${path}: empty or truncated`).toBeGreaterThan(1_000)
-    const safeLimit = path.includes('hero-mercedes-') ? 120_000 : path.includes('rosatom.svg') ? 19_000 : 15_000
+    if (path.includes('/hero-tiles/')) {
+      expect(body.toString('ascii', 0, 4), `${path}: WebP container`).toBe('RIFF')
+      expect(body.toString('ascii', 8, 12), `${path}: WebP format`).toBe('WEBP')
+      expect(body.byteLength, `${path}: complete WebP response`).toBe(body.readUInt32LE(4) + 8)
+    }
+    const safeLimit = path.includes('rosatom.svg') ? 19_000 : 15_000
     expect(body.byteLength, `${path}: exceeds safe route limit`).toBeLessThan(safeLimit)
   }
 })
@@ -76,7 +96,9 @@ test('content remains usable when every image request fails', async ({ page, bas
   await expect(page.getByRole('heading', { name: /СЛОЖНЫЕ ПРОМЫШЛЕННЫЕ/i })).toBeVisible()
   await expect(page.locator('#products')).toBeVisible()
   await expect(page.locator('#request')).toBeVisible()
-  expect(await page.locator('.hero-image img').evaluateAll((images: HTMLImageElement[]) => images.every((image) => image.complete && image.naturalWidth === 0))).toBe(true)
+  const heroImages = page.locator('.hero-tile img')
+  await expect(heroImages).toHaveCount(18)
+  await expect.poll(() => heroImages.evaluateAll((images: HTMLImageElement[]) => images.map((image) => image.complete && image.naturalWidth === 0))).toEqual(Array(18).fill(true))
   expect(await page.locator('.hero').evaluate((node) => getComputedStyle(node).backgroundColor)).not.toBe('rgba(0, 0, 0, 0)')
 })
 
@@ -106,9 +128,9 @@ test('the restored catalog exposes details and preserves request prefill', async
   expect((await page.goto(baseURL!, { waitUntil: 'domcontentloaded' }))?.status()).toBe(200)
   await expect(page.locator('.catalog-group')).toHaveCount(10)
   await expect(page.locator('.catalog-group[open]')).toHaveCount(0)
-  await expect(page.locator('.catalog-item')).toHaveCount(46)
+  await expect(page.locator('.catalog-item')).toHaveCount(56)
   const links = page.locator('.home-size-series a')
-  await expect(links).toHaveCount(46)
+  await expect(links).toHaveCount(56)
   const hrefs = await links.evaluateAll((nodes: HTMLAnchorElement[]) => nodes.map((node) => node.getAttribute('href')))
   expect(hrefs.every((href) => href?.startsWith('/produkciya/') || href?.startsWith('/spravochnik-nalichiya?q=') || (href?.startsWith('/?product=') && href.endsWith('#request')))).toBe(true)
   expect((await page.goto('/?product=%D0%A2%D1%80%D1%83%D0%B1%D1%8B#request', { waitUntil: 'domcontentloaded' }))?.status()).toBe(200)
