@@ -1,6 +1,4 @@
 import { expect, test, type Page } from '@playwright/test'
-import { readFile } from 'node:fs/promises'
-import { gzipSync } from 'node:zlib'
 
 async function expectDecodedHero(page: Page, variant: '640' | '1024' | '1440', width: number, height: number) {
   const images = page.locator('.hero-image img')
@@ -19,7 +17,7 @@ async function expectDecodedHero(page: Page, variant: '640' | '1024' | '1440', w
   }])
 }
 
-test('root is the approved dependency-free public page', async ({ page, baseURL }) => {
+test('root renders the approved React public homepage', async ({ page, baseURL }) => {
   const failures: string[] = []
   page.on('requestfailed', (request) => failures.push(`${request.url()} ${request.failure()?.errorText || ''}`))
   page.on('response', (response) => {
@@ -33,13 +31,9 @@ test('root is the approved dependency-free public page', async ({ page, baseURL 
   await expect(page.locator('#products')).toBeVisible()
   await expect(page.locator('#request')).toBeAttached()
   await expect(page.locator('.company-client-list img')).toHaveCount(5)
-  await expect(page.locator('.brand img')).toHaveAttribute('src', /logo\.png/)
+  await expect(page.locator('.brand-logo')).toHaveAttribute('src', /logo\.png/)
   await expectDecodedHero(page, '1440', 1440, 810)
 
-  expect(await page.locator('script[src*="_next"]').count()).toBe(0)
-  expect(await page.locator('link[href*="_next"]').count()).toBe(0)
-  expect(await page.locator('link[rel="stylesheet"]').count()).toBe(0)
-  expect(gzipSync(Buffer.from(await page.content())).byteLength).toBeLessThan(15_000)
   expect(failures, failures.join('\n')).toEqual([])
 })
 
@@ -63,13 +57,6 @@ test('every route-sensitive public asset stays below the safe limit', async ({ r
   }
 })
 
-test('the committed static document remains safely compressible', async () => {
-  const html = await readFile('public/home-static.html')
-  expect(gzipSync(html).byteLength).toBeLessThan(15_000)
-  expect(html.toString()).not.toMatch(/<(script|link)[^>]+_next/)
-  expect(html.toString()).not.toContain('site.css')
-})
-
 test('content remains usable when every image request fails', async ({ page, baseURL }) => {
   await page.route('**/images/**', (route) => route.abort('failed'))
   expect((await page.goto(baseURL!, { waitUntil: 'domcontentloaded' }))?.status()).toBe(200)
@@ -89,7 +76,7 @@ test('critical public content works without JavaScript', async ({ browser, baseU
   await expect(page.locator('#request')).toBeVisible()
   await expect(page.getByRole('link', { name: /\+7 922 711-73-63/ }).first()).toBeVisible()
   await expect(page.locator('.hero-mosaic')).toBeVisible()
-  await expectDecodedHero(page, '1440', 1440, 45)
+  await expectDecodedHero(page, '1440', 1440, 810)
   await context.close()
 })
 
