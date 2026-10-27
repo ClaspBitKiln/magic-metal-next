@@ -2,6 +2,10 @@ import { describe, expect, it } from 'vitest'
 import { filterEligibleSuppliers, isProcurementEligibleSupplier } from '../../src/lib/procurement/routeRegistry'
 
 describe('procurement route registry', () => {
+  it('excludes a disabled integration even when its supplier was verified', () => {
+    expect(isProcurementEligibleSupplier({ id: 'disabled', entityName: 'Disabled', layer: 'L7', verificationStatus: 'confirmed', integrationStatus: 'disabled', procurementRoute: 'direct-rfq', productScopes: ['special-steels'] })).toBe(false)
+  })
+
   it('allows confirmed active procurement sources', () => {
     expect(isProcurementEligibleSupplier({ id: 'chzsi', entityName: 'ЧЗСИ', layer: 'L7', verificationStatus: 'confirmed', integrationStatus: 'manual', procurementRoute: 'direct-rfq', productScopes: ['special-steels'] })).toBe(true)
   })

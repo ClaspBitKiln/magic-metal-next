@@ -1,28 +1,30 @@
 import { test, expect } from '@playwright/test'
 
 for (const width of [390, 1440]) {
-  test(`filter URL updates preserve product navigation at ${width}px`, async ({ page }) => {
+  test(`technical search updates its URL and opens exact product sizes at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 })
-    const filterNavigations: string[] = []
-    page.on('request', (request) => {
-      if (request.headers().rsc === '1' && new URL(request.url()).pathname === '/spravochnik-nalichiya') {
-        filterNavigations.push(request.url())
-      }
-    })
-    await page.goto('/spravochnik-nalichiya?q=Водогазопроводные')
-    const search = page.getByPlaceholder('Номенклатура, размер, марка или ГОСТ')
+    await page.goto('/poisk?q=Водогазопроводные')
+    const search = page.getByLabel('Товар, размер, марка, ГОСТ или назначение')
     await expect(search).toHaveValue('Водогазопроводные')
-    await expect(page.locator('.market-group').first()).toBeVisible()
-    await search.fill('Бесшовные холоднодеформированные')
-    await expect(page).toHaveURL(/q=.*category=/)
-    await expect(page.locator('.market-group').first()).toContainText('холоднодеформированные')
-    const group = page.locator('.market-group').first()
-    if (await group.getAttribute('open') === null) await group.locator('summary').click()
-    await expect(group.locator('.market-position-row').first()).toBeVisible()
-    expect(filterNavigations).toEqual([])
-    await group.locator('.market-position-row').first().click()
-    await expect(page).toHaveURL(/\/poziciya\?id=/)
-    await expect(page.locator('.position-hero').getByRole('link', { name: 'Отправить заявку' })).toBeVisible()
-    expect(await page.locator('.position-hero h1').evaluate((heading) => heading.scrollWidth - heading.clientWidth)).toBeLessThanOrEqual(1)
+    await expect(page.locator('.search-results a').first()).toBeVisible()
+    await search.fill('57×3')
+    await expect.poll(() => new URL(page.url()).searchParams.get('q')).toBe('57×3')
+    const product = page.locator('.search-results a[href*="size_1=57"][href*="wall_1=3"]').first()
+    await expect(product).toBeVisible()
+    await product.click()
+    await expect(page).toHaveURL(/\/produkciya\/.+size_1=57.*wall_1=3/)
+    await expect(page.locator('h1')).toBeVisible()
+    await expect(page.locator('.size-series-selection-result').first()).toContainText('57 × 3 мм')
+    expect(await page.locator('h1').evaluate((heading) => heading.scrollWidth - heading.clientWidth)).toBeLessThanOrEqual(1)
+  })
+}
+
+for (const legacy of ['/spravochnik-nalichiya?q=Водогазопроводные', '/poziciya?id=obsolete']) {
+  test(`retired route ${legacy.split('?')[0]} redirects to the unified catalog`, async ({ page }) => {
+    await page.goto(legacy)
+    await expect.poll(() => new URL(page.url()).pathname).toBe('/')
+    await expect.poll(() => new URL(page.url()).hash).toBe('#products')
+    await expect(page.locator('#products')).toBeInViewport()
+    await expect(page.locator('.catalog-group').first()).toBeVisible()
   })
 }

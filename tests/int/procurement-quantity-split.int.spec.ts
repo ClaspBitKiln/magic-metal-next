@@ -63,21 +63,25 @@ describe('quantity-level split procurement', () => {
     expect(result[0].allocations.reduce((sum, item) => sum + item.quantity, 0)).toBe(20)
   })
 
-  it('rejects a split when its extra transport run makes it more expensive', () => {
+  it.each([
+    { price: 99000, expectedOffers: ['c'], expectedCost: 2060000 },
+    { price: 101000, expectedOffers: ['a', 'c'], expectedCost: 2088000 },
+  ])('avoids an expensive extra transport run while preserving cheaper same-city allocations at $price', ({ price, expectedOffers, expectedCost }) => {
     const result = optimizeSplitProcurement([
       { itemLine: 1, quantity: 20, unit: 'т', offers: [
         offer('a', 'A', 'Москва', 100000, 12),
         offer('b', 'B', 'Екатеринбург', 95000, 8),
-        offer('c', 'C', 'Москва', 101000, 20),
+        offer('c', 'C', 'Москва', price, 20),
       ] },
     ], [
       route('moscow-tashkent', 'Москва', 40000, 2000, 25),
       route('ekb-tashkent', 'Екатеринбург', 300000, 2000, 25),
     ])
 
-    expect(result[0].allocations).toHaveLength(1)
-    expect(result[0].allocations[0].offerId).toBe('c')
-    expect(result[0].allocations[0].quantity).toBe(20)
+    expect(result[0].allocations.map((item) => item.offerId).sort()).toEqual(expectedOffers)
+    expect(result[0].allocations.reduce((sum, item) => sum + item.quantity, 0)).toBe(20)
+    expect(result[0].transportRunCount).toBe(1)
+    expect(result[0].landedCost).toBe(expectedCost)
   })
 
   it('rejects a plan that exceeds route capacity', () => {

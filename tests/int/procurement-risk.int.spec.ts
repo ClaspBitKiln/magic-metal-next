@@ -1,71 +1,40 @@
 import { describe, expect, it } from 'vitest'
-import { assessPlanRisk, assessRisk } from '@/lib/procurement/risk'
-import type { ProcurementPlan } from '@/lib/procurement/types'
+import { assessOfferRisk } from '@/lib/procurement/risk'
+import type { Offer } from '@/lib/procurement/types'
 
-const plan = (overrides: Partial<ProcurementPlan> = {}): ProcurementPlan => ({
-  allocations: [],
-  landedCost: 1_000_000,
-  currency: 'RUB',
-  supplierCount: 1,
-  transportRunCount: 1,
-  reasons: [],
-  risks: [],
-  recommended: false,
+const now = new Date('2026-10-27T12:00:00.000Z')
+const offer = (overrides: Partial<Offer> = {}): Offer => ({
+  id: 'offer', sourceId: 'source', supplierId: 'supplier', product: 'pipe',
+  price: 100000, currency: 'RUB', availability: 'in-stock',
+  observedAt: now.toISOString(), match: 'exact', confidence: 1,
   ...overrides,
 })
 
-describe('procurement risk engine', () => {
-  it('blocks an unverified route before QA', () => {
-    const result = assessRisk({
-      routeVerified: false,
-      supplierReliability: 0.9,
-      priceFreshness: 1,
-      availabilityFreshness: 1,
-      logisticsFreshness: 1,
-      dataQuality: 1,
-    })
-    expect(result.blocking).toBe(true)
-    expect(result.canProceed).toBe(false)
-    expect(result.items.some((item) => item.code === 'route-unverified')).toBe(true)
+describe('procurement offer risk gate', () => {
+  it('accepts confirmed availability and a current price date', () => {
+    expect(assessOfferRisk(offer(), now)).toEqual({ status: 'ok', availabilityOk: true, priceDateOk: true })
   })
 
-  it('detects stale price, availability and logistics data', () => {
-    const result = assessRisk({ priceFreshness: 0.2, availabilityFreshness: 0.2, logisticsFreshness: 0.2, routeVerified: true, supplierReliability: 0.9, dataQuality: 0.9 })
-    expect(result.items.map((item) => item.code)).toEqual(expect.arrayContaining(['price-stale', 'availability-stale', 'logistics-stale', 'route-stale']))
-    expect(result.level).toBe('high')
+  it('blocks unconfirmed availability even when the price is current', () => {
+    expect(assessOfferRisk(offer({ availability: 'unknown' }), now)).toMatchObject({ status: 'blocked', availabilityOk: false, priceDateOk: true })
   })
 
-  it('flags weak supplier reliability and missing execution history', () => {
-    const weak = assessRisk({ supplierReliability: 0.3, routeVerified: true, priceFreshness: 1, availabilityFreshness: 1, logisticsFreshness: 1, dataQuality: 1 })
-    expect(weak.items.some((item) => item.code === 'supplier-unreliable')).toBe(true)
-    const missing = assessRisk({ routeVerified: true, priceFreshness: 1, availabilityFreshness: 1, logisticsFreshness: 1, dataQuality: 1 })
-    expect(missing.items.some((item) => item.code === 'supplier-history-missing')).toBe(true)
+  it('requires checking a stale price rather than treating it as current', () => {
+    expect(assessOfferRisk(offer({ observedAt: '2026-10-19T12:00:00.000Z' }), now)).toMatchObject({ status: 'check', availabilityOk: true, priceDateOk: false })
   })
 
-  it('flags split procurement and long or unknown lead time', () => {
-    const result = assessPlanRisk(plan({ supplierCount: 3, transportRunCount: 2 }), undefined, { routeVerified: true, supplierReliability: 0.9, priceFreshness: 1, availabilityFreshness: 1, logisticsFreshness: 1, dataQuality: 1, leadTimeDays: 30 })
-    expect(result.items.some((item) => item.code === 'split-procurement')).toBe(true)
-    expect(result.items.some((item) => item.code === 'lead-time-risk')).toBe(true)
+  it.each(['invalid-date', '2026-10-28T12:00:00.000Z'])('does not accept an invalid or future price date: %s', (observedAt) => {
+    expect(assessOfferRisk(offer({ observedAt }), now)).toMatchObject({ status: 'check', priceDateOk: false })
   })
 
-  it('blocks a plan whose margin is below minimum', () => {
-    const result = assessPlanRisk(plan(), {
-      landedCost: 1_000_000,
-      sellingPrice: 1_050_000,
-      grossProfit: 50_000,
-      marginPercent: 4.7619,
-      markupPercent: 5,
-      minimumSellingPrice: 1_111_111,
-      targetSellingPrice: 1_176_470,
-      maximumDiscountAmount: 0,
-      riskReserve: 0,
-      contributionAfterRiskReserve: 50_000,
-      currency: 'RUB',
-      meetsMinimum: false,
-      meetsTarget: false,
-      risks: ['Маржа ниже минимальной'],
-    })
-    expect(result.blocking).toBe(true)
-    expect(result.items.some((item) => item.code === 'margin-below-minimum')).toBe(true)
+  it('accepts the inclusive seven-day freshness boundary', () => {
+    expect(assessOfferRisk(offer({ observedAt: '2026-10-20T12:00:00.000Z' }), now).status).toBe('ok')
+    expect(assessOfferRisk(offer({ observedAt: '2026-10-20T11:59:59.999Z' }), now).status).toBe('check')
+  })
+
+  it('respects a stricter configured freshness policy', () => {
+    const recent = offer({ observedAt: '2026-10-25T12:00:00.000Z' })
+    expect(assessOfferRisk(recent, now).status).toBe('ok')
+    expect(assessOfferRisk(recent, now, { priceMaxAgeDays: 1 }).status).toBe('check')
   })
 })

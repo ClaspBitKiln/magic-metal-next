@@ -54,7 +54,9 @@ describe('lazy dimension table enhancement', () => {
 
   it('records each valid complete size and wall selection once without counting restored links', () => {
     const goals: string[] = []
-    const record = ((event: CustomEvent<string>) => goals.push(event.detail)) as EventListener
+    const record: EventListener = (event) => {
+      if (event instanceof CustomEvent && typeof event.detail === 'string') goals.push(event.detail)
+    }
     document.addEventListener('magicmet:goal', record)
     window.history.replaceState(null, '', '/?size_test=57&wall_test=4')
     const details = mount()

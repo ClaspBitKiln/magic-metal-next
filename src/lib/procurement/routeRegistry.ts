@@ -5,7 +5,7 @@ export type SupplierRegistryEntry = {
   entityName: string
   layer: string
   verificationStatus: 'confirmed' | 'verify' | 'reference' | 'historical' | 'disabled'
-  integrationStatus: 'active' | 'planned' | 'verify' | 'manual'
+  integrationStatus: 'active' | 'planned' | 'verify' | 'manual' | 'disabled'
   procurementRoute: string
   productScopes: string[]
 }

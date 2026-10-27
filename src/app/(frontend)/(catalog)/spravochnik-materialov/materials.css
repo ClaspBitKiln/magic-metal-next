@@ -958,6 +958,31 @@
   font-size: 18px;
   text-align: right;
 }
+/* Stack directory rows before their fixed desktop columns exceed tablet width. */
+@media (max-width: 1000px) {
+  .standards-table-head {
+    display: none;
+  }
+  .standards-table > a {
+    min-height: 0;
+    padding: 20px 18px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 9px 18px;
+  }
+  .standards-table > a > .standard-code,
+  .standards-table-description {
+    grid-column: 1;
+  }
+  .standards-table > a > small {
+    grid-column: 1;
+    color: #68748b;
+  }
+  .standards-table > a > b {
+    grid-column: 2;
+    grid-row: 1 / 4;
+    align-self: center;
+  }
+}
 @media (max-width: 800px) {
   .materials-header {
     height: 74px;
@@ -1023,7 +1048,10 @@
     padding-top: 55px;
   }
   .materials-group-title {
-    grid-template-columns: 35px 1fr 34px;
+    grid-template-columns: 35px minmax(0, 1fr) 34px;
+  }
+  .materials-group-title h2 {
+    overflow-wrap: anywhere;
   }
   .materials-group-title p {
     display: none;
@@ -1036,28 +1064,6 @@
   .materials-grid > a:nth-child(3n + 1) {
     min-height: 260px;
     border-left: 1px solid #cbd5e6;
-  }
-  .standards-table-head {
-    display: none;
-  }
-  .standards-table > a {
-    min-height: 0;
-    padding: 20px 18px;
-    grid-template-columns: 1fr auto;
-    gap: 9px 18px;
-  }
-  .standards-table > a > .standard-code,
-  .standards-table-description {
-    grid-column: 1;
-  }
-  .standards-table > a > small {
-    grid-column: 1;
-    color: #68748b;
-  }
-  .standards-table > a > b {
-    grid-column: 2;
-    grid-row: 1 / 4;
-    align-self: center;
   }
   .materials-note,
   .material-analogs,
@@ -1174,4 +1180,13 @@
   .material-passport > header { margin-bottom: 28px; }
   .material-analogs { padding-top: 46px; padding-bottom: 50px; }
   .material-products,.related-materials { padding-top: 52px; padding-bottom: 58px; }
+}
+
+@media (max-width: 360px) {
+  .standards-table > a > .standard-code {
+    grid-column: 1 / -1;
+  }
+  .standards-table > a > b {
+    grid-row: 2 / 4;
+  }
 }

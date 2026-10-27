@@ -28,11 +28,18 @@ describe('procurement margin engine', () => {
       policy: { minimumMarginPercent: 10, targetMarginPercent: 20, riskReservePercent: 3 },
     })
     expect(result.meetsMinimum).toBe(true)
-    expect(result.meetsTarget).toBe(true)
+    expect(result.meetsTarget).toBe(false)
+    expect(result.marginPercent).toBeCloseTo(16.6666667)
     expect(result.riskReserve).toBe(30000)
     expect(result.contributionAfterRiskReserve).toBe(170000)
     expect(result.minimumSellingPrice).toBeCloseTo(1111111.1111)
     expect(result.targetSellingPrice).toBe(1250000)
+  })
+
+  it('meets the target at the actual target selling price', () => {
+    const result = calculateMargin({ landedCost: 1000000, sellingPrice: 1250000, policy: { minimumMarginPercent: 10, targetMarginPercent: 20 } })
+    expect(result.marginPercent).toBe(20)
+    expect(result.meetsTarget).toBe(true)
   })
 
   it('uses the actual procurement plan landed cost as the margin base', () => {

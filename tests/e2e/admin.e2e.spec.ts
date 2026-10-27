@@ -3,6 +3,7 @@ import { login } from '../helpers/login'
 import { seedTestUser, cleanupTestUser, testUser } from '../helpers/seedUser'
 
 test.describe('Admin Panel', () => {
+  test.describe.configure({ mode: 'serial' })
   let page: Page
 
   test.beforeAll(async ({ browser }) => {
@@ -16,6 +17,7 @@ test.describe('Admin Panel', () => {
 
   test.afterAll(async () => {
     await cleanupTestUser()
+    await page?.context().close()
   })
 
   test('can navigate to dashboard', async () => {
@@ -27,9 +29,10 @@ test.describe('Admin Panel', () => {
 
   test('can navigate to list view', async () => {
     await page.goto('http://localhost:3000/admin/collections/users')
-    await expect(page).toHaveURL('http://localhost:3000/admin/collections/users')
-    const listViewArtifact = page.locator('h1', { hasText: 'Users' }).first()
+    await expect(page).toHaveURL(/\/admin\/collections\/users(?:\?|$)/)
+    const listViewArtifact = page.locator('h1', { hasText: 'Пользователи' }).first()
     await expect(listViewArtifact).toBeVisible()
+    await expect(page.getByRole('link', { name: testUser.email })).toBeVisible()
   })
 
   test('can navigate to edit view', async () => {

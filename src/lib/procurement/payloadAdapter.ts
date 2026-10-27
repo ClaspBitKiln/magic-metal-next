@@ -1,4 +1,4 @@
-import type { Payload } from 'payload'
+import type { Payload, Where } from 'payload'
 import type { NormalizedRFQItem, Offer } from './types'
 import type { ProcurementAdapter } from './engine'
 import { normalizeProductIdentity } from './productIdentity'
@@ -22,12 +22,13 @@ type SupplierOfferDoc = {
 }
 
 const sourceId = (supplier: SupplierOfferDoc['supplier']) => typeof supplier === 'object' ? supplier.id : supplier
-const availability = (value: SupplierOfferDoc['availability']): Offer['availability'] => ({
+const availabilityMap: Record<SupplierOfferDoc['availability'], Offer['availability']> = {
   'price-confirmed': 'in-stock',
   'market-listed': 'limited',
   'on-request': 'on-request',
   inactive: 'unknown',
-}[value])
+}
+const availability = (value: SupplierOfferDoc['availability']): Offer['availability'] => availabilityMap[value]
 
 const numberFrom = (value?: string) => {
   if (!value) return undefined
@@ -60,7 +61,7 @@ export function createPayloadOfferAdapter(payload: Payload): ProcurementAdapter 
         length: item.length.value,
       })
 
-      const and: Array<Record<string, unknown>> = [
+      const and: Where[] = [
         { active: { equals: true } },
         { productKey: { equals: identity.productKey } },
       ]

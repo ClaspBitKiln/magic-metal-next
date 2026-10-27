@@ -46,7 +46,8 @@ function mcpServers(config: SwarmConfig) {
 export async function createProcurementSwarm(config: SwarmConfig = {}) {
   const servers = await connectMcpServers(mcpServers(config), { connectInParallel: true })
   const activeMcp = servers.active
-  const model = config.model ?? process.env.OPENAI_AGENT_MODEL ?? 'gpt-5.6-luna'
+  // Let the SDK select its supported default unless a model was configured.
+  const model = config.model ?? process.env.OPENAI_AGENT_MODEL
 
   const agents = Object.fromEntries(
     (Object.keys(roleInstructions) as SwarmAgentRole[]).map((role) => [

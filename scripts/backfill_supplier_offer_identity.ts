@@ -16,11 +16,18 @@ while (true) {
   })
 
   for (const doc of result.docs) {
-    const identity = normalizeProductIdentity(doc)
+    const input = {
+      product: doc.product,
+      designation: doc.designation ?? undefined,
+      standard: doc.standard ?? undefined,
+      diameter: doc.diameter ?? undefined,
+      wall: doc.wall ?? undefined,
+    }
+    const identity = normalizeProductIdentity(input)
     await payload.update({
       collection: 'supplier-offers',
       id: doc.id,
-      data: { ...identity, productIdentityKey: buildProductIdentityKey(doc) },
+      data: { ...identity, productIdentityKey: buildProductIdentityKey(input) },
     })
     updated += 1
   }

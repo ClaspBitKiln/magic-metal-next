@@ -13,6 +13,21 @@ describe('procurement engine core', () => {
     expect(rfq.items[0].grade.value).toBe('20')
     expect(rfq.items[0].standard.value).toContain('ГОСТ 8732')
     expect(rfq.items[0].quantity.value).toBe(20)
+    expect(rfq.items[0].unit.value).toBe('т')
+  })
+
+  it('preserves a Cyrillic steel grade and does not find a standard inside another word', () => {
+    const item = normalizeRFQ('Труба сталь 09Г2С псевдоГОСТ 8732 количество 5 кг').items[0]
+    expect(item.grade.value).toBe('09Г2С')
+    expect(item.standard.value).toBeUndefined()
+    expect(item.unit.value).toBe('кг')
+  })
+
+  it('does not invent a grade, standard or quantity unit when they are absent', () => {
+    const item = normalizeRFQ('Труба бесшовная Ø219 стенка 8').items[0]
+    expect(item.grade.value).toBeUndefined()
+    expect(item.standard.value).toBeUndefined()
+    expect(item.unit.value).toBeUndefined()
   })
 
   it('calculates landed cost from pickup logistics', () => {
