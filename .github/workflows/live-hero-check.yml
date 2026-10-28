@@ -58,13 +58,14 @@ jobs:
                   const source=new Image();source.src=`data:image/avif;base64,${base64}`;await source.decode();
                   return {width:source.naturalWidth,height:source.naturalHeight};
                 },(await heroResponse.body()).toString('base64')):null;
+                const heroBytes=!blocked&&heroResponse?(await heroResponse.body()).length:0;
                 const pageState=await page.evaluate(()=>({
                   overflow:document.documentElement.scrollWidth-document.documentElement.clientWidth,
                   background:getComputedStyle(document.querySelector('.hero')).backgroundColor,
                 }));
                 const headingVisible=await page.locator('h1').isVisible();
                 const html=await response.text();
-                const row={width,blocked,http:response.status(),photo,sourcePhoto,heroRequests,headingVisible,javaScriptEnabled:false,...pageState,htmlGzip:gzipSync(Buffer.from(html)).length};
+                const row={width,blocked,http:response.status(),photo,sourcePhoto,heroBytes,heroRequests,headingVisible,javaScriptEnabled:false,...pageState,htmlGzip:gzipSync(Buffer.from(html)).length};
                 const common=row.http===200&&headingVisible&&row.overflow===0&&row.htmlGzip<15000&&!html.includes('data:image/avif;base64,');
                 const expectedSource=width<=700?'hero-photo-mobile.avif':'hero-photo-1440.avif';
                 const expectedWidth=width<=700?840:1440;
@@ -72,7 +73,7 @@ jobs:
                 const displayed=photo.displayWidth>0&&photo.displayHeight>0;
                 row.passed=common&&(blocked
                   ? pageState.background!=='transparent'&&pageState.background!=='rgba(0, 0, 0, 0)'
-                  : photo.complete&&displayed&&sourcePhoto?.width===expectedWidth&&sourcePhoto?.height===810&&avifSource&&heroRequests===1);
+                  : photo.complete&&displayed&&sourcePhoto?.width===expectedWidth&&sourcePhoto?.height===810&&avifSource&&heroRequests===1&&heroBytes===(width<=700?20855:73884));
                 results.push(row);
               }catch(error){results.push({width,blocked,passed:false,error:error.message});}
               await page.screenshot({path:`${out}/${width}-${blocked?'blocked':'normal'}.png`}).catch(()=>{});
