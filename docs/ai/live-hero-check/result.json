@@ -1,6 +1,6 @@
 {
-  "checkedAt": "2026-10-28T10:38:02.539Z",
-  "sourceCommit": "d3d9dbed3d5273e987f493925eaea10420c15b75",
+  "checkedAt": "2026-10-28T10:54:41.286Z",
+  "sourceCommit": "1ebae1834abe8944dddc6d68d46388d6ce9b8072",
   "results": [
     {
       "width": 390,
@@ -21,6 +21,13 @@
       "headingVisible": true,
       "actionVisible": true,
       "javaScriptEnabled": false,
+      "delivery": {
+        "contentEncoding": "br",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "vary": "Sec-CH-Prefers-Color-Scheme",
+        "contentLength": null,
+        "cdnCache": "HIT"
+      },
       "overflow": 0,
       "background": "rgb(247, 250, 255)",
       "mosaicDisplay": "none",
@@ -62,6 +69,13 @@
       "headingVisible": true,
       "actionVisible": true,
       "javaScriptEnabled": false,
+      "delivery": {
+        "contentEncoding": "br",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+        "contentLength": null,
+        "cdnCache": "HIT"
+      },
       "overflow": 0,
       "background": "rgb(247, 250, 255)",
       "mosaicDisplay": "none",
@@ -103,6 +117,13 @@
       "headingVisible": true,
       "actionVisible": true,
       "javaScriptEnabled": true,
+      "delivery": {
+        "contentEncoding": "br",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "vary": "Sec-CH-Prefers-Color-Scheme",
+        "contentLength": null,
+        "cdnCache": "HIT"
+      },
       "overflow": 0,
       "background": "rgb(247, 250, 255)",
       "mosaicDisplay": "none",
@@ -144,6 +165,13 @@
       "headingVisible": true,
       "actionVisible": true,
       "javaScriptEnabled": true,
+      "delivery": {
+        "contentEncoding": "br",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+        "contentLength": null,
+        "cdnCache": "HIT"
+      },
       "overflow": 0,
       "background": "rgb(247, 250, 255)",
       "mosaicDisplay": "none",
@@ -185,6 +213,13 @@
       "headingVisible": true,
       "actionVisible": true,
       "javaScriptEnabled": false,
+      "delivery": {
+        "contentEncoding": "br",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "vary": "Sec-CH-Prefers-Color-Scheme",
+        "contentLength": null,
+        "cdnCache": "HIT"
+      },
       "overflow": 0,
       "background": "rgb(247, 250, 255)",
       "mosaicDisplay": "none",
@@ -226,6 +261,13 @@
       "headingVisible": true,
       "actionVisible": true,
       "javaScriptEnabled": false,
+      "delivery": {
+        "contentEncoding": "br",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+        "contentLength": null,
+        "cdnCache": "HIT"
+      },
       "overflow": 0,
       "background": "rgb(247, 250, 255)",
       "mosaicDisplay": "none",
@@ -267,6 +309,13 @@
       "headingVisible": true,
       "actionVisible": true,
       "javaScriptEnabled": true,
+      "delivery": {
+        "contentEncoding": "br",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "vary": "Sec-CH-Prefers-Color-Scheme",
+        "contentLength": null,
+        "cdnCache": "HIT"
+      },
       "overflow": 0,
       "background": "rgb(247, 250, 255)",
       "mosaicDisplay": "none",
@@ -308,6 +357,13 @@
       "headingVisible": true,
       "actionVisible": true,
       "javaScriptEnabled": true,
+      "delivery": {
+        "contentEncoding": "br",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+        "contentLength": null,
+        "cdnCache": "HIT"
+      },
       "overflow": 0,
       "background": "rgb(247, 250, 255)",
       "mosaicDisplay": "none",
@@ -352,6 +408,13 @@
       "headingVisible": true,
       "actionVisible": true,
       "javaScriptEnabled": false,
+      "delivery": {
+        "contentEncoding": "br",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "vary": "Sec-CH-Prefers-Color-Scheme",
+        "contentLength": null,
+        "cdnCache": "HIT"
+      },
       "overflow": 0,
       "background": "rgb(247, 250, 255)",
       "mosaicDisplay": "block",
@@ -393,6 +456,13 @@
       "headingVisible": true,
       "actionVisible": true,
       "javaScriptEnabled": false,
+      "delivery": {
+        "contentEncoding": "br",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+        "contentLength": null,
+        "cdnCache": "HIT"
+      },
       "overflow": 0,
       "background": "rgb(247, 250, 255)",
       "mosaicDisplay": "block",
@@ -437,6 +507,13 @@
       "headingVisible": true,
       "actionVisible": true,
       "javaScriptEnabled": true,
+      "delivery": {
+        "contentEncoding": "br",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "vary": "Sec-CH-Prefers-Color-Scheme",
+        "contentLength": null,
+        "cdnCache": "HIT"
+      },
       "overflow": 0,
       "background": "rgb(247, 250, 255)",
       "mosaicDisplay": "block",
@@ -478,6 +555,13 @@
       "headingVisible": true,
       "actionVisible": true,
       "javaScriptEnabled": true,
+      "delivery": {
+        "contentEncoding": "br",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+        "contentLength": null,
+        "cdnCache": "HIT"
+      },
       "overflow": 0,
       "background": "rgb(247, 250, 255)",
       "mosaicDisplay": "block",
@@ -498,6 +582,24 @@
       "overlayDisplay": "block",
       "activePreloads": 1,
       "htmlGzip": 13352,
+      "passed": true
+    }
+  ],
+  "searchResults": [
+    {
+      "width": 390,
+      "query": "12Х1МФ",
+      "first": "12Х1МФ",
+      "count": 7,
+      "overflow": 0,
+      "passed": true
+    },
+    {
+      "width": 1536,
+      "query": "12Х1МФ",
+      "first": "12Х1МФ",
+      "count": 7,
+      "overflow": 0,
       "passed": true
     }
   ],
