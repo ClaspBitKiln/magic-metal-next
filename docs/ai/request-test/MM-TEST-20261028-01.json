@@ -1,6 +1,21 @@
 {
   "testId": "MM-TEST-20261028-01",
   "sourceCommit": "8b3d8f8fb9a343ad79d221ad9bb83bbbeb3076d7",
-  "phase": "claimed",
-  "claimedAt": "2026-10-28T14:27:56.377Z"
+  "phase": "accepted",
+  "claimedAt": "2026-10-28T14:27:56.377Z",
+  "message": "ТЕСТОВАЯ ЗАЯВКА — проверка формы по поручению владельца сайта. Идентификатор: MM-TEST-20261028-01. Пример продукции: профильная труба 40×20×2 мм, 1 шт. Это НЕ ЗАКАЗ. Расчёт, закупка, отгрузка и обратный звонок НЕ ТРЕБУЮТСЯ.",
+  "contactEmail": "m1@magicmet.ru",
+  "startedAt": "2026-10-28T14:27:58.056Z",
+  "http": 200,
+  "response": {
+    "ok": true,
+    "id": null,
+    "emailDelivered": true,
+    "crmDelivered": false
+  },
+  "accepted": true,
+  "formStatus": "Заявка принята. Мы свяжемся с вами.",
+  "postCount": 1,
+  "postAttempts": 1,
+  "finishedAt": "2026-10-28T14:28:04.999Z"
 }
