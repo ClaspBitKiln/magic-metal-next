@@ -68,6 +68,7 @@ export default function CatalogSearch({ extraStandards = emptyItems }: { extraSt
       .sort((a, b) => b.score - a.score || a.item.title.localeCompare(b.item.title, 'ru'))
       .map(result => result.item)
   }, [dimensionResponse, filter, index, query, sizeQuery])
+  const hasQuery = query.trim().length > 0
   const loading = sizeQuery && dimensionResponse?.query !== query
   const error = sizeQuery && dimensionResponse?.query === query ? dimensionResponse.error : undefined
 
@@ -77,14 +78,15 @@ export default function CatalogSearch({ extraStandards = emptyItems }: { extraSt
       <div><input id="catalog-query" value={query} maxLength={200} onChange={event => changeQuery(event.target.value)} autoFocus placeholder="Например: труба 57×3, лист 10, ГОСТ 8734" /><button type="button" onClick={() => changeQuery('')} aria-label="Очистить поиск">×</button></div>
       <p>Название, марка и ГОСТ — по справочнику. Размеры — по нормативным таблицам каталога; наличие подтверждаем по заявке.</p>
     </div>
-    <div className="search-filters" aria-label="Фильтр результатов">
+    {!hasQuery && <nav className="search-start" aria-label="Популярные запросы"><span>С чего начать</span><div>{[['Трубы', '/produkciya/truby-elektrosvarnye'], ['Бесшовные трубы', '/produkciya/truby-besshovnye'], ['Соединительные детали', '/produkciya/sdt'], ['Нержавеющая сталь', '/produkciya/nerzhaveyushchaya-stal']].map(([label, href]) => <Link key={href} href={href}>{label} <b aria-hidden="true">→</b></Link>)}</div></nav>}
+    {hasQuery && <div className="search-filters" aria-label="Фильтр результатов">
       {([['all', 'Всё'], ['product', 'Продукция'], ['material', 'Материалы'], ['standard', 'ГОСТ']] as [Filter, string][]).map(([key, label]) => <button className={filter === key ? 'active' : ''} aria-pressed={filter === key} type="button" onClick={() => { setFilter(key); setVisibleCount(40) }} key={key}>{label}</button>)}
     </div>
-    <div className="search-summary"><span role="status" aria-live="polite">{loading ? 'Ищем размер в таблицах…' : error ? 'Поиск размеров недоступен' : query ? `Найдено: ${results.length}` : `В индексе: ${index.length}`}</span>{query && <a href={`/?product=${encodeURIComponent(query)}#request`}>Не нашли точное исполнение? Отправить заявку →</a>}</div>
+    {hasQuery && <div className="search-summary"><span role="status" aria-live="polite">{loading ? 'Ищем размер в таблицах…' : error ? 'Поиск размеров недоступен' : query ? `Найдено: ${results.length}` : `В индексе: ${index.length}`}</span>{query && <a href={`/?product=${encodeURIComponent(query)}#request`}>Не нашли точное исполнение? Отправить заявку →</a>}</div>
     {error && <p role="alert">{error}</p>}
-    <div className="search-results"><div className="search-results-head"><span>Раздел</span><span>Позиция</span><span>Описание</span><i aria-hidden="true" /></div>{results.slice(0, visibleCount).map(item => <Link prefetch={false} href={item.href} aria-label={`Открыть: ${item.title}`} key={`${item.type}-${item.href}`}><small>{item.typeLabel}</small><h2>{item.title}</h2><span className="search-result-description"><h3>{item.subtitle}</h3><p>{item.description}</p></span><b aria-hidden="true">→</b></Link>)}</div>
-    {results.length > visibleCount && <button className="search-more" type="button" onClick={() => setVisibleCount(count => count + 40)}>Показать ещё · {visibleCount} из {results.length}</button>}
-    {!loading && !error && results.length === 0 && <div className="search-empty">
+    {hasQuery && <div className="search-results"><div className="search-results-head"><span>Раздел</span><span>Позиция</span><span>Описание</span><i aria-hidden="true" /></div>{results.slice(0, visibleCount).map(item => <Link prefetch={false} href={item.href} aria-label={`Открыть: ${item.title}`} key={`${item.type}-${item.href}`}><small>{item.typeLabel}</small><h2>{item.title}</h2><span className="search-result-description"><h3>{item.subtitle}</h3><p>{item.description}</p></span><b aria-hidden="true">→</b></Link>)}</div>}
+    {hasQuery && results.length > visibleCount && <button className="search-more" type="button" onClick={() => setVisibleCount(count => count + 40)}>Показать ещё · {visibleCount} из {results.length}</button>}
+    {hasQuery && !loading && !error && results.length === 0 && <div className="search-empty">
       <h2>Точного совпадения пока нет</h2>
       <p>Проверьте название, размер, марку или номер ГОСТ. Можно открыть общий каталог или отправить запрос — введённые параметры сохранятся.</p>
       {/* The homepage is an HTML Route Handler; document navigation initializes its form. */}
