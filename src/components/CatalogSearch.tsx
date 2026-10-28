@@ -13,7 +13,11 @@ export default function CatalogSearch({ extraStandards = emptyItems, initialQuer
   const [filter, setFilter] = useState<Filter>('all')
   const [visibleCount, setVisibleCount] = useState(40)
   const [dimensionResponse, setDimensionResponse] = useState<{ query: string; items: SearchItem[]; error?: string } | null>(null)
-  const index = useMemo(() => [...searchIndex, ...extraStandards], [extraStandards])
+  const index = useMemo(() => [...searchIndex, ...extraStandards].map(item => ({
+    item,
+    title: normalizeSearch(item.title),
+    haystack: normalizeSearch(`${item.title} ${item.searchText}`),
+  })), [extraStandards])
   const sizeQuery = Boolean(parseSizeSearchQuery(query))
 
   useEffect(() => {
@@ -55,10 +59,8 @@ export default function CatalogSearch({ extraStandards = emptyItems, initialQuer
     const normalized = normalizeSearch(query)
     const tokens = normalized.split(' ').filter(Boolean)
     return index
-      .filter(item => filter === 'all' || item.type === filter)
-      .map(item => {
-        const title = normalizeSearch(item.title)
-        const haystack = normalizeSearch(`${item.title} ${item.searchText}`)
+      .filter(({ item }) => filter === 'all' || item.type === filter)
+      .map(({ item, title, haystack }) => {
         if (tokens.length && !tokens.every(token => haystack.includes(token))) return null
         const score = !normalized ? 0 : title === normalized ? 100 : title.startsWith(normalized) ? 70 : title.includes(normalized) ? 50 : tokens.reduce((sum, token) => sum + (title.includes(token) ? 10 : 1), 0)
         return { item, score }

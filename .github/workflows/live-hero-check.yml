@@ -1,9 +1,13 @@
-name: Verify published hero
+name: Verify published homepage and search
 on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: [.github/workflows/live-hero-check.yml]
+    paths:
+      - .github/workflows/live-hero-check.yml
+      - public/home-static.html
+      - src/components/CatalogSearch.tsx
+      - 'src/app/(frontend)/(catalog)/poisk/**'
 permissions:
   contents: write
 concurrency:
