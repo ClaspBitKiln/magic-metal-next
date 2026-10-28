@@ -1,0 +1,111 @@
+name: Send one owner-authorized test request
+on:
+  push:
+    branches: [codex/send-authorized-test-request-20261028]
+    paths: [.github/workflows/send-one-test-request.yml]
+permissions:
+  contents: write
+concurrency:
+  group: owner-authorized-test-request-20261028-01
+  cancel-in-progress: false
+jobs:
+  submit:
+    if: github.event.head_commit.message == 'Send one owner-authorized test request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      TEST_ID: MM-TEST-20261028-01
+      SOURCE_COMMIT: ${{ github.sha }}
+      RECEIPT: docs/ai/request-test/MM-TEST-20261028-01.json
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - name: Claim this single submission before sending
+        id: claim
+        shell: bash
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          if git ls-remote --exit-code --heads origin refs/heads/codex/test-request-report >/dev/null; then
+            git fetch --no-tags origin refs/heads/codex/test-request-report
+            git checkout -B codex/test-request-report FETCH_HEAD
+          else
+            branch_status=$?
+            test "$branch_status" -eq 2 || exit "$branch_status"
+            git checkout -b codex/test-request-report
+          fi
+          if test -f "$RECEIPT"; then
+            echo 'Submission already claimed; never send again automatically.'
+            echo 'send=false' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          mkdir -p docs/ai/request-test
+          node -e "require('fs').writeFileSync(process.env.RECEIPT,JSON.stringify({testId:process.env.TEST_ID,sourceCommit:process.env.SOURCE_COMMIT,phase:'claimed',claimedAt:new Date().toISOString()},null,2))"
+          git add "$RECEIPT"
+          git commit -m 'Claim one owner-authorized test submission'
+          git push origin HEAD:refs/heads/codex/test-request-report
+          echo 'send=true' >> "$GITHUB_OUTPUT"
+      - name: Submit once through the real public form
+        if: steps.claim.outputs.send == 'true'
+        run: |
+          node --input-type=module <<'JS'
+          import { chromium } from 'playwright';
+          import fs from 'node:fs';
+          const receipt=JSON.parse(fs.readFileSync(process.env.RECEIPT,'utf8'));
+          const message=`ТЕСТОВАЯ ЗАЯВКА — проверка формы по поручению владельца сайта. Идентификатор: ${process.env.TEST_ID}. Пример продукции: профильная труба 40×20×2 мм, 1 шт. Это НЕ ЗАКАЗ. Расчёт, закупка, отгрузка и обратный звонок НЕ ТРЕБУЮТСЯ.`;
+          let browser, page, postCount=0, postAttempts=0;
+          Object.assign(receipt,{message,contactEmail:'m1@magicmet.ru',startedAt:new Date().toISOString(),phase:'not-sent'});
+          try {
+            browser=await chromium.launch();
+            page=await browser.newPage({viewport:{width:1440,height:1000}});
+            await page.route('**/api/request',async route=>{
+              if(route.request().method()!=='POST')return route.continue();
+              postAttempts++;
+              if(postCount>=1)return route.abort('blockedbyclient');
+              postCount++;
+              await route.continue();
+            });
+            await page.goto(`https://magicmet.ru/?test=${process.env.TEST_ID}#request`,{waitUntil:'domcontentloaded',timeout:45000});
+            const form=page.locator('#request-form');
+            await form.locator('textarea[name="message"]').fill(message);
+            await form.locator('input[name="email"]').fill('m1@magicmet.ru');
+            await form.locator('input[name="consent"]').check();
+            if(await form.locator('input[name="website"]').inputValue())throw Error('Honeypot must remain empty');
+            await page.waitForFunction(()=>{const start=Number(document.querySelector('#started-at')?.value);return start>0&&Date.now()-start>=2200},null,{timeout:15000});
+            receipt.phase='submission-attempted';
+            const [response]=await Promise.all([
+              page.waitForResponse(response=>response.request().method()==='POST'&&new URL(response.url()).pathname==='/api/request',{timeout:60000}),
+              form.getByRole('button',{name:'Отправить на расчёт'}).click(),
+            ]);
+            receipt.http=response.status();
+            receipt.response=await response.json().catch(()=>({invalidJson:true}));
+            const data=receipt.response;
+            receipt.accepted=response.ok()&&data.ok===true&&(data.id!=null||data.emailDelivered===true||data.crmDelivered===true);
+            receipt.phase=receipt.accepted?'accepted':'rejected';
+            await page.waitForFunction(()=>!document.querySelector('#form-status')?.textContent.includes('Отправляем'),null,{timeout:5000}).catch(()=>{});
+            receipt.formStatus=await page.locator('#form-status').textContent();
+          }catch(error){receipt.error=error.message;receipt.phase=postCount>0?'uncertain':'not-sent';}
+          finally {
+            receipt.postCount=postCount;
+            receipt.postAttempts=postAttempts;
+            receipt.finishedAt=new Date().toISOString();
+            if(page){await page.locator('#form-status').scrollIntoViewIfNeeded().catch(()=>{});await page.screenshot({path:'docs/ai/request-test/MM-TEST-20261028-01.png'}).catch(()=>{});}
+            if(browser)await browser.close();
+            fs.writeFileSync(process.env.RECEIPT,JSON.stringify(receipt,null,2));
+            console.log(JSON.stringify({testId:receipt.testId,phase:receipt.phase,postCount,http:receipt.http,response:receipt.response,formStatus:receipt.formStatus,error:receipt.error}));
+          }
+          if(!receipt.accepted||postCount!==1)process.exitCode=1;
+          JS
+      - name: Save receipt, including errors, without another submission
+        if: always() && steps.claim.outputs.send == 'true'
+        run: |
+          git add docs/ai/request-test
+          if ! git diff --cached --quiet; then
+            git commit -m 'Record owner-authorized TEST request receipt'
+          fi
+          git push origin HEAD:refs/heads/codex/test-request-report
