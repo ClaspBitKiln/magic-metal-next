@@ -1,6 +1,6 @@
 {
-  "checkedAt": "2026-10-28T05:30:42.649Z",
-  "sourceCommit": "bdead13f11f024a08d1d99d122a9d5741b191685",
+  "checkedAt": "2026-10-28T05:35:13.615Z",
+  "sourceCommit": "98dbdfa0429f8f08108f087b925317a5b71ba1c1",
   "results": [
     {
       "width": 390,
@@ -10,7 +10,7 @@
         "complete": true,
         "width": 840,
         "height": 810,
-        "currentSrc": "https://magicmet.ru/images/hero-photo-mobile.avif?v=20261028-mobile1",
+        "currentSrc": "https://magicmet.ru/images/hero-photo-mobile.avif?v=20261028-mobile2",
         "displayWidth": 390,
         "displayHeight": 721.25
       },
@@ -18,12 +18,13 @@
         "width": 840,
         "height": 810
       },
+      "heroBytes": 20855,
       "heroRequests": 1,
       "headingVisible": true,
       "javaScriptEnabled": false,
       "overflow": 0,
       "background": "rgb(247, 250, 255)",
-      "htmlGzip": 12969,
+      "htmlGzip": 12968,
       "passed": true
     },
     {
@@ -34,17 +35,18 @@
         "complete": true,
         "width": 0,
         "height": 0,
-        "currentSrc": "https://magicmet.ru/images/hero-photo-mobile.avif?v=20261028-mobile1",
+        "currentSrc": "https://magicmet.ru/images/hero-photo-mobile.avif?v=20261028-mobile2",
         "displayWidth": 390,
         "displayHeight": 721.25
       },
       "sourcePhoto": null,
+      "heroBytes": 0,
       "heroRequests": 1,
       "headingVisible": true,
       "javaScriptEnabled": false,
       "overflow": 0,
       "background": "rgb(247, 250, 255)",
-      "htmlGzip": 12969,
+      "htmlGzip": 12968,
       "passed": true
     },
     {
@@ -63,12 +65,13 @@
         "width": 1440,
         "height": 810
       },
+      "heroBytes": 73884,
       "heroRequests": 1,
       "headingVisible": true,
       "javaScriptEnabled": false,
       "overflow": 0,
       "background": "rgb(247, 250, 255)",
-      "htmlGzip": 12969,
+      "htmlGzip": 12968,
       "passed": true
     },
     {
@@ -84,12 +87,13 @@
         "displayHeight": 864
       },
       "sourcePhoto": null,
+      "heroBytes": 0,
       "heroRequests": 1,
       "headingVisible": true,
       "javaScriptEnabled": false,
       "overflow": 0,
       "background": "rgb(247, 250, 255)",
-      "htmlGzip": 12969,
+      "htmlGzip": 12968,
       "passed": true
     }
   ],
