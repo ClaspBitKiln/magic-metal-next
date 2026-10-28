@@ -410,3 +410,5 @@
   .product-materials a { grid-template-columns: minmax(90px, .65fr) minmax(0, 1.35fr) 18px; }
   .product-materials a > span { min-width: 0; overflow-wrap: anywhere; }
 }
+
+@media(max-width:760px){.product-hero{padding:32px 22px 30px}.product-hero h1{font-size:clamp(32px,8.7vw,44px)}.product-hero>div>span{margin-top:14px;font-size:15px;line-height:1.5}.product-subcatalog{padding:32px 22px 38px}.product-subcatalog h2{font-size:clamp(27px,7.5vw,36px)}.product-subcatalog>div{margin-top:18px}.product-body{padding:38px 22px 44px;gap:24px}.product-body article p{font-size:16px;line-height:1.5;margin-bottom:20px}}
