@@ -37,7 +37,7 @@ jobs:
               let heroRequests=0;
               let heroResponse;
               page.on('request',r=>{if(r.url().includes('/images/hero-'))heroRequests++});
-              page.on('response',r=>{if(/\/images\/hero-photo-\d+\.avif(?:\?|$)/.test(r.url())&&r.ok())heroResponse=r});
+              page.on('response',r=>{if(/\/images\/hero-photo-(?:\d+|mobile)\.avif(?:\?|$)/.test(r.url())&&r.ok())heroResponse=r});
               if(blocked)await page.route('**/images/**',r=>r.abort());
               try {
                 const response=await page.goto(`https://magicmet.ru/?verify=${process.env.GITHUB_SHA}`,{waitUntil:'networkidle',timeout:45000});
@@ -66,11 +66,13 @@ jobs:
                 const html=await response.text();
                 const row={width,blocked,http:response.status(),photo,sourcePhoto,heroRequests,headingVisible,javaScriptEnabled:false,...pageState,htmlGzip:gzipSync(Buffer.from(html)).length};
                 const common=row.http===200&&headingVisible&&row.overflow===0&&row.htmlGzip<15000&&!html.includes('data:image/avif;base64,');
-                const avifSource=/\/images\/hero-photo-1440\.avif(?:\?|$)/.test(photo.currentSrc);
-                const displayed=photo.displayWidth>0&&photo.displayHeight>0&&Math.abs(photo.displayWidth/photo.displayHeight-16/9)<0.02;
+                const expectedSource=width<=700?'hero-photo-mobile.avif':'hero-photo-1440.avif';
+                const expectedWidth=width<=700?840:1440;
+                const avifSource=new URL(photo.currentSrc).pathname===`/images/${expectedSource}`;
+                const displayed=photo.displayWidth>0&&photo.displayHeight>0;
                 row.passed=common&&(blocked
                   ? pageState.background!=='transparent'&&pageState.background!=='rgba(0, 0, 0, 0)'
-                  : photo.complete&&displayed&&sourcePhoto?.width===1440&&sourcePhoto?.height===810&&avifSource&&heroRequests===1);
+                  : photo.complete&&displayed&&sourcePhoto?.width===expectedWidth&&sourcePhoto?.height===810&&avifSource&&heroRequests===1);
                 results.push(row);
               }catch(error){results.push({width,blocked,passed:false,error:error.message});}
               await page.screenshot({path:`${out}/${width}-${blocked?'blocked':'normal'}.png`}).catch(()=>{});
