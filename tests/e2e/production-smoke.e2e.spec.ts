@@ -2,21 +2,31 @@ import { expect, test, type Page } from '@playwright/test'
 import { readFile } from 'node:fs/promises'
 import { gzipSync } from 'node:zlib'
 
-async function expectDecodedHero(page: Page, variant: '640' | '1024' | '1440', width: number, height: number) {
-  const images = page.locator('.hero-tile img')
+async function expectDecodedHero(page: Page) {
   await expect(page.locator('.hero-mosaic')).toBeVisible()
-  await expect(images).toHaveCount(18)
-  await expect.poll(() => images.evaluateAll((nodes: HTMLImageElement[], expectedVariant) => nodes.map((image) => ({
-    complete: image.complete,
-    width: image.naturalWidth,
-    height: image.naturalHeight,
-    variant: image.currentSrc.includes(`/hero-tiles/${expectedVariant}/`),
-  })), variant), { timeout: 20_000 }).toEqual(Array.from({ length: 18 }, () => ({
-    complete: true,
-    width,
-    height,
-    variant: true,
-  })))
+  await expect(page.locator('.hero-tile')).toHaveCount(0)
+  const photo = await page.locator('.hero-canvas').evaluate(async (canvas) => {
+    const source = getComputedStyle(canvas).backgroundImage.match(/^url\(["']?([^"')]+)["']?\)/)?.[1]
+    if (!source || !source.includes('/hero-preview-640.webp')) return null
+    const image = new Image()
+    image.src = source
+    await image.decode()
+    return { width: image.naturalWidth, height: image.naturalHeight }
+  })
+  expect(photo).toEqual({ width: 640, height: 360 })
+}
+
+async function expectCompleteHeroPreview(page: Page) {
+  const preview = await page.locator('.hero-canvas').evaluate(async (canvas) => {
+    const background = getComputedStyle(canvas).backgroundImage
+    const source = background.match(/data:image\/webp;base64,[A-Za-z0-9+/=]+/)?.[0]
+    if (!source) return null
+    const image = new Image()
+    image.src = source
+    await image.decode()
+    return { width: image.naturalWidth, height: image.naturalHeight }
+  })
+  expect(preview).toEqual({ width: 160, height: 90 })
 }
 
 test('root is the approved dependency-free public page', async ({ page, baseURL }) => {
@@ -37,7 +47,7 @@ test('root is the approved dependency-free public page', async ({ page, baseURL 
   await expect(page.locator('#request')).toBeAttached()
   await expect(page.locator('.company-client-list img')).toHaveCount(5)
   await expect(page.locator('.brand img')).toHaveAttribute('src', /logo\.png/)
-  await expectDecodedHero(page, '1440', 1440, 45)
+  await expectDecodedHero(page)
 
   expect(await page.locator('script[src*="_next"]').count()).toBe(0)
   expect(await page.locator('link[href*="_next"]').count()).toBe(0)
@@ -46,34 +56,32 @@ test('root is the approved dependency-free public page', async ({ page, baseURL 
   expect(failures, failures.join('\n')).toEqual([])
 })
 
-test('mobile receives eighteen 640 px hero tiles without overflow', async ({ page, baseURL }) => {
+test('mobile receives one complete hero photo without overflow', async ({ page, baseURL }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   expect((await page.goto(baseURL!, { waitUntil: 'domcontentloaded' }))?.status()).toBe(200)
-  await expectDecodedHero(page, '640', 640, 20)
+  await expectDecodedHero(page)
   expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1)
 })
 
-test('tablet receives eighteen 1024 px hero tiles', async ({ page, baseURL }) => {
+test('tablet receives one complete hero photo', async ({ page, baseURL }) => {
   await page.setViewportSize({ width: 900, height: 1000 })
   expect((await page.goto(baseURL!, { waitUntil: 'domcontentloaded' }))?.status()).toBe(200)
-  await expectDecodedHero(page, '1024', 1024, 32)
+  await expectDecodedHero(page)
 })
 
 test('every route-sensitive public asset stays below the safe limit', async ({ request, baseURL }) => {
   const paths = ['/images/logo.png?v=20261006-3', '/images/logo-hq.webp', '/images/clients/gazprom.svg', '/images/clients/rosneft.svg', '/images/clients/rosatom.svg', '/images/clients/uztransgaz.svg', '/_next/image?url=%2Fimages%2Fclients%2Fuzbekneftegaz.png&w=384&q=75']
+  paths.push('/images/hero-preview-640.webp?v=20261027-2')
   const html = await readFile('public/home-static.html', 'utf8')
-  const heroPaths = [...new Set(Array.from(html.matchAll(/(?:src|srcset)="(\/images\/hero-tiles\/[^"]+)"/g), (match) => match[1]))]
-  expect(heroPaths).toHaveLength(54)
-  for (const variant of ['640', '1024', '1440']) {
-    expect(heroPaths.filter((path) => path.includes(`/hero-tiles/${variant}/`))).toHaveLength(18)
-  }
-  paths.push(...heroPaths)
+  expect(html).not.toContain('class="hero-tile"')
+  const preloads = [...html.matchAll(/rel="preload" as="image" href="([^"<>]+)"/g)].map((match) => match[1])
+  expect(preloads).toEqual(['/images/hero-preview-640.webp?v=20261027-2'])
   for (const path of paths) {
     const response = await request.get(new URL(path, baseURL!).toString(), { timeout: 20_000 })
     expect(response.status(), path).toBe(200)
     const body = await response.body()
     expect(body.byteLength, `${path}: empty or truncated`).toBeGreaterThan(1_000)
-    if (path.includes('/hero-tiles/')) {
+    if (path.includes('/hero-preview-')) {
       expect(body.toString('ascii', 0, 4), `${path}: WebP container`).toBe('RIFF')
       expect(body.toString('ascii', 8, 12), `${path}: WebP format`).toBe('WEBP')
       expect(body.byteLength, `${path}: complete WebP response`).toBe(body.readUInt32LE(4) + 8)
@@ -96,9 +104,8 @@ test('content remains usable when every image request fails', async ({ page, bas
   await expect(page.getByRole('heading', { name: /СЛОЖНЫЕ ПРОМЫШЛЕННЫЕ/i })).toBeVisible()
   await expect(page.locator('#products')).toBeVisible()
   await expect(page.locator('#request')).toBeVisible()
-  const heroImages = page.locator('.hero-tile img')
-  await expect(heroImages).toHaveCount(18)
-  await expect.poll(() => heroImages.evaluateAll((images: HTMLImageElement[]) => images.map((image) => image.complete && image.naturalWidth === 0))).toEqual(Array(18).fill(true))
+  await expect(page.locator('.hero-tile')).toHaveCount(0)
+  await expectCompleteHeroPreview(page)
   expect(await page.locator('.hero').evaluate((node) => getComputedStyle(node).backgroundColor)).not.toBe('rgba(0, 0, 0, 0)')
 })
 
@@ -111,8 +118,23 @@ test('critical public content works without JavaScript', async ({ browser, baseU
   await expect(page.locator('#request')).toBeVisible()
   await expect(page.getByRole('link', { name: /\+7 922 711-73-63/ }).first()).toBeVisible()
   await expect(page.locator('.hero-mosaic')).toBeVisible()
-  await expectDecodedHero(page, '1440', 1440, 45)
+  await expectDecodedHero(page)
+  await expectCompleteHeroPreview(page)
   await context.close()
+})
+
+test('a complete hero preview is visible without JavaScript when the photo request stalls', async ({ browser, baseURL }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 1536, height: 900 } })
+  try {
+    const page = await context.newPage()
+    await page.route('**/images/hero-preview-*', () => new Promise(() => {}))
+    await page.goto(baseURL!, { waitUntil: 'domcontentloaded' })
+    await expect(page.locator('.hero-tile')).toHaveCount(0)
+    await expectCompleteHeroPreview(page)
+    await expect(page.getByRole('heading', { name: /СЛОЖНЫЕ ПРОМЫШЛЕННЫЕ/i })).toBeVisible()
+  } finally {
+    await context.close()
+  }
 })
 
 test('approved client emblems decode after lazy loading', async ({ page, baseURL }) => {
