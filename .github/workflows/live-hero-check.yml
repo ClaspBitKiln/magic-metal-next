@@ -31,6 +31,7 @@ jobs:
           const out='docs/ai/live-hero-check';
           const transparentSource='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
           const results=[];
+          const searchResults=[];
           const browser=await chromium.launch();
           try {
             for(const width of [390,900,1536]) for(const javaScriptEnabled of [false,true]) for(const blocked of [false,true]) {
@@ -71,8 +72,10 @@ jobs:
                 const headingVisible=await page.locator('h1').isVisible();
                 const actionVisible=await page.locator('.hero-actions .button').isVisible();
                 const html=await response.text();
+                const documentHeaders=await response.allHeaders();
+                const delivery={contentEncoding:documentHeaders['content-encoding']||'identity',cacheControl:documentHeaders['cache-control']||null,vary:documentHeaders.vary||null,contentLength:documentHeaders['content-length']||null,cdnCache:documentHeaders['x-vercel-cache']||null};
                 const inlineImages=html.match(/data:image\/[^"'\s<>]+/g)||[];
-                const row={width,mobile,blocked,http:response.status(),photo,sourcePhoto,heroBytes,heroRequests,headingVisible,actionVisible,javaScriptEnabled,...pageState,htmlGzip:gzipSync(Buffer.from(html)).length};
+                const row={width,mobile,blocked,http:response.status(),photo,sourcePhoto,heroBytes,heroRequests,headingVisible,actionVisible,javaScriptEnabled,delivery,...pageState,htmlGzip:gzipSync(Buffer.from(html)).length};
                 const common=row.http===200&&headingVisible&&actionVisible&&row.overflow===0&&row.footerColors.length===5&&row.footerColors.every(color=>color==='rgb(7, 87, 232)')&&row.footerWeights.every(weight=>weight==='700')&&row.htmlGzip<15000&&inlineImages.length===1&&inlineImages[0]===transparentSource;
                 const displayed=photo.displayWidth>0&&photo.displayHeight>0;
                 row.passed=common&&(mobile
@@ -85,8 +88,19 @@ jobs:
               await page.screenshot({path:`${out}/${width}-${javaScriptEnabled?'js':'no-js'}-${blocked?'blocked':'normal'}.png`}).catch(()=>{});
               await page.close();
             }
+            // The requested grade must already be in server HTML, before hydration.
+            for(const width of [390,1536]) {
+              const page=await browser.newPage({viewport:{width,height:900},javaScriptEnabled:false});
+              try {
+                const response=await page.goto(`https://magicmet.ru/poisk?q=${encodeURIComponent('12Х1МФ')}`,{waitUntil:'load',timeout:45000});
+                const state=await page.evaluate(()=>({query:document.querySelector('#catalog-query').value,first:document.querySelector('.search-results > a h2')?.textContent,count:document.querySelectorAll('.search-results > a').length,overflow:document.documentElement.scrollWidth-document.documentElement.clientWidth}));
+                searchResults.push({width,...state,passed:response.status()===200&&state.query==='12Х1МФ'&&state.first==='12Х1МФ'&&state.count>0&&state.count<40&&state.overflow===0});
+                await page.screenshot({path:`${out}/search-${width}.png`});
+              }catch(error){searchResults.push({width,passed:false,error:error.message});}
+              await page.close();
+            }
           }finally{await browser.close();}
-          fs.writeFileSync(`${out}/result.json`,JSON.stringify({checkedAt:new Date().toISOString(),sourceCommit:process.env.GITHUB_SHA,results,passed:results.length===12&&results.every(r=>r.passed)},null,2));
+          fs.writeFileSync(`${out}/result.json`,JSON.stringify({checkedAt:new Date().toISOString(),sourceCommit:process.env.GITHUB_SHA,results,searchResults,passed:results.length===12&&results.every(r=>r.passed)&&searchResults.length===2&&searchResults.every(r=>r.passed)},null,2));
           console.log(JSON.stringify(results));
           JS
       - name: Save evidence to separate report branch

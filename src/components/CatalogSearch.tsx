@@ -8,8 +8,8 @@ import { parseSizeSearchQuery } from '@/lib/sizeSearchQuery'
 type Filter = 'all' | SearchItem['type']
 const emptyItems: SearchItem[] = []
 
-export default function CatalogSearch({ extraStandards = emptyItems }: { extraStandards?: SearchItem[] }) {
-  const [query, setQuery] = useState('')
+export default function CatalogSearch({ extraStandards = emptyItems, initialQuery = '' }: { extraStandards?: SearchItem[]; initialQuery?: string }) {
+  const [query, setQuery] = useState(initialQuery)
   const [filter, setFilter] = useState<Filter>('all')
   const [visibleCount, setVisibleCount] = useState(40)
   const [dimensionResponse, setDimensionResponse] = useState<{ query: string; items: SearchItem[]; error?: string } | null>(null)
@@ -21,7 +21,6 @@ export default function CatalogSearch({ extraStandards = emptyItems }: { extraSt
       setQuery(new URLSearchParams(window.location.search).get('q') || '')
       setVisibleCount(40)
     }
-    restore()
     window.addEventListener('popstate', restore)
     return () => window.removeEventListener('popstate', restore)
   }, [])

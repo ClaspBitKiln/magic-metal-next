@@ -14,7 +14,9 @@ export const metadata: Metadata = {
   alternates: { canonical: '/poisk' }, robots: { index: true, follow: true },
 }
 
-export default function SearchPage() {
+export default async function SearchPage({ searchParams }: { searchParams: Promise<{ q?: string | string[] }> }) {
+  const { q } = await searchParams
+  const initialQuery = Array.isArray(q) ? q[0] || '' : q || ''
   const originalSlugs = new Set(standards.map(item => item.slug))
   const extraStandards: SearchItem[] = catalogStandards.filter(item => !originalSlugs.has(item.slug)).map(item => ({
     type: 'standard', typeLabel: 'ГОСТ', title: item.code, subtitle: item.title, description: item.summary,
@@ -23,6 +25,6 @@ export default function SearchPage() {
   return <main className="search-page">
     <header className="search-header"><Link prefetch={false} href="/"><b>←</b> На главную</Link><LanguageSwitcher /><Link prefetch={false} href="/#request">Отправить заявку ↗</Link></header>
     <section className="search-hero"><p>Единый технический поиск</p><h1>Найти<br /><em>точное исполнение</em></h1><span>Ищите по названию продукции, марке стали или сплава, номеру ГОСТ и области применения.</span></section>
-    <CatalogSearch extraStandards={extraStandards} />
+    <CatalogSearch key={initialQuery} extraStandards={extraStandards} initialQuery={initialQuery} />
   </main>
 }
