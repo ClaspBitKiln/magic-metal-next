@@ -64,6 +64,7 @@ jobs:
                   background:getComputedStyle(document.querySelector('.hero')).backgroundColor,
                   mosaicDisplay:getComputedStyle(document.querySelector('.hero-mosaic')).display,
                   footerColors:[...document.querySelectorAll('.footer-contacts a')].map(node=>getComputedStyle(node).color),
+                  footerWeights:[...document.querySelectorAll('.footer-contacts a')].map(node=>getComputedStyle(node).fontWeight),
                   overlayDisplay:getComputedStyle(document.querySelector('.hero'),'::after').display,
                   activePreloads:[...document.querySelectorAll('link[rel="preload"][as="image"]')].filter(node=>!node.getAttribute('media')||matchMedia(node.getAttribute('media')).matches).length,
                 }));
@@ -72,7 +73,7 @@ jobs:
                 const html=await response.text();
                 const inlineImages=html.match(/data:image\/[^"'\s<>]+/g)||[];
                 const row={width,mobile,blocked,http:response.status(),photo,sourcePhoto,heroBytes,heroRequests,headingVisible,actionVisible,javaScriptEnabled,...pageState,htmlGzip:gzipSync(Buffer.from(html)).length};
-                const common=row.http===200&&headingVisible&&actionVisible&&row.overflow===0&&row.footerColors.length===5&&row.footerColors.every(color=>color==='rgb(7, 87, 232)')&&row.htmlGzip<15000&&inlineImages.length===1&&inlineImages[0]===transparentSource;
+                const common=row.http===200&&headingVisible&&actionVisible&&row.overflow===0&&row.footerColors.length===5&&row.footerColors.every(color=>color==='rgb(7, 87, 232)')&&row.footerWeights.every(weight=>weight==='700')&&row.htmlGzip<15000&&inlineImages.length===1&&inlineImages[0]===transparentSource;
                 const displayed=photo.displayWidth>0&&photo.displayHeight>0;
                 row.passed=common&&(mobile
                   ? photo.complete&&photo.currentSrc===transparentSource&&photo.width===1&&photo.height===1&&!displayed&&pageState.mosaicDisplay==='none'&&pageState.overlayDisplay==='none'&&pageState.activePreloads===0&&heroRequests===0
