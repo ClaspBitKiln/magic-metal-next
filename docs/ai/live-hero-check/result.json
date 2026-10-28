@@ -1,6 +1,6 @@
 {
-  "checkedAt": "2026-10-28T05:22:03.965Z",
-  "sourceCommit": "df348da92b1d78cb930530a8f42b3bc0dec62553",
+  "checkedAt": "2026-10-28T05:30:42.649Z",
+  "sourceCommit": "bdead13f11f024a08d1d99d122a9d5741b191685",
   "results": [
     {
       "width": 390,
@@ -8,14 +8,14 @@
       "http": 200,
       "photo": {
         "complete": true,
-        "width": 1250,
-        "height": 703,
-        "currentSrc": "https://magicmet.ru/images/hero-photo-1440.avif?v=20261028-sharp1",
-        "displayWidth": 1282.21875,
+        "width": 840,
+        "height": 810,
+        "currentSrc": "https://magicmet.ru/images/hero-photo-mobile.avif?v=20261028-mobile1",
+        "displayWidth": 390,
         "displayHeight": 721.25
       },
       "sourcePhoto": {
-        "width": 1440,
+        "width": 840,
         "height": 810
       },
       "heroRequests": 1,
@@ -23,7 +23,7 @@
       "javaScriptEnabled": false,
       "overflow": 0,
       "background": "rgb(247, 250, 255)",
-      "htmlGzip": 12889,
+      "htmlGzip": 12969,
       "passed": true
     },
     {
@@ -34,8 +34,8 @@
         "complete": true,
         "width": 0,
         "height": 0,
-        "currentSrc": "https://magicmet.ru/images/hero-photo-1440.avif?v=20261028-sharp1",
-        "displayWidth": 1282.21875,
+        "currentSrc": "https://magicmet.ru/images/hero-photo-mobile.avif?v=20261028-mobile1",
+        "displayWidth": 390,
         "displayHeight": 721.25
       },
       "sourcePhoto": null,
@@ -44,7 +44,7 @@
       "javaScriptEnabled": false,
       "overflow": 0,
       "background": "rgb(247, 250, 255)",
-      "htmlGzip": 12889,
+      "htmlGzip": 12969,
       "passed": true
     },
     {
@@ -68,7 +68,7 @@
       "javaScriptEnabled": false,
       "overflow": 0,
       "background": "rgb(247, 250, 255)",
-      "htmlGzip": 12889,
+      "htmlGzip": 12969,
       "passed": true
     },
     {
@@ -89,7 +89,7 @@
       "javaScriptEnabled": false,
       "overflow": 0,
       "background": "rgb(247, 250, 255)",
-      "htmlGzip": 12889,
+      "htmlGzip": 12969,
       "passed": true
     }
   ],
