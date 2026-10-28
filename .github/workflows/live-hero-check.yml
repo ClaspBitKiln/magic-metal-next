@@ -6,6 +6,9 @@ on:
     paths: [.github/workflows/live-hero-check.yml]
 permissions:
   contents: write
+concurrency:
+  group: live-hero-check
+  cancel-in-progress: true
 jobs:
   browser:
     runs-on: ubuntu-latest
@@ -32,18 +35,42 @@ jobs:
             for(const width of [390,1536]) for(const blocked of [false,true]) {
               const page=await browser.newPage({viewport:{width,height:900},deviceScaleFactor:1.25,javaScriptEnabled:false});
               let heroRequests=0;
+              let heroResponse;
               page.on('request',r=>{if(r.url().includes('/images/hero-'))heroRequests++});
+              page.on('response',r=>{if(/\/images\/hero-photo-\d+\.avif(?:\?|$)/.test(r.url())&&r.ok())heroResponse=r});
               if(blocked)await page.route('**/images/**',r=>r.abort());
               try {
-                const response=await page.goto('https://magicmet.ru/?verify=inline-avif',{waitUntil:'domcontentloaded',timeout:45000});
-                const photo=await page.locator('.hero-canvas').evaluate(async canvas=>{
-                  const source=getComputedStyle(canvas).backgroundImage.match(/data:image\/avif;base64,[A-Za-z0-9+/=]+/)?.[0];
-                  if(!source)throw Error('Published page does not contain inline AVIF');
-                  const image=new Image();image.src=source;await image.decode();
-                  return {width:image.naturalWidth,height:image.naturalHeight,overflow:document.documentElement.scrollWidth-document.documentElement.clientWidth};
-                });
-                const row={width,blocked,http:response.status(),photo,heroRequests,htmlGzip:gzipSync(Buffer.from(await response.text())).length};
-                row.passed=row.http===200&&photo.width===320&&photo.height===180&&photo.overflow===0&&heroRequests===0&&row.htmlGzip<15000;
+                const response=await page.goto(`https://magicmet.ru/?verify=${process.env.GITHUB_SHA}`,{waitUntil:'networkidle',timeout:45000});
+                const image=page.locator('.hero-image img');
+                if(!blocked)await image.evaluate(image=>image.decode());
+                const photo=await image.evaluate(image=>({
+                  complete:image.complete,
+                  width:image.naturalWidth,
+                  height:image.naturalHeight,
+                  currentSrc:image.currentSrc,
+                  displayWidth:image.getBoundingClientRect().width,
+                  displayHeight:image.getBoundingClientRect().height,
+                }));
+                // A w-srcset corrects naturalWidth for the selected density. Decode the
+                // already received bytes separately to measure the actual source pixels,
+                // without issuing a second hero HTTP request.
+                const sourcePhoto=!blocked&&heroResponse?await page.evaluate(async base64=>{
+                  const source=new Image();source.src=`data:image/avif;base64,${base64}`;await source.decode();
+                  return {width:source.naturalWidth,height:source.naturalHeight};
+                },(await heroResponse.body()).toString('base64')):null;
+                const pageState=await page.evaluate(()=>({
+                  overflow:document.documentElement.scrollWidth-document.documentElement.clientWidth,
+                  background:getComputedStyle(document.querySelector('.hero')).backgroundColor,
+                }));
+                const headingVisible=await page.locator('h1').isVisible();
+                const html=await response.text();
+                const row={width,blocked,http:response.status(),photo,sourcePhoto,heroRequests,headingVisible,javaScriptEnabled:false,...pageState,htmlGzip:gzipSync(Buffer.from(html)).length};
+                const common=row.http===200&&headingVisible&&row.overflow===0&&row.htmlGzip<15000&&!html.includes('data:image/avif;base64,');
+                const avifSource=/\/images\/hero-photo-1440\.avif(?:\?|$)/.test(photo.currentSrc);
+                const displayed=photo.displayWidth>0&&photo.displayHeight>0&&Math.abs(photo.displayWidth/photo.displayHeight-16/9)<0.02;
+                row.passed=common&&(blocked
+                  ? pageState.background!=='transparent'&&pageState.background!=='rgba(0, 0, 0, 0)'
+                  : photo.complete&&displayed&&sourcePhoto?.width===1440&&sourcePhoto?.height===810&&avifSource&&heroRequests===1);
                 results.push(row);
               }catch(error){results.push({width,blocked,passed:false,error:error.message});}
               await page.screenshot({path:`${out}/${width}-${blocked?'blocked':'normal'}.png`}).catch(()=>{});
@@ -56,12 +83,29 @@ jobs:
       - name: Save evidence to separate report branch
         if: always()
         run: |
+          mkdir -p docs/ai/live-hero-check
           test -f docs/ai/live-hero-check/result.json || printf '%s\n' '{"passed":false,"error":"Runner setup failed before browser checks"}' > docs/ai/live-hero-check/result.json
+          report_dir="$(mktemp -d)"
+          cp -a docs/ai/live-hero-check/. "$report_dir/"
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git checkout -B codex/live-hero-check
+          rm -rf docs/ai/live-hero-check
+          if git ls-remote --exit-code --heads origin refs/heads/codex/live-hero-check >/dev/null; then
+            git fetch --no-tags origin refs/heads/codex/live-hero-check
+            git checkout -B codex/live-hero-check FETCH_HEAD
+          else
+            branch_status=$?
+            test "$branch_status" -eq 2 || exit "$branch_status"
+            git fetch --no-tags origin refs/heads/main
+            git checkout -B codex/live-hero-check FETCH_HEAD
+          fi
+          rm -rf docs/ai/live-hero-check
+          mkdir -p docs/ai/live-hero-check
+          cp -a "$report_dir/." docs/ai/live-hero-check/
           git add docs/ai/live-hero-check
-          git commit -m "Record published hero browser verification" || true
+          if ! git diff --cached --quiet; then
+            git commit -m "Record published hero browser verification"
+          fi
           git push origin HEAD:refs/heads/codex/live-hero-check
       - name: Require success
         run: node -e "if(!require('./docs/ai/live-hero-check/result.json').passed)process.exit(1)"
