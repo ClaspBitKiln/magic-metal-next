@@ -10,7 +10,7 @@ for (const width of [640, 1024, 1440]) {
   console.log(`${width}px AVIF: ${bytes.length} bytes`)
 }
 
-// Mobile art direction: retain the visible 66%-positioned crop without hidden pixels.
-const mobile = sharp(source).extract({ left: 396, top: 0, width: 840, height: 810 })
+// Mobile art direction: retain the visible left-aligned crop without hidden pixels.
+const mobile = sharp(source).extract({ left: 0, top: 0, width: 840, height: 810 })
 await writeFile(new URL('public/images/hero-photo-mobile.avif', root), await mobile.clone().avif({ quality: 50, effort: 6 }).toBuffer())
 await writeFile(new URL('public/images/hero-photo-mobile.webp', root), await mobile.clone().webp({ quality: 82, effort: 6 }).toBuffer())

@@ -30,7 +30,7 @@ async function expectDecodedHero(page: Page) {
   if (photo.mobile) {
     expect(photo.width).toBe(840)
     expect(photo.height).toBe(810)
-    expect(await image.evaluate((image) => getComputedStyle(image).objectPosition)).toBe('66% 100%')
+    expect(await image.evaluate((image) => getComputedStyle(image).objectPosition)).toBe('0% 100%')
   }
   // Encoded resolution is checked in the AVIF asset test; naturalWidth here is
   // density-corrected by sizes and cannot be compared to encoded pixel counts.
