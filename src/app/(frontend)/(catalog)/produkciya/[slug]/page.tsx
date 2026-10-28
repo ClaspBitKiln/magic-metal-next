@@ -37,8 +37,8 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   return (
     <main className="product-page">
       <header className="product-header">
-        <Link className="product-brand" href="/"><b>←</b> На главную</Link>
-        <nav aria-label="Основная навигация"><Link className="active" aria-current="page" href="/#products">Продукция</Link><Link href="/spravochnik-gost">Справочник ГОСТ</Link><Link href="/#about">О компании</Link></nav>
+        <Link prefetch={false} className="product-brand" href="/"><b>←</b> На главную</Link>
+        <nav aria-label="Основная навигация"><Link prefetch={false} className="active" aria-current="page" href="/#products">Продукция</Link><Link href="/spravochnik-gost">Справочник ГОСТ</Link><Link prefetch={false} href="/#about">О компании</Link></nav>
         <div className="product-header-actions"><a href="tel:+79227117363">+7 922 711-73-63</a><LanguageSwitcher /><a className="product-cta" href={requestHref}>Отправить заявку ↗</a></div>
       </header>
       <section className="product-hero"><div><p>Продукция · подбор по спецификации</p><h1>{category.title}</h1><span>{category.description}</span></div></section>

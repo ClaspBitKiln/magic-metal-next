@@ -45,7 +45,7 @@ export default async function SdtDetailPage({ params }: { params: Promise<{ deta
       <section className="sdt-hero">
         <div><p>Соединительные детали трубопроводов</p><h1>{item.title}</h1><span>{item.description}</span></div>
       </section>
-      <nav className="sdt-breadcrumb" aria-label="Хлебные крошки"><Link href="/">Главная</Link><b>/</b><Link href="/produkciya/sdt">СДТ</Link><b>/</b><span>{item.shortTitle}</span></nav>
+      <nav className="sdt-breadcrumb" aria-label="Хлебные крошки"><Link prefetch={false} href="/">Главная</Link><b>/</b><Link href="/produkciya/sdt">СДТ</Link><b>/</b><span>{item.shortTitle}</span></nav>
       <ProductSizeSeries series={getProductSizeSeries('sdt', item.slug)} guide={getDimensionGuide('sdt', item.slug)} requestHref={requestHref} />
       <section className="sdt-intro"><h2>Подбор по проекту и спецификации</h2><p>{item.intro}</p><a href={requestHref}>Отправить заявку →</a></section>
       <section className="sdt-grid"><div className="sdt-grid-heading"><p>Сводные характеристики</p><h2>Исполнения и материалы</h2></div><dl>

@@ -21,7 +21,7 @@ jobs:
           cache: npm
       - run: npm ci --no-audit --no-fund
       - run: npx playwright install --with-deps chromium
-      - name: Check live photo with and without external images
+      - name: Check compact mobile hero and unchanged desktop photo
         run: |
           mkdir -p docs/ai/live-hero-check
           node --input-type=module <<'JS'
@@ -29,20 +29,22 @@ jobs:
           import fs from 'node:fs';
           import {gzipSync} from 'node:zlib';
           const out='docs/ai/live-hero-check';
+          const transparentSource='data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
           const results=[];
           const browser=await chromium.launch();
           try {
-            for(const width of [390,1536]) for(const blocked of [false,true]) {
-              const page=await browser.newPage({viewport:{width,height:900},deviceScaleFactor:1.25,javaScriptEnabled:false});
+            for(const width of [390,900,1536]) for(const javaScriptEnabled of [false,true]) for(const blocked of [false,true]) {
+              const mobile=width<=900;
+              const page=await browser.newPage({viewport:{width,height:900},deviceScaleFactor:1.25,javaScriptEnabled});
               let heroRequests=0;
               let heroResponse;
               page.on('request',r=>{if(r.url().includes('/images/hero-'))heroRequests++});
-              page.on('response',r=>{if(/\/images\/hero-photo-(?:\d+|mobile)\.avif(?:\?|$)/.test(r.url())&&r.ok())heroResponse=r});
+              page.on('response',r=>{if(/\/images\/hero-photo-\d+\.avif(?:\?|$)/.test(r.url())&&r.ok())heroResponse=r});
               if(blocked)await page.route('**/images/**',r=>r.abort());
               try {
-                const response=await page.goto(`https://magicmet.ru/?verify=${process.env.GITHUB_SHA}`,{waitUntil:'networkidle',timeout:45000});
+                const response=await page.goto(`https://magicmet.ru/?verify=${process.env.GITHUB_SHA}`,{waitUntil:'domcontentloaded',timeout:45000});
                 const image=page.locator('.hero-image img');
-                if(!blocked)await image.evaluate(image=>image.decode());
+                if(mobile||!blocked)await image.evaluate(image=>image.decode());
                 const photo=await image.evaluate(image=>({
                   complete:image.complete,
                   width:image.naturalWidth,
@@ -51,36 +53,38 @@ jobs:
                   displayWidth:image.getBoundingClientRect().width,
                   displayHeight:image.getBoundingClientRect().height,
                 }));
-                // A w-srcset corrects naturalWidth for the selected density. Decode the
-                // already received bytes separately to measure the actual source pixels,
-                // without issuing a second hero HTTP request.
-                const sourcePhoto=!blocked&&heroResponse?await page.evaluate(async base64=>{
+                // Decode received AVIF bytes separately; this introduces no second HTTP request.
+                const sourcePhoto=!mobile&&!blocked&&heroResponse?await page.evaluate(async base64=>{
                   const source=new Image();source.src=`data:image/avif;base64,${base64}`;await source.decode();
                   return {width:source.naturalWidth,height:source.naturalHeight};
                 },(await heroResponse.body()).toString('base64')):null;
-                const heroBytes=!blocked&&heroResponse?(await heroResponse.body()).length:0;
+                const heroBytes=!mobile&&!blocked&&heroResponse?(await heroResponse.body()).length:0;
                 const pageState=await page.evaluate(()=>({
                   overflow:document.documentElement.scrollWidth-document.documentElement.clientWidth,
                   background:getComputedStyle(document.querySelector('.hero')).backgroundColor,
+                  mosaicDisplay:getComputedStyle(document.querySelector('.hero-mosaic')).display,
+                  overlayDisplay:getComputedStyle(document.querySelector('.hero'),'::after').display,
+                  activePreloads:[...document.querySelectorAll('link[rel="preload"][as="image"]')].filter(node=>!node.getAttribute('media')||matchMedia(node.getAttribute('media')).matches).length,
                 }));
                 const headingVisible=await page.locator('h1').isVisible();
+                const actionVisible=await page.locator('.hero-actions .button').isVisible();
                 const html=await response.text();
-                const row={width,blocked,http:response.status(),photo,sourcePhoto,heroBytes,heroRequests,headingVisible,javaScriptEnabled:false,...pageState,htmlGzip:gzipSync(Buffer.from(html)).length};
-                const common=row.http===200&&headingVisible&&row.overflow===0&&row.htmlGzip<15000&&!html.includes('data:image/avif;base64,');
-                const expectedSource=width<=700?'hero-photo-mobile.avif':'hero-photo-1440.avif';
-                const expectedWidth=width<=700?840:1440;
-                const avifSource=new URL(photo.currentSrc).pathname===`/images/${expectedSource}`;
+                const inlineImages=html.match(/data:image\/[^"'\s<>]+/g)||[];
+                const row={width,mobile,blocked,http:response.status(),photo,sourcePhoto,heroBytes,heroRequests,headingVisible,actionVisible,javaScriptEnabled,...pageState,htmlGzip:gzipSync(Buffer.from(html)).length};
+                const common=row.http===200&&headingVisible&&actionVisible&&row.overflow===0&&row.htmlGzip<15000&&inlineImages.length===1&&inlineImages[0]===transparentSource;
                 const displayed=photo.displayWidth>0&&photo.displayHeight>0;
-                row.passed=common&&(blocked
-                  ? pageState.background!=='transparent'&&pageState.background!=='rgba(0, 0, 0, 0)'
-                  : photo.complete&&displayed&&sourcePhoto?.width===expectedWidth&&sourcePhoto?.height===810&&avifSource&&heroRequests===1&&heroBytes===(width<=700?20855:73884));
+                row.passed=common&&(mobile
+                  ? photo.complete&&photo.currentSrc===transparentSource&&photo.width===1&&photo.height===1&&!displayed&&pageState.mosaicDisplay==='none'&&pageState.overlayDisplay==='none'&&pageState.activePreloads===0&&heroRequests===0
+                  : pageState.activePreloads===1&&heroRequests===1&&(blocked
+                    ? pageState.background!=='transparent'&&pageState.background!=='rgba(0, 0, 0, 0)'
+                    : photo.complete&&displayed&&sourcePhoto?.width===1440&&sourcePhoto?.height===810&&new URL(photo.currentSrc).pathname==='/images/hero-photo-1440.avif'&&heroBytes===73884));
                 results.push(row);
-              }catch(error){results.push({width,blocked,passed:false,error:error.message});}
-              await page.screenshot({path:`${out}/${width}-${blocked?'blocked':'normal'}.png`}).catch(()=>{});
+              }catch(error){results.push({width,mobile,javaScriptEnabled,blocked,passed:false,error:error.message});}
+              await page.screenshot({path:`${out}/${width}-${javaScriptEnabled?'js':'no-js'}-${blocked?'blocked':'normal'}.png`}).catch(()=>{});
               await page.close();
             }
           }finally{await browser.close();}
-          fs.writeFileSync(`${out}/result.json`,JSON.stringify({checkedAt:new Date().toISOString(),sourceCommit:process.env.GITHUB_SHA,results,passed:results.length===4&&results.every(r=>r.passed)},null,2));
+          fs.writeFileSync(`${out}/result.json`,JSON.stringify({checkedAt:new Date().toISOString(),sourceCommit:process.env.GITHUB_SHA,results,passed:results.length===12&&results.every(r=>r.passed)},null,2));
           console.log(JSON.stringify(results));
           JS
       - name: Save evidence to separate report branch

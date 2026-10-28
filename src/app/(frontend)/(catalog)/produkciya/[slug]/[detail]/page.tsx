@@ -68,7 +68,7 @@ export default async function PipeDetailPage({ params }: { params: Promise<{ slu
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
     <header className="pipe-nav"><Link href={`/produkciya/${item.categorySlug}`}><b>←</b> {categoryLabel}</Link><LanguageSwitcher /><a href={requestHref}>Отправить заявку ↗</a></header>
     <section className="pipe-hero"><div><p>{categoryLabel}</p><h1>{item.title}</h1><span>{item.description}</span></div></section>
-    <nav className="pipe-breadcrumb" aria-label="Хлебные крошки"><Link href="/">Главная</Link><b>/</b><Link href={`/produkciya/${item.categorySlug}`}>{categoryLabel}</Link><b>/</b><span>{item.shortTitle}</span></nav>
+    <nav className="pipe-breadcrumb" aria-label="Хлебные крошки"><Link prefetch={false} href="/">Главная</Link><b>/</b><Link href={`/produkciya/${item.categorySlug}`}>{categoryLabel}</Link><b>/</b><span>{item.shortTitle}</span></nav>
     {sizeProfiles.length > 0 && <section className="product-size-series" id="sizes" aria-labelledby="profile-sizes-title">
       <h2 id="profile-sizes-title">Размерный ряд по ГОСТ</h2>
       <p className="size-series-intro">Выберите вид профиля, чтобы открыть его размеры, серии и стандарты.</p>

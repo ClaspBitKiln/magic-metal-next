@@ -11,6 +11,25 @@ function recordExternalHeroRequests(page: Page) {
   return requests
 }
 
+const transparentMobileSource = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
+
+async function expectMobileHeroDisabled(page: Page) {
+  await expect(page.locator('.hero-mosaic')).toBeHidden()
+  await expect(page.locator('.hero-tile')).toHaveCount(0)
+  const photo = await page.locator('.hero-image img').evaluate(async (image: HTMLImageElement) => {
+    await image.decode()
+    return { source: image.currentSrc, width: image.naturalWidth, height: image.naturalHeight }
+  })
+  expect(photo).toEqual({ source: transparentMobileSource, width: 1, height: 1 })
+  const layout = await page.locator('.hero').evaluate((hero) => ({
+    overlayDisplay: getComputedStyle(hero, '::after').display,
+    minHeight: getComputedStyle(hero).minHeight,
+    stripPosition: getComputedStyle(hero.querySelector('.hero-strip')!).position,
+    activePreloads: [...document.querySelectorAll('link[rel="preload"][as="image"]')].filter((node) => !node.getAttribute('media') || matchMedia(node.getAttribute('media')!).matches).length,
+  }))
+  expect(layout).toEqual({ overlayDisplay: 'none', minHeight: '0px', stripPosition: 'relative', activePreloads: 0 })
+}
+
 async function expectDecodedHero(page: Page) {
   await expect(page.locator('.hero-mosaic')).toBeVisible()
   await expect(page.locator('.hero-tile')).toHaveCount(0)
@@ -20,18 +39,13 @@ async function expectDecodedHero(page: Page) {
   await expect(image).toHaveAttribute('fetchpriority', 'high')
   const photo = await image.evaluate(async (image: HTMLImageElement) => {
     await image.decode()
-    return { source: image.currentSrc, width: image.naturalWidth, height: image.naturalHeight, renderedWidth: image.getBoundingClientRect().width, mobile: innerWidth <= 700 }
+    return { source: image.currentSrc, width: image.naturalWidth, height: image.naturalHeight, renderedWidth: image.getBoundingClientRect().width }
   })
-  expect(photo.source).toMatch(photo.mobile ? /\/images\/hero-photo-mobile\.avif(?:\?|$)/ : /\/images\/hero-photo-1440\.avif(?:\?|$)/)
+  expect(photo.source).toMatch(/\/images\/hero-photo-1440\.avif(?:\?|$)/)
   // Width-descriptor srcsets density-correct naturalWidth to the declared source size.
   expect(photo.width).toBeGreaterThan(0)
   expect(photo.height).toBeGreaterThan(0)
-  expect(photo.width / photo.height).toBeCloseTo(photo.mobile ? 840 / 810 : 16 / 9, 2)
-  if (photo.mobile) {
-    expect(photo.width).toBe(840)
-    expect(photo.height).toBe(810)
-    expect(await image.evaluate((image) => getComputedStyle(image).objectPosition)).toBe('0% 100%')
-  }
+  expect(photo.width / photo.height).toBeCloseTo(16 / 9, 2)
   // Encoded resolution is checked in the AVIF asset test; naturalWidth here is
   // density-corrected by sizes and cannot be compared to encoded pixel counts.
   expect(photo.renderedWidth).toBeGreaterThan(0)
@@ -45,16 +59,11 @@ async function expectDecodedHero(page: Page) {
   })
   expect(responsive.srcset).toBeTruthy()
   expect(responsive.activePreloads, 'Only the matching art-direction preload is active').toBe(1)
-  if (photo.mobile) {
-    expect(new URL(responsive.srcset!, page.url()).href).toBe(photo.source)
-    expect(new URL(responsive.preloadHref!, page.url()).href).toBe(photo.source)
-  } else {
-    expect(responsive.sizes).toBeTruthy()
-    expect(responsive.preloadSrcset).toBe(responsive.srcset)
-    expect(responsive.preloadSizes).toBe(responsive.sizes)
-  }
+  expect(responsive.sizes).toBeTruthy()
+  expect(responsive.preloadSrcset).toBe(responsive.srcset)
+  expect(responsive.preloadSizes).toBe(responsive.sizes)
   expect(responsive.priority).toBe('high')
-  await expect(page.locator('link[rel="preload"][as="image"]')).toHaveCount(2)
+  await expect(page.locator('link[rel="preload"][as="image"]')).toHaveCount(1)
   expect(await page.locator('.hero-canvas').evaluate((canvas) => getComputedStyle(canvas).backgroundImage)).not.toContain('data:')
   return photo.source
 }
@@ -88,35 +97,53 @@ test('root is the approved dependency-free public page', async ({ page, baseURL 
   expect(failures, failures.join('\n')).toEqual([])
 })
 
-test('mobile receives one complete hero photo without overflow', async ({ page, baseURL }) => {
-  const heroRequests = recordExternalHeroRequests(page)
-  await page.setViewportSize({ width: 390, height: 844 })
-  expect((await page.goto(baseURL!, { waitUntil: 'domcontentloaded' }))?.status()).toBe(200)
-  const heroSource = await expectDecodedHero(page)
-  expect(heroRequests).toEqual([heroSource])
-  expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1)
-})
+for (const width of [390, 900]) {
+  for (const javaScriptEnabled of [true, false]) {
+    test(`mobile ${width}px keeps the hero photo disabled with JavaScript ${javaScriptEnabled ? 'enabled' : 'disabled'}`, async ({ browser, baseURL }) => {
+      const context = await browser.newContext({ viewport: { width, height: 844 }, javaScriptEnabled })
+      try {
+        const page = await context.newPage()
+        const heroRequests = recordExternalHeroRequests(page)
+        // Blocking external images also proves that the transparent source is independent.
+        if (!javaScriptEnabled) await page.route('**/images/**', (route) => route.abort('failed'))
+        expect((await page.goto(baseURL!, { waitUntil: 'domcontentloaded' }))?.status()).toBe(200)
+        await expectMobileHeroDisabled(page)
+        await expect(page.getByRole('heading', { name: /СЛОЖНЫЕ ПРОМЫШЛЕННЫЕ/i })).toBeVisible()
+        await expect(page.locator('.hero-actions .button')).toBeVisible()
+        expect(heroRequests, 'Mobile must not request an external hero photo').toEqual([])
+        expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1)
+      } finally {
+        await context.close()
+      }
+    })
+  }
+}
 
-test('tablet receives one complete hero photo', async ({ page, baseURL }) => {
-  const heroRequests = recordExternalHeroRequests(page)
-  await page.setViewportSize({ width: 900, height: 1000 })
-  expect((await page.goto(baseURL!, { waitUntil: 'domcontentloaded' }))?.status()).toBe(200)
-  const heroSource = await expectDecodedHero(page)
-  expect(heroRequests).toEqual([heroSource])
+test('tablet receives one complete hero photo', async ({ browser, baseURL }) => {
+  const context = await browser.newContext({ viewport: { width: 1024, height: 1000 }, deviceScaleFactor: 1.25 })
+  try {
+    const page = await context.newPage()
+    const heroRequests = recordExternalHeroRequests(page)
+    expect((await page.goto(baseURL!, { waitUntil: 'domcontentloaded' }))?.status()).toBe(200)
+    const heroSource = await expectDecodedHero(page)
+    expect(heroRequests).toEqual([heroSource])
+  } finally {
+    await context.close()
+  }
 })
 
 test('public image assets stay complete and within their delivery budgets', async ({ request, page, baseURL }) => {
   const paths = ['/images/logo.png?v=20261006-3', '/images/logo-hq.webp', '/images/clients/gazprom.svg', '/images/clients/rosneft.svg', '/images/clients/rosatom.svg', '/images/clients/uztransgaz.svg', '/_next/image?url=%2Fimages%2Fclients%2Fuzbekneftegaz.png&w=384&q=75']
   const html = await readFile('public/home-static.html', 'utf8')
   expect(html).not.toContain('class="hero-tile"')
-  expect(html).not.toContain('data:image/')
-  const heroPaths = [...new Set(Array.from(html.matchAll(/\/images\/hero-photo-(?:640|1024|1440|mobile)\.avif(?:\?[^"\s,<>]*)?/g), (match) => match[0]))]
-  expect(heroPaths).toHaveLength(4)
+  const inlineImages = [...html.matchAll(/data:image\/[^"'\s<>]+/g)].map((match) => match[0])
+  expect(inlineImages, 'Only the one-pixel transparent mobile source may be inline').toEqual([transparentMobileSource])
+  const heroPaths = [...new Set(Array.from(html.matchAll(/\/images\/hero-photo-(?:640|1024|1440)\.avif(?:\?[^"\s,<>]*)?/g), (match) => match[0]))]
+  expect(heroPaths).toHaveLength(3)
   const fallbacks = [...new Set(Array.from(html.matchAll(/\/images\/hero-mercedes-(?:640|1024|1440)\.webp(?:\?[^"\s,<>]*)?/g), (match) => match[0]))]
   expect(fallbacks.length).toBeGreaterThanOrEqual(1)
-  const mobileFallbacks = [...new Set(Array.from(html.matchAll(/\/images\/hero-photo-mobile\.webp(?:\?[^"\s,<>]*)?/g), (match) => match[0]))]
-  expect(mobileFallbacks).toHaveLength(1)
-  paths.push(...heroPaths, ...fallbacks, ...mobileFallbacks)
+  expect(html).not.toContain('/images/hero-photo-mobile.')
+  paths.push(...heroPaths, ...fallbacks)
   expect((await page.goto(baseURL!, { waitUntil: 'domcontentloaded' }))?.status()).toBe(200)
   await expectDecodedHero(page)
   for (const path of paths) {
@@ -124,8 +151,7 @@ test('public image assets stay complete and within their delivery budgets', asyn
     expect(response.status(), path).toBe(200)
     const body = await response.body()
     expect(body.byteLength, `${path}: empty or truncated`).toBeGreaterThan(1_000)
-    const mobile = path.includes('/hero-photo-mobile.')
-    const width = mobile ? 840 : Number(path.match(/-(640|1024|1440)\./)?.[1])
+    const width = Number(path.match(/-(640|1024|1440)\./)?.[1])
     let limit = path.includes('rosatom.svg') ? 19_000 : 15_000
     if (path.includes('/hero-photo-') && path.includes('.avif')) {
       expect(body.toString('ascii', 4, 8), `${path}: AVIF file-type box`).toBe('ftyp')
@@ -133,7 +159,7 @@ test('public image assets stay complete and within their delivery budgets', asyn
       const dimensions = body.indexOf(Buffer.from('ispe'))
       expect(dimensions, `${path}: image spatial extents`).toBeGreaterThan(0)
       expect(body.readUInt32BE(dimensions + 8), `${path}: full-resolution width`).toBe(width)
-      expect(body.readUInt32BE(dimensions + 12), `${path}: full-resolution height`).toBe(mobile ? 810 : width * 9 / 16)
+      expect(body.readUInt32BE(dimensions + 12), `${path}: full-resolution height`).toBe(width * 9 / 16)
       let offset = 0
       while (offset < body.byteLength) {
         const length = body.readUInt32BE(offset)
@@ -142,12 +168,12 @@ test('public image assets stay complete and within their delivery budgets', asyn
         offset += length
       }
       expect(offset, `${path}: complete AVIF container`).toBe(body.byteLength)
-      limit = mobile ? 65_000 : { 640: 25_000, 1024: 50_000, 1440: 85_000 }[width]!
-    } else if (path.includes('/hero-mercedes-') || (mobile && path.includes('.webp'))) {
+      limit = { 640: 25_000, 1024: 50_000, 1440: 85_000 }[width]!
+    } else if (path.includes('/hero-mercedes-')) {
       expect(body.toString('ascii', 0, 4), `${path}: WebP container`).toBe('RIFF')
       expect(body.toString('ascii', 8, 12), `${path}: WebP format`).toBe('WEBP')
       expect(body.byteLength, `${path}: complete WebP response`).toBe(body.readUInt32LE(4) + 8)
-      limit = mobile ? 95_000 : { 640: 40_000, 1024: 75_000, 1440: 120_000 }[width]!
+      limit = { 640: 40_000, 1024: 75_000, 1440: 120_000 }[width]!
     }
     expect(body.byteLength, `${path}: exceeds image delivery budget`).toBeLessThan(limit)
   }

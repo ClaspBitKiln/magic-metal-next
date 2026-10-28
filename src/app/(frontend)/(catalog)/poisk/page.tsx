@@ -21,7 +21,7 @@ export default function SearchPage() {
     href: `/spravochnik-gost/${item.slug}`, searchText: [item.code, item.title, item.summary, ...item.scope].join(' '),
   }))
   return <main className="search-page">
-    <header className="search-header"><Link href="/"><b>←</b> На главную</Link><LanguageSwitcher /><Link href="/#request">Отправить заявку ↗</Link></header>
+    <header className="search-header"><Link prefetch={false} href="/"><b>←</b> На главную</Link><LanguageSwitcher /><Link prefetch={false} href="/#request">Отправить заявку ↗</Link></header>
     <section className="search-hero"><p>Единый технический поиск</p><h1>Найти<br /><em>точное исполнение</em></h1><span>Ищите по названию продукции, марке стали или сплава, номеру ГОСТ и области применения.</span></section>
     <CatalogSearch extraStandards={extraStandards} />
   </main>

@@ -2,33 +2,40 @@ import { productSizeSeries } from '@/data/productSizeSeries'
 import { searchIndex, normalizeSearch, type SearchItem } from '@/data/searchIndex'
 import { numericSizeKey, parseSizeSearchQuery } from './sizeSearchQuery'
 
+const productsByPath = new Map<string, SearchItem>()
+for (const item of searchIndex) {
+  if (item.type === 'product' && !productsByPath.has(item.href)) productsByPath.set(item.href, item)
+}
+
 // Server-only caller: the normative tables never enter the search page's client bundle.
 export function searchDimensionTables(query: string): SearchItem[] {
   const parsed = parseSizeSearchQuery(query)
   if (!parsed) return []
+  // These qualifiers describe the query, independently of the candidate table.
+  const standardPattern = /(?:ГОСТ(?:\s+Р)?|ТУ)\s*\d+(?:[.\-][\p{L}\d]+)*/giu
+  const standardKey = (value: string) => normalizeSearch(value).replace(/\s/g, '')
+  const normalizedRemainder = normalizeSearch(parsed.remainder)
+  const requestedStandards = [...normalizedRemainder.matchAll(standardPattern)].map(match => standardKey(match[0]))
+  const remainder = normalizedRemainder.replace(standardPattern, '')
+  const gradeKey = (value: string) => value.replace(/^ст(?=\d)/u, '')
+  const tokens = remainder.split(' ').filter(token => token && !/^(?:сталь|стали|марка|марки)$/u.test(token)).map(gradeKey)
+  const [first, second, third] = parsed.values
   const results: SearchItem[] = []
   for (const table of productSizeSeries) {
     if (table.kind === 'requirements') continue
     const path = `/produkciya/${table.categorySlug}/${table.productSlug}`
-    const product = searchIndex.find(item => item.type === 'product' && item.href === path)
+    const product = productsByPath.get(path)
     const haystack = normalizeSearch(`${product?.title || ''} ${product?.searchText || ''} ${table.standard} ${table.title} ${table.scope}`)
     // The card can mention several standards. A result must belong to the
     // requested standard's own table, not another table on the same card.
-    const standardPattern = /(?:ГОСТ(?:\s+Р)?|ТУ)\s*\d+(?:[.\-][\p{L}\d]+)*/giu
-    const standardKey = (value: string) => normalizeSearch(value).replace(/\s/g, '')
-    const requestedStandards = [...normalizeSearch(parsed.remainder).matchAll(standardPattern)].map(match => standardKey(match[0]))
     const tableStandards = [...normalizeSearch(table.standard).matchAll(standardPattern)].map(match => standardKey(match[0]))
     if (requestedStandards.some(requested => !tableStandards.some(standard => standard === requested || (!requested.includes('-') && standard.startsWith(`${requested}-`))))) continue
-    const remainder = normalizeSearch(parsed.remainder).replace(standardPattern, '')
-    const gradeKey = (value: string) => value.replace(/^ст(?=\d)/u, '')
-    const tokens = remainder.split(' ').filter(token => token && !/^(?:сталь|стали|марка|марки)$/u.test(token)).map(gradeKey)
     const words = (haystack.match(/[\p{L}\d]+(?:[.,-][\p{L}\d]+)*/gu) || []).map(gradeKey)
     // Numeric/alphanumeric qualifiers must be whole tokens: 873 is not 8734,
     // and 12Х1МФ is not a different grade with the same prefix.
     if (tokens.some(token => /\d/u.test(token) ? !words.includes(token) : !haystack.includes(token))) continue
     const gradeScope = normalizeSearch(table.scope).match(/^марки стали:\s*([^.]*)/u)?.[1].split(',').map(value => gradeKey(value.trim()))
     if (gradeScope && tokens.some(token => /\d/u.test(token) && !gradeScope.includes(token))) continue
-    const [first, second, third] = parsed.values
     let matches = false
     let selectedSize = ''
     let selectedWall = ''
