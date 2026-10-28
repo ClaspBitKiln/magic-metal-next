@@ -1,0 +1,67 @@
+name: Verify published hero
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [.github/workflows/live-hero-check.yml]
+permissions:
+  contents: write
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - name: Check live photo with and without external images
+        run: |
+          mkdir -p docs/ai/live-hero-check
+          node --input-type=module <<'JS'
+          import {chromium} from 'playwright';
+          import fs from 'node:fs';
+          import {gzipSync} from 'node:zlib';
+          const out='docs/ai/live-hero-check';
+          const results=[];
+          const browser=await chromium.launch();
+          try {
+            for(const width of [390,1536]) for(const blocked of [false,true]) {
+              const page=await browser.newPage({viewport:{width,height:900},deviceScaleFactor:1.25,javaScriptEnabled:false});
+              let heroRequests=0;
+              page.on('request',r=>{if(r.url().includes('/images/hero-'))heroRequests++});
+              if(blocked)await page.route('**/images/**',r=>r.abort());
+              try {
+                const response=await page.goto('https://magicmet.ru/?verify=inline-avif',{waitUntil:'domcontentloaded',timeout:45000});
+                const photo=await page.locator('.hero-canvas').evaluate(async canvas=>{
+                  const source=getComputedStyle(canvas).backgroundImage.match(/data:image\/avif;base64,[A-Za-z0-9+/=]+/)?.[0];
+                  if(!source)throw Error('Published page does not contain inline AVIF');
+                  const image=new Image();image.src=source;await image.decode();
+                  return {width:image.naturalWidth,height:image.naturalHeight,overflow:document.documentElement.scrollWidth-document.documentElement.clientWidth};
+                });
+                const row={width,blocked,http:response.status(),photo,heroRequests,htmlGzip:gzipSync(Buffer.from(await response.text())).length};
+                row.passed=row.http===200&&photo.width===320&&photo.height===180&&photo.overflow===0&&heroRequests===0&&row.htmlGzip<15000;
+                results.push(row);
+              }catch(error){results.push({width,blocked,passed:false,error:error.message});}
+              await page.screenshot({path:`${out}/${width}-${blocked?'blocked':'normal'}.png`}).catch(()=>{});
+              await page.close();
+            }
+          }finally{await browser.close();}
+          fs.writeFileSync(`${out}/result.json`,JSON.stringify({checkedAt:new Date().toISOString(),sourceCommit:process.env.GITHUB_SHA,results,passed:results.length===4&&results.every(r=>r.passed)},null,2));
+          console.log(JSON.stringify(results));
+          JS
+      - name: Save evidence to separate report branch
+        if: always()
+        run: |
+          test -f docs/ai/live-hero-check/result.json || printf '%s\n' '{"passed":false,"error":"Runner setup failed before browser checks"}' > docs/ai/live-hero-check/result.json
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git checkout -B codex/live-hero-check
+          git add docs/ai/live-hero-check
+          git commit -m "Record published hero browser verification" || true
+          git push origin HEAD:refs/heads/codex/live-hero-check
+      - name: Require success
+        run: node -e "if(!require('./docs/ai/live-hero-check/result.json').passed)process.exit(1)"
