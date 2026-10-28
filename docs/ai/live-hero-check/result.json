@@ -1,0 +1,59 @@
+{
+  "checkedAt": "2026-10-28T05:10:27.361Z",
+  "sourceCommit": "abe8f3dc93a27cb95191ea55dcfeb0b79a08d1e9",
+  "results": [
+    {
+      "width": 390,
+      "blocked": false,
+      "http": 200,
+      "photo": {
+        "width": 320,
+        "height": 180,
+        "overflow": 0
+      },
+      "heroRequests": 0,
+      "htmlGzip": 14634,
+      "passed": true
+    },
+    {
+      "width": 390,
+      "blocked": true,
+      "http": 200,
+      "photo": {
+        "width": 320,
+        "height": 180,
+        "overflow": 0
+      },
+      "heroRequests": 0,
+      "htmlGzip": 14634,
+      "passed": true
+    },
+    {
+      "width": 1536,
+      "blocked": false,
+      "http": 200,
+      "photo": {
+        "width": 320,
+        "height": 180,
+        "overflow": 0
+      },
+      "heroRequests": 0,
+      "htmlGzip": 14634,
+      "passed": true
+    },
+    {
+      "width": 1536,
+      "blocked": true,
+      "http": 200,
+      "photo": {
+        "width": 320,
+        "height": 180,
+        "overflow": 0
+      },
+      "heroRequests": 0,
+      "htmlGzip": 14634,
+      "passed": true
+    }
+  ],
+  "passed": true
+}
