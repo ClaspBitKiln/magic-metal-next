@@ -1,6 +1,6 @@
 {
-  "checkedAt": "2026-10-28T10:26:24.421Z",
-  "sourceCommit": "c46d5f785f27d71d77eb346851b5700034cb15c6",
+  "checkedAt": "2026-10-28T10:33:49.051Z",
+  "sourceCommit": "45f838050b0631073e8545b5752c1d7598cb38df",
   "results": [
     {
       "width": 390,
@@ -24,9 +24,16 @@
       "overflow": 0,
       "background": "rgb(247, 250, 255)",
       "mosaicDisplay": "none",
+      "footerColors": [
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)"
+      ],
       "overlayDisplay": "none",
       "activePreloads": 0,
-      "htmlGzip": 13336,
+      "htmlGzip": 13343,
       "passed": true
     },
     {
@@ -51,9 +58,16 @@
       "overflow": 0,
       "background": "rgb(247, 250, 255)",
       "mosaicDisplay": "none",
+      "footerColors": [
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)"
+      ],
       "overlayDisplay": "none",
       "activePreloads": 0,
-      "htmlGzip": 13336,
+      "htmlGzip": 13343,
       "passed": true
     },
     {
@@ -78,9 +92,16 @@
       "overflow": 0,
       "background": "rgb(247, 250, 255)",
       "mosaicDisplay": "none",
+      "footerColors": [
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)"
+      ],
       "overlayDisplay": "none",
       "activePreloads": 0,
-      "htmlGzip": 13336,
+      "htmlGzip": 13343,
       "passed": true
     },
     {
@@ -105,9 +126,16 @@
       "overflow": 0,
       "background": "rgb(247, 250, 255)",
       "mosaicDisplay": "none",
+      "footerColors": [
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)"
+      ],
       "overlayDisplay": "none",
       "activePreloads": 0,
-      "htmlGzip": 13336,
+      "htmlGzip": 13343,
       "passed": true
     },
     {
@@ -132,9 +160,16 @@
       "overflow": 0,
       "background": "rgb(247, 250, 255)",
       "mosaicDisplay": "none",
+      "footerColors": [
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)"
+      ],
       "overlayDisplay": "none",
       "activePreloads": 0,
-      "htmlGzip": 13336,
+      "htmlGzip": 13343,
       "passed": true
     },
     {
@@ -159,9 +194,16 @@
       "overflow": 0,
       "background": "rgb(247, 250, 255)",
       "mosaicDisplay": "none",
+      "footerColors": [
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)"
+      ],
       "overlayDisplay": "none",
       "activePreloads": 0,
-      "htmlGzip": 13336,
+      "htmlGzip": 13343,
       "passed": true
     },
     {
@@ -186,9 +228,16 @@
       "overflow": 0,
       "background": "rgb(247, 250, 255)",
       "mosaicDisplay": "none",
+      "footerColors": [
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)"
+      ],
       "overlayDisplay": "none",
       "activePreloads": 0,
-      "htmlGzip": 13336,
+      "htmlGzip": 13343,
       "passed": true
     },
     {
@@ -213,9 +262,16 @@
       "overflow": 0,
       "background": "rgb(247, 250, 255)",
       "mosaicDisplay": "none",
+      "footerColors": [
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)"
+      ],
       "overlayDisplay": "none",
       "activePreloads": 0,
-      "htmlGzip": 13336,
+      "htmlGzip": 13343,
       "passed": true
     },
     {
@@ -243,9 +299,16 @@
       "overflow": 0,
       "background": "rgb(247, 250, 255)",
       "mosaicDisplay": "block",
+      "footerColors": [
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)"
+      ],
       "overlayDisplay": "block",
       "activePreloads": 1,
-      "htmlGzip": 13336,
+      "htmlGzip": 13343,
       "passed": true
     },
     {
@@ -270,9 +333,16 @@
       "overflow": 0,
       "background": "rgb(247, 250, 255)",
       "mosaicDisplay": "block",
+      "footerColors": [
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)"
+      ],
       "overlayDisplay": "block",
       "activePreloads": 1,
-      "htmlGzip": 13336,
+      "htmlGzip": 13343,
       "passed": true
     },
     {
@@ -300,9 +370,16 @@
       "overflow": 0,
       "background": "rgb(247, 250, 255)",
       "mosaicDisplay": "block",
+      "footerColors": [
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)"
+      ],
       "overlayDisplay": "block",
       "activePreloads": 1,
-      "htmlGzip": 13336,
+      "htmlGzip": 13343,
       "passed": true
     },
     {
@@ -327,9 +404,16 @@
       "overflow": 0,
       "background": "rgb(247, 250, 255)",
       "mosaicDisplay": "block",
+      "footerColors": [
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)"
+      ],
       "overlayDisplay": "block",
       "activePreloads": 1,
-      "htmlGzip": 13336,
+      "htmlGzip": 13343,
       "passed": true
     }
   ],
