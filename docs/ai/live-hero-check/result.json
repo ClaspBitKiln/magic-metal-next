@@ -1,18 +1,29 @@
 {
-  "checkedAt": "2026-10-28T05:10:27.361Z",
-  "sourceCommit": "abe8f3dc93a27cb95191ea55dcfeb0b79a08d1e9",
+  "checkedAt": "2026-10-28T05:22:03.965Z",
+  "sourceCommit": "df348da92b1d78cb930530a8f42b3bc0dec62553",
   "results": [
     {
       "width": 390,
       "blocked": false,
       "http": 200,
       "photo": {
-        "width": 320,
-        "height": 180,
-        "overflow": 0
+        "complete": true,
+        "width": 1250,
+        "height": 703,
+        "currentSrc": "https://magicmet.ru/images/hero-photo-1440.avif?v=20261028-sharp1",
+        "displayWidth": 1282.21875,
+        "displayHeight": 721.25
       },
-      "heroRequests": 0,
-      "htmlGzip": 14634,
+      "sourcePhoto": {
+        "width": 1440,
+        "height": 810
+      },
+      "heroRequests": 1,
+      "headingVisible": true,
+      "javaScriptEnabled": false,
+      "overflow": 0,
+      "background": "rgb(247, 250, 255)",
+      "htmlGzip": 12889,
       "passed": true
     },
     {
@@ -20,12 +31,20 @@
       "blocked": true,
       "http": 200,
       "photo": {
-        "width": 320,
-        "height": 180,
-        "overflow": 0
+        "complete": true,
+        "width": 0,
+        "height": 0,
+        "currentSrc": "https://magicmet.ru/images/hero-photo-1440.avif?v=20261028-sharp1",
+        "displayWidth": 1282.21875,
+        "displayHeight": 721.25
       },
-      "heroRequests": 0,
-      "htmlGzip": 14634,
+      "sourcePhoto": null,
+      "heroRequests": 1,
+      "headingVisible": true,
+      "javaScriptEnabled": false,
+      "overflow": 0,
+      "background": "rgb(247, 250, 255)",
+      "htmlGzip": 12889,
       "passed": true
     },
     {
@@ -33,12 +52,23 @@
       "blocked": false,
       "http": 200,
       "photo": {
-        "width": 320,
-        "height": 180,
-        "overflow": 0
+        "complete": true,
+        "width": 1536,
+        "height": 864,
+        "currentSrc": "https://magicmet.ru/images/hero-photo-1440.avif?v=20261028-sharp1",
+        "displayWidth": 1536,
+        "displayHeight": 864
       },
-      "heroRequests": 0,
-      "htmlGzip": 14634,
+      "sourcePhoto": {
+        "width": 1440,
+        "height": 810
+      },
+      "heroRequests": 1,
+      "headingVisible": true,
+      "javaScriptEnabled": false,
+      "overflow": 0,
+      "background": "rgb(247, 250, 255)",
+      "htmlGzip": 12889,
       "passed": true
     },
     {
@@ -46,12 +76,20 @@
       "blocked": true,
       "http": 200,
       "photo": {
-        "width": 320,
-        "height": 180,
-        "overflow": 0
+        "complete": true,
+        "width": 0,
+        "height": 0,
+        "currentSrc": "https://magicmet.ru/images/hero-photo-1440.avif?v=20261028-sharp1",
+        "displayWidth": 1536,
+        "displayHeight": 864
       },
-      "heroRequests": 0,
-      "htmlGzip": 14634,
+      "sourcePhoto": null,
+      "heroRequests": 1,
+      "headingVisible": true,
+      "javaScriptEnabled": false,
+      "overflow": 0,
+      "background": "rgb(247, 250, 255)",
+      "htmlGzip": 12889,
       "passed": true
     }
   ],
