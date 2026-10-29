@@ -31,6 +31,9 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx playwright install --with-deps ${{ matrix.browser }}
+      - name: Test request delivery failure handling (mocked, no external mail)
+        if: github.event_name == 'pull_request' && matrix.browser == 'chromium'
+        run: npx vitest run --config ./vitest.config.mts tests/int/request-delivery-failover.int.spec.ts
       - name: Build and start pull request locally
         if: github.event_name == 'pull_request'
         run: |
