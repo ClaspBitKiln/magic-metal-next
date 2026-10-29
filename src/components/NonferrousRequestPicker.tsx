@@ -23,6 +23,7 @@ const f = (value: string) => value.trim().replace('.', ',')
 
 export default function NonferrousRequestPicker({ productSlug, requestHref }: { productSlug: string; requestHref: string }) {
   const options = shapes[productSlug] || ['Круг / пруток']
+  const copperGrades = ['М0', 'М1', 'М1р', 'М1ф', 'М2', 'М2р', 'М3', 'М3р']
   const [shape, setShape] = useState<Shape | ''>('')
   const [a, setA] = useState('')
   const [b, setB] = useState('')
@@ -60,6 +61,7 @@ export default function NonferrousRequestPicker({ productSlug, requestHref }: { 
   return <section className="nonferrous-picker" aria-label="Подбор цветного металла по форме и размерам">
     <h2>Указать форму и размеры для заявки</h2>
     <p>Сначала выберите форму полуфабриката. Размеры, марка сплава, состояние поставки и ГОСТ уточняются именно для выбранной формы — не для всего металла сразу.</p>
+    {productSlug === 'med' && <p className="nonferrous-note"><strong>Марки меди: М0, М1, М1р, М1ф, М2, М2р, М3, М3р.</strong> Обозначения по ГОСТ 859-2014. Для листа, трубы, прутка, ленты или проволоки соответствие марки и стандарт полуфабриката уточняются отдельно. <a href="https://protect.gost.ru/gost/details/8b09dfe4-609d-4813-9894-e66ab3f382ba" target="_blank" rel="noopener noreferrer">ГОСТ 859-2014 ↗</a></p>}
     <div className="nonferrous-fields">
       <label>Форма изделия
         <select value={shape} onChange={e => {setShape(e.target.value as Shape);setA('');setB('');setLength('')}}><option value="">Выберите форму</option>{options.map(x=><option key={x} value={x}>{x}</option>)}</select>
@@ -68,7 +70,9 @@ export default function NonferrousRequestPicker({ productSlug, requestHref }: { 
         {(flat || tube || bar || shaped) && <label>{flat ? 'Толщина, мм' : tube ? 'Наружный диаметр, мм' : shape === 'Шестигранник' ? 'Размер под ключ, мм' : shape === 'Квадрат' ? 'Сторона, мм' : shaped ? 'Основной габарит, мм (если известен)' : 'Диаметр, мм'}<input value={a} onChange={e=>setA(e.target.value)} inputMode="decimal" placeholder="Например, 20" /></label>}
         {(flat || tube) && <label>{flat ? 'Ширина, мм' : 'Толщина стенки, мм'}<input value={b} onChange={e=>setB(e.target.value)} inputMode="decimal" placeholder={tube ? 'Например, 2' : 'Например, 1000'} /></label>}
         {(flat || tube || bar) && <label>Длина, мм (если известна)<input value={length} onChange={e=>setLength(e.target.value)} inputMode="decimal" placeholder="По спецификации" /></label>}
-        <label>Марка сплава<input value={grade} onChange={e=>setGrade(e.target.value)} placeholder="Укажите из чертежа / спецификации" /></label>
+        {productSlug === 'med' ? <label>Марка меди (ГОСТ 859-2014)
+          <select value={grade} onChange={e=>setGrade(e.target.value)}><option value="">Выберите марку или укажите в спецификации</option>{copperGrades.map(value=><option key={value} value={value}>{value}</option>)}</select>
+        </label> : <label>Марка сплава<input value={grade} onChange={e=>setGrade(e.target.value)} placeholder="Укажите из чертежа / спецификации" /></label>}
         <label>Состояние / способ изготовления<input value={condition} onChange={e=>setCondition(e.target.value)} placeholder="Если требуется" /></label>
         <label>Поверхность / покрытие<input value={surface} onChange={e=>setSurface(e.target.value)} placeholder="Если требуется" /></label>
         <label>ГОСТ / ТУ / ASTM<input value={standard} onChange={e=>setStandard(e.target.value)} placeholder="Стандарт именно этого изделия" /></label>
