@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
+import { alloyGradeExamples } from '@/data/alloyGradeExamples'
 
 type Shape = 'Лист' | 'Лента' | 'Плита' | 'Полоса' | 'Труба' | 'Круг / пруток' | 'Квадрат' | 'Шестигранник' | 'Проволока' | 'Чушка / блок' | 'Втулка / заготовка'
 const shapes: Record<string, Shape[]> = {
@@ -23,6 +24,8 @@ const f = (value: string) => value.trim().replace('.', ',')
 
 export default function NonferrousRequestPicker({ productSlug, requestHref }: { productSlug: string; requestHref: string }) {
   const options = shapes[productSlug] || ['Круг / пруток']
+  const gradeExamples = alloyGradeExamples[productSlug]
+  const [otherGrade, setOtherGrade] = useState('')
   const [shape, setShape] = useState<Shape | ''>('')
   const [a, setA] = useState('')
   const [b, setB] = useState('')
@@ -48,7 +51,7 @@ export default function NonferrousRequestPicker({ productSlug, requestHref }: { 
     const url = new URL(requestHref, 'https://magicmet.ru')
     const base = url.searchParams.get('product') || 'Цветной металлопрокат'
     const items = [base, name, tube ? 'наружный диаметр × стенка' : '', bar && length ? `длина ${f(length)} мм` : '',
-      grade.trim() ? `марка сплава ${grade.trim()}` : 'марка сплава уточнить',
+      (grade === '__other__' ? otherGrade : grade).trim() ? `марка сплава ${(grade === '__other__' ? otherGrade : grade).trim()}` : 'марка сплава уточнить',
       condition.trim() ? `состояние/способ изготовления: ${condition.trim()}` : '',
       surface.trim() ? `поверхность/исполнение: ${surface.trim()}` : '',
       standard.trim() ? `требуемый ГОСТ/ТУ: ${standard.trim()}` : 'стандарт уточнить',
@@ -56,10 +59,16 @@ export default function NonferrousRequestPicker({ productSlug, requestHref }: { 
     url.searchParams.set('product', items.filter(Boolean).join('; '))
     url.hash = 'request'
     return url.pathname + url.search + url.hash
-  }, [valid, requestHref, name, tube, bar, length, grade, condition, surface, standard, amount, unit])
+  }, [valid, requestHref, name, tube, bar, length, grade, otherGrade, condition, surface, standard, amount, unit])
   return <section className="nonferrous-picker" aria-label="Подбор цветного металла по форме и размерам">
     <h2>Указать форму и размеры для заявки</h2>
     <p>Сначала выберите форму полуфабриката. Размеры, марка сплава, состояние поставки и ГОСТ уточняются именно для выбранной формы — не для всего металла сразу.</p>
+    {gradeExamples && <div className="nonferrous-note">
+      <strong>Марки — {gradeExamples.title}: {gradeExamples.grades.join(', ')}.</strong>{' '}
+      <span>Примеры обозначений по {gradeExamples.standard}. Выбранная марка не означает подтверждённого наличия или совместимости с любой формой изделия.</span>{' '}
+      {gradeExamples.caution && <span>{gradeExamples.caution} </span>}
+      <a href={gradeExamples.source} target="_blank" rel="noopener noreferrer">Источник стандарта ↗</a>
+    </div>}
     <div className="nonferrous-fields">
       <label>Форма изделия
         <select value={shape} onChange={e => {setShape(e.target.value as Shape);setA('');setB('');setLength('')}}><option value="">Выберите форму</option>{options.map(x=><option key={x} value={x}>{x}</option>)}</select>
@@ -68,7 +77,10 @@ export default function NonferrousRequestPicker({ productSlug, requestHref }: { 
         {(flat || tube || bar || shaped) && <label>{flat ? 'Толщина, мм' : tube ? 'Наружный диаметр, мм' : shape === 'Шестигранник' ? 'Размер под ключ, мм' : shape === 'Квадрат' ? 'Сторона, мм' : shaped ? 'Основной габарит, мм (если известен)' : 'Диаметр, мм'}<input value={a} onChange={e=>setA(e.target.value)} inputMode="decimal" placeholder="Например, 20" /></label>}
         {(flat || tube) && <label>{flat ? 'Ширина, мм' : 'Толщина стенки, мм'}<input value={b} onChange={e=>setB(e.target.value)} inputMode="decimal" placeholder={tube ? 'Например, 2' : 'Например, 1000'} /></label>}
         {(flat || tube || bar) && <label>Длина, мм (если известна)<input value={length} onChange={e=>setLength(e.target.value)} inputMode="decimal" placeholder="По спецификации" /></label>}
-        <label>Марка сплава<input value={grade} onChange={e=>setGrade(e.target.value)} placeholder="Укажите из чертежа / спецификации" /></label>
+        {gradeExamples ? <label>Марка {productSlug === 'list' || productSlug === 'truby' || productSlug === 'sortovoy-prokat' ? 'стали' : 'металла / сплава'}
+          <select value={grade} onChange={e => {setGrade(e.target.value);setOtherGrade('')}}><option value="">Выберите марку</option>{gradeExamples.grades.map(value=><option key={value} value={value}>{value}</option>)}<option value="__other__">Другая марка по спецификации</option></select>
+        </label> : <label>Марка сплава<input value={grade} onChange={e=>setGrade(e.target.value)} placeholder="Укажите из чертежа / спецификации" /></label>}
+        {grade === '__other__' && <label>Укажите другую марку<input value={otherGrade} onChange={e=>setOtherGrade(e.target.value)} placeholder="Точное обозначение из заявки" /></label>}
         <label>Состояние / способ изготовления<input value={condition} onChange={e=>setCondition(e.target.value)} placeholder="Если требуется" /></label>
         <label>Поверхность / покрытие<input value={surface} onChange={e=>setSurface(e.target.value)} placeholder="Если требуется" /></label>
         <label>ГОСТ / ТУ / ASTM<input value={standard} onChange={e=>setStandard(e.target.value)} placeholder="Стандарт именно этого изделия" /></label>
