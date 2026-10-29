@@ -34,6 +34,7 @@ tags: [magic-metal, catalog, automation, obsidian]
 - [#97 Цветные металлы и нержавейка](https://github.com/ClaspBitKiln/magic-metal-next/issues/97)
 - [#98 Метизы, канаты, сетки и поковки](https://github.com/ClaspBitKiln/magic-metal-next/issues/98)
 - [#99 P0: проверка доставки Excel/PDF](https://github.com/ClaspBitKiln/magic-metal-next/issues/99)
+- [[Заявки — тест PDF и настройка базы]] — реальный тест письма с PDF подтверждён; CMS не сохраняет заявки из-за отсутствия PostgreSQL и Payload secret.
 
 ## Текущее состояние
 
