@@ -166,3 +166,10 @@
 .galv-actions span { font-size:13px; color:#536481; }
 @media(max-width:920px){.galv-fields{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:580px){.galv-picker{padding:14px}.galv-fields{grid-template-columns:1fr}}
+
+.size-series-quick-examples { margin:16px 0; padding:16px 18px; background:#eef3fb; border-left:3px solid #0757e8; }
+.size-series-quick-examples strong { display:block; margin-bottom:10px; color:#071c62; font-size:15px; }
+.size-series-quick-examples nav { display:flex; flex-wrap:wrap; gap:8px; }
+.size-series-quick-examples nav a { display:inline-flex; min-height:44px; align-items:center; padding:9px 12px; border:1px solid #0757e8; color:#0757e8; background:#fff; font-weight:700; text-decoration:none; }
+.size-series-quick-examples nav a:hover { background:#e3edff; }
+.product-size-series .size-series-quick-examples p { margin:10px 0 0; color:#536481; font-size:13px; }
