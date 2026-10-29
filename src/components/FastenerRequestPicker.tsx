@@ -27,9 +27,9 @@ export default function FastenerRequestPicker({ requestHref, nutThreads }: { req
     if (!valid) return null
     const url = new URL(requestHref, 'https://magicmet.ru')
     const previous = url.searchParams.get('product') || 'Крепёж'
-    const details = [previous, kind, kind === 'Шайба' ? `номинальный размер ${normalizedThread(thread)}` : `резьба ${normalizedThread(thread)}`,
-      hasLength ? `длина ${length} мм` : '',
-      kind === 'Гайка' ? 'номинальная резьба из таблицы ГОСТ 5915-70' : '',
+    const designation = `${kind} ${normalizedThread(thread)}${hasLength ? `×${length}` : ''}`
+    const details = [previous, designation,
+      kind === 'Шайба' ? 'номинальный размер под крепёж' : 'метрическая резьба',
       standard.trim() ? `требуемый стандарт ${standard.trim()}` : kind === 'Гайка' ? 'ГОСТ 5915-70' : 'стандарт уточнить',
       strength.trim() ? `класс прочности ${strength.trim()}` : '',
       material.trim() ? `марка материала ${material.trim()}` : '',
