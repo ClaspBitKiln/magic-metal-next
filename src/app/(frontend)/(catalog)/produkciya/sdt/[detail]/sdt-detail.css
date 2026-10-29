@@ -369,3 +369,15 @@
     font-size: 12px;
   }
 }
+
+/* Buyer-first compact layout: parameters and material first, reference details second. */
+.sdt-hero { min-height: 260px; padding-top: 44px; padding-bottom: 44px; }
+.sdt-hero h1 { font-size: clamp(32px, 3.3vw, 52px); }
+.sdt-hero > div > span { margin-top: 14px; max-width: 880px; }
+.sdt-grid { margin-bottom: 32px; }
+.sdt-grid h2 { min-height: auto; font-size: clamp(25px, 2.7vw, 38px); }
+.sdt-intro { padding-top: 32px; padding-bottom: 38px; gap: 4vw; }
+.sdt-intro h2 { font-size: clamp(27px, 3vw, 40px); }
+.sdt-grid > p { grid-column: 1 / -1; padding: 12px 20px; margin: 0; line-height: 1.5; color: #536481; }
+.sdt-grid > a { display: inline-flex; grid-column: 1 / -1; align-items: center; min-height: 44px; padding: 10px 20px; font-weight: 700; color: #0757e8; }
+@media (max-width: 700px) { .sdt-hero { min-height: auto; padding-top: 30px; padding-bottom: 30px; } .sdt-intro { padding-top: 24px; padding-bottom: 28px; } }
