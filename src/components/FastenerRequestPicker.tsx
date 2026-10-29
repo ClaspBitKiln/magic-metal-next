@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react'
 
 type Kind = 'Болт' | 'Гайка' | 'Шпилька' | 'Шайба'
 
+const normalizedThread = (value: string) => value.trim().replace(/^М/iu, 'M').toUpperCase()
 const positive = (value: string) => /^\d+(?:[.,]\d+)?$/.test(value.trim()) && Number(value.replace(',', '.')) > 0
 
 export default function FastenerRequestPicker({ requestHref, nutThreads }: { requestHref: string; nutThreads: string[] }) {
@@ -19,14 +20,14 @@ export default function FastenerRequestPicker({ requestHref, nutThreads }: { req
   const isThread = kind !== 'Шайба'
   const hasLength = kind === 'Болт' || kind === 'Шпилька'
   const threadValid = kind === 'Гайка'
-    ? nutThreads.includes(thread)
+    ? nutThreads.includes(normalizedThread(thread))
     : /^M\d+(?:[.,]\d+)?$/iu.test(thread.trim())
   const valid = threadValid && (!hasLength || positive(length)) && (!quantity || positive(quantity))
   const href = useMemo(() => {
     if (!valid) return null
     const url = new URL(requestHref, 'https://magicmet.ru')
     const previous = url.searchParams.get('product') || 'Крепёж'
-    const details = [previous, kind, kind === 'Шайба' ? `номинальный размер ${thread.toUpperCase()}` : `резьба ${thread.toUpperCase()}`,
+    const details = [previous, kind, kind === 'Шайба' ? `номинальный размер ${normalizedThread(thread)}` : `резьба ${thread.toUpperCase()}`,
       hasLength ? `длина ${length} мм` : '',
       kind === 'Гайка' ? 'размер резьбы по таблице ГОСТ 5915-70' : '',
       standard.trim() ? `требуемый стандарт ${standard.trim()}` : kind === 'Гайка' ? 'ГОСТ 5915-70' : 'стандарт уточнить',
