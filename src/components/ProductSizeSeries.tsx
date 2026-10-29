@@ -7,6 +7,7 @@ import SizeTableFilter from './SizeTableFilter'
 import CompactSizeRows from './CompactSizeRows'
 import SheetFormatPicker from './SheetFormatPicker'
 import GalvanizedRequestPicker from './GalvanizedRequestPicker'
+import FastenerRequestPicker from './FastenerRequestPicker'
 
 const dimensionList = /^\d+(?:[.,]\d+)?(?:;\s*\d+(?:[.,]\d+)?)+$/
 const numericWalls = /^(?:(?:\d+(?:[.,]\d+)?|\(\d+(?:[.,]\d+)?\))(?:;\s*(?:\d+(?:[.,]\d+)?|\(\d+(?:[.,]\d+)?\)))*|—)$/
@@ -61,6 +62,7 @@ export default function ProductSizeSeries({ series, requestHref, guide }: { seri
       })}</nav>
       <p>Это нормативные обозначения, а не сведения о наличии. Другой размер можно выбрать в таблице ниже или приложить спецификацию.</p>
     </div>}
+    {series[0]?.categorySlug === 'metizy-i-svarochnye-materialy' && series[0]?.productSlug === 'krepezh' && <FastenerRequestPicker requestHref={requestHref} nutThreads={series.flatMap(table => table.standard === 'ГОСТ 5915-70' ? table.rows.map(row => row[0]) : [])} />}
     {series[0]?.categorySlug === 'listovoy-prokat' && series[0]?.productSlug === 'ocinkovannyj' && <GalvanizedRequestPicker requestHref={requestHref} />}
     {series.length > 1 && <nav className="size-series-nav" aria-label="Выбор размерной таблицы">
       {series.map((table, index) => <a key={`${table.standard}-${table.title}`} href={`#sizes-series-${index + 1}`}>{tableLabel(table)}</a>)}
