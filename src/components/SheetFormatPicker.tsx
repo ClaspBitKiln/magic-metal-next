@@ -19,6 +19,9 @@ export default function SheetFormatPicker({ rows, nominalThicknesses, requestHre
   const [width, setWidth] = useState('')
   const [thickness, setThickness] = useState('')
   const [length, setLength] = useState('')
+  const [steelGrade, setSteelGrade] = useState('')
+  const [quantity, setQuantity] = useState('')
+  const [quantityUnit, setQuantityUnit] = useState('листов')
   const [showReference, setShowReference] = useState(false)
 
   const formats = useMemo<FormatRow[]>(() => rows.map(([thickness, widths, from, to]) => ({ thickness, widths, from, to })), [rows])
@@ -32,13 +35,14 @@ export default function SheetFormatPicker({ rows, nominalThicknesses, requestHre
   const lengthRanges = matching.map(row => `${row.from}–${row.to} мм`)
   const hasLength = length.trim().length > 0
   const validLength = !hasLength || (length.trim() !== '' && /^\d+(?:[.,]\d+)?$/.test(length.trim()) && matching.some(row => number(length) >= number(row.from) && number(length) <= number(row.to)))
+  const quantityValid = !quantity.trim() || (/^\d+(?:[.,]\d+)?$/.test(quantity.trim()) && number(quantity) > 0)
   const href = useMemo(() => {
-    if (!width || !thickness || !matching.length || !validLength) return ''
+    if (!width || !thickness || !matching.length || !validLength || !quantityValid) return ''
     const url = new URL(requestHref, 'https://magicmet.ru')
     const existing = url.searchParams.get('product')
-    url.searchParams.set('product', [existing, `лист г/к, толщина ${thickness} мм, ширина ${width} мм`, hasLength ? `длина ${length} мм` : 'длина уточняется', standard].filter(Boolean).join('; '))
+    url.searchParams.set('product', [existing, `лист г/к, толщина ${thickness} мм, ширина ${width} мм`, hasLength ? `длина ${length} мм` : 'длина уточняется', steelGrade.trim() ? `марка стали ${steelGrade.trim()}` : '', quantity.trim() ? `количество ${quantity.trim()} ${quantityUnit}` : '', standard].filter(Boolean).join('; '))
     return url.pathname + url.search + url.hash
-  }, [requestHref, standard, width, thickness, length, hasLength, validLength, matching.length])
+  }, [requestHref, standard, width, thickness, length, hasLength, validLength, matching.length, steelGrade, quantity, quantityUnit, quantityValid])
 
   return <div className="sheet-format-picker">
     <h3>Быстрый подбор листа</h3>
@@ -65,6 +69,21 @@ export default function SheetFormatPicker({ rows, nominalThicknesses, requestHre
         <input id={uid + '-length'} inputMode="decimal" value={length} disabled={!width} placeholder="Указать при необходимости" onChange={event => setLength(event.target.value)} />
       </label>
     </div>
+    <div className="sheet-format-picker-fields sheet-format-picker-order">
+      <label htmlFor={uid + '-grade'}>Марка стали (если известна)
+        <input id={uid + '-grade'} value={steelGrade} placeholder="Например, Ст3 или 09Г2С" maxLength={80} onChange={event => setSteelGrade(event.target.value)} />
+      </label>
+      <label htmlFor={uid + '-quantity'}>Количество (если известно)
+        <input id={uid + '-quantity'} value={quantity} inputMode="decimal" placeholder="Например, 10" onChange={event => setQuantity(event.target.value)} />
+      </label>
+      <label htmlFor={uid + '-quantity-unit'}>Единица количества
+        <select id={uid + '-quantity-unit'} value={quantityUnit} onChange={event => setQuantityUnit(event.target.value)}>
+          <option value="листов">Листов</option>
+          <option value="т">Тонн</option>
+        </select>
+      </label>
+    </div>
+    {!quantityValid && <p className="sheet-format-picker-error" role="alert">Укажите положительное количество или оставьте поле пустым.</p>}
     {width && length && thicknesses.length === 0 && <p role="status">Для этих ширины и длины подходящих номинальных толщин в справочной таблице нет. Измените раскрой или отправьте спецификацию на проверку.</p>}
     {matching.length > 0 && <p className="sheet-format-picker-result" role="status">Выбрано: лист {thickness} × {width} мм. Длина в нормативном диапазоне: {[...new Set(lengthRanges)].join(' или ')}.</p>}
     {!validLength && <p className="sheet-format-picker-error" role="alert">Эта длина не входит в выбранный нормативный диапазон. Проверьте значение или оставьте поле пустым.</p>}
