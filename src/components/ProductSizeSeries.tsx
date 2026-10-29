@@ -16,6 +16,7 @@ const sectionExamples: Record<string, string[]> = {
   shveller: ['10П', '12П', '16П', '20П'],
   'balka-dvutavrovaya': ['20Б1', '25Б1', '30Б1', '35Б1'],
   'krug-goryachekatanyj': ['12', '16', '20', '25', '30', '40'],
+  kvadrat: ['10', '16', '20', '25', '30', '40'],
 }
 const quickSectionRows = (series: SizeSeries[]) => {
   const slug = series[0]?.productSlug || ''
@@ -24,7 +25,7 @@ const quickSectionRows = (series: SizeSeries[]) => {
   return labels.flatMap(label => series.flatMap(table => table.rows.flatMap(row => {
     const first = row[0]?.replace(/\s+/g, ' ').trim() || ''
     const value = slug === 'ugolok' ? `${first} / ${row[1]}` : first
-    return value === label ? [{ label: slug === 'ugolok' ? `${first} × ${row[1]} мм` : slug === 'krug-goryachekatanyj' ? `Ø ${first} мм` : first, row, standard: table.standard, title: table.title }] : []
+    return value === label ? [{ label: slug === 'ugolok' ? `${first} × ${row[1]} мм` : slug === 'krug-goryachekatanyj' ? `Круг Ø${first} мм` : slug === 'kvadrat' ? `Квадрат ${first}×${first} мм` : slug === 'shveller' ? `Швеллер ${first}` : slug === 'balka-dvutavrovaya' ? `Двутавр ${first}` : first, row, standard: table.standard, title: table.title, slug }] : []
   }))).filter((entry, index, arr) => arr.findIndex(other => other.label === entry.label) === index)
 }
 
@@ -53,9 +54,9 @@ export default function ProductSizeSeries({ series, requestHref, guide }: { seri
     <a className="size-series-request" href={requestHref}>Отправить заявку ↗</a>
     {quickSectionRows(series).length > 0 && <div className="size-series-quick-examples">
       <strong>Примеры типоразмеров по ГОСТ — сразу в заявку:</strong>
-      <nav aria-label="Выбор распространённых типоразмеров">{quickSectionRows(series).map(({ label, row, standard, title }) => {
+      <nav aria-label="Выбор распространённых типоразмеров">{quickSectionRows(series).map(({ label, standard }) => {
         const initial = new URL(requestHref, 'https://magicmet.ru').searchParams.get('product') || ''
-        const detail = [initial, title, label, standard, row.length > 2 ? `другие параметры: ${row.slice(1).join(' × ')}` : ''].filter(Boolean).join('; ')
+        const detail = [initial, label, standard].filter(Boolean).join('; ')
         return <a key={label} href={`/?product=${encodeURIComponent(detail)}#request`}>{label} ↗</a>
       })}</nav>
       <p>Это нормативные обозначения, а не сведения о наличии. Другой размер можно выбрать в таблице ниже или приложить спецификацию.</p>
