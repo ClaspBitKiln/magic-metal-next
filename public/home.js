@@ -18,8 +18,32 @@ let formStarted = false
 form?.addEventListener('focusin', () => {
   if (!formStarted) { formStarted = true; track('request_started') }
 })
-form?.querySelector('input[type="file"]')?.addEventListener('change', (event) => {
-  if (event.target.files?.length) track('specification_attached')
+const fileInput = form?.querySelector('input[name="files"]')
+const fileSelectionStatus = document.querySelector('#file-selection-status')
+const supportedFileExtensions = new Set(['xlsx', 'xls', 'pdf', 'doc', 'docx', 'png', 'jpg', 'jpeg', 'webp', 'dwg', 'dxf', 'mp3', 'm4a', 'wav', 'ogg', 'webm'])
+const maxTotalFileSize = 4 * 1024 * 1024
+const renderSelectedFiles = () => {
+  if (!fileSelectionStatus) return
+  const files = Array.from(fileInput?.files || [])
+  fileSelectionStatus.hidden = files.length === 0
+  if (!files.length) {
+    fileSelectionStatus.textContent = ''
+    return
+  }
+  const total = files.reduce((size, file) => size + file.size, 0)
+  const invalid = files.filter(file => !supportedFileExtensions.has(file.name.split('.').pop()?.toLowerCase() || ''))
+  const totalLabel = (total / (1024 * 1024)).toLocaleString('ru-RU', { maximumFractionDigits: 2 })
+  const names = files.map(file => file.name).join('; ')
+  const warning = total > maxTotalFileSize
+    ? ' Превышен лимит 4 МБ. Уберите файлы или отправьте их на m1@magicmet.ru.'
+    : invalid.length
+      ? ' Неподдерживаемый формат: ' + invalid.map(file => file.name).join(', ') + '.'
+      : ' Файлы готовы к отправке.'
+  fileSelectionStatus.textContent = 'Прикреплено: ' + files.length + ' (' + totalLabel + ' МБ). ' + names + '.' + warning
+}
+fileInput?.addEventListener('change', () => {
+  renderSelectedFiles()
+  if (fileInput.files?.length) track('specification_attached')
 })
 form?.addEventListener('submit', async (event) => {
   event.preventDefault()
@@ -57,6 +81,7 @@ form?.addEventListener('submit', async (event) => {
     const recorded = result.ok === true && (typeof result.id === 'number' || (typeof result.id === 'string' && result.id.length > 0) || result.emailDelivered === true || result.crmDelivered === true)
     if (recorded) track('request_sent')
     form.reset()
+    renderSelectedFiles()
     status.textContent = result.id ? `Заявка № ${result.id} принята. Мы свяжемся с вами.` : 'Заявка принята. Мы свяжемся с вами.'
   } catch (error) {
     track('request_error')
