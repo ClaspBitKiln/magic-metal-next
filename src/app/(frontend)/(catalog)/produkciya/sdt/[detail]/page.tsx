@@ -50,7 +50,8 @@ export default async function SdtDetailPage({ params }: { params: Promise<{ deta
         <div><dt>Исполнения</dt><dd>{item.execution.map((value) => <span key={value}>{value}</span>)}</dd></div>
         <div><dt>Размерный охват</dt><dd>{item.range.map((value) => <span key={value}>{value}</span>)}<small>Диапазоны приведены для первичного поиска. Производимость и соответствие проекту подтверждаются до предложения.</small></dd></div>
         <div><dt>Материалы</dt><dd>{item.materials.map((value) => <span key={value}>{value}</span>)}</dd></div>
-      </dl></section>
+        <div><dt>ГОСТы / ОСТ / ТУ</dt><dd>{item.standards.map((value) => <span key={value}>{value}</span>)}</dd></div>
+      </dl><p>Основные материалы и исполнения для выбора. Конкретное сочетание размеров, материала и условий эксплуатации проверим по заявке.</p><a href={requestHref}>Запросить предложение ↗</a> <a href="/#request">Прикрепить готовую спецификацию →</a></section>
       <ProductSizeSeries series={getProductSizeSeries('sdt', item.slug)} guide={getDimensionGuide('sdt', item.slug)} requestHref={requestHref} />
       <section className="sdt-intro"><h2>Подбор по проекту и спецификации</h2><p>{item.intro}</p><a href={requestHref}>Отправить заявку →</a></section>
       <section className="sdt-standards"><div><p>Документы</p><h2>Стандарты</h2></div><div>{item.standards.map((value) => { const standard = findStandard(value); return standard ? <Link prefetch={false} href={`/spravochnik-gost/${standard.slug}`} key={value}><span className="standard-code">{value}</span><small>{standard.status}</small><b>↗</b></Link> : <div key={value}><span className="standard-code">{value}</span></div> })}</div></section>
