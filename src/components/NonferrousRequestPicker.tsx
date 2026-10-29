@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react'
 
-type Shape = 'Лист' | 'Лента' | 'Плита' | 'Труба' | 'Круг / пруток' | 'Квадрат' | 'Шестигранник' | 'Проволока' | 'Чушка / блок' | 'Втулка / заготовка'
+type Shape = 'Лист' | 'Лента' | 'Плита' | 'Полоса' | 'Труба' | 'Круг / пруток' | 'Квадрат' | 'Шестигранник' | 'Проволока' | 'Чушка / блок' | 'Втулка / заготовка'
 const shapes: Record<string, Shape[]> = {
   med: ['Лист','Лента','Труба','Круг / пруток','Проволока'],
   latun: ['Лист','Лента','Труба','Круг / пруток','Проволока'],
@@ -16,7 +16,7 @@ const shapes: Record<string, Shape[]> = {
   babbit: ['Чушка / блок','Втулка / заготовка'],
   list: ['Лист','Лента'],
   truby: ['Труба'],
-  'sortovoy-prokat': ['Круг / пруток','Квадрат','Шестигранник','Лента'],
+  'sortovoy-prokat': ['Круг / пруток','Квадрат','Шестигранник','Полоса'],
 }
 const numeric = (value: string) => /^\d+(?:[.,]\d+)?$/.test(value.trim()) && Number(value.replace(',', '.')) > 0
 const f = (value: string) => value.trim().replace('.', ',')
@@ -33,7 +33,7 @@ export default function NonferrousRequestPicker({ productSlug, requestHref }: { 
   const [standard, setStandard] = useState('')
   const [amount, setAmount] = useState('')
   const [unit, setUnit] = useState('кг')
-  const flat = shape === 'Лист' || shape === 'Лента' || shape === 'Плита'
+  const flat = shape === 'Лист' || shape === 'Лента' || shape === 'Плита' || shape === 'Полоса'
   const tube = shape === 'Труба'
   const bar = shape === 'Круг / пруток' || shape === 'Квадрат' || shape === 'Шестигранник' || shape === 'Проволока'
   const shaped = shape === 'Втулка / заготовка'
