@@ -6,10 +6,28 @@ import './ProductSizeSeries.css'
 import SizeTableFilter from './SizeTableFilter'
 import CompactSizeRows from './CompactSizeRows'
 import SheetFormatPicker from './SheetFormatPicker'
+import GalvanizedRequestPicker from './GalvanizedRequestPicker'
 
 const dimensionList = /^\d+(?:[.,]\d+)?(?:;\s*\d+(?:[.,]\d+)?)+$/
 const numericWalls = /^(?:(?:\d+(?:[.,]\d+)?|\(\d+(?:[.,]\d+)?\))(?:;\s*(?:\d+(?:[.,]\d+)?|\(\d+(?:[.,]\d+)?\)))*|—)$/
 const wallPairList = /^\d+(?:[.,]\d+)?\/\d+(?:[.,]\d+)?(?:;\s*\d+(?:[.,]\d+)?\/\d+(?:[.,]\d+)?)*$/
+const sectionExamples: Record<string, string[]> = {
+  ugolok: ['25 × 25 / 3', '40 × 40 / 4', '50 × 50 / 5', '75 × 75 / 5'],
+  shveller: ['10П', '12П', '16П', '20П'],
+  'balka-dvutavrovaya': ['20Б1', '25Б1', '30Б1', '35Б1'],
+  'krug-goryachekatanyj': ['12', '16', '20', '25', '30', '40'],
+}
+const quickSectionRows = (series: SizeSeries[]) => {
+  const slug = series[0]?.productSlug || ''
+  if (series[0]?.categorySlug !== 'sortovoy-i-fasonny-prokat') return []
+  const labels = sectionExamples[slug] || []
+  return labels.flatMap(label => series.flatMap(table => table.rows.flatMap(row => {
+    const first = row[0]?.replace(/\s+/g, ' ').trim() || ''
+    const value = slug === 'ugolok' ? `${first} / ${row[1]}` : first
+    return value === label ? [{ label: slug === 'ugolok' ? `${first} × ${row[1]} мм` : slug === 'krug-goryachekatanyj' ? `Ø ${first} мм` : first, row, standard: table.standard, title: table.title }] : []
+  }))).filter((entry, index, arr) => arr.findIndex(other => other.label === entry.label) === index)
+}
+
 const tableLabel = (table: SizeSeries) => {
   const type = table.title.match(/тип\s+([А-ЯA-Z0-9]+)/iu)?.[1]
   if (type) return `Тип ${type}`
@@ -33,6 +51,16 @@ export default function ProductSizeSeries({ series, requestHref, guide }: { seri
     <p className="size-series-intro">{onlyRequirements ? 'Сверьте форму поставки, числовые значения и условия применения. Укажите требования в заявке или приложите спецификацию.' : series.length ? 'Найдите нужное обозначение или выберите строку. Размеры и параметры попадут в заявку; спецификацию можно приложить файлом.' : 'Укажите размеры и требования к изделию или приложите чертёж. Проверим их по выбранному стандарту и техническим условиям.'}</p>
     {series.length > 0 && <p className="size-series-mobile-help">Широкие таблицы можно прокручивать вбок. Первый столбец и заголовки остаются видны.</p>}
     <a className="size-series-request" href={requestHref}>Отправить заявку ↗</a>
+    {quickSectionRows(series).length > 0 && <div className="size-series-quick-examples">
+      <strong>Примеры типоразмеров по ГОСТ — сразу в заявку:</strong>
+      <nav aria-label="Выбор распространённых типоразмеров">{quickSectionRows(series).map(({ label, row, standard, title }) => {
+        const initial = new URL(requestHref, 'https://magicmet.ru').searchParams.get('product') || ''
+        const detail = [initial, title, label, standard, row.length > 2 ? `другие параметры: ${row.slice(1).join(' × ')}` : ''].filter(Boolean).join('; ')
+        return <a key={label} href={`/?product=${encodeURIComponent(detail)}#request`}>{label} ↗</a>
+      })}</nav>
+      <p>Это нормативные обозначения, а не сведения о наличии. Другой размер можно выбрать в таблице ниже или приложить спецификацию.</p>
+    </div>}
+    {series[0]?.categorySlug === 'listovoy-prokat' && series[0]?.productSlug === 'ocinkovannyj' && <GalvanizedRequestPicker requestHref={requestHref} />}
     {series.length > 1 && <nav className="size-series-nav" aria-label="Выбор размерной таблицы">
       {series.map((table, index) => <a key={`${table.standard}-${table.title}`} href={`#sizes-series-${index + 1}`}>{tableLabel(table)}</a>)}
     </nav>}
