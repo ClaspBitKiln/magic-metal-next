@@ -173,3 +173,20 @@
 .size-series-quick-examples nav a { display:inline-flex; min-height:44px; align-items:center; padding:9px 12px; border:1px solid #0757e8; color:#0757e8; background:#fff; font-weight:700; text-decoration:none; }
 .size-series-quick-examples nav a:hover { background:#e3edff; }
 .product-size-series .size-series-quick-examples p { margin:10px 0 0; color:#536481; font-size:13px; }
+
+/* Compact fastener RFQ. The normative table remains below for reference. */
+.fastener-picker { margin:18px 0; padding:22px; border:1px solid #c5d1e5; background:#f4f7fc; }
+.fastener-picker h3 { margin:0 0 10px; font-size:clamp(21px,2vw,27px); color:#071c62; }
+.fastener-picker > p { max-width:900px; color:#536481; }
+.fastener-types { display:flex; flex-wrap:wrap; gap:8px; margin:16px 0; }
+.fastener-types button { min-width:85px; min-height:44px; padding:9px 14px; background:#fff; border:1px solid #7c97c3; font:inherit; font-weight:700; color:#0757e8; cursor:pointer; }
+.fastener-types button[aria-pressed="true"] { color:#fff; background:#0757e8; border-color:#0757e8; }
+.fastener-fields { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; }
+.fastener-fields label { display:flex; flex-direction:column; gap:6px; color:#071c62; font-size:13px; font-weight:700; }
+.fastener-fields input,.fastener-fields select { width:100%; min-height:44px; padding:9px 10px; border:1px solid #aab9d3; background:#fff; border-radius:3px; color:#10182f; font:inherit; }
+.fastener-actions { display:flex; gap:14px; align-items:center; flex-wrap:wrap; margin-top:14px; }
+.fastener-actions a { min-height:44px; display:inline-flex; align-items:center; font-weight:700; color:#0757e8; }
+.fastener-actions .fastener-submit { color:#fff; padding:12px 16px; background:#0757e8; }
+.fastener-actions span { color:#536481; font-size:13px; }
+@media(max-width:920px){.fastener-fields{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:580px){.fastener-picker{padding:14px}.fastener-fields{grid-template-columns:1fr}}
