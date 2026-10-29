@@ -46,13 +46,13 @@ export default async function SdtDetailPage({ params }: { params: Promise<{ deta
         <div><p>Соединительные детали трубопроводов</p><h1>{item.title}</h1><span>{item.description}</span></div>
       </section>
       <nav className="sdt-breadcrumb" aria-label="Хлебные крошки"><Link prefetch={false} href="/">Главная</Link><b>/</b><Link href="/produkciya/sdt">СДТ</Link><b>/</b><span>{item.shortTitle}</span></nav>
-      <ProductSizeSeries series={getProductSizeSeries('sdt', item.slug)} guide={getDimensionGuide('sdt', item.slug)} requestHref={requestHref} />
-      <section className="sdt-intro"><h2>Подбор по проекту и спецификации</h2><p>{item.intro}</p><a href={requestHref}>Отправить заявку →</a></section>
-      <section className="sdt-grid"><div className="sdt-grid-heading"><p>Сводные характеристики</p><h2>Исполнения и материалы</h2></div><dl>
+      <section className="sdt-grid"><div className="sdt-grid-heading"><p>Сводные характеристики</p><h2>Параметры для выбора</h2></div><dl>
         <div><dt>Исполнения</dt><dd>{item.execution.map((value) => <span key={value}>{value}</span>)}</dd></div>
         <div><dt>Размерный охват</dt><dd>{item.range.map((value) => <span key={value}>{value}</span>)}<small>Диапазоны приведены для первичного поиска. Производимость и соответствие проекту подтверждаются до предложения.</small></dd></div>
         <div><dt>Материалы</dt><dd>{item.materials.map((value) => <span key={value}>{value}</span>)}</dd></div>
       </dl></section>
+      <ProductSizeSeries series={getProductSizeSeries('sdt', item.slug)} guide={getDimensionGuide('sdt', item.slug)} requestHref={requestHref} />
+      <section className="sdt-intro"><h2>Подбор по проекту и спецификации</h2><p>{item.intro}</p><a href={requestHref}>Отправить заявку →</a></section>
       <section className="sdt-standards"><div><p>Документы</p><h2>Стандарты</h2></div><div>{item.standards.map((value) => { const standard = findStandard(value); return standard ? <Link prefetch={false} href={`/spravochnik-gost/${standard.slug}`} key={value}><span className="standard-code">{value}</span><small>{standard.status}</small><b>↗</b></Link> : <div key={value}><span className="standard-code">{value}</span></div> })}</div></section>
       <section className="sdt-request"><div><p>Что указать в заявке</p><h2>Данные для точного расчёта</h2></div><ol>{item.requestFields.map((value, index) => <li key={value}><b>{String(index + 1).padStart(2, '0')}</b><span>{value}</span></li>)}</ol></section>
       <section className="sdt-more"><p>Другие соединительные детали</p><div>{sdtCatalog.filter(({ slug }) => slug !== item.slug).slice(0, 4).map((related) => <Link href={`/produkciya/sdt/${related.slug}`} key={related.slug}>{related.shortTitle}<b>↗</b></Link>)}</div></section>
