@@ -126,3 +126,19 @@
 .size-series-standard a { display: inline-flex; align-items: center; min-height: 44px; color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 .size-series-standard a + a { margin-left: 12px; }
 .size-series-standard a:focus-visible { outline: 2px solid #0754e9; outline-offset: 3px; }
+
+/* Procurement-first hot-rolled sheet selector; the original normative data remains below. */
+.sheet-format-picker { padding: 18px 0 12px; }
+.sheet-format-picker h3 { margin: 0 0 10px; font-size: clamp(20px, 2vw, 26px); color: #071c62; }
+.product-size-series .sheet-format-picker > p { margin: 8px 0 16px; color: #536481; }
+.sheet-format-picker-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 15px 0; }
+.sheet-format-picker-fields label { display: flex; flex-direction: column; gap: 7px; font-size: 14px; font-weight: 700; color: #071c62; }
+.sheet-format-picker-fields select, .sheet-format-picker-fields input { width: 100%; min-height: 46px; padding: 10px; border: 1px solid #aab9d3; border-radius: 4px; background: #fff; color: #10182f; font: inherit; }
+.sheet-format-picker-fields :disabled { opacity: 0.55; }
+.product-size-series .sheet-format-picker .sheet-format-picker-result { color: #071c62; font-weight: 650; }
+.product-size-series .sheet-format-picker .sheet-format-picker-error { color: #a32626; font-weight: 650; }
+.sheet-format-picker-actions { display: flex; gap: 12px 20px; align-items: center; flex-wrap: wrap; margin: 16px 0; }
+.sheet-format-picker-actions a:first-child { display: inline-flex; min-height: 44px; align-items: center; padding: 10px 16px; background: #0757e8; color: #fff; font-weight: 700; }
+.sheet-format-picker-actions a:not(:first-child) { color: #0757e8; font-weight: 700; }
+.sheet-format-picker-actions span { color: #62708b; font-size: 13px; }
+@media (max-width: 700px) { .sheet-format-picker-fields { grid-template-columns: 1fr; } }
