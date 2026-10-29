@@ -31,7 +31,7 @@ export default function SheetFormatPicker({ rows, nominalThicknesses, requestHre
   const matching = possible.filter(row => thickness && thicknessMatches(row.thickness, thickness))
   const lengthRanges = matching.map(row => `${row.from}–${row.to} мм`)
   const hasLength = length.trim().length > 0
-  const validLength = !hasLength || (length.trim() !== '' && /^\\d+(?:[.,]\\d+)?$/.test(length.trim()) && matching.some(row => number(length) >= number(row.from) && number(length) <= number(row.to)))
+  const validLength = !hasLength || (length.trim() !== '' && /^\d+(?:[.,]\d+)?$/.test(length.trim()) && matching.some(row => number(length) >= number(row.from) && number(length) <= number(row.to)))
   const href = useMemo(() => {
     if (!width || !thickness || !matching.length || !validLength) return ''
     const url = new URL(requestHref, 'https://magicmet.ru')
@@ -56,13 +56,13 @@ export default function SheetFormatPicker({ rows, nominalThicknesses, requestHre
         </select>
       </label>
       <label htmlFor={uid + '-thickness'}>Толщина, мм
-        <select id={uid + '-thickness'} value={thickness} disabled={!width} onChange={event => { setThickness(event.target.value); setLength('') }}>
+        <select id={uid + '-thickness'} value={thickness} disabled={!width} onChange={event => setThickness(event.target.value)}>
           <option value="">Выберите толщину</option>
           {thicknesses.map(value => <option key={value} value={value}>{value}</option>)}
         </select>
       </label>
       <label htmlFor={uid + '-length'}>Длина, мм (необязательно)
-        <input id={uid + '-length'} inputMode="decimal" value={length} disabled={!thickness} placeholder="Указать при необходимости" onChange={event => setLength(event.target.value)} />
+        <input id={uid + '-length'} inputMode="decimal" value={length} disabled={!width} placeholder="Указать при необходимости" onChange={event => setLength(event.target.value)} />
       </label>
     </div>
     {width && length && thicknesses.length === 0 && <p role="status">Для этих ширины и длины подходящих номинальных толщин в справочной таблице нет. Измените раскрой или отправьте спецификацию на проверку.</p>}
