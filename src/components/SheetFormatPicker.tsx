@@ -31,14 +31,14 @@ export default function SheetFormatPicker({ rows, nominalThicknesses, requestHre
   const matching = possible.filter(row => thickness && thicknessMatches(row.thickness, thickness))
   const lengthRanges = matching.map(row => `${row.from}–${row.to} мм`)
   const hasLength = length.trim().length > 0
-  const validLength = !hasLength || (Number.isFinite(number(length)) && matching.some(row => number(length) >= number(row.from) && number(length) <= number(row.to)))
+  const validLength = !hasLength || (length.trim() !== '' && /^\\d+(?:[.,]\\d+)?$/.test(length.trim()) && matching.some(row => number(length) >= number(row.from) && number(length) <= number(row.to)))
   const href = useMemo(() => {
-    if (!width || !thickness || !validLength) return ''
+    if (!width || !thickness || !matching.length || !validLength) return ''
     const url = new URL(requestHref, 'https://magicmet.ru')
     const existing = url.searchParams.get('product')
     url.searchParams.set('product', [existing, `лист г/к, толщина ${thickness} мм, ширина ${width} мм`, hasLength ? `длина ${length} мм` : 'длина уточняется', standard].filter(Boolean).join('; '))
     return url.pathname + url.search + url.hash
-  }, [requestHref, standard, width, thickness, length, hasLength, validLength])
+  }, [requestHref, standard, width, thickness, length, hasLength, validLength, matching.length])
 
   return <div className="sheet-format-picker">
     <h3>Быстрый подбор листа</h3>
@@ -60,7 +60,7 @@ export default function SheetFormatPicker({ rows, nominalThicknesses, requestHre
         <input id={uid + '-length'} inputMode="decimal" value={length} disabled={!thickness} placeholder="Указать при необходимости" onChange={event => setLength(event.target.value)} />
       </label>
     </div>
-    {matching.length > 0 && <p className="sheet-format-picker-result" role="status">Выбрано: лист ${''}{thickness} × {width} мм. Длина в нормативном диапазоне: {[...new Set(lengthRanges)].join(' или ')}.</p>}
+    {matching.length > 0 && <p className="sheet-format-picker-result" role="status">Выбрано: лист {thickness} × {width} мм. Длина в нормативном диапазоне: {[...new Set(lengthRanges)].join(' или ')}.</p>}
     {!validLength && <p className="sheet-format-picker-error" role="alert">Эта длина не входит в выбранный нормативный диапазон. Проверьте значение или оставьте поле пустым.</p>}
     <div className="sheet-format-picker-actions">
       {href ? <a href={href}>Отправить выбранный размер в заявку ↗</a> : <span>Выберите ширину и толщину, чтобы отправить параметры</span>}
