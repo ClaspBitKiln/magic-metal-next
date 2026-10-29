@@ -351,3 +351,20 @@
   .pipe-more { padding-top: 44px; padding-bottom: 50px; }
   .pipe-conversion { padding-top: 48px; padding-bottom: 54px; }
 }
+
+/* Procurement-first: keep the decision block short; full standard tables remain below. */
+.pipe-hero { min-height: 260px; padding-top: 44px; padding-bottom: 44px; }
+.pipe-hero h1 { font-size: clamp(32px, 3.3vw, 52px); }
+.pipe-hero > div > span { margin-top: 14px; max-width: 880px; }
+.pipe-spec, .pipe-intro, .pipe-standards, .pipe-request { padding-top: 34px; padding-bottom: 40px; gap: 4vw; }
+.pipe-spec h2, .pipe-intro h2, .pipe-standards h2, .pipe-request h2 { font-size: clamp(27px, 3vw, 40px); }
+.pipe-spec dl > div { padding-top: 12px; padding-bottom: 12px; }
+.pipe-facts { padding-top: 30px; padding-bottom: 40px; }
+.pipe-facts h2 { font-size: clamp(27px, 3vw, 40px); }
+.pipe-buyer-note { margin: 16px 0 12px; color: #536481; font-size: 13px; line-height: 1.5; }
+.pipe-quick-request { display: inline-flex; margin: 10px 14px 10px 0; align-items: center; min-height: 44px; padding: 12px 16px; background: #0757e8; color: #fff; font-size: 14px; font-weight: 700; }
+.pipe-ready-spec { display: inline-flex; align-items: center; min-height: 44px; padding: 12px 0; color: #0757e8; font-size: 14px; font-weight: 650; }
+@media (max-width: 700px) {
+  .pipe-hero { min-height: auto; padding-top: 30px; padding-bottom: 30px; }
+  .pipe-spec, .pipe-intro, .pipe-standards, .pipe-request, .pipe-facts { padding-top: 24px; padding-bottom: 28px; }
+}
