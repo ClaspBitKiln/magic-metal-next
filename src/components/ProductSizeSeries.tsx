@@ -5,6 +5,7 @@ import { getCatalogStandardLinks } from '@/data/catalogStandards'
 import './ProductSizeSeries.css'
 import SizeTableFilter from './SizeTableFilter'
 import CompactSizeRows from './CompactSizeRows'
+import SheetFormatPicker from './SheetFormatPicker'
 
 const dimensionList = /^\d+(?:[.,]\d+)?(?:;\s*\d+(?:[.,]\d+)?)+$/
 const numericWalls = /^(?:(?:\d+(?:[.,]\d+)?|\(\d+(?:[.,]\d+)?\))(?:;\s*(?:\d+(?:[.,]\d+)?|\(\d+(?:[.,]\d+)?\)))*|—)$/
@@ -41,12 +42,14 @@ export default function ProductSizeSeries({ series, requestHref, guide }: { seri
       const wallColumns = pipeTable && /диаметр|сечение/iu.test(table.columns[0]) ? table.columns.flatMap((label, column) => column > 0 && /стенк/iu.test(label) && table.rows.every(row => numericWalls.test(row[column])) ? [column] : []) : []
       const pipeChoice = wallColumns.length > 0 && ((/диаметр/iu.test(table.columns[0]) && table.rows.every(row => /^\d+(?:[.,]\d+)?$/u.test(row[0]))) || (/сечение/iu.test(table.columns[0]) && table.rows.every(row => /^\d+(?:[.,]\d+)?\s*×\s*\d+(?:[.,]\d+)?$/u.test(row[0].replace(/[()]/g, ''))))) && (table.rows.length > 24 || !/специальн/iu.test(table.title))
       const standardLinks = getCatalogStandardLinks(table.standard)
+      const hotSheetFormats = table.categorySlug === 'listovoy-prokat' && table.productSlug === 'goryachekatanyj' && table.title.startsWith('Форматы') && table.columns[0] === 'Толщина, мм'
+      const sheetNominals = hotSheetFormats ? series.flatMap(seriesTable => seriesTable.title.startsWith('Номинальные размеры') ? seriesTable.rows.filter(row => row[0] === 'Толщина').flatMap(row => row[1].split(';').map(value => value.trim())) : []) : []
       return <details key={`${table.standard}-${table.title}`} open={index === initiallyOpen}>
         <summary><span className="size-series-heading"><span>{table.title}</span><span className="size-series-standard-label">{table.standard}</span></span></summary>
         {standardLinks.length > 0 && <p className="size-series-standard">{standardLinks.map(link => <a key={link.href} href={link.href} title={`Справочник: ${link.code}`}>{link.code}</a>)}</p>}
         <p className="size-series-scope" id={`sizes-series-${index + 1}`}>{table.scope}</p>
         {table.notes[0] && <p className="size-series-note size-series-legend">{table.notes[0]}</p>}
-        {pipeChoice ? <SizeTableFilter column={table.columns[0]} values={[...new Set(table.rows.map(row => row[0]))]} total={table.rows.length} wallColumns={wallColumns} requestHref={requestHref} context={`${table.title}; ${table.standard}`} standard={table.standard} /> : <CompactSizeRows column={table.columns[0]} values={table.rows.length > 24 ? [...new Set(table.rows.map(row => row[0]))] : []} total={table.rows.length} requestHref={requestHref} context={table.title} standard={table.standard} requirements={table.kind === 'requirements'} />}
+        {hotSheetFormats ? <SheetFormatPicker rows={table.rows} nominalThicknesses={sheetNominals} requestHref={requestHref} standard={table.standard} /> : pipeChoice ? <SizeTableFilter column={table.columns[0]} values={[...new Set(table.rows.map(row => row[0]))]} total={table.rows.length} wallColumns={wallColumns} requestHref={requestHref} context={`${table.title}; ${table.standard}`} standard={table.standard} /> : <CompactSizeRows column={table.columns[0]} values={table.rows.length > 24 ? [...new Set(table.rows.map(row => row[0]))] : []} total={table.rows.length} requestHref={requestHref} context={table.title} standard={table.standard} requirements={table.kind === 'requirements'} />}
         <div className="size-series-reference" id={`size-reference-${index + 1}`}>
         <div className="size-series-scroll" role="region" aria-label={table.title} tabIndex={0}>
           <table className={table.kind === 'requirements' ? 'size-series-requirements' : undefined}>
