@@ -11,6 +11,7 @@ import LanguageSwitcher from '@/components/LanguageSwitcher'
 import CatalogStockAssortment from '@/components/CatalogStockAssortment'
 import ProductSizeSeries from '@/components/ProductSizeSeries'
 import MeshRopeRequestPicker from '@/components/MeshRopeRequestPicker'
+import SpecialProcurementPicker from '@/components/SpecialProcurementPicker'
 import { getProductSizeSeries } from '@/data/productSizeSeries'
 import { getDimensionGuide } from '@/data/dimensionGuides'
 import { ropeStockAssortment, ropeStockRequestHref } from '@/data/ropeStockAssortment.server'
@@ -83,6 +84,7 @@ export default async function PipeDetailPage({ params }: { params: Promise<{ slu
         {sizeProfiles.map((profile) => <a key={profile.slug} href={`/produkciya/${profile.categorySlug}/${profile.slug}#sizes`}>{profile.shortTitle} →</a>)}
       </nav>
     </section>}
+    {((item.categorySlug === 'metizy-i-svarochnye-materialy' && ['lenta-upakovochnaya', 'svarochnye-materialy'].includes(item.slug)) || (item.categorySlug === 'pokovki-i-zagotovki' && item.slug === 'po-chertezhu')) && <SpecialProcurementPicker mode={item.slug === 'lenta-upakovochnaya' ? 'tape' : item.slug === 'svarochnye-materialy' ? 'welding' : 'forging'} requestHref={requestHref} />}
     {item.categorySlug === 'metizy-i-svarochnye-materialy' && (item.slug === 'kanaty' || item.slug === 'setki') && <MeshRopeRequestPicker type={item.slug === 'kanaty' ? 'rope' : 'mesh'} requestHref={requestHref} />}
     {item.categorySlug === 'metizy-i-svarochnye-materialy' && item.slug === 'kanaty' && <section className="product-size-series" id="stock-assortment" aria-labelledby="rope-stock-title">
       <h2 id="rope-stock-title">Позиции складского ассортимента</h2>
