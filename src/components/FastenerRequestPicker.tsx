@@ -21,15 +21,15 @@ export default function FastenerRequestPicker({ requestHref, nutThreads }: { req
   const hasLength = kind === 'Болт' || kind === 'Шпилька'
   const threadValid = kind === 'Гайка'
     ? nutThreads.includes(normalizedThread(thread))
-    : /^M\d+(?:[.,]\d+)?$/iu.test(thread.trim())
+    : /^M\d+(?:[.,]\d+)?$/u.test(normalizedThread(thread))
   const valid = threadValid && (!hasLength || positive(length)) && (!quantity || positive(quantity))
   const href = useMemo(() => {
     if (!valid) return null
     const url = new URL(requestHref, 'https://magicmet.ru')
     const previous = url.searchParams.get('product') || 'Крепёж'
-    const details = [previous, kind, kind === 'Шайба' ? `номинальный размер ${normalizedThread(thread)}` : `резьба ${thread.toUpperCase()}`,
+    const details = [previous, kind, kind === 'Шайба' ? `номинальный размер ${normalizedThread(thread)}` : `резьба ${normalizedThread(thread)}`,
       hasLength ? `длина ${length} мм` : '',
-      kind === 'Гайка' ? 'размер резьбы по таблице ГОСТ 5915-70' : '',
+      kind === 'Гайка' ? 'номинальная резьба из таблицы ГОСТ 5915-70' : '',
       standard.trim() ? `требуемый стандарт ${standard.trim()}` : kind === 'Гайка' ? 'ГОСТ 5915-70' : 'стандарт уточнить',
       strength.trim() ? `класс прочности ${strength.trim()}` : '',
       material.trim() ? `марка материала ${material.trim()}` : '',
@@ -58,7 +58,7 @@ export default function FastenerRequestPicker({ requestHref, nutThreads }: { req
       <label>Количество<input value={quantity} onChange={event => setQuantity(event.target.value)} inputMode="decimal" placeholder="По желанию" /></label>
       <label>Единица<select value={unit} onChange={event => setUnit(event.target.value)}><option value="шт.">Штук</option><option value="кг">Килограммов</option><option value="т">Тонн</option></select></label>
     </div>
-    <p id="fastener-thread-tip" className="fastener-note">У болтов и шпилек важны также шаг резьбы и исполнение; у шайб — тип, наружный диаметр и толщина. Укажите их в спецификации или запросе. Класс прочности не равен марке стали. Размеры не означают наличие.</p>
+    <p id="fastener-thread-tip" className="fastener-note">Для болтов и шпилек дополнительно важны шаг резьбы и исполнение; для шайб — тип, наружный диаметр и толщина. Укажите их в спецификации или запросе. Класс прочности не равен марке стали. Размеры не означают наличие.</p>
     <div className="fastener-actions">{href ? <a className="fastener-submit" href={href}>Отправить параметры в заявку ↗</a> : <span>Укажите {hasLength ? 'резьбу и длину' : 'номинальный размер'}</span>}<a href="/#request">Прикрепить Excel / PDF / чертёж →</a></div>
   </section>
 }
