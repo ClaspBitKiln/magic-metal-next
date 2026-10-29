@@ -24,7 +24,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
   }))
   return <main className="search-page">
     <header className="search-header"><Link prefetch={false} href="/"><b>←</b> На главную</Link><LanguageSwitcher /><Link prefetch={false} href="/#request">Отправить заявку ↗</Link></header>
-    <section className="search-hero"><p>Единый технический поиск</p><h1>Найти<br /><em>точное исполнение</em></h1><span>Ищите по названию продукции, марке стали или сплава, номеру ГОСТ и области применения.</span></section>
+    <section className="search-hero"><p>Единый технический поиск</p><h1>Найти<br /><em>точное исполнение</em></h1><span>Ищите по названию продукции, марке стали или ГОСТ. Уже есть готовая спецификация? Можно сразу отправить её на расчёт — искать товары необязательно.</span><Link className="search-quick-request" href="/#request">Отправить готовую заявку ↗</Link></section>
     <CatalogSearch key={initialQuery} extraStandards={extraStandards} initialQuery={initialQuery} />
   </main>
 }
