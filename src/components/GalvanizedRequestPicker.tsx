@@ -14,9 +14,10 @@ export default function GalvanizedRequestPicker({ requestHref }: { requestHref: 
   const [coating, setCoating] = useState('')
   const [quantity, setQuantity] = useState('')
   const [unit, setUnit] = useState('листов')
+  const [quickSelected, setQuickSelected] = useState('')
   const widthRange = form === 'Лист' ? [700, 1800] : form === 'Рулон' ? [600, 1800] : [30, 600]
   const valid = positive(thickness) && numeric(thickness) >= 0.22 && numeric(thickness) <= 4.5 &&
-    positive(width) && numeric(width) >= widthRange[0] && numeric(width) <= widthRange[1] &&
+    positive(width) && numeric(width) >= widthRange[0] && (form === 'Лента' ? numeric(width) < 600 : numeric(width) <= widthRange[1]) &&
     (form !== 'Лист' || !length || positive(length)) && (!quantity || positive(quantity))
   const request = useMemo(() => {
     if (!valid) return ''
@@ -34,7 +35,8 @@ export default function GalvanizedRequestPicker({ requestHref }: { requestHref: 
     <p>Укажите основные размеры и покрытие — передадим их менеджеру. Диапазоны из ГОСТ 14918-2020 не означают наличие каждого сочетания.</p>
     <div className="galv-presets">
       <strong>Распространённые размеры листа:</strong>
-      {['0,5 × 1250 × 2500', '0,7 × 1250 × 2500', '1,0 × 1250 × 2500', '1,5 × 1250 × 2500', '2,0 × 1250 × 2500'].map(label => <button key={label} type="button" onClick={() => {
+      {['0,5 × 1250 × 2500', '0,7 × 1250 × 2500', '1,0 × 1250 × 2500', '1,5 × 1250 × 2500', '2,0 × 1250 × 2500'].map(label => <button key={label} type="button" aria-pressed={quickSelected === label} onClick={() => {
+        setQuickSelected(label);
         const [t, w, l] = label.split(' × '); setForm('Лист'); setThickness(t); setWidth(w); setLength(l)
       }}>{label} мм</button>)}
     </div>
@@ -48,7 +50,7 @@ export default function GalvanizedRequestPicker({ requestHref }: { requestHref: 
       <label>Количество (необязательно)<input inputMode="decimal" value={quantity} onChange={event => setQuantity(event.target.value)}/></label>
       <label>Единица<select value={unit} onChange={event => setUnit(event.target.value)}><option value="листов">Листов</option><option value="т">Тонн</option><option value="м²">м²</option></select></label>
     </div>
-    <p className="galv-note">Толщина включает покрытие. Примеры форматов взяты из открытых каталогов поставщиков и служат для составления запроса, а не подтверждения склада. Точное исполнение проверим до КП.</p>
+    <p className="galv-note">Толщина включает покрытие. Типовые обозначения сверены с открытыми каталогами поставщиков; эти форматы служат для составления запроса, а не подтверждения склада. Точное исполнение проверим до КП.</p>
     <div className="galv-actions">{request ? <a className="galv-submit" href={request}>Отправить параметры в заявку ↗</a> : <span>Выберите форму, толщину и ширину</span>}<a href="/#request">Есть Excel или чертёж? Прикрепить файл →</a></div>
   </section>
 }
