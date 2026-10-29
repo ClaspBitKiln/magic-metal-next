@@ -26,7 +26,15 @@ function submit(attachment?: { name: string; bytes: Uint8Array; mimeType: string
     startedAt: '1',
   })) form.set(key, value)
 
-  if (attachment) form.append('files', new File([attachment.bytes], attachment.name, { type: attachment.mimeType }))
+  if (attachment) {
+    // jsdom File lacks arrayBuffer(), while real browser/Node multipart files expose it.
+    // Polyfill only this test fixture; keep production upload parsing unchanged.
+    const file = new File([attachment.bytes], attachment.name, { type: attachment.mimeType })
+    Object.defineProperty(file, 'arrayBuffer', {
+      value: async () => Uint8Array.from(attachment.bytes).buffer,
+    })
+    form.append('files', file)
+  }
 
   return POST({
     headers: new Headers({ 'x-forwarded-for': `192.0.2.${++requestNumber}` }),
