@@ -22,7 +22,7 @@ const quickSectionRows = (series: SizeSeries[]) => {
   if (series[0]?.categorySlug !== 'sortovoy-i-fasonny-prokat') return []
   const labels = sectionExamples[slug] || []
   return labels.flatMap(label => series.flatMap(table => table.rows.flatMap(row => {
-    const first = row[0]?.replace(/\\s+/g, ' ').trim() || ''
+    const first = row[0]?.replace(/\s+/g, ' ').trim() || ''
     const value = slug === 'ugolok' ? `${first} / ${row[1]}` : first
     return value === label ? [{ label: slug === 'ugolok' ? `${first} × ${row[1]} мм` : slug === 'krug-goryachekatanyj' ? `Ø ${first} мм` : first, row, standard: table.standard, title: table.title }] : []
   }))).filter((entry, index, arr) => arr.findIndex(other => other.label === entry.label) === index)
