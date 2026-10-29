@@ -6,6 +6,7 @@ import './ProductSizeSeries.css'
 import SizeTableFilter from './SizeTableFilter'
 import CompactSizeRows from './CompactSizeRows'
 import SheetFormatPicker from './SheetFormatPicker'
+import GalvanizedRequestPicker from './GalvanizedRequestPicker'
 
 const dimensionList = /^\d+(?:[.,]\d+)?(?:;\s*\d+(?:[.,]\d+)?)+$/
 const numericWalls = /^(?:(?:\d+(?:[.,]\d+)?|\(\d+(?:[.,]\d+)?\))(?:;\s*(?:\d+(?:[.,]\d+)?|\(\d+(?:[.,]\d+)?\)))*|—)$/
@@ -33,6 +34,7 @@ export default function ProductSizeSeries({ series, requestHref, guide }: { seri
     <p className="size-series-intro">{onlyRequirements ? 'Сверьте форму поставки, числовые значения и условия применения. Укажите требования в заявке или приложите спецификацию.' : series.length ? 'Найдите нужное обозначение или выберите строку. Размеры и параметры попадут в заявку; спецификацию можно приложить файлом.' : 'Укажите размеры и требования к изделию или приложите чертёж. Проверим их по выбранному стандарту и техническим условиям.'}</p>
     {series.length > 0 && <p className="size-series-mobile-help">Широкие таблицы можно прокручивать вбок. Первый столбец и заголовки остаются видны.</p>}
     <a className="size-series-request" href={requestHref}>Отправить заявку ↗</a>
+    {series[0]?.categorySlug === 'listovoy-prokat' && series[0]?.productSlug === 'ocinkovannyj' && <GalvanizedRequestPicker requestHref={requestHref} />}
     {series.length > 1 && <nav className="size-series-nav" aria-label="Выбор размерной таблицы">
       {series.map((table, index) => <a key={`${table.standard}-${table.title}`} href={`#sizes-series-${index + 1}`}>{tableLabel(table)}</a>)}
     </nav>}
