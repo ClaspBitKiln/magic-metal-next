@@ -60,6 +60,8 @@
   font-size: 18px;
   line-height: 1.6;
 }
+.search-quick-request { display:inline-flex; margin-top:24px; padding:15px 20px; background:#fff; color:#092779; font-size:15px; font-weight:800; text-decoration:none; min-height:48px; align-items:center; }
+.search-quick-request:hover { background:#e6efff; }
 .search-workspace {
   padding: 70px 7vw 110px;
 }
