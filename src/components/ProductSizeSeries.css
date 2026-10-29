@@ -142,3 +142,9 @@
 .sheet-format-picker-actions a:not(:first-child) { color: #0757e8; font-weight: 700; }
 .sheet-format-picker-actions span { color: #62708b; font-size: 13px; }
 @media (max-width: 700px) { .sheet-format-picker-fields { grid-template-columns: 1fr; } }
+
+.sheet-format-picker-presets { display:flex; flex-wrap:wrap; gap:8px 12px; align-items:center; margin:14px 0; }
+.sheet-format-picker-presets span { font-size:13px; font-weight:650; color:#536481; }
+.sheet-format-picker-presets button { border:1px solid #0757e8; border-radius:5px; background:#fff; color:#0757e8; min-height:44px; padding:10px 15px; font:inherit; font-weight:700; cursor:pointer; }
+.sheet-format-picker-presets button[aria-pressed="true"] { background:#0757e8; color:#fff; }
+.sheet-format-picker-presets button:focus-visible { outline:3px solid #071c62; outline-offset:2px; }
