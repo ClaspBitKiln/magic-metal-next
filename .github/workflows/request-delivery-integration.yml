@@ -1,0 +1,26 @@
+name: Request delivery integration QA
+
+on:
+  pull_request:
+    paths:
+      - 'tests/int/request-delivery-failover.int.spec.ts'
+      - 'src/app/(frontend)/api/request/route.ts'
+      - '.github/workflows/request-delivery-integration.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test-request-delivery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Check request-delivery tests with mocked mail and database
+        run: npx vitest run --config ./vitest.config.mts tests/int/request-delivery-failover.int.spec.ts
