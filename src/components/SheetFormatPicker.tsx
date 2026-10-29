@@ -12,10 +12,12 @@ const thicknessMatches = (range: string, thickness: string) => {
   return bounds.length === 1 ? selected === bounds[0] : selected >= bounds[0] && selected <= bounds[1]
 }
 
-export default function SheetFormatPicker({ rows, nominalThicknesses, requestHref, standard }: {
-  rows: string[][]; nominalThicknesses: string[]; requestHref: string; standard: string
+export default function SheetFormatPicker({ rows, nominalThicknesses, requestHref, standard, sheetKind = 'hot' }: {
+  rows: string[][]; nominalThicknesses: string[]; requestHref: string; standard: string; sheetKind?: 'hot' | 'cold'
 }) {
   const uid = useId()
+  const isCold = sheetKind === 'cold'
+  const presets = isCold ? [{ width: '1000', length: '2000' }, { width: '1250', length: '2500' }] : [{ width: '1500', length: '6000' }, { width: '2000', length: '6000' }]
   const [width, setWidth] = useState('')
   const [thickness, setThickness] = useState('')
   const [length, setLength] = useState('')
@@ -40,16 +42,16 @@ export default function SheetFormatPicker({ rows, nominalThicknesses, requestHre
     if (!width || !thickness || !matching.length || !validLength || !quantityValid) return ''
     const url = new URL(requestHref, 'https://magicmet.ru')
     const existing = url.searchParams.get('product')
-    url.searchParams.set('product', [existing, `лист г/к, толщина ${thickness} мм, ширина ${width} мм`, hasLength ? `длина ${length} мм` : 'длина уточняется', steelGrade.trim() ? `марка стали ${steelGrade.trim()}` : '', quantity.trim() ? `количество ${quantity.trim()} ${quantityUnit}` : '', standard].filter(Boolean).join('; '))
+    url.searchParams.set('product', [existing, `${isCold ? 'лист х/к' : 'лист г/к'}, толщина ${thickness} мм, ширина ${width} мм`, hasLength ? `длина ${length} мм` : 'длина уточняется', steelGrade.trim() ? `марка стали ${steelGrade.trim()}` : '', quantity.trim() ? `количество ${quantity.trim()} ${quantityUnit}` : '', standard].filter(Boolean).join('; '))
     return url.pathname + url.search + url.hash
-  }, [requestHref, standard, width, thickness, length, hasLength, validLength, matching.length, steelGrade, quantity, quantityUnit, quantityValid])
+  }, [requestHref, standard, width, thickness, length, hasLength, validLength, matching.length, steelGrade, quantity, quantityUnit, quantityValid, isCold])
 
   return <div className="sheet-format-picker">
-    <h3>Быстрый подбор листа</h3>
-    <p>Для средних и больших толщин можно начать с востребованных раскроев 1500 × 6000 или 2000 × 6000 мм. Размеры — ориентир ГОСТ, не обещание наличия.</p>
+    <h3>{isCold ? 'Быстрый подбор холоднокатаного листа' : 'Быстрый подбор горячекатаного листа'}</h3>
+    <p>{isCold ? 'Для тонкого листа начните с форматов 1000 × 2000 или 1250 × 2500 мм. Размеры взяты из справочной таблицы ГОСТ и не гарантируют наличие.' : 'Для средних и больших толщин можно начать с раскроев 1500 × 6000 или 2000 × 6000 мм. Размеры — ориентир ГОСТ, не обещание наличия.'}</p>
     <div className="sheet-format-picker-presets" aria-label="Популярные форматы для запроса">
       <span>Часто запрашиваемые раскрои:</span>
-      {['1500', '2000'].map(value => <button key={value} type="button" aria-pressed={width === value && length === '6000'} onClick={() => { setWidth(value); setThickness(''); setLength('6000') }}>{value} × 6000 мм</button>)}
+      {presets.map(preset => <button key={preset.width + '-' + preset.length} type="button" aria-pressed={width === preset.width && length === preset.length} onClick={() => { setWidth(preset.width); setThickness(''); setLength(preset.length) }}>{preset.width} × {preset.length} мм</button>)}
     </div>
     <p>Выберите раскрой, затем толщину — покажем только сочетания из справочной таблицы. Наличие и возможность резки подтверждаются по заявке.</p>
     <div className="sheet-format-picker-fields">
