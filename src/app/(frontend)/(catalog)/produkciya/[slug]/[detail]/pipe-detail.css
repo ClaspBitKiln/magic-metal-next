@@ -379,3 +379,17 @@
 .special-procurement-actions span{font-size:13px;color:#536481}
 @media(max-width:920px){.special-procurement-fields{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:580px){.special-procurement-picker{padding:14px}.special-procurement-fields{grid-template-columns:1fr}}
+
+/* Nonferrous and stainless: choose semifinished form before dimensions. */
+.nonferrous-picker{margin:20px 0;padding:22px;border:1px solid #c5d1e5;background:#f4f7fc}
+.nonferrous-picker h2{margin:0 0 10px;font-size:clamp(22px,2.2vw,28px);color:#071c62}
+.nonferrous-picker>p{max-width:920px;color:#536481}
+.nonferrous-fields{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:16px}
+.nonferrous-fields label{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:700;color:#071c62}
+.nonferrous-fields input,.nonferrous-fields select{box-sizing:border-box;width:100%;min-height:44px;padding:9px 10px;border:1px solid #aab9d3;border-radius:3px;background:#fff;color:#10182f;font:inherit}
+.nonferrous-actions{display:flex;align-items:center;flex-wrap:wrap;gap:14px;margin-top:14px}
+.nonferrous-actions a{display:inline-flex;min-height:44px;align-items:center;color:#0757e8;font-weight:700}
+.nonferrous-actions .nonferrous-submit{padding:12px 16px;color:#fff;background:#0757e8}
+.nonferrous-actions span{font-size:13px;color:#536481}
+@media(max-width:920px){.nonferrous-fields{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:580px){.nonferrous-picker{padding:14px}.nonferrous-fields{grid-template-columns:1fr}}
