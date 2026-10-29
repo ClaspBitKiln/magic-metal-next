@@ -16,11 +16,14 @@ const transparentMobileSource = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///
 async function expectMobileHeroDisabled(page: Page) {
   await expect(page.locator('.hero-mosaic')).toBeHidden()
   await expect(page.locator('.hero-tile')).toHaveCount(0)
-  const photo = await page.locator('.hero-image img').evaluate(async (image: HTMLImageElement) => {
-    await image.decode()
-    return { source: image.currentSrc, width: image.naturalWidth, height: image.naturalHeight }
-  })
-  expect(photo).toEqual({ source: transparentMobileSource, width: 1, height: 1 })
+  // Firefox can leave HTMLImageElement.decode() unresolved for data images with JS disabled.
+  // Check the decoded dimensions without awaiting that browser-specific promise.
+  await expect.poll(
+    () => page.locator('.hero-image img').evaluate((image: HTMLImageElement) => ({
+      source: image.currentSrc, width: image.naturalWidth, height: image.naturalHeight,
+    })),
+    { message: 'Mobile transparent image must be decoded without external loading', timeout: 10_000 },
+  ).toEqual({ source: transparentMobileSource, width: 1, height: 1 })
   const layout = await page.locator('.hero').evaluate((hero) => ({
     overlayDisplay: getComputedStyle(hero, '::after').display,
     minHeight: getComputedStyle(hero).minHeight,
@@ -37,10 +40,16 @@ async function expectDecodedHero(page: Page) {
   await expect(image).toHaveCount(1)
   await expect(image).toHaveAttribute('loading', 'eager')
   await expect(image).toHaveAttribute('fetchpriority', 'high')
-  const photo = await image.evaluate(async (image: HTMLImageElement) => {
-    await image.decode()
-    return { source: image.currentSrc, width: image.naturalWidth, height: image.naturalHeight, renderedWidth: image.getBoundingClientRect().width }
-  })
+  // Avoid an unbounded image.decode() promise (Firefox can hang without JavaScript).
+  // Natural dimensions becoming nonzero prove the image decoded, with a bounded timeout.
+  await expect.poll(
+    () => image.evaluate((element: HTMLImageElement) => element.complete && element.naturalWidth > 0 && element.naturalHeight > 0),
+    { message: 'The hero photo must finish decoding', timeout: 12_000 },
+  ).toBe(true)
+  const photo = await image.evaluate((element: HTMLImageElement) => ({
+    source: element.currentSrc, width: element.naturalWidth, height: element.naturalHeight,
+    renderedWidth: element.getBoundingClientRect().width,
+  }))
   expect(photo.source).toMatch(/\/images\/hero-photo-1440\.avif(?:\?|$)/)
   // Width-descriptor srcsets density-correct naturalWidth to the declared source size.
   expect(photo.width).toBeGreaterThan(0)
