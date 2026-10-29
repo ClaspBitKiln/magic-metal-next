@@ -213,9 +213,21 @@ export async function POST(request: Request) {
     }
   }
 
-  if (!created && !emailDelivered && !crmDelivered) {
+  // The CRM hook only receives metadata/file IDs; it cannot deliver the actual
+  // attachments. CMS persistence alone also does not confirm manager notification.
+  // Therefore an attached specification is accepted only after SMTP accepts it.
+  const managerNotified = emailDelivered || crmDelivered
+  const attachmentDelivered = files.length === 0 || emailDelivered
+  if (!managerNotified || !attachmentDelivered) {
+    console.error(JSON.stringify({
+      level: 'error', message: 'Request was not confirmed as delivered',
+      route: '/api/request', hasAttachments: files.length > 0,
+      cmsStored: Boolean(created), emailDelivered, crmDelivered, deliveryFailure,
+    }))
     return NextResponse.json({
-      error: 'Не удалось сохранить или доставить заявку. Позвоните нам или напишите на m1@magicmet.ru.',
+      error: files.length > 0
+        ? 'Не удалось подтвердить отправку прикреплённых файлов менеджеру. Заявка могла сохраниться. Уточните получение по телефону или отправьте файлы на m1@magicmet.ru.'
+        : 'Не удалось подтвердить доставку заявки менеджеру. Она могла сохраниться. Уточните получение по телефону или напишите на m1@magicmet.ru.',
       deliveryFailure,
     }, { status: 503 })
   }
