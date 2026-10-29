@@ -26,8 +26,8 @@ export default function SheetFormatPicker({ rows, nominalThicknesses, requestHre
   const possible = useMemo(() => formats.filter(row => width && split(row.widths).some(value => number(value) === number(width))), [formats, width])
   const thicknesses = useMemo(() => {
     const values = [...new Set(nominalThicknesses.map(normalize))]
-    return values.filter(value => possible.some(row => thicknessMatches(row.thickness, value))).sort((a, b) => number(a) - number(b))
-  }, [nominalThicknesses, possible])
+    return values.filter(value => possible.some(row => thicknessMatches(row.thickness, value) && (!length.trim() || (/^\d+(?:[.,]\d+)?$/.test(length.trim()) && number(length) >= number(row.from) && number(length) <= number(row.to))))).sort((a, b) => number(a) - number(b))
+  }, [nominalThicknesses, possible, length])
   const matching = possible.filter(row => thickness && thicknessMatches(row.thickness, thickness))
   const lengthRanges = matching.map(row => `${row.from}–${row.to} мм`)
   const hasLength = length.trim().length > 0
@@ -42,7 +42,12 @@ export default function SheetFormatPicker({ rows, nominalThicknesses, requestHre
 
   return <div className="sheet-format-picker">
     <h3>Быстрый подбор листа</h3>
-    <p>Сначала выберите ширину: покажем только подходящие номинальные толщины по справочному приложению ГОСТ. Это не подтверждение наличия на складе.</p>
+    <p>Для средних и больших толщин можно начать с востребованных раскроев 1500 × 6000 или 2000 × 6000 мм. Размеры — ориентир ГОСТ, не обещание наличия.</p>
+    <div className="sheet-format-picker-presets" aria-label="Популярные форматы для запроса">
+      <span>Часто запрашиваемые раскрои:</span>
+      {['1500', '2000'].map(value => <button key={value} type="button" aria-pressed={width === value && length === '6000'} onClick={() => { setWidth(value); setThickness(''); setLength('6000') }}>{value} × 6000 мм</button>)}
+    </div>
+    <p>Выберите раскрой, затем толщину — покажем только сочетания из справочной таблицы. Наличие и возможность резки подтверждаются по заявке.</p>
     <div className="sheet-format-picker-fields">
       <label htmlFor={uid + '-width'}>Ширина, мм
         <select id={uid + '-width'} value={width} onChange={event => { setWidth(event.target.value); setThickness(''); setLength('') }}>
@@ -60,6 +65,7 @@ export default function SheetFormatPicker({ rows, nominalThicknesses, requestHre
         <input id={uid + '-length'} inputMode="decimal" value={length} disabled={!thickness} placeholder="Указать при необходимости" onChange={event => setLength(event.target.value)} />
       </label>
     </div>
+    {width && length && thicknesses.length === 0 && <p role="status">Для этих ширины и длины подходящих номинальных толщин в справочной таблице нет. Измените раскрой или отправьте спецификацию на проверку.</p>}
     {matching.length > 0 && <p className="sheet-format-picker-result" role="status">Выбрано: лист {thickness} × {width} мм. Длина в нормативном диапазоне: {[...new Set(lengthRanges)].join(' или ')}.</p>}
     {!validLength && <p className="sheet-format-picker-error" role="alert">Эта длина не входит в выбранный нормативный диапазон. Проверьте значение или оставьте поле пустым.</p>}
     <div className="sheet-format-picker-actions">
