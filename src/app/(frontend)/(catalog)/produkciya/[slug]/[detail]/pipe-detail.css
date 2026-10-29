@@ -351,3 +351,17 @@
   .pipe-more { padding-top: 44px; padding-bottom: 50px; }
   .pipe-conversion { padding-top: 48px; padding-bottom: 54px; }
 }
+
+/* Buyer-first mesh and steel rope inquiry. Full stock reference remains below. */
+.mesh-rope-picker { margin:20px 0; padding:22px; border:1px solid #c5d1e5; background:#f4f7fc; }
+.mesh-rope-picker h2 { margin:0 0 10px; font-size:clamp(22px,2.2vw,28px); color:#071c62; }
+.mesh-rope-picker > p { max-width:920px; color:#536481; }
+.mesh-rope-fields { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin-top:16px; }
+.mesh-rope-fields label { display:flex; flex-direction:column; gap:6px; font-size:13px; font-weight:700; color:#071c62; }
+.mesh-rope-fields input,.mesh-rope-fields select { box-sizing:border-box; width:100%; min-height:44px; padding:9px 10px; border:1px solid #aab9d3; background:#fff; color:#10182f; border-radius:3px; font:inherit; }
+.mesh-rope-actions { display:flex; align-items:center; flex-wrap:wrap; gap:14px; margin-top:14px; }
+.mesh-rope-actions a { display:inline-flex; min-height:44px; align-items:center; color:#0757e8; font-weight:700; }
+.mesh-rope-actions .mesh-rope-submit { background:#0757e8; color:#fff; padding:12px 16px; }
+.mesh-rope-actions span { font-size:13px; color:#536481; }
+@media(max-width:920px){.mesh-rope-fields{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:580px){.mesh-rope-picker{padding:14px}.mesh-rope-fields{grid-template-columns:1fr}}
