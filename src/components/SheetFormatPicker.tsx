@@ -38,13 +38,13 @@ export default function SheetFormatPicker({ rows, nominalThicknesses, requestHre
   const hasLength = length.trim().length > 0
   const validLength = !hasLength || (length.trim() !== '' && /^\d+(?:[.,]\d+)?$/.test(length.trim()) && matching.some(row => number(length) >= number(row.from) && number(length) <= number(row.to)))
   const quantityValid = !quantity.trim() || (/^\d+(?:[.,]\d+)?$/.test(quantity.trim()) && number(quantity) > 0)
-  const href = useMemo(() => {
+  const href = (() => {
     if (!width || !thickness || !matching.length || !validLength || !quantityValid) return ''
     const url = new URL(requestHref, 'https://magicmet.ru')
     const existing = url.searchParams.get('product')
     url.searchParams.set('product', [existing, `${isCold ? 'лист х/к' : 'лист г/к'}, толщина ${thickness} мм, ширина ${width} мм`, hasLength ? `длина ${length} мм` : 'длина уточняется', steelGrade.trim() ? `марка стали ${steelGrade.trim()}` : '', quantity.trim() ? `количество ${quantity.trim()} ${quantityUnit}` : '', standard].filter(Boolean).join('; '))
     return url.pathname + url.search + url.hash
-  }, [requestHref, standard, width, thickness, length, hasLength, validLength, matching.length, steelGrade, quantity, quantityUnit, quantityValid, isCold])
+  })()
 
   return <div className="sheet-format-picker">
     <h3>{isCold ? 'Быстрый подбор холоднокатаного листа' : 'Быстрый подбор горячекатаного листа'}</h3>
@@ -91,6 +91,8 @@ export default function SheetFormatPicker({ rows, nominalThicknesses, requestHre
     {!validLength && <p className="sheet-format-picker-error" role="alert">Эта длина не входит в выбранный нормативный диапазон. Проверьте значение или оставьте поле пустым.</p>}
     <div className="sheet-format-picker-actions">
       {href ? <a href={href}>Отправить выбранный размер в заявку ↗</a> : <span>Выберите ширину и толщину, чтобы отправить параметры</span>}
+      {/* The homepage is an HTML Route Handler; document navigation initializes the request form. */}
+      {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
       <a href="/#request">Есть Excel или чертёж? Отправить файл →</a>
     </div>
     <button type="button" className="size-series-reference-toggle" aria-expanded={showReference} onClick={() => {

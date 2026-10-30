@@ -59,6 +59,8 @@ export default function FastenerRequestPicker({ requestHref, nutThreads }: { req
       <label>Единица<select value={unit} onChange={event => setUnit(event.target.value)}><option value="шт.">Штук</option><option value="кг">Килограммов</option><option value="т">Тонн</option></select></label>
     </div>
     <p id="fastener-thread-tip" className="fastener-note">Для болтов и шпилек дополнительно важны шаг резьбы и исполнение; для шайб — тип, наружный диаметр и толщина. Укажите их в спецификации или запросе. Класс прочности не равен марке стали. Размеры не означают наличие.</p>
+    {/* The homepage is an HTML Route Handler; document navigation initializes the request form. */}
+    {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
     <div className="fastener-actions">{href ? <a className="fastener-submit" href={href}>Отправить параметры в заявку ↗</a> : <span>Укажите {hasLength ? 'резьбу и длину' : 'номинальный размер'}</span>}<a href="/#request">Прикрепить Excel / PDF / чертёж →</a></div>
   </section>
 }

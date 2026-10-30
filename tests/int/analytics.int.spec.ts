@@ -19,7 +19,7 @@ describe('optional lightweight analytics', () => {
     const html = await response.text()
     expect(html).toContain('src="/analytics.js?v=20261021-1&id=123456789" defer')
     expect(html).toContain('id="request-form"')
-    expect(html).toContain('/home.js?v=20261017-reliability1')
+    expect(html).toMatch(/src="\/home\.js\?v=[a-z0-9-]+" defer/)
     expect(html).not.toContain('mc.yandex.ru')
   })
 

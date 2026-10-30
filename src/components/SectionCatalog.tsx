@@ -37,6 +37,8 @@ export default function SectionCatalog({ category, relatedMaterials }: { categor
           </div>
           <nav className="sc-overviews" aria-label="Обзорные страницы">{items.filter((item) => overviewSlugs.has(item.slug)).map((item) => <a href={`/produkciya/${item.categorySlug}/${item.slug}`} key={item.slug}>Обзор: {item.shortTitle.toLowerCase()} →</a>)}</nav>
         </section>
+        {/* The homepage is an HTML Route Handler; document navigation initializes the request form. */}
+        {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
         <aside className="sc-aside"><h2 className="sc-heading">Есть готовая заявка?</h2><p>Не нужно искать каждую позицию. Прикрепите Excel, PDF или чертёж — подберём продукцию сами.</p><ul><li>Размер или номер профиля</li><li>Марка стали и ГОСТ</li><li>Длина и количество</li></ul><a className="sc-button" href="/#request">Отправить готовую заявку →</a><small>Достаточно файла и телефона или email</small></aside>
       </div>
       <section className="sc-info"><div><h2 className="sc-heading">Комплектуем поставку</h2><p>{category.intro}</p></div><div><h2 className="sc-heading">Марки и материалы</h2><div className="sc-grades">{category.grades.map((grade) => <span key={grade}>{grade}</span>)}</div></div></section>

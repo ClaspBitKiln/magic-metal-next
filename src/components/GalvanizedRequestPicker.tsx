@@ -51,6 +51,8 @@ export default function GalvanizedRequestPicker({ requestHref }: { requestHref: 
       <label>Единица<select value={unit} onChange={event => setUnit(event.target.value)}><option value="листов">Листов</option><option value="т">Тонн</option><option value="м²">м²</option></select></label>
     </div>
     <p className="galv-note">Толщина включает покрытие. Типовые обозначения сверены с открытыми каталогами поставщиков; эти форматы служат для составления запроса, а не подтверждения склада. Точное исполнение проверим до КП.</p>
+    {/* The homepage is an HTML Route Handler; document navigation initializes the request form. */}
+    {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
     <div className="galv-actions">{request ? <a className="galv-submit" href={request}>Отправить параметры в заявку ↗</a> : <span>Выберите форму, толщину и ширину</span>}<a href="/#request">Есть Excel или чертёж? Прикрепить файл →</a></div>
   </section>
 }

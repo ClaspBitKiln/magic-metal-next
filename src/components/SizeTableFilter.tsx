@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useId, useRef } from 'react'
 import { formatDimensionValue, sourceDimensionValue } from '@/lib/dimensionDisplay'
+import { trackAnalyticsGoal } from '@/lib/analytics'
 
 const numericSize = (value: string) => Number(value.trim().replace(/[()]/g, '').replace(',', '.')).toString()
 const sectionKey = (value: string) => value.split(/\s*×\s*/u).map(numericSize).join('x')
@@ -135,6 +136,7 @@ export default function SizeTableFilter({ column, values, total, wallColumns = [
           url.searchParams.set('product', `${url.searchParams.get('product') || ''} — ${formatDimensionValue(sourceDimensionValue(row.cells[0]))} × ${value.replace('.', ',')} мм; ${context}; ${[...notes].filter(Boolean).join('; ')}`)
           link.href = url.pathname + url.search + url.hash
           link.textContent = 'Заявка →'; link.setAttribute('aria-label', `Заявка на ${formatDimensionValue(sourceDimensionValue(row.cells[0]))} × ${value.replace('.', ',')} мм`)
+          link.addEventListener('click', () => trackAnalyticsGoal('size_selected'))
           tr.insertCell().append(link)
         }
       }

@@ -31,6 +31,7 @@ const renderSelectedFiles = () => {
     return
   }
   const total = files.reduce((size, file) => size + file.size, 0)
+  const empty = files.filter(file => file.size === 0)
   const invalid = files.filter(file => !supportedFileExtensions.has(file.name.split('.').pop()?.toLowerCase() || ''))
   const totalLabel = (total / (1024 * 1024)).toLocaleString('ru-RU', { maximumFractionDigits: 2 })
   const names = files.map(file => file.name).join('; ')
@@ -38,8 +39,11 @@ const renderSelectedFiles = () => {
     ? ' Превышен лимит 4 МБ. Уберите файлы или отправьте их на m1@magicmet.ru.'
     : invalid.length
       ? ' Неподдерживаемый формат: ' + invalid.map(file => file.name).join(', ') + '.'
-      : ' Файлы готовы к отправке.'
-  fileSelectionStatus.textContent = 'Прикреплено: ' + files.length + ' (' + totalLabel + ' МБ). ' + names + '.' + warning
+      : empty.length ? '' : ' Файлы готовы к отправке.'
+  const emptyWarning = empty.length
+    ? ' Пустые файлы не будут отправлены: ' + empty.map(file => file.name).join(', ') + '. ' + (invalid.length || total > maxTotalFileSize ? 'Проверьте остальные вложения перед отправкой.' : files.some(file => file.size > 0) ? 'Остальные непустые файлы можно отправить.' : 'Выберите непустой файл или опишите, что требуется.')
+    : ''
+  fileSelectionStatus.textContent = 'Прикреплено: ' + files.length + ' (' + totalLabel + ' МБ). ' + names + '.' + warning + emptyWarning
 }
 fileInput?.addEventListener('change', () => {
   renderSelectedFiles()

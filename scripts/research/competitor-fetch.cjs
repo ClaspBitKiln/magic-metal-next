@@ -1,5 +1,4 @@
 // Magic Metal research fallback: public page reader with Russian legacy encoding support.
-const fs=require('node:fs'),path=require('node:path');
 const targets=process.argv.slice(2);
 (async()=>{for(const url of targets){try{
  if(!/^https:\/\//i.test(url))throw Error('HTTPS required');

@@ -61,6 +61,8 @@ export default function SpecialProcurementPicker({ mode, requestHref }: { mode: 
       <label>Единица<select value={unit} onChange={e => setUnit(e.target.value)}>{(tape ? ['кг','т','рулонов'] : welding ? ['кг','пачек','катушек','шт.'] : ['шт.','кг','т']).map(u => <option key={u} value={u}>{u}</option>)}</select></label>
     </div>
     <p className="special-procurement-note">{welding ? 'ГОСТ 2246-70 не распространяется автоматически на покрытые электроды и порошковую проволоку.' : tape ? 'Толщина и ширина не подтверждают состояние ленты, норматив или наличие.' : 'Заявка по номеру не заменяет исходный файл чертежа. Чертёж, материал, припуски и контроль согласуются до расчёта.'} Все параметры требуют проверки перед коммерческим предложением.</p>
+    {/* The homepage is an HTML Route Handler; document navigation initializes the request form. */}
+    {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
     <div className="special-procurement-actions">{href ? <a className="special-procurement-submit" href={href}>Перенести параметры в заявку ↗</a> : <span>{tape ? 'Укажите толщину и ширину' : welding ? 'Выберите вид и диаметр' : 'Укажите номер чертежа'}</span>}<a href="/#request">Прикрепить Excel / PDF / чертёж →</a></div>
   </section>
 }

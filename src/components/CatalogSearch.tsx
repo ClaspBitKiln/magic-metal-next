@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 import { normalizeSearch, searchIndex, type SearchItem } from '@/data/searchIndex'
 import { parseSizeSearchQuery } from '@/lib/sizeSearchQuery'
+import { trackAnalyticsGoal } from '@/lib/analytics'
 
 type Filter = 'all' | SearchItem['type']
 const emptyItems: SearchItem[] = []
@@ -83,7 +84,7 @@ export default function CatalogSearch({ extraStandards = emptyItems, initialQuer
     </div>
     <div className="search-summary"><span role="status" aria-live="polite">{loading ? 'Ищем размер в таблицах…' : error ? 'Поиск размеров недоступен' : query ? `Найдено: ${results.length}` : `В индексе: ${index.length}`}</span>{query && <a href={`/?product=${encodeURIComponent(query)}#request`}>Не нашли точное исполнение? Отправить заявку →</a>}</div>
     {error && <p role="alert">{error}</p>}
-    <div className="search-results"><div className="search-results-head"><span>Раздел</span><span>Позиция</span><span>Описание</span><i aria-hidden="true" /></div>{results.slice(0, visibleCount).map(item => <Link prefetch={false} href={item.href} aria-label={`Открыть: ${item.title}`} key={`${item.type}-${item.href}`}><small>{item.typeLabel}</small><h2>{item.title}</h2><span className="search-result-description"><h3>{item.subtitle}</h3><p>{item.description}</p></span><b aria-hidden="true">→</b></Link>)}</div>
+    <div className="search-results"><div className="search-results-head"><span>Раздел</span><span>Позиция</span><span>Описание</span><i aria-hidden="true" /></div>{results.slice(0, visibleCount).map(item => <Link prefetch={false} href={item.href} onClick={sizeQuery ? () => trackAnalyticsGoal('size_selected') : undefined} aria-label={`Открыть: ${item.title}`} key={`${item.type}-${item.href}`}><small>{item.typeLabel}</small><h2>{item.title}</h2><span className="search-result-description"><h3>{item.subtitle}</h3><p>{item.description}</p></span><b aria-hidden="true">→</b></Link>)}</div>
     {results.length > visibleCount && <button className="search-more" type="button" onClick={() => setVisibleCount(count => count + 40)}>Показать ещё · {visibleCount} из {results.length}</button>}
     {!loading && !error && results.length === 0 && <div className="search-empty">
       <h2>Точного совпадения пока нет</h2>
