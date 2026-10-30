@@ -1,6 +1,6 @@
 ---
 title: Мэджик Металл — единый центр знаний
-updated: 2026-10-29
+updated: 2026-10-30
 project: Сайт
 tags: [magic-metal, catalog, automation, obsidian]
 ---
@@ -8,6 +8,15 @@ tags: [magic-metal, catalog, automation, obsidian]
 # Мэджик Металл — центр знаний и работ
 
 > **ЗАКУПЩИКУ УДОБНО.** Главное действие сайта — отправка корректной заявки (в том числе готового Excel/PDF/чертежа) с подтверждённой доставкой менеджеру.
+
+## Продолжение — 30 октября 2026
+
+- [Рабочая память](https://github.com/ClaspBitKiln/magic-metal-next/blob/main/MEMORY.md) — действующие правила и решения.
+- [Передача контекста](https://github.com/ClaspBitKiln/magic-metal-next/blob/main/docs/ai/SESSION_HANDOFF_2026-10-30.md) — история, доказательства и оставшиеся задачи.
+- [Рабочий промт](https://github.com/ClaspBitKiln/magic-metal-next/blob/main/docs/ai/WORKFLOW_PROMPT.md) — стандартные решения, ТРИЗ и независимые агенты.
+- [Проверка документов](https://github.com/ClaspBitKiln/magic-metal-next/blob/main/docs/ai/DOCUMENT_REVIEW_2026-10-30.md) — область доступных файлов и правила сохранения; ничего не удалено.
+- [Сайт: 18/18 живых проверок](https://github.com/ClaspBitKiln/magic-metal-next/blob/main/docs/ai/SITE_FINISH_2026-10-29.md).
+- [Метрика: текущий статус доступа](https://github.com/ClaspBitKiln/magic-metal-next/blob/main/docs/ai/METRIKA_ACTIVATION_2026-10-17.md).
 
 ## Быстрая навигация
 
@@ -50,7 +59,7 @@ tags: [magic-metal, catalog, automation, obsidian]
 | Марки сплавов в карточках | PR #106: реальные обозначения для 10 семейств цветных и 3 нержавеющих разделов, выбор марки или ручной ввод. Preview READY; совместимость с формой проверяется отдельно |
 | Характеристики по всем подразделам | [PR #79](https://github.com/ClaspBitKiln/magic-metal-next/pull/79) — **не опубликован**, технический ревью |
 | Приём заявок | [PR #100](https://github.com/ClaspBitKiln/magic-metal-next/pull/100) вошёл в `main`; требует окончательного E2E теста вложений |
-| Доставка Excel/PDF менеджеру | #99 — **не подтверждена** реальным проверенным E2E тестом |
+| Доставка Excel/PDF менеджеру | По [отчёту 29 октября](REQUEST_PDF_E2E_PROD_QA_2026-10-29.md) доставка PDF на почту подтверждена; открытие файла и постоянное хранение CMS ещё требуют подтверждения |
 | Агентные исследования труб и СДТ | Завершены как исследования; **данные не прошли независимый технический ревью** |
 | Автосинхронизация Obsidian | Локальный Windows-планировщик (10 минут), без перезаписи ручных изменений |
 | Desktop Commander Remote | Windows автозапуск и проверка подключения каждые 5 минут |
