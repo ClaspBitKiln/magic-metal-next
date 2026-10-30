@@ -1,6 +1,6 @@
 {
-  "checkedAt": "2026-10-30T16:58:34.402Z",
-  "sourceCommit": "82555a8e5f5060bb4a470bcb0b566f132fd90dfd",
+  "checkedAt": "2026-10-30T16:59:37.993Z",
+  "sourceCommit": "4ae3c3afd8050cc50857f8e7aeac81829d2c43ee",
   "results": [
     {
       "width": 390,
@@ -581,7 +581,7 @@
       ],
       "overlayDisplay": "block",
       "activePreloads": 1,
-      "htmlGzip": 14186,
+      "htmlGzip": 14216,
       "passed": true
     }
   ],
