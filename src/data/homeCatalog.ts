@@ -114,7 +114,7 @@ const detailGroups: HomeCatalogGroup[] = detailGroupDefinitions.map((group) => (
       title: item.shortTitle,
       size: item.range.map((entry) => entry.value).join(' · '),
       standards: item.standards.join(' · ') || 'По спецификации',
-      grades: item.grades.filter(Boolean).join(' · '),
+      grades: item.grades.filter((grade) => grade.trim().length > 0).join(' · '),
       href: `/produkciya/${item.categorySlug}/${item.slug}`,
       availabilityQuery: item.shortTitle,
     })),
