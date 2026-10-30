@@ -18,7 +18,7 @@ describe('approved grade lists on detail pages and homepage', () => {
     it('keeps the same approved grades for ' + slug, () => {
       const detail = productDetailCatalog.find((p) => p.categorySlug === 'cvetnye-metally' && p.slug === slug)
       expect(detail).toBeDefined()
-      const home = homeCatalogGroups.flatMap((g) => g.items).find((p) => p.href === '/produkciya/cvetnye-metally/' + slug)
+      const home = homeCatalogGroups.flatMap((g) => g.items).find((p) => p.href.split('#')[0] === '/produkciya/cvetnye-metally/' + slug)
       expect(home).toBeDefined()
       expect(home!.grades).toBe(detail!.grades.join(' · '))
       for (const grade of required) expect(detail!.grades).toContain(grade)
