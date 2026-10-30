@@ -1,6 +1,6 @@
 {
-  "checkedAt": "2026-10-30T11:25:58.538Z",
-  "sourceCommit": "cf8f0dd635251b0e4e006227a64d8766de738b2a",
+  "checkedAt": "2026-10-30T12:18:53.508Z",
+  "sourceCommit": "3287c7eb455a6964462a039653226ce95e2757b2",
   "results": [
     {
       "width": 390,
@@ -590,7 +590,7 @@
       "width": 390,
       "query": "12Х1МФ",
       "first": "12Х1МФ",
-      "count": 7,
+      "count": 8,
       "overflow": 0,
       "passed": true
     },
@@ -598,7 +598,7 @@
       "width": 1536,
       "query": "12Х1МФ",
       "first": "12Х1МФ",
-      "count": 7,
+      "count": 8,
       "overflow": 0,
       "passed": true
     }
