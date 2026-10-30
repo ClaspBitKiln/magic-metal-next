@@ -1,0 +1,41 @@
+{
+  "checkedAt": "2026-10-30T17:54:43.137Z",
+  "productionTouched": false,
+  "realRequestsSent": 0,
+  "migrationExitCode": 0,
+  "local-apiExitCode": 0,
+  "api": {
+    "checkedAt": "2026-10-30T17:54:49.865Z",
+    "scope": "isolated-local-payload-api",
+    "productionTouched": false,
+    "realRequestsSent": 0,
+    "requestId": 1,
+    "fileId": 1,
+    "requestReadBack": true,
+    "relationshipReadBack": true,
+    "fileMetadataReadBack": true,
+    "pdfBytes": 600,
+    "pdfBytesEqual": true,
+    "originalSha256": "517bf996765c38c25e1a3fa31fbe40f240938215d4c1bf1197aa409a5759ccb1",
+    "storedSha256": "517bf996765c38c25e1a3fa31fbe40f240938215d4c1bf1197aa409a5759ccb1",
+    "pdfParserExitCode": 0,
+    "pdfPageCount": 1,
+    "unauthenticatedReads": [
+      {
+        "collection": "requests",
+        "denied": true,
+        "status": 403
+      },
+      {
+        "collection": "request-files",
+        "denied": true,
+        "status": 403
+      }
+    ],
+    "emailAttempts": 0,
+    "passed": true
+  },
+  "passed": true,
+  "temporaryContainerRemoved": true,
+  "temporaryUploadDirectoryRemoved": true
+}

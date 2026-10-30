@@ -1,0 +1,24 @@
+{
+  "checkedAt": "2026-10-30T17:44:02.529Z",
+  "scope": "isolated-local-postgres17",
+  "productionTouched": false,
+  "realRequestsSent": 0,
+  "initialTableCount": 0,
+  "migrate1ExitCode": 0,
+  "tableCountAfter1": 20,
+  "migrationRowsAfter1": 1,
+  "migrate2ExitCode": 0,
+  "tableCountAfter2": 20,
+  "migrationRowsAfter2": 1,
+  "requiredTables": [
+    "request_files",
+    "requests",
+    "requests_rels",
+    "users"
+  ],
+  "migrationNames": [
+    "20261030_174128_initial"
+  ],
+  "passed": true,
+  "temporaryContainerRemoved": true
+}
