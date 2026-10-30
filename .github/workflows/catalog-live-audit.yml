@@ -1,0 +1,32 @@
+name: Catalog live link audit
+
+on:
+  schedule:
+    - cron: '37 3 * * *'
+  workflow_dispatch:
+  deployment_status:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    if: github.event_name != 'deployment_status' || (github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Production')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check all public catalog links
+        run: node scripts/audit-live-catalog.mjs
+        env:
+          CATALOG_BASE_URL: https://magicmet.ru
+      - name: Save complete URL report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: catalog-live-audit
+          path: catalog-live-audit.md
+          if-no-files-found: ignore
