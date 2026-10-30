@@ -11,12 +11,17 @@ tags: [magic-metal, catalog, automation, obsidian]
 
 ## Продолжение — 30 октября 2026
 
+[**Начать под другим аккаунтом**](https://github.com/ClaspBitKiln/magic-metal-next/blob/main/docs/ai/START_NEXT_ACCOUNT.md)
+
 - [Рабочая память](https://github.com/ClaspBitKiln/magic-metal-next/blob/main/MEMORY.md) — действующие правила и решения.
 - [Передача контекста](https://github.com/ClaspBitKiln/magic-metal-next/blob/main/docs/ai/SESSION_HANDOFF_2026-10-30.md) — история, доказательства и оставшиеся задачи.
 - [Рабочий промт](https://github.com/ClaspBitKiln/magic-metal-next/blob/main/docs/ai/WORKFLOW_PROMPT.md) — стандартные решения, ТРИЗ и независимые агенты.
 - [Проверка документов](https://github.com/ClaspBitKiln/magic-metal-next/blob/main/docs/ai/DOCUMENT_REVIEW_2026-10-30.md) — область доступных файлов и правила сохранения; ничего не удалено.
 - [Сайт: 18/18 живых проверок](https://github.com/ClaspBitKiln/magic-metal-next/blob/main/docs/ai/SITE_FINISH_2026-10-29.md).
 - [Метрика: текущий статус доступа](https://github.com/ClaspBitKiln/magic-metal-next/blob/main/docs/ai/METRIKA_ACTIVATION_2026-10-17.md).
+
+- [Проверка масштаба 200%](ZOOM_200_2026-10-30.md) — пройдена для локальной главной/формы.
+- [Миграция CMS](CMS_READINESS_2026-10-30.md) — подготовлена и проверена локально; production отдельно.
 
 ## Быстрая навигация
 

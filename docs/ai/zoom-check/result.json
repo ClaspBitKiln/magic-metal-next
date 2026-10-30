@@ -1,0 +1,21 @@
+{
+  "method": "Headed Chromium on Xvfb; native X11 Ctrl+0 then five Ctrl++",
+  "before": {
+    "innerWidth": 1536,
+    "outerWidth": 1536,
+    "devicePixelRatio": 1,
+    "overflow": 0,
+    "emailFont": "13px",
+    "headingFont": "65.28px"
+  },
+  "after": {
+    "innerWidth": 768,
+    "outerWidth": 1536,
+    "devicePixelRatio": 2,
+    "overflow": 0,
+    "emailFont": "16px",
+    "headingFont": "42px"
+  },
+  "zoomRatio": 2,
+  "passed": true
+}
