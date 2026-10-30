@@ -1,6 +1,6 @@
 {
-  "checkedAt": "2026-10-30T16:59:37.993Z",
-  "sourceCommit": "4ae3c3afd8050cc50857f8e7aeac81829d2c43ee",
+  "checkedAt": "2026-10-30T17:00:47.938Z",
+  "sourceCommit": "8e93912a2da20d4086457f10a7bc073344940621",
   "results": [
     {
       "width": 390,
@@ -47,7 +47,7 @@
       ],
       "overlayDisplay": "none",
       "activePreloads": 0,
-      "htmlGzip": 14186,
+      "htmlGzip": 14216,
       "passed": true
     },
     {
@@ -95,7 +95,7 @@
       ],
       "overlayDisplay": "none",
       "activePreloads": 0,
-      "htmlGzip": 14186,
+      "htmlGzip": 14216,
       "passed": true
     },
     {
@@ -143,7 +143,7 @@
       ],
       "overlayDisplay": "none",
       "activePreloads": 0,
-      "htmlGzip": 14186,
+      "htmlGzip": 14216,
       "passed": true
     },
     {
@@ -191,7 +191,7 @@
       ],
       "overlayDisplay": "none",
       "activePreloads": 0,
-      "htmlGzip": 14186,
+      "htmlGzip": 14216,
       "passed": true
     },
     {
@@ -239,7 +239,7 @@
       ],
       "overlayDisplay": "none",
       "activePreloads": 0,
-      "htmlGzip": 14186,
+      "htmlGzip": 14216,
       "passed": true
     },
     {
@@ -287,7 +287,7 @@
       ],
       "overlayDisplay": "none",
       "activePreloads": 0,
-      "htmlGzip": 14186,
+      "htmlGzip": 14216,
       "passed": true
     },
     {
@@ -335,7 +335,7 @@
       ],
       "overlayDisplay": "none",
       "activePreloads": 0,
-      "htmlGzip": 14186,
+      "htmlGzip": 14216,
       "passed": true
     },
     {
@@ -383,7 +383,7 @@
       ],
       "overlayDisplay": "none",
       "activePreloads": 0,
-      "htmlGzip": 14186,
+      "htmlGzip": 14216,
       "passed": true
     },
     {
@@ -434,7 +434,7 @@
       ],
       "overlayDisplay": "block",
       "activePreloads": 1,
-      "htmlGzip": 14186,
+      "htmlGzip": 14216,
       "passed": true
     },
     {
@@ -482,7 +482,7 @@
       ],
       "overlayDisplay": "block",
       "activePreloads": 1,
-      "htmlGzip": 14186,
+      "htmlGzip": 14216,
       "passed": true
     },
     {
@@ -533,7 +533,7 @@
       ],
       "overlayDisplay": "block",
       "activePreloads": 1,
-      "htmlGzip": 14186,
+      "htmlGzip": 14216,
       "passed": true
     },
     {
