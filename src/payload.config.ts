@@ -15,6 +15,7 @@ import { SupplierOffers } from './collections/SupplierOffers'
 import { SupplierSources } from './collections/SupplierSources'
 import { LogisticsBenchmarks } from './collections/LogisticsBenchmarks'
 import { SiteSettings } from './globals/SiteSettings'
+import { requestFileStoragePlugins } from './lib/requestFileStorage'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -37,5 +38,5 @@ export default buildConfig({
   typescript: { outputFile: path.resolve(dirname, 'payload-types.ts') },
   db: postgresAdapter({ pool: { connectionString: requiredEnv('DATABASE_URL') } }),
   sharp,
-  plugins: [],
+  plugins: requestFileStoragePlugins(),
 })

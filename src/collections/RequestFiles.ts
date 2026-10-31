@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { isAuthenticated } from '../access/isAuthenticated'
+import { assertRequestFileStorageReady } from '../lib/requestFileStorage'
 
 export const RequestFiles: CollectionConfig = {
   slug: 'request-files',
@@ -12,7 +13,13 @@ export const RequestFiles: CollectionConfig = {
     delete: isAuthenticated,
   },
   fields: [{ name: 'description', label: 'Описание', type: 'text' }],
+  hooks: {
+    beforeOperation: [({ operation, req }) => {
+      if ((operation === 'create' || operation === 'update') && req.file) assertRequestFileStorageReady()
+    }],
+  },
   upload: {
+    disableLocalStorage: process.env.NODE_ENV === 'production',
     mimeTypes: [
       'application/pdf',
       'application/msword',
