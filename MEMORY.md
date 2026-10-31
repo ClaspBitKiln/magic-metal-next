@@ -107,3 +107,8 @@
   фильтрации не менялись. См. METRIKA_CONNECTED_2026-10-31.md.
 - [Исправления проверяющего кода и границы](docs/ai/QA_RELIABILITY_2026-10-31.md).
   Состояние свежегоCI проверять отдельно от локальной проверки.
+
+- ПачкаQA f666ac8 опубликована и подтверждена31октября: Vercelsuccess,
+  Chromium/Firefox/Lighthouse/SiteQA/CatalogLive — success. SiteQA0critical,
+  0high,127medium(эвристика переносовГОСТ). РепортQA_RELIABILITY содержитссылки.
+  Следующая рабочая задачаCMS требует VERCEL_TOKEN (драфтсохранён, неbinding).

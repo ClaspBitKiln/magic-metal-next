@@ -62,3 +62,22 @@ build0,3/3regressionи7/7целевыхChromiumсценариев прошли. 
 мобильные390/900сJSиnoJS,планшет,criticalnoJS и зависшиеизображения.
 Логи /tmp/site2-qa-final-{lint,build,browser}.log. Общийtsc не утверждается:
 publicbuild использует штатный режим без общей проверки типов.
+
+## Подтверждение опубликованной версии
+
+Для точногоSHA f666ac80de886ce2a9cafac637e070f3bc62a5df получены:
+
+- VercelProduction deployment7455056736:success.
+- [ProductionbrowserQA41175639562](https://github.com/ClaspBitKiln/magic-metal-next/actions/runs/41175639562):success, Chromium/Firefox/Lighthouse.
+- [SiteQA41175639519](https://github.com/ClaspBitKiln/magic-metal-next/actions/runs/41175639519):success.
+- [Cataloglive41175639585](https://github.com/ClaspBitKiln/magic-metal-next/actions/runs/41175639585):success.
+
+SiteQA:critical0,high0,medium127 одного типа «Номер ГОСТ переносится».
+Это оставшиеся автоматические рекомендации, не подтверждённые этой пачкой
+как дефекты, и не основание менять утверждённые тексты. Артефакт
+magic-metal-qa-915/id13032811631 сохранён GitHubActions; локальнаякопия
+/workspace/.cloud/magic-metal/ci-diagnosis/published-f666ac8/report.json.
+
+Локальный Firefox по-прежнему не заявляется успешным. Его функциональное
+исправление подтверждено реальным успешным FirefoxCI для указанногоSHA.
+Документационные коммиты после этогоSHA не являются новыми изменениямиUI/QAкода.
