@@ -364,7 +364,7 @@
 .mesh-rope-actions .mesh-rope-submit { background:#0757e8; color:#fff; padding:12px 16px; }
 .mesh-rope-actions span { font-size:13px; color:#536481; }
 @media(max-width:920px){.mesh-rope-fields{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:580px){.mesh-rope-picker{padding:14px}.mesh-rope-fields{grid-template-columns:1fr}}
+@media(max-width:580px){.mesh-rope-picker{padding:14px}.mesh-rope-fields{grid-template-columns:1fr}.mesh-rope-picker[data-product="rope"] .mesh-rope-fields input,.mesh-rope-picker[data-product="rope"] .mesh-rope-fields select{font-size:16px}}
 
 /* Product-specific procurement forms: tape, welding materials and forgings. */
 .special-procurement-picker{margin:20px 0;padding:22px;border:1px solid #c5d1e5;background:#f4f7fc}

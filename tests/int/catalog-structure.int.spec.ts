@@ -6,6 +6,7 @@ import { homeCatalogGroups, homeCatalogItemCount } from '@/data/homeCatalog'
 import { createElement } from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import CatalogTree from '@/components/CatalogTree'
+import { GET as getHomepage } from '@/app/(frontend)/route'
 import { gzipSync } from 'node:zlib'
 import { sdtCatalog } from '@/data/sdtCatalog'
 import { productSizeSeries, getProductSizeSeries } from '@/data/productSizeSeries'
@@ -34,7 +35,7 @@ describe('unified homepage catalog', () => {
     expect(tree.querySelectorAll('.sc-overviews a')).toHaveLength(2)
     expect(markup.indexOf('class="sc-products"')).toBeLessThan(markup.indexOf('class="sc-info"'))
     const request = tree.querySelector('.sc-aside a')!.getAttribute('href')!
-    expect(new URL(request, 'https://magicmet.ru').searchParams.get('product')).toBe('Сортовой и фасонный прокат')
+    expect(request).toBe('/#request')
   })
 
   it.each([
@@ -56,11 +57,31 @@ describe('unified homepage catalog', () => {
       .toBe(productDetailCatalog.find((item) => item.categorySlug === category && item.slug === detail)!.title)
   })
 
-  it('restores all existing categories and nomenclature in the served static homepage', () => {
-    const home = fs.readFileSync(path.join(process.cwd(), 'public/home-static.html'), 'utf8')
+  it('restores all existing categories and nomenclature in the served static homepage', async () => {
+    const response = await getHomepage()
+    expect(response.headers.get('content-type')).toContain('text/html')
+    const home = await response.text()
     const markup = renderToStaticMarkup(createElement(CatalogTree))
-    expect(home).toContain(markup)
+    const served = new DOMParser().parseFromString(home, 'text/html')
     const tree = new DOMParser().parseFromString(markup, 'text/html')
+    // The landing page keeps approved compact copy; category membership and links
+    // must still match the normalized tree, and its live-injected grades are canonical.
+    expect(Array.from(served.querySelectorAll('.catalog-group > summary strong'), title => title.textContent)).toEqual(homeCatalogGroups.map(group => group.title))
+    expect(Array.from(served.querySelectorAll('.catalog-item > summary strong'), title => title.textContent)).toEqual(homeCatalogGroups.flatMap(group => group.items.map(item => item.title)))
+    const items = homeCatalogGroups.flatMap(group => group.items)
+    for (const [index, row] of Array.from(served.querySelectorAll('.catalog-item')).entries()) {
+      const columns = Array.from(row.querySelectorAll('summary.catalog-row > span'), column => column.textContent?.trim())
+      expect(columns).toHaveLength(3)
+      expect(columns.every(Boolean)).toBe(true)
+      const link = row.querySelector('a')?.getAttribute('href')
+      expect(link).toBe(items[index].href)
+      const href = items[index].href.split('#')[0]
+      const canonical = productDetailCatalog.find(item => item.categorySlug === 'cvetnye-metally' && href === `/produkciya/cvetnye-metally/${item.slug}`)
+      if (canonical) expect(columns[2]).toBe(canonical.grades.join(' · '))
+    }
+    expect(Array.from(served.querySelectorAll('.home-size-series a'), link => link.getAttribute('href'))).toEqual(
+      Array.from(tree.querySelectorAll('.home-size-series a'), link => link.getAttribute('href')),
+    )
     expect(tree.querySelectorAll('.catalog-group')).toHaveLength(homeCatalogGroups.length)
     expect(tree.querySelectorAll('.catalog-item')).toHaveLength(homeCatalogItemCount)
     for (const [index, group] of homeCatalogGroups.entries()) {
@@ -82,6 +103,7 @@ describe('unified homepage catalog', () => {
       'Трубы и СДТ в изоляции',
       'Листовой и рулонный прокат',
       'Сортовой и фасонный прокат',
+      'Рельсы',
       'Нержавеющие и специальные стали',
       'Поковки и заготовки',
       'Цветной металлопрокат',
@@ -132,7 +154,9 @@ describe('additional stock assortment', () => {
     expect(rows).toHaveLength(count)
     expect(tree.querySelector('#stock-assortment')?.textContent).not.toMatch(/₽|руб\.|RUB|НДС|Цена/)
     expect(tree.querySelectorAll('#sizes')).toHaveLength(0)
-    expect(tree.querySelectorAll('.pipe-standards')).toHaveLength(0)
+    const product = productDetailCatalog.find(item => item.categorySlug === slug && item.slug === detail)!
+    expect(tree.querySelectorAll('.pipe-standards')).toHaveLength(product.standards.length ? 1 : 0)
+    for (const standard of product.standards) expect(tree.querySelector('.pipe-standards')?.textContent).toContain(standard)
     for (const row of rows) {
       const request = new URL(row.querySelector('a')!.getAttribute('href')!, 'https://magicmet.ru')
       expect(request.hash).toBe('#request')
@@ -171,7 +195,7 @@ describe('normative product size tables', () => {
       const guide = getDimensionGuide(card.categorySlug, card.slug)
       const tree = document.createElement('div')
       tree.innerHTML = renderToStaticMarkup(createElement(ProductSizeSeries, { series, guide, requestHref: '/#request' }))
-      expect(tree.querySelectorAll('.size-series-filter')).toHaveLength(series.length)
+      expect(tree.querySelectorAll('.size-series-filter, .sheet-format-picker')).toHaveLength(series.length)
       const references = tree.querySelectorAll('.size-series-reference')
       series.forEach((table, index) => {
         expect(Array.from(references[index].querySelectorAll('tbody tr'), row => Array.from(row.children, sourceDimensionValue))).toEqual(table.rows)
@@ -209,7 +233,7 @@ describe('normative product size tables', () => {
     expect(Object.keys(review).sort()).toEqual(['notes', 'product', 'rows', 'scope', 'standard'])
   })
 
-  it('opens sheet combinations first and offers exact thickness groups without removing the full table', () => {
+  it('opens sheet combinations first and offers width before exact thickness without removing the full table', () => {
     const tables = getProductSizeSeries('listovoy-prokat', 'goryachekatanyj')
     const tree = document.createElement('div')
     tree.innerHTML = renderToStaticMarkup(createElement(ProductSizeSeries, { series: tables, requestHref: '/#request' }))
@@ -218,9 +242,12 @@ describe('normative product size tables', () => {
     expect(details[formatIndex].hasAttribute('open')).toBe(true)
     expect(details[0].hasAttribute('open')).toBe(false)
     const formats = tables[formatIndex]
-    const select = details[formatIndex].querySelector('select')!
-    expect(Array.from(select.options).slice(1).map(option => option.value)).toEqual([...new Set(formats.rows.map(row => row[0]))])
-    expect(details[formatIndex].querySelector('.size-series-filter')?.hasAttribute('hidden')).toBe(true)
+    const [width, thickness] = details[formatIndex].querySelectorAll('select')
+    const widths = [...new Set(formats.rows.flatMap(row => row[1].split(';').map(value => value.trim().replace('.', ','))))].sort((a, b) => Number(a.replace(',', '.')) - Number(b.replace(',', '.')))
+    expect(Array.from(width.options).slice(1).map(option => option.value)).toEqual(widths)
+    expect(thickness.disabled).toBe(true)
+    expect(thickness.options).toHaveLength(1)
+    expect(details[formatIndex].querySelector('.size-series-reference')?.hasAttribute('hidden')).toBe(true)
     expect(details[formatIndex].querySelectorAll('tbody tr')).toHaveLength(formats.rows.length)
   })
 
@@ -232,17 +259,17 @@ describe('normative product size tables', () => {
     expect(tree.querySelectorAll('tbody tr')).toHaveLength(table.rows.length)
   })
 
-  it('preserves the 51 normative cards alongside the separate stock assortment', () => {
+  it('preserves the 54 normative and specification cards alongside the separate stock assortment', () => {
     const cards = [...pipeCatalog, ...productDetailCatalog, ...sdtCatalog.map((item) => ({ ...item, categorySlug: 'sdt' }))]
       .filter((item) => !['krug-i-kvadrat', 'balka-shveller-ugolok', 'kanaty', 'armatura', 'katanka', 'profnastil', 'list-riflenyj', 'list-pvl', 'shveller-gnutyj', 'shestigrannik', 'setki', 'lenta-upakovochnaya'].includes(item.slug))
-    expect(cards).toHaveLength(51)
+    expect(cards).toHaveLength(54)
     expect(cards.filter((item) => getProductSizeSeries(item.categorySlug, item.slug).length)).toHaveLength(45)
     expect(cards.filter((item) => getProductSizeSeries(item.categorySlug, item.slug).some((table) => table.kind !== 'requirements'))).toHaveLength(38)
     expect(cards.filter((item) => {
       const tables = getProductSizeSeries(item.categorySlug, item.slug)
       return tables.length && tables.every((table) => table.kind === 'requirements')
     })).toHaveLength(7)
-    expect(cards.filter((item) => !getProductSizeSeries(item.categorySlug, item.slug).length && getDimensionGuide(item.categorySlug, item.slug))).toHaveLength(6)
+    expect(cards.filter((item) => !getProductSizeSeries(item.categorySlug, item.slug).length && getDimensionGuide(item.categorySlug, item.slug))).toHaveLength(9)
     expect(cards.filter((item) => !getProductSizeSeries(item.categorySlug, item.slug).length && !getDimensionGuide(item.categorySlug, item.slug))).toEqual([])
     expect(new Set(dimensionGuides.map((g) => `${g.categorySlug}/${g.productSlug}`)).size).toBe(dimensionGuides.length)
   })

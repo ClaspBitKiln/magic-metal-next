@@ -22,6 +22,9 @@ export type HomeCatalogGroup = {
 }
 
 const requestOnlyQueries = new Set([
+  'Рельсы железнодорожные',
+  'Рельсы узкоколейные',
+  'Рельсы крановые',
   'Котельные и крекинговые',
   'Нефтяного сортамента',
   'Титан',
@@ -97,6 +100,7 @@ const sdtItems: HomeCatalogItem[] = [
 const detailGroupDefinitions = [
   { title: 'Листовой и рулонный прокат', note: 'Горячекатаный, холоднокатаный, оцинкованный прокат и профнастил', categorySlug: 'listovoy-prokat' },
   { title: 'Сортовой и фасонный прокат', note: 'Арматура, катанка, круг, квадрат, полоса, уголок, балка и швеллер', categorySlug: 'sortovoy-i-fasonny-prokat' },
+  { title: 'Рельсы', note: 'Железнодорожные, узкоколейные и крановые рельсы', categorySlug: 'relsy' },
   { title: 'Нержавеющие и специальные стали', note: 'Лист, трубы, сортовой прокат и специальные марки', categorySlug: 'nerzhaveyushchaya-stal' },
   { title: 'Поковки и заготовки', note: 'Кольца, диски, валы, оси и поковки по чертежу', categorySlug: 'pokovki-i-zagotovki' },
   { title: 'Цветной металлопрокат', note: 'Алюминий и дюраль; медь, бронза и латунь; титан; олово; свинец; цинк; нихром; баббит', categorySlug: 'cvetnye-metally' },

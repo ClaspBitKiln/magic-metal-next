@@ -16,13 +16,14 @@ export default function MeshRopeRequestPicker({ type, requestHref }: { type: Pro
   const [length, setLength] = useState('')
   const [core, setCore] = useState('')
   const [lay, setLay] = useState('')
+  const [breakingForce, setBreakingForce] = useState('')
   const [material, setMaterial] = useState('')
   const [coating, setCoating] = useState('')
   const [standard, setStandard] = useState('')
   const [qty, setQty] = useState('')
   const [unit, setUnit] = useState(mesh ? 'м²' : 'м')
 
-  const valid = isPositive(diameter) && (mesh ? Boolean(kind) && isPositive(cellX) && isPositive(cellY) && (!width || isPositive(width)) && (!length || isPositive(length)) : isPositive(length)) && (!qty || isPositive(qty))
+  const valid = isPositive(diameter) && (mesh ? Boolean(kind) && isPositive(cellX) && isPositive(cellY) && (!width || isPositive(width)) && (!length || isPositive(length)) : isPositive(length)) && (!qty || isPositive(qty)) && (mesh || !breakingForce || isPositive(breakingForce))
   const href = useMemo(() => {
     if (!valid) return null
     const url = new URL(requestHref, 'https://magicmet.ru')
@@ -37,15 +38,16 @@ export default function MeshRopeRequestPicker({ type, requestHref }: { type: Pro
       kind ? `конструкция ${kind}` : '',
       core ? `сердечник ${core}` : '',
       lay ? `свивка ${lay}` : '',
+      breakingForce ? `требуемое разрывное усилие ${formatNumber(breakingForce)} кН` : '',
       `длина ${formatNumber(length)} м`,
     ]
     parts.push(material ? `материал ${material}` : '', coating ? `покрытие ${coating}` : '', standard ? `требуемый стандарт ${standard}` : 'стандарт уточнить', qty ? `количество ${formatNumber(qty)} ${unit}` : '')
     url.searchParams.set('product', parts.filter(Boolean).join('; '))
     url.hash = 'request'
     return url.pathname + url.search + url.hash
-  }, [valid, mesh, requestHref, kind, cellX, cellY, diameter, width, length, core, lay, material, coating, standard, qty, unit])
+  }, [valid, mesh, requestHref, kind, cellX, cellY, diameter, width, length, core, lay, breakingForce, material, coating, standard, qty, unit])
 
-  return <section className="mesh-rope-picker" aria-label={mesh ? 'Параметры сетки для заявки' : 'Параметры каната для заявки'}>
+  return <section className="mesh-rope-picker" data-product={type} aria-label={mesh ? 'Параметры сетки для заявки' : 'Параметры каната для заявки'}>
     <h2>{mesh ? 'Выбрать сетку по параметрам' : 'Выбрать канат по параметрам'}</h2>
     <p>{mesh ? 'Сначала вид сетки и ячейка, затем диаметр проволоки и формат карты или рулона.' : 'Сначала диаметр и длина каната, затем конструкция, сердечник и исполнение.'} Параметры отправим менеджеру; наличие и применимость стандарта проверим перед КП.</p>
     <div className="mesh-rope-fields">
@@ -60,6 +62,7 @@ export default function MeshRopeRequestPicker({ type, requestHref }: { type: Pro
       <label>{mesh ? 'Материал проволоки' : 'Марка / группа проволоки'}<input value={material} onChange={e => setMaterial(e.target.value)} placeholder="По спецификации" /></label>
       <label>Покрытие / исполнение<input value={coating} onChange={e => setCoating(e.target.value)} placeholder={mesh ? 'Например, оцинкованная' : 'Например, оцинкованный'} /></label>
       <label>ГОСТ / ТУ<input value={standard} onChange={e => setStandard(e.target.value)} placeholder="Если известен" /></label>
+      {!mesh && <label>Разрывное усилие, кН (если задано)<input value={breakingForce} onChange={e => setBreakingForce(e.target.value)} inputMode="decimal" placeholder="По проекту или паспорту" /></label>}
       <label>Количество (необязательно)<input value={qty} onChange={e => setQty(e.target.value)} inputMode="decimal" placeholder="По заявке" /></label>
       <label>Единица количества<select value={unit} onChange={e => setUnit(e.target.value)}>{(mesh ? ['м²', 'шт.', 'рулонов'] : ['м', 'шт.', 'бухт']).map(option => <option key={option} value={option}>{option}</option>)}</select></label>
     </div>

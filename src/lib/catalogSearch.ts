@@ -95,6 +95,7 @@ export const formatProductTitle = (value: string) => {
   if (title.startsWith('Трубы водогазопров.')) title = title.replace('Трубы водогазопров.', 'Трубы водогазопроводные (ВГП)')
   if (title === 'Трубы электросварные квадрат') title = 'Трубы профильные квадратные'
   if (title === 'Трубы электросварные прямоуг') title = 'Трубы профильные прямоугольные'
+  if (title === 'Канаты') title = 'Канаты стальные'
   return title
 }
 

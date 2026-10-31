@@ -8,6 +8,9 @@ const dirname = path.dirname(__filename)
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // Payload's Node-only configuration helpers must resolve through its native
+  // package exports when the PostgreSQL adapter is bundled for production.
+  serverExternalPackages: ['payload'],
   experimental: {
     inlineCss: true,
   },

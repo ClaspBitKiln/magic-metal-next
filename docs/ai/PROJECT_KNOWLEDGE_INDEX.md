@@ -1,6 +1,6 @@
 ---
 title: Мэджик Металл — единый центр знаний
-updated: 2026-10-30
+updated: 2026-10-31
 project: Сайт
 tags: [magic-metal, catalog, automation, obsidian]
 ---
@@ -10,6 +10,12 @@ tags: [magic-metal, catalog, automation, obsidian]
 > **ЗАКУПЩИКУ УДОБНО.** Главное действие сайта — отправка корректной заявки (в том числе готового Excel/PDF/чертежа) с подтверждённой доставкой менеджеру.
 
 ## Продолжение — 30 октября 2026
+
+- [Реестр продолжения — 31 октября](SITE1_TASK_REGISTER.md).
+- [Локальная готовность разработки](DEVELOPMENT_READINESS_2026-10-31.md) — сборка,
+  тесты и точные границы проверок; текущая пачка не опубликована.
+- [Сверка источников каталога](CATALOG_SOURCE_RECONCILIATION_2026-10-31.md) —
+  56 позиций / 39 карточек и отличие текстовых расхождений от нормативных ошибок.
 
 [**Начать под другим аккаунтом**](https://github.com/ClaspBitKiln/magic-metal-next/blob/main/docs/ai/START_NEXT_ACCOUNT.md)
 
