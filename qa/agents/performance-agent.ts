@@ -6,7 +6,9 @@ export const performanceAgent: QaAgent = {
   async run({ baseUrl, pages, page }) {
     const results: Finding[] = []
     for (const pathname of pages) {
-      await page.goto(absoluteUrl(baseUrl, pathname), { waitUntil: 'networkidle' })
+      await page.goto(absoluteUrl(baseUrl, pathname), { waitUntil: 'load' })
+      // Sample navigation and resources at the load event. Deferred analytics
+      // may continue afterwards; this is not a complete network/field metric.
       const metrics = await page.evaluate(() => {
         const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming
         const resources = performance.getEntriesByType('resource') as PerformanceResourceTiming[]

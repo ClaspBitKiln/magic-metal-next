@@ -1,6 +1,17 @@
-import { expect, test, type Page } from '@playwright/test'
+import { expect, test, type Browser, type BrowserContextOptions, type Page } from '@playwright/test'
 import { readFile } from 'node:fs/promises'
 import { gzipSync } from 'node:zlib'
+import { guardQaContext } from '../../qa/network-guard'
+
+test.beforeEach(async ({ context }) => {
+  await guardQaContext(context)
+})
+
+async function guardedContext(browser: Browser, options: BrowserContextOptions = {}) {
+  const context = await browser.newContext(options)
+  await guardQaContext(context)
+  return context
+}
 
 function recordExternalHeroRequests(page: Page) {
   const requests: string[] = []
@@ -16,10 +27,13 @@ const transparentMobileSource = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///
 async function expectMobileHeroDisabled(page: Page) {
   await expect(page.locator('.hero-mosaic')).toBeHidden()
   await expect(page.locator('.hero-tile')).toHaveCount(0)
-  const photo = await page.locator('.hero-image img').evaluate(async (image: HTMLImageElement) => {
-    await image.decode()
-    return { source: image.currentSrc, width: image.naturalWidth, height: image.naturalHeight }
-  })
+  const image = page.locator('.hero-image img')
+  // Firefox suspends page-side decode() promises when scripting is disabled.
+  // Poll browser-owned image state without relying on a page-side promise.
+  await expect.poll(() => image.evaluate((node: HTMLImageElement) => node.complete && node.naturalWidth > 0)).toBe(true)
+  const photo = await image.evaluate((node: HTMLImageElement) => ({
+    source: node.currentSrc, width: node.naturalWidth, height: node.naturalHeight,
+  }))
   expect(photo).toEqual({ source: transparentMobileSource, width: 1, height: 1 })
   const layout = await page.locator('.hero').evaluate((hero) => ({
     overlayDisplay: getComputedStyle(hero, '::after').display,
@@ -37,10 +51,11 @@ async function expectDecodedHero(page: Page) {
   await expect(image).toHaveCount(1)
   await expect(image).toHaveAttribute('loading', 'eager')
   await expect(image).toHaveAttribute('fetchpriority', 'high')
-  const photo = await image.evaluate(async (image: HTMLImageElement) => {
-    await image.decode()
-    return { source: image.currentSrc, width: image.naturalWidth, height: image.naturalHeight, renderedWidth: image.getBoundingClientRect().width }
-  })
+  // Polling stays operational in Firefox no-JS contexts; decode() does not.
+  await expect.poll(() => image.evaluate((node: HTMLImageElement) => node.complete && node.naturalWidth > 0)).toBe(true)
+  const photo = await image.evaluate((node: HTMLImageElement) => ({
+    source: node.currentSrc, width: node.naturalWidth, height: node.naturalHeight, renderedWidth: node.getBoundingClientRect().width,
+  }))
   expect(photo.source).toMatch(/\/images\/hero-photo-1440\.avif(?:\?|$)/)
   // Width-descriptor srcsets density-correct naturalWidth to the declared source size.
   expect(photo.width).toBeGreaterThan(0)
@@ -100,7 +115,7 @@ test('root is the approved dependency-free public page', async ({ page, baseURL 
 for (const width of [390, 900]) {
   for (const javaScriptEnabled of [true, false]) {
     test(`mobile ${width}px keeps the hero photo disabled with JavaScript ${javaScriptEnabled ? 'enabled' : 'disabled'}`, async ({ browser, baseURL }) => {
-      const context = await browser.newContext({ viewport: { width, height: 844 }, javaScriptEnabled })
+      const context = await guardedContext(browser, { viewport: { width, height: 844 }, javaScriptEnabled })
       try {
         const page = await context.newPage()
         const heroRequests = recordExternalHeroRequests(page)
@@ -120,7 +135,7 @@ for (const width of [390, 900]) {
 }
 
 test('tablet receives one complete hero photo', async ({ browser, baseURL }) => {
-  const context = await browser.newContext({ viewport: { width: 1024, height: 1000 }, deviceScaleFactor: 1.25 })
+  const context = await guardedContext(browser, { viewport: { width: 1024, height: 1000 }, deviceScaleFactor: 1.25 })
   try {
     const page = await context.newPage()
     const heroRequests = recordExternalHeroRequests(page)
@@ -201,7 +216,7 @@ test('content remains usable when every external image request fails', async ({ 
 })
 
 test('critical public content works without JavaScript', async ({ browser, baseURL }) => {
-  const context = await browser.newContext({ javaScriptEnabled: false })
+  const context = await guardedContext(browser, { javaScriptEnabled: false })
   const page = await context.newPage()
   const heroRequests = recordExternalHeroRequests(page)
   expect((await page.goto(baseURL!, { waitUntil: 'domcontentloaded' }))?.status()).toBe(200)
@@ -216,7 +231,7 @@ test('critical public content works without JavaScript', async ({ browser, baseU
 })
 
 test('text and actions remain usable without JavaScript while image requests stall', async ({ browser, baseURL }) => {
-  const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 1536, height: 900 } })
+  const context = await guardedContext(browser, { javaScriptEnabled: false, viewport: { width: 1536, height: 900 } })
   try {
     const page = await context.newPage()
     const heroRequests = recordExternalHeroRequests(page)
