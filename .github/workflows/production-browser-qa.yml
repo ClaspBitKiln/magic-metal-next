@@ -6,6 +6,12 @@ on:
   pull_request:
     branches:
       - main
+  push:
+    branches: [main]
+    paths:
+      - tests/e2e/production-smoke.e2e.spec.ts
+      - playwright.production.config.ts
+      - .github/workflows/production-browser-qa.yml
 
 concurrency:
   group: production-browser-qa-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}
@@ -13,7 +19,7 @@ concurrency:
 
 jobs:
   browser-smoke:
-    if: github.event_name == 'workflow_dispatch' || github.event_name == 'pull_request' || (github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Production')
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'pull_request' || github.event_name == 'push' || (github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Production')
     name: Playwright (${{ matrix.browser }})
     runs-on: ubuntu-latest
     timeout-minutes: 20

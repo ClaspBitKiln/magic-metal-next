@@ -260,11 +260,18 @@ test('approved client emblems decode after lazy loading', async ({ page, baseURL
 
 test('the restored catalog exposes details and preserves request prefill', async ({ page, baseURL }) => {
   expect((await page.goto(baseURL!, { waitUntil: 'domcontentloaded' }))?.status()).toBe(200)
-  await expect(page.locator('.catalog-group')).toHaveCount(10)
+  await expect(page.locator('.catalog-group')).toHaveCount(11)
   await expect(page.locator('.catalog-group[open]')).toHaveCount(0)
-  await expect(page.locator('.catalog-item')).toHaveCount(56)
+  await expect(page.locator('.catalog-item')).toHaveCount(59)
   const links = page.locator('.home-size-series a')
-  await expect(links).toHaveCount(56)
+  await expect(links).toHaveCount(59)
+  const railLinks = page.locator('.home-size-series a[href^="/produkciya/relsy/"]')
+  await expect(railLinks).toHaveCount(3)
+  expect(await railLinks.evaluateAll((nodes: HTMLAnchorElement[]) => nodes.map(node => node.getAttribute('href')))).toEqual([
+    '/produkciya/relsy/zheleznodorozhnye#sizes',
+    '/produkciya/relsy/promyshlennye#sizes',
+    '/produkciya/relsy/kranovye#sizes',
+  ])
   const hrefs = await links.evaluateAll((nodes: HTMLAnchorElement[]) => nodes.map((node) => node.getAttribute('href')))
   expect(hrefs.every((href) => href?.startsWith('/produkciya/') || href?.startsWith('/spravochnik-nalichiya?q=') || (href?.startsWith('/?product=') && href.endsWith('#request')))).toBe(true)
   expect((await page.goto('/?product=%D0%A2%D1%80%D1%83%D0%B1%D1%8B#request', { waitUntil: 'domcontentloaded' }))?.status()).toBe(200)
