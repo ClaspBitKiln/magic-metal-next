@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { productDetailCatalog } from '@/data/productDetailCatalog'
+import { GET as getHomepage } from '@/app/(frontend)/route'
 
 const home = readFileSync(resolve(process.cwd(), 'public/home-static.html'), 'utf8')
 const rows = [...home.matchAll(/<details class="catalog-item"><summary class="catalog-row">([\s\S]*?)<\/summary>/g)].map((m) => m[1])
@@ -11,8 +12,8 @@ function rowByTitle(title: string) {
 }
 
 describe('public catalog source consistency', () => {
-  it('keeps all 56 public catalog rows with nonempty size, standard and grades/finish columns', () => {
-    expect(rows).toHaveLength(56)
+  it('keeps all 59 public catalog rows with nonempty size, standard and grades/finish columns', () => {
+    expect(rows).toHaveLength(59)
     for (const row of rows) {
       const cols = [...row.matchAll(/<span>([^<]*)<\/span>/g)].map((m) => m[1].trim())
       expect(cols.length).toBeGreaterThanOrEqual(3)
@@ -20,13 +21,25 @@ describe('public catalog source consistency', () => {
     }
   })
 
-  it('never reintroduces placeholders for the approved nonferrous grades', () => {
-    const slugs = ['med', 'latun', 'bronza', 'alyuminij', 'titan', 'olovo', 'svinec', 'cink']
-    for (const slug of slugs) {
-      const detail = productDetailCatalog.find((x) => x.categorySlug === 'cvetnye-metally' && x.slug === slug)
-      expect(detail).toBeDefined()
-      expect(detail!.grades.length).toBeGreaterThan(0)
-      for (const grade of detail!.grades) expect(home).toContain(grade)
+  it('keeps each nonferrous source row and served row on its exact canonical grade list', async () => {
+    const source = new DOMParser().parseFromString(home, 'text/html')
+    const response = await getHomepage()
+    expect(response.headers.get('content-type')).toContain('text/html')
+    const served = new DOMParser().parseFromString(await response.text(), 'text/html')
+    const nonferrous = productDetailCatalog.filter(item => item.categorySlug === 'cvetnye-metally')
+    expect(nonferrous.length).toBeGreaterThanOrEqual(10)
+    for (const detail of nonferrous) {
+      expect(detail.grades.length, detail.slug).toBeGreaterThan(0)
+      const href = `/produkciya/cvetnye-metally/${detail.slug}`
+      for (const [label, document] of [['source', source], ['served', served]] as const) {
+        const matching = Array.from(document.querySelectorAll('.catalog-item')).filter(row => row.querySelector('a')?.getAttribute('href')?.split('#')[0] === href)
+        expect(matching, `${label}: ${detail.slug} must have exactly one row`).toHaveLength(1)
+        const columns = matching[0].querySelectorAll('summary.catalog-row > span')
+        expect(columns, `${label}: ${detail.slug} columns`).toHaveLength(3)
+        // DOM textContent decodes entities and checks this row, so a grade in an
+        // unrelated product or an extra stale grade cannot satisfy the assertion.
+        expect(columns[2].textContent, `${label}: ${detail.slug} grades`).toBe(detail.grades.join(' · '))
+      }
     }
     expect(home).not.toMatch(/марка (?:меди|латуни|бронзы|титана|олова|свинца|цинка)[^<]*после подтверждения заявки/i)
   })
@@ -42,7 +55,7 @@ describe('public catalog source consistency', () => {
       'Швеллер гнутый': '8278-83',
       'Сетки': '23279-2012',
       'Лента упаковочная': '3560-73',
-      'Канаты': '2688-80',
+      'Канаты стальные': '2688-80',
     } as const
     for (const [title, standard] of Object.entries(required)) {
       const row = rowByTitle(title)

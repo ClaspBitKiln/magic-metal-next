@@ -20,7 +20,7 @@ const env = {
     'postgresql://postgres:postgres@127.0.0.1:5432/magicmet_build_only',
 }
 
-const child = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'build'], {
+const child = spawn(process.execPath, ['node_modules/next/dist/bin/next', 'build', ...process.argv.slice(2)], {
   env,
   stdio: 'inherit',
 })

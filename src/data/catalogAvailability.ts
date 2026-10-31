@@ -20,6 +20,9 @@ export const catalogTreeDirectRequestQueries = [
 ] as const
 
 export const requestOnlyDirectoryQueryList = [
+  'Рельсы железнодорожные',
+  'Рельсы узкоколейные',
+  'Рельсы крановые',
   'Котельные и крекинговые',
   'Нефтяного сортамента',
   'Титан',

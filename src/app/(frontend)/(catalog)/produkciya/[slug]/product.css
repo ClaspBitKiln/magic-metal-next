@@ -97,6 +97,14 @@
   grid-template-columns: 0.7fr 1.3fr;
   gap: 9vw;
 }
+.product-body > * {
+  min-width: 0;
+}
+.product-facts dd,
+.product-facts dd span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
 .product-body article h2,
 .product-facts h2 {
   margin: 0 0 24px;

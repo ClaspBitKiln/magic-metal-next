@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" role="img" aria-labelledby="title desc">
+  <title id="title">Рельсовый профиль</title>
+  <desc id="desc">Условная схема поперечного сечения рельса: головка, шейка и подошва. Не является размерным чертежом.</desc>
+  <rect width="800" height="520" fill="#edf2f8"/>
+  <path d="M303 118Q303 98 323 98H477Q497 98 497 118V159Q497 175 480 181L436 196V352L505 378Q519 383 519 398V420H281V398Q281 383 295 378L364 352V196L320 181Q303 175 303 159Z" fill="#738498" stroke="#34485f" stroke-width="5" stroke-linejoin="round"/>
+  <path d="M323 115H477M383 208V345M299 402H501" fill="none" stroke="#c9d4e0" stroke-width="6" stroke-linecap="round"/>
+</svg>
