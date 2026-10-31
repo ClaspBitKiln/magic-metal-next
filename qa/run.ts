@@ -8,6 +8,7 @@ import { visualAgent } from './agents/visual-agent'
 import { loadPages, priorityPages, viewports } from './config'
 import type { Finding } from './types'
 import { ensureDir, writeReport } from './utils'
+import { guardQaContext } from './network-guard'
 
 const baseUrl = process.env.QA_BASE_URL || 'http://127.0.0.1:3000'
 const outputDir = path.resolve(process.env.QA_OUTPUT_DIR || 'qa-results')
@@ -21,6 +22,7 @@ await ensureDir(outputDir)
 try {
   for (const viewport of viewports) {
     const context = await browser.newContext({ viewport })
+    await guardQaContext(context)
     const page = await context.newPage()
     for (const agent of agents) {
       if (viewport.name !== 'desktop' && agent !== visualAgent) continue
