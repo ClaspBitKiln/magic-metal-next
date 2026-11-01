@@ -170,17 +170,15 @@ describe('additional stock assortment', () => {
   })
 })
 
-describe('rope stock assortment', () => {
-  it('keeps six stock rows separate from normative tables and transfers exact execution into the request', async () => {
+describe('rope source matrices', () => {
+  it('replaces the six old stock rows with source-attributed Shenwei matrices, separate from normative tables', async () => {
     const page = await ProductDetailPage({ params: Promise.resolve({ slug: 'metizy-i-svarochnye-materialy', detail: 'kanaty' }) })
     const tree = new DOMParser().parseFromString(renderToStaticMarkup(page), 'text/html')
-    const rows = [...tree.querySelectorAll('#stock-assortment tbody tr')]
-    expect(rows).toHaveLength(6)
-    expect(rows.map(row => row.querySelector('th')?.textContent)).toEqual(['13', '24', '2', '15', '18', '20'])
-    expect(tree.querySelector('#stock-assortment')?.textContent).not.toMatch(/₽|руб\.|RUB|НДС|Цена/)
-    const selected = new URL(rows[2].querySelector('a')!.getAttribute('href')!, 'https://magicmet.ru')
-    expect(selected.hash).toBe('#request')
-    expect(selected.searchParams.get('product')).toContain('ГОСТ 3063-80 полимерн. покр 2/3 уценка; размерное обозначение 2; единица учёта м')
+    expect(tree.querySelector('#stock-assortment')).toBeNull()
+    expect(tree.querySelectorAll('.rope-sales-constructions > li')).toHaveLength(68)
+    expect(tree.querySelectorAll('.rope-sales-diameter-form')).toHaveLength(47)
+    expect(tree.body.textContent).not.toContain('2/3 уценка')
+    expect(tree.querySelector('#rope-sales')?.textContent).toContain('конструкции')
     expect(tree.querySelectorAll('#sizes')).toHaveLength(0)
     expect(getProductSizeSeries('metizy-i-svarochnye-materialy', 'kanaty')).toEqual([])
   })

@@ -107,7 +107,8 @@ test('root is the approved dependency-free public page', async ({ page, baseURL 
   expect(await page.locator('script[src*="_next"]').count()).toBe(0)
   expect(await page.locator('link[href*="_next"]').count()).toBe(0)
   expect(await page.locator('link[rel="stylesheet"]').count()).toBe(0)
-  expect(gzipSync(Buffer.from(await page.content())).byteLength).toBeLessThan(15_000)
+  // Budget locally recompressed response HTML, before browser DOM mutations.
+  expect(gzipSync(await response!.body()).byteLength).toBeLessThan(15_000)
   expect(heroRequests, 'Responsive preload and picture must share one image request').toEqual([heroSource])
   expect(failures, failures.join('\n')).toEqual([])
 })
@@ -266,21 +267,33 @@ test('the restored catalog exposes details and preserves request prefill', async
   const links = page.locator('.home-size-series > a')
   await expect(links).toHaveCount(62)
   const railLinks = page.locator('.home-size-series a[href^="/produkciya/relsy/"]')
-  await expect(railLinks).toHaveCount(3)
+  await expect(railLinks).toHaveCount(6)
   expect(await railLinks.evaluateAll((nodes: HTMLAnchorElement[]) => nodes.map(node => node.getAttribute('href')))).toEqual([
     '/produkciya/relsy/zheleznodorozhnye#sizes',
-    '/produkciya/relsy/promyshlennye#sizes',
     '/produkciya/relsy/kranovye#sizes',
+    '/produkciya/relsy/promyshlennye#sizes',
+    '/produkciya/relsy/shahtnye#sizes',
+    '/produkciya/relsy/tramvaynye#sizes',
+    '/produkciya/relsy/specialnye#sizes',
   ])
   const hrefs = await links.evaluateAll((nodes: HTMLAnchorElement[]) => nodes.map((node) => node.getAttribute('href')))
   expect(hrefs.every((href) => href?.startsWith('/produkciya/') || href?.startsWith('/spravochnik-nalichiya?q=') || (href?.startsWith('/?product=') && href.endsWith('#request')))).toBe(true)
-  const ropeGroup = page.locator('.catalog-group').filter({ has: page.locator('.home-rope-stock') })
+  const ropeGroup = page.locator('.catalog-group').filter({ has: page.locator('.home-rope-sales') })
   await ropeGroup.locator(':scope > summary').click()
-  const ropeItem = ropeGroup.locator('.catalog-item').filter({ has: page.locator('.home-rope-stock') })
+  const ropeItem = ropeGroup.locator('.catalog-item').filter({ has: page.locator('.home-rope-sales') })
   await ropeItem.locator(':scope > summary').click()
-  await expect(ropeItem.locator('.home-rope-stock')).toBeVisible()
-  await expect(ropeItem.locator('.home-rope-stock tbody tr')).toHaveCount(6)
-  await expect(ropeItem.locator('.home-rope-stock a[href*="product="]')).toHaveCount(6)
+  await expect(ropeItem).toContainText('1–56 мм')
+  await expect(ropeItem).toContainText('1770')
+  await expect(ropeItem).toContainText('1960')
+  await ropeItem.getByRole('link', { name: 'Выбрать конструкцию' }).click()
+  const construction = page.locator('.rope-sales-constructions li').filter({ hasText: '6×7+FC' })
+  await construction.locator('summary').click()
+  await expect(construction.locator('select')).toHaveValue('')
+  await construction.getByRole('button', { name: 'В заявку' }).click()
+  await expect(page.locator('#rope-sales')).toBeVisible()
+  await construction.locator('select').selectOption({ label: '2,15' })
+  await construction.getByRole('button', { name: 'В заявку' }).click()
+  await expect(page.locator('textarea[name="message"]')).toHaveValue(/конструкция 6×7\+FC; диаметр 2,15 мм/)
   expect((await page.goto('/?product=%D0%A2%D1%80%D1%83%D0%B1%D1%8B#request', { waitUntil: 'domcontentloaded' }))?.status()).toBe(200)
   await expect(page.locator('textarea[name="message"]')).toHaveValue('Трубы: ')
 })

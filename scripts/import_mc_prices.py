@@ -20,6 +20,15 @@ ROOT_TITLES = {
 }
 HEADER_WORDS = {"марка", "диаметр", "стенка", "толщина", "наименование", "полка", "размер", "длина", "ед.изм", "цена"}
 
+# Withdrawn public rows of the old six-position rope list, owner request 2026-11-01.
+# Five matching normalized rows existed in this public export; original sources
+# and the six-row archive remain preserved. Never re-export these identities.
+WITHDRAWN_PUBLIC_ROPE_IDS = {
+    "90abd4b3564d71ca", "b5f2b7568484b1e7", "ef20c80fd7a2a800",
+    "6a663899a93b6ccc", "ef2385c41b559d3d",
+}
+
+
 
 def clean(value: object) -> str:
     if value is None or (isinstance(value, float) and math.isnan(value)):
@@ -287,7 +296,7 @@ def main(price_dir: Path, output: Path) -> None:
     for row in all_rows:
         key = tuple(row[k].casefold() for k in ("category", "product", "designation", "size", "standard"))
         unique[key] = row
-    normalized = sorted(unique.values(), key=lambda r: (r["category"], r["product"], number_key(r["size"]), r["designation"]))
+    normalized = sorted((row for row in unique.values() if row["id"] not in WITHDRAWN_PUBLIC_ROPE_IDS), key=lambda r: (r["category"], r["product"], number_key(r["size"]), r["designation"]))
     strings: list[str] = []
     string_indexes: dict[str, int] = {}
 

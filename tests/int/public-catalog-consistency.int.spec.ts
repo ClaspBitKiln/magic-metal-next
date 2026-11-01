@@ -55,7 +55,7 @@ describe('public catalog source consistency', () => {
       'Швеллер гнутый': '8278-83',
       'Сетки': '23279-2012',
       'Лента упаковочная': '3560-73',
-      'Канаты стальные': '2688-80',
+      'Канаты стальные': 'ГОСТ по конструкции',
     } as const
     for (const [title, standard] of Object.entries(required)) {
       const row = rowByTitle(title)

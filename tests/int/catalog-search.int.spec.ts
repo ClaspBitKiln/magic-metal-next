@@ -70,10 +70,17 @@ describe('catalog search links', () => {
     expect(count(query)).toBeGreaterThan(minimum)
   })
 
-  it.each(['Цинк', 'Баббит', 'Титан', 'Олово', 'Свинец', 'Котельные и крекинговые', 'Нефтяного сортамента'])(
+  it.each(['Канаты стальные', 'Цинк', 'Баббит', 'Титан', 'Олово', 'Свинец', 'Котельные и крекинговые', 'Нефтяного сортамента'])(
     'does not fabricate stock for %s',
     (query) => expect(count(query)).toBe(0),
   )
+
+  it('does not republish withdrawn rope entries through directory or position lookup', () => {
+    const withdrawn = new Set(['90abd4b3564d71ca', 'b5f2b7568484b1e7', 'ef20c80fd7a2a800', '6a663899a93b6ccc', 'ef2385c41b559d3d'])
+    expect(snapshot.rows.some(row => withdrawn.has(row.id!))).toBe(false)
+    expect(snapshot.rows.filter(row => /канат/i.test(row.product))).toEqual([])
+    expect(requestOnlyDirectoryQueries.has('Канаты стальные')).toBe(true)
+  })
 
   it('does not contain service placeholders', () => {
     expect(snapshot.rows.some((row) => /925-11-55|^0(?:[.,]0+)?$/.test(`${row.designation} ${row.size}`))).toBe(false)
@@ -102,6 +109,6 @@ describe('catalog search links', () => {
 
   it('keeps all ten warehouse categories and every product group reachable', () => {
     expect(new Set(snapshot.rows.map((row) => row.category)).size).toBe(10)
-    expect(new Set(snapshot.rows.map((row) => `${row.category}\u001f${row.product}`)).size).toBe(123)
+    expect(new Set(snapshot.rows.map((row) => `${row.category}\u001f${row.product}`)).size).toBe(122)
   })
 })
