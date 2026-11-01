@@ -95,7 +95,7 @@ CMS, Метрика и Desktop не входят в эту правку.
 
 Компактный интерфейс опубликован коммитом
 [`27f914f`](https://github.com/ClaspBitKiln/magic-metal-next/commit/27f914f1ac803e2bf4bb4c16b976c9232c700873).
-[Live Production browser QA #377](https://github.com/ClaspBitKiln/magic-metal-next/actions/runs/41318428565)
+[Live Production browser QA #379](https://github.com/ClaspBitKiln/magic-metal-next/actions/runs/41318428565)
 — Success: Chromium/Firefox проверили новый единый picker и точный текст заявки
 на живом сайте. Это push-прогон; отдельное успешное измерение Lighthouse
 для этой коррекции не заявляется.
