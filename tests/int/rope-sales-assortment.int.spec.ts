@@ -1,4 +1,7 @@
-import { describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { act, createElement } from 'react'
+import { createRoot, type Root } from 'react-dom/client'
+import RopeSalesPicker from '@/components/RopeSalesPicker'
 import { renderToStaticMarkup } from 'react-dom/server'
 import ProductDetailPage from '@/app/(frontend)/(catalog)/produkciya/[slug]/[detail]/page'
 import { ropeSalesAssortment, ropeSalesConstructions, ropeSalesDiameterGroups, ropeSalesRequestHref, ropeSalesSizedRequestHref } from '@/data/ropeSalesAssortment'
@@ -51,37 +54,96 @@ describe('offered steel rope constructions', () => {
     }
   })
 
-  it('renders construction choices and keeps old supply positions separate', async () => {
+  it('shows one compact picker and keeps the complete reference collapsed', async () => {
     const page = await ProductDetailPage({ params: Promise.resolve({ slug: 'metizy-i-svarochnye-materialy', detail: 'kanaty' }) })
     const tree = new DOMParser().parseFromString(renderToStaticMarkup(page), 'text/html')
     const sales = tree.querySelector('#rope-sales')!
     expect(sales).not.toBeNull()
     expect(sales.textContent).toContain('1–56 мм')
-    expect(tree.body.textContent).toContain(ropeSalesAssortment.selectionNote)
     expect(tree.body.textContent).toContain(ropeSalesAssortment.documentNote)
-    for (const construction of ropeSalesConstructions) {
-      const link = Array.from(sales.querySelectorAll('a')).find(node => node.getAttribute('href') === ropeSalesRequestHref(construction))
-      expect(link, construction).toBeDefined()
-      expect(sales.textContent).toContain(construction)
-    }
-    for (const [construction, diameter, display] of [['6×7+FC', 2.15, '2,15'], ['6×19+IWS', 8.25, '8,25'], ['6×19+IWS', 9.75, '9,75']] as const) {
-      const form = Array.from(sales.querySelectorAll('form')).find(node => node.querySelector<HTMLInputElement>('input[name="product"]')?.value.includes(`конструкция ${construction}`))
-      expect(form, `${construction}: ${diameter}`).toBeDefined()
-      expect(form!.getAttribute('method')?.toLowerCase()).toBe('get')
-      expect(form!.getAttribute('action')).toBe('/#request')
-      const select = form!.querySelector<HTMLSelectElement>('select[name="detail"]')!
-      expect(select).not.toBeNull()
-      expect(select.required).toBe(true)
-      expect(select.value).toBe('')
-      expect(Array.from(select.options).map(option => option.value)).toContain(`диаметр ${display} мм`)
-      expect(form!.querySelector('button[type="submit"]')).not.toBeNull()
-      if (construction === '6×7+FC') {
-        expect(Array.from(select.options).map(option => option.value)).not.toContain('диаметр 1 мм')
-        expect(Array.from(select.options).map(option => option.value)).not.toContain('диаметр 56 мм')
-      }
-    }
+    expect(sales.querySelectorAll('.rope-sales-picker')).toHaveLength(1)
+    expect(sales.querySelectorAll('.rope-sales-constructions')).toHaveLength(0)
+    const reference = sales.querySelector<HTMLDetailsElement>('.rope-sales-reference')!
+    expect(reference).not.toBeNull()
+    expect(reference.open).toBe(false)
+    expect(reference.querySelectorAll('tbody tr')).toHaveLength(ropeSalesDiameterGroups.length)
+    for (const construction of ropeSalesConstructions) expect(reference.textContent, construction).toContain(construction)
     expect(tree.querySelectorAll('#stock-assortment tbody tr')).toHaveLength(6)
     expect(tree.querySelector('#stock-assortment')?.textContent).toContain('Отдельные позиции по перечню поставки')
     expect(sales.contains(tree.querySelector('#stock-assortment'))).toBe(false)
+  })
+})
+
+let componentRoot: Root | undefined
+let container: HTMLDivElement | undefined
+beforeEach(() => vi.stubGlobal('IS_REACT_ACT_ENVIRONMENT', true))
+afterEach(() => {
+  if (componentRoot) act(() => componentRoot!.unmount())
+  componentRoot = undefined
+  container?.remove()
+  vi.unstubAllGlobals()
+})
+function renderPicker() {
+  container = document.createElement('div')
+  document.body.appendChild(container)
+  componentRoot = createRoot(container)
+  act(() => componentRoot!.render(createElement(RopeSalesPicker)))
+}
+function control<T extends HTMLInputElement | HTMLSelectElement>(label: string): T {
+  const element = Array.from(container!.querySelectorAll('label')).find(node => node.firstChild?.textContent?.trim() === label)?.querySelector('select,input')
+  if (!element) throw new Error(`Missing control: ${label}`)
+  return element as T
+}
+function change(element: HTMLInputElement | HTMLSelectElement, value: string) {
+  const prototype = element.tagName === 'INPUT' ? HTMLInputElement.prototype : HTMLSelectElement.prototype
+  act(() => {
+    Object.getOwnPropertyDescriptor(prototype, 'value')!.set!.call(element, value)
+    element.dispatchEvent(new Event(element.tagName === 'INPUT' ? 'input' : 'change', { bubbles: true }))
+  })
+}
+const requestLink = () => container!.querySelector<HTMLAnchorElement>('.rope-sales-picker-action a')
+const disabledRequest = () => container!.querySelector<HTMLButtonElement>('.rope-sales-picker-action button')
+
+describe('compact steel rope selection', () => {
+  it('requires a deliberate pair and clears diameter when the construction changes', () => {
+    renderPicker()
+    const construction = control<HTMLSelectElement>('Конструкция каната')
+    let diameter = control<HTMLSelectElement>('Диаметр, мм')
+    expect(construction.value).toBe('')
+    expect(diameter.disabled).toBe(true)
+    expect(disabledRequest()?.disabled).toBe(true)
+    change(construction, '6×7+FC')
+    diameter = control<HTMLSelectElement>('Диаметр, мм')
+    expect(diameter.value).toBe('')
+    expect(diameter.disabled).toBe(false)
+    expect(Array.from(diameter.options).map(option => option.value)).not.toContain('56')
+    change(diameter, '2.15')
+    const href = new URL(requestLink()!.getAttribute('href')!, 'https://magicmet.ru')
+    expect(href.hash).toBe('#request')
+    expect(href.searchParams.get('product')).toContain('конструкция 6×7+FC; диаметр 2,15 мм')
+    change(construction, '6×19+IWS')
+    expect(control<HTMLSelectElement>('Диаметр, мм').value).toBe('')
+    expect(requestLink()).toBeNull()
+    expect(disabledRequest()?.disabled).toBe(true)
+    change(control('Диаметр, мм'), '8.25')
+    const updated = new URL(requestLink()!.getAttribute('href')!, 'https://magicmet.ru')
+    expect(updated.searchParams.get('product')).toContain('конструкция 6×19+IWS; диаметр 8,25 мм')
+    expect(updated.searchParams.get('product')).not.toContain('6×7+FC')
+  })
+
+  it('treats unmapped sizes as requests and prevents invalid manual diameters', () => {
+    renderPicker()
+    change(control('Конструкция каната'), '35×7')
+    const diameter = control<HTMLInputElement>('Диаметр, мм')
+    expect(diameter.tagName).toBe('INPUT')
+    expect(container!.textContent).toContain('Диаметр уточним по запросу.')
+    for (const value of ['0', '-2', '56.1', 'abc']) {
+      change(diameter, value)
+      expect(requestLink()).toBeNull()
+      expect(disabledRequest()?.disabled).toBe(true)
+    }
+    change(diameter, '12,5')
+    const request = new URL(requestLink()!.getAttribute('href')!, 'https://magicmet.ru')
+    expect(request.searchParams.get('product')).toContain('конструкция 35×7; диаметр 12,5 мм — уточнить по запросу')
   })
 })

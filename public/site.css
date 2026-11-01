@@ -2811,37 +2811,53 @@ main:not(.public-home) .product-facts h2 {
   letter-spacing: 0.08em !important;
 }
 
-/* Rope assortment: use the compact catalog scale and native disclosures. */
+/* Rope sales: one calm selector; reference data stays collapsed. */
 .home-rope-sales { align-items: flex-start; }
 .home-rope-sales > div { min-width: 0; flex: 1; }
 .home-rope-sales p { margin: 0 0 10px; font-size: 14px; line-height: 1.5; }
 .home-rope-sales > a { flex-shrink: 0; }
-.home-rope-stock-disclosure { margin-top: 14px; }
-.home-rope-stock-disclosure > summary, .rope-stock-disclosure > summary { cursor: pointer; min-height: 44px; display: list-item; padding: 10px 0; font-size: 14px; line-height: 1.5; font-weight: 700; }
-.home-rope-sales .home-rope-stock { width: 100%; border-collapse: collapse; font-size: 14px; line-height: 1.5; text-align: left; }
-.home-rope-sales .home-rope-stock th, .home-rope-sales .home-rope-stock td { padding: 10px 14px 10px 0; text-align: left; vertical-align: top; font-variant-numeric: tabular-nums; }
-.home-rope-sales .home-rope-stock th:last-child, .home-rope-sales .home-rope-stock td:last-child { padding-right: 0; }
-.home-rope-sales .home-rope-stock a { white-space: nowrap; }
-.rope-sales .rope-sales-constructions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 16px; padding: 0; margin: 18px 0; list-style: none; }
-.rope-sales .rope-sales-constructions li { min-width: 0; }
-.rope-sales .rope-sales-constructions a { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; padding: 8px 10px; border: 1px solid #c5d1e5; color: #0757e8; font-size: 14px; line-height: 1.5; font-weight: 700; }
-.rope-sales .rope-sales-constructions a span:first-child { font-variant-numeric: tabular-nums; }
-.rope-sales .rope-sales-constructions a span:last-child { font-size: 13px; white-space: nowrap; }
-.rope-sales .rope-sales-constructions a:hover { background: #edf3fc; }
-.rope-sales .rope-sales-constructions a:focus-visible { outline: 2px solid #0757e8; outline-offset: 2px; }
-@media (max-width: 920px) { .rope-sales .rope-sales-constructions { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 580px) { .rope-sales .rope-sales-constructions { grid-template-columns: minmax(0, 1fr); } .home-rope-sales > a { flex-shrink: 1; } }
-
-/* Diameters remain bound to their supplied rope construction. */
-.rope-sales .rope-sales-diameter-choice { border: 1px solid #c5d1e5; min-width: 0; }
-.rope-sales .rope-sales-diameter-choice > summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; padding: 8px 10px; color: #0757e8; font-size: 14px; line-height: 1.5; font-weight: 700; cursor: pointer; }
-.rope-sales .rope-sales-diameter-choice > summary span:last-child { font-size: 13px; white-space: nowrap; }
-.rope-sales .rope-sales-diameter-choice > summary:hover { background: #edf3fc; }
-.rope-sales .rope-sales-diameter-choice > summary:focus-visible { outline: 2px solid #0757e8; outline-offset: 2px; }
-.rope-sales .rope-sales-diameter-form { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; padding: 10px; }
-.rope-sales .rope-sales-diameter-form label { display: grid; min-width: 0; gap: 6px; font-size: 14px; line-height: 1.5; }
-.rope-sales .rope-sales-diameter-form select { box-sizing: border-box; width: 100%; min-width: 0; min-height: 44px; padding: 8px; border: 1px solid #aab9d3; background: #fff; color: #10182f; font: inherit; font-variant-numeric: tabular-nums; }
-.rope-sales .rope-sales-diameter-form button { min-height: 44px; padding: 8px 12px; border: 1px solid #0757e8; background: #0757e8; color: #fff; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
-.rope-sales .rope-sales-diameter-form select:focus-visible, .rope-sales .rope-sales-diameter-form button:focus-visible { outline: 2px solid #0757e8; outline-offset: 2px; }
-@media (max-width: 580px) { .rope-sales .rope-sales-diameter-form select { font-size: 16px; } }
-.rope-sales .rope-sales-diameter-choice > a { margin: 0 10px 10px; }
+.rope-stock-disclosure > summary,
+.rope-sales-reference > summary,
+.rope-sales-extra > summary { box-sizing: border-box; cursor: pointer; min-height: 44px; padding: 10px 0; color: #10182f; font-size: 14px; line-height: 1.5; font-weight: 600; }
+.rope-sales .rope-sales-picker { box-sizing: border-box; max-width: 900px; margin: 20px 0; padding: 20px; border: 1px solid #d9e1ef; background: #f7f9fc; color: #10182f; }
+.rope-sales .rope-sales-picker-fields { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) auto; align-items: end; gap: 16px; }
+.rope-sales .rope-sales-picker-fields label { display: grid; min-width: 0; gap: 8px; font-size: 14px; line-height: 1.5; font-weight: 400; }
+.rope-sales .rope-sales-picker-fields select,
+.rope-sales .rope-sales-picker-fields input { box-sizing: border-box; width: 100%; min-width: 0; min-height: 44px; padding: 10px 12px; border: 1px solid #c5cedb; border-radius: 0; background: #fff; color: #10182f; font: inherit; font-variant-numeric: tabular-nums; }
+.rope-sales .rope-sales-picker-fields select:disabled { background: #f0f2f5; color: #647084; }
+.rope-sales .rope-sales-picker-action { min-width: 0; }
+.rope-sales .rope-sales-picker-action > a,
+.rope-sales .rope-sales-picker-action > button { box-sizing: border-box; display: flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 20px; border: 1px solid #0757e8; background: #0757e8; color: #fff; font: inherit; font-size: 14px; line-height: 1.5; font-weight: 600; text-decoration: none; white-space: nowrap; }
+.rope-sales .rope-sales-picker-action > button:disabled { border-color: #d9e1ef; background: #e5e9ef; color: #626e80; cursor: not-allowed; }
+.rope-sales .rope-sales-picker-action > a:hover { background: #064bc8; }
+.rope-sales .rope-sales-picker-note,
+.rope-sales .rope-sales-picker-selection { margin: 14px 0 0; color: #4b596c; font-size: 14px; line-height: 1.5; }
+.rope-sales .rope-sales-picker-selection { color: #10182f; }
+.rope-sales .rope-sales-reference { margin-top: 20px; border-top: 1px solid #d9e1ef; border-bottom: 1px solid #d9e1ef; }
+.rope-sales .rope-sales-reference > summary { padding: 14px 0; }
+.rope-sales .rope-sales-reference-table { width: 100%; border-collapse: collapse; color: #10182f; font-size: 14px; line-height: 1.5; }
+.rope-sales .rope-sales-reference-table th,
+.rope-sales .rope-sales-reference-table td { padding: 12px 16px 12px 0; border-bottom: 1px solid #e4e9f0; text-align: left; vertical-align: top; font-variant-numeric: tabular-nums; font-weight: 400; }
+.rope-sales .rope-sales-reference-table thead th { font-weight: 600; }
+.rope-sales .rope-sales-reference-table th:first-child { width: 30%; }
+.rope-sales .rope-sales-reference-table td { overflow-wrap: anywhere; }
+.rope-sales .rope-sales-reference-table caption { padding: 12px 0; text-align: left; color: #4b596c; font-size: 14px; }
+.rope-sales-extra { margin: 24px 0; }
+.rope-sales .rope-sales-picker-fields select:focus-visible,
+.rope-sales .rope-sales-picker-fields input:focus-visible,
+.rope-sales .rope-sales-picker-action > a:focus-visible,
+.rope-sales-reference > summary:focus-visible,
+.rope-sales-extra > summary:focus-visible { outline: 2px solid #0757e8; outline-offset: 2px; }
+@media (max-width: 700px) {
+  .rope-sales .rope-sales-picker-fields { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .rope-sales .rope-sales-picker-action { grid-column: 1 / -1; }
+}
+@media (max-width: 580px) {
+  .home-rope-sales > a { flex-shrink: 1; }
+  .rope-sales .rope-sales-picker { padding: 16px; }
+  .rope-sales .rope-sales-picker-fields { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .rope-sales .rope-sales-picker-fields select,
+  .rope-sales .rope-sales-picker-fields input { font-size: 16px; }
+  .rope-sales .rope-sales-reference-table th,
+  .rope-sales .rope-sales-reference-table td { padding-right: 12px; }
+}

@@ -11,6 +11,7 @@ import LanguageSwitcher from '@/components/LanguageSwitcher'
 import CatalogStockAssortment from '@/components/CatalogStockAssortment'
 import ProductSizeSeries from '@/components/ProductSizeSeries'
 import MeshRopeRequestPicker from '@/components/MeshRopeRequestPicker'
+import RopeSalesPicker from '@/components/RopeSalesPicker'
 import SpecialProcurementPicker from '@/components/SpecialProcurementPicker'
 import NonferrousRequestPicker from '@/components/NonferrousRequestPicker'
 import { getProductSizeSeries } from '@/data/productSizeSeries'
@@ -76,6 +77,29 @@ export default async function PipeDetailPage({ params }: { params: Promise<{ slu
     {/* The homepage is an HTML Route Handler; document navigation initializes the request form. */}
     {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
     <p className="size-series-intro">Сначала сверьте марку, размеры, исполнение и стандарт. Если спецификация уже готова, отправьте файл сразу — искать в каталоге необязательно. <a href="/#request">Отправить готовую заявку ↗</a></p>
+    {item.categorySlug === 'metizy-i-svarochnye-materialy' && item.slug === 'kanaty' && <section className="product-size-series rope-sales" id="rope-sales" aria-labelledby="rope-sales-title">
+      <h2 id="rope-sales-title">Выбрать стальной канат</h2>
+      <p>Конструкция, диаметр, затем заявка. Диапазон ассортимента — {ropeSalesAssortment.diameterRange}; группы {ropeSalesAssortment.markingGroups.join(' и ')} {ropeSalesAssortment.markingGroupUnit}.</p>
+      <RopeSalesPicker />
+      <details className="rope-sales-reference" id="rope-assortment-table">
+        <summary>Все конструкции и диаметры</summary>
+        <p>{ropeSalesAssortment.selectionNote}</p>
+        <div className="size-series-scroll" tabIndex={0} role="region" aria-label="Перечень конструкций и диаметров канатов">
+          <table className="rope-sales-reference-table">
+            <caption>Стальные канаты: конструкции и доступные диаметры</caption>
+            <thead><tr><th scope="col">Конструкция / исполнения</th><th scope="col">Диаметры, мм</th></tr></thead>
+            <tbody>{ropeSalesDiameterGroups.map(group => <tr key={group.constructions[0]}>
+              <th scope="row">{group.constructions.join(' / ')}</th>
+              <td>{group.diameters.map(value => formatDimensionValue(String(value))).join(' · ')}</td>
+            </tr>)}</tbody>
+          </table>
+        </div>
+        <p><strong>Диаметр подбирается по запросу:</strong> {ropeSalesConstructions.filter(construction => !ropeSalesDiameterGroups.some(group => group.constructions.includes(construction))).join(' · ')}.</p>
+        <p>{ropeSalesAssortment.documentNote}</p>
+        <a href={ropeSalesRequestHref()}>Отправить параметры для подбора →</a>
+      </details>
+      <details className="rope-sales-extra"><summary>Подбор по назначению и дополнительные параметры</summary><MeshRopeRequestPicker type="rope" requestHref={requestHref} /></details>
+    </section>}
     <section className="pipe-spec"><div><p>Продукция</p><h2>Основные параметры для закупки</h2></div><dl>{item.range.map((row) => <div key={row.label}><dt>{row.label}</dt><dd>{row.value}</dd></div>)}</dl></section>
     <section className="pipe-facts"><div className="pipe-facts-heading"><p>Сводные характеристики</p><h2>Марки и применение</h2></div><dl><div><dt>Марки и материалы</dt><dd>{item.grades.map((value) => <span key={value}>{value}</span>)}</dd></div><div><dt>Применение</dt><dd>{item.applications.map((value) => <span key={value}>{value}</span>)}</dd></div></dl></section>
     {item.standards.length > 0 && <section className="pipe-standards"><div><p>Документы</p><h2>Стандарты</h2></div><div>{item.standards.map((value) => { const standard = findStandard(value); return standard ? <Link prefetch={false} href={`/spravochnik-gost/${standard.slug}`} key={value}><span className={/^(?:ГОСТ|ТУ|ОСТ|СТО|ASTM|DIN|ISO|API|EN|AWS)\s+[A-ZА-Я]?\d/u.test(value) ? 'standard-code' : undefined}>{value}</span><small>{standard.status}</small><b>↗</b></Link> : <div key={value}><span className={/^(?:ГОСТ|ТУ|ОСТ|СТО|ASTM|DIN|ISO|API|EN|AWS)\s+[A-ZА-Я]?\d/u.test(value) ? 'standard-code' : undefined}>{value}</span></div> })}</div></section>}
@@ -90,33 +114,7 @@ export default async function PipeDetailPage({ params }: { params: Promise<{ slu
     </section>}
     {(item.categorySlug === 'cvetnye-metally' || item.categorySlug === 'nerzhaveyushchaya-stal') && <NonferrousRequestPicker productSlug={item.slug} requestHref={requestHref} />}
     {((item.categorySlug === 'metizy-i-svarochnye-materialy' && ['lenta-upakovochnaya', 'svarochnye-materialy'].includes(item.slug)) || (item.categorySlug === 'pokovki-i-zagotovki' && item.slug === 'po-chertezhu')) && <SpecialProcurementPicker mode={item.slug === 'lenta-upakovochnaya' ? 'tape' : item.slug === 'svarochnye-materialy' ? 'welding' : 'forging'} requestHref={requestHref} />}
-    {item.categorySlug === 'metizy-i-svarochnye-materialy' && item.slug === 'kanaty' && <section className="product-size-series rope-sales" id="rope-sales" aria-labelledby="rope-sales-title">
-      <h2 id="rope-sales-title">Конструкции стальных канатов</h2>
-      <p className="size-series-intro">Поставляем канаты диаметром {ropeSalesAssortment.diameterRange}. Маркировочные группы: {ropeSalesAssortment.markingGroups.join(' и ')} {ropeSalesAssortment.markingGroupUnit}.</p>
-      <p>{ropeSalesAssortment.wireFinishes.join(' или ')}; {ropeSalesAssortment.surfaceFinishes.join(' или ')}.</p>
-      <p>{ropeSalesAssortment.selectionNote}</p>
-      <p>Размерные ряды по предоставленной матрице; остальные конструкции — подбор по запросу. Откройте конструкцию и выберите диаметр в миллиметрах — оба параметра попадут в заявку.</p>
-      <ul className="rope-sales-constructions" aria-label="Выбор конструкции каната">
-        {ropeSalesConstructions.map(construction => {
-          const diameterGroup = ropeSalesDiameterGroups.find(group => group.constructions.some(value => value === construction))
-          return <li key={construction}>{diameterGroup ? <details className="rope-sales-diameter-choice">
-            <summary><span>{construction}</span><span>Диаметры ▾</span></summary>
-            <form className="rope-sales-diameter-form" method="get" action="/#request">
-              <input type="hidden" name="product" value={`Канаты стальные; конструкция ${construction}`} />
-              <label><span>Диаметр, мм</span><select name="detail" required defaultValue="" aria-label={`Диаметр каната конструкции ${construction}`}>
-                <option value="">Выберите диаметр</option>
-                {diameterGroup.diameters.map(diameter => <option key={diameter} value={`диаметр ${formatDimensionValue(String(diameter))} мм`}>{formatDimensionValue(String(diameter))}</option>)}
-              </select></label>
-              <button type="submit">В заявку →</button>
-            </form>
-            <a href={ropeSalesRequestHref(construction)} aria-label={`Подобрать диаметр каната конструкции ${construction}`}>Уточнить диаметр →</a>
-          </details> : <a href={ropeSalesRequestHref(construction)} aria-label={`В заявку: канат конструкции ${construction}`}><span>{construction}</span><span aria-hidden="true">В заявку →</span></a>}</li>
-        })}
-      </ul>
-      <p className="size-series-intro">{ropeSalesAssortment.documentNote}</p>
-      <a className="size-series-request" href={ropeSalesRequestHref()}>Помочь с подбором каната →</a>
-    </section>}
-    {item.categorySlug === 'metizy-i-svarochnye-materialy' && (item.slug === 'kanaty' || item.slug === 'setki') && <MeshRopeRequestPicker type={item.slug === 'kanaty' ? 'rope' : 'mesh'} requestHref={requestHref} />}
+    {item.categorySlug === 'metizy-i-svarochnye-materialy' && item.slug === 'setki' && <MeshRopeRequestPicker type="mesh" requestHref={requestHref} />}
     {item.categorySlug === 'metizy-i-svarochnye-materialy' && item.slug === 'kanaty' && <section className="product-size-series" id="stock-assortment" aria-labelledby="rope-stock-title">
       <details className="rope-stock-disclosure"><summary id="rope-stock-title">Отдельные позиции по перечню поставки</summary>
       <p className="size-series-intro">Позиции из перечня поставки. Доступное количество, состояние и срок поставки подтвердим по заявке.</p>
