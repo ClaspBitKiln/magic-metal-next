@@ -1,0 +1,121 @@
+import { expect, test, type Locator, type Page, type TestInfo } from '@playwright/test'
+import { guardQaContext } from '../../qa/network-guard'
+
+const railSlugs = ['zheleznodorozhnye', 'kranovye', 'promyshlennye', 'shahtnye', 'tramvaynye', 'specialnye']
+
+test.beforeEach(async ({ context }) => {
+  await guardQaContext(context)
+})
+
+async function fontsReady(page: Page) {
+  await page.evaluate(() => document.fonts.ready)
+}
+
+async function measurements(page: Page, root: Locator) {
+  const documentSize = await page.evaluate(() => ({
+    innerWidth, devicePixelRatio,
+    clientWidth: document.documentElement.clientWidth,
+    scrollWidth: document.documentElement.scrollWidth,
+  }))
+  const elements = await root.evaluate(element => {
+    const visible = (node: Element) => {
+      const rect = node.getBoundingClientRect()
+      return rect.width > 0 && rect.height > 0 && getComputedStyle(node).visibility !== 'hidden'
+    }
+    return [...element.querySelectorAll('h1, h2, p, th, td, dt, dd, summary, a, button, input, select, textarea')]
+      .filter(visible).map(node => {
+        const style = getComputedStyle(node)
+        const rect = node.getBoundingClientRect()
+        return {
+          tag: node.tagName, text: (node.textContent || '').trim().slice(0, 100),
+          fontSize: style.fontSize, lineHeight: style.lineHeight, fontWeight: style.fontWeight,
+          left: rect.left, right: rect.right, width: rect.width, height: rect.height,
+          clientWidth: node.clientWidth, scrollWidth: node.scrollWidth,
+        }
+      })
+  })
+  return { document: documentSize, elements }
+}
+
+async function attachEvidence(page: Page, root: Locator, info: TestInfo, label: string, extra: object = {}) {
+  await info.attach(`${label}-computed-styles`, {
+    body: JSON.stringify({ ...await measurements(page, root), ...extra }, null, 2),
+    contentType: 'application/json',
+  })
+  await info.attach(`${label}-screenshot`, {
+    body: await root.screenshot(), contentType: 'image/png',
+  })
+}
+
+for (const width of [320, 390, 1536]) {
+  test(`rails homepage expanded typography at ${width}px`, async ({ page }, info) => {
+    await page.setViewportSize({ width, height: 1000 })
+    const response = await page.goto('/', { waitUntil: 'domcontentloaded' })
+    expect(response?.status()).toBe(200)
+    await fontsReady(page)
+    const group = page.locator('details.catalog-group').filter({
+      has: page.locator(':scope > summary strong', { hasText: /^Рельсы$/ }),
+    })
+    await expect(group).toHaveCount(1)
+    const before = await page.evaluate(() => ({
+      clientWidth: document.documentElement.clientWidth,
+      scrollWidth: document.documentElement.scrollWidth,
+    }))
+    await group.locator(':scope > summary').click()
+    await expect(group).toHaveAttribute('open', '')
+    const rows = group.locator('details.catalog-item')
+    await expect(rows).toHaveCount(6)
+    // Open every changed row: collapsed content cannot establish wrap/overflow safety.
+    for (const row of await rows.all()) {
+      await row.locator(':scope > summary').click()
+      await expect(row).toHaveAttribute('open', '')
+      await expect(row.locator('a[href*="/produkciya/relsy/"]').first()).toBeVisible()
+    }
+    const after = await measurements(page, group)
+    await attachEvidence(page, group, info, `home-rails-${width}`, { before })
+    // The protected #about logos already overflow at 320px. Record it and reject
+    // any new page overflow from opening rails rather than hiding that baseline.
+    expect(after.document.scrollWidth - after.document.clientWidth).toBeLessThanOrEqual(
+      Math.max(0, before.scrollWidth - before.clientWidth) + 1,
+    )
+    const bounds = await group.boundingBox()
+    expect(bounds).not.toBeNull()
+    expect(bounds!.x).toBeGreaterThanOrEqual(-1)
+    expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(width + 1)
+    const acceptedSize = await page.locator('details.catalog-group > summary strong').first()
+      .evaluate(node => getComputedStyle(node).fontSize)
+    expect(await group.locator(':scope > summary strong').evaluate(node => getComputedStyle(node).fontSize))
+      .toBe(acceptedSize)
+  })
+
+  for (const slug of railSlugs) {
+    test(`rails ${slug} typography at ${width}px`, async ({ page }, info) => {
+      await page.setViewportSize({ width, height: 1000 })
+      // Compare with an existing compact detail page at the same breakpoint.
+      await page.goto('/produkciya/nerzhaveyushchaya-stal/list', { waitUntil: 'domcontentloaded' })
+      await fontsReady(page)
+      const reference = await page.locator('.pipe-hero h1').evaluate(node => ({
+        fontSize: getComputedStyle(node).fontSize, lineHeight: getComputedStyle(node).lineHeight,
+      }))
+      const response = await page.goto(`/produkciya/relsy/${slug}`, { waitUntil: 'domcontentloaded' })
+      expect(response?.status()).toBe(200)
+      await fontsReady(page)
+      const main = page.locator('main.pipe-detail')
+      await expect(main.locator('h1')).toBeVisible()
+      await expect(main.locator('.pipe-spec h2')).toBeVisible()
+      const measured = await measurements(page, main)
+      await attachEvidence(page, main, info, `rails-${slug}-${width}`, { reference })
+      expect(measured.document.scrollWidth).toBeLessThanOrEqual(measured.document.clientWidth + 1)
+      expect(await main.locator('.pipe-hero h1').evaluate(node => getComputedStyle(node).fontSize))
+        .toBe(reference.fontSize)
+      // Request navigation is verified without clicking/submitting a real request.
+      const request = main.locator('.pipe-conversion a')
+      await expect(request).toHaveAttribute('href', /^\/(?:\?[^#]+)?#request$/)
+      const box = await request.boundingBox()
+      expect(box).not.toBeNull()
+      expect(box!.height).toBeGreaterThanOrEqual(44)
+      expect(box!.x).toBeGreaterThanOrEqual(-1)
+      expect(box!.x + box!.width).toBeLessThanOrEqual(width + 1)
+    })
+  }
+}

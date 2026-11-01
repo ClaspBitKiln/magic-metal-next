@@ -262,9 +262,9 @@ test('the restored catalog exposes details and preserves request prefill', async
   expect((await page.goto(baseURL!, { waitUntil: 'domcontentloaded' }))?.status()).toBe(200)
   await expect(page.locator('.catalog-group')).toHaveCount(11)
   await expect(page.locator('.catalog-group[open]')).toHaveCount(0)
-  await expect(page.locator('.catalog-item')).toHaveCount(59)
+  await expect(page.locator('.catalog-item')).toHaveCount(62)
   const links = page.locator('.home-size-series > a')
-  await expect(links).toHaveCount(59)
+  await expect(links).toHaveCount(62)
   const railLinks = page.locator('.home-size-series a[href^="/produkciya/relsy/"]')
   await expect(railLinks).toHaveCount(3)
   expect(await railLinks.evaluateAll((nodes: HTMLAnchorElement[]) => nodes.map(node => node.getAttribute('href')))).toEqual([

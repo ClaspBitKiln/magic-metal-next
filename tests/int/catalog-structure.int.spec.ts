@@ -259,17 +259,17 @@ describe('normative product size tables', () => {
     expect(tree.querySelectorAll('tbody tr')).toHaveLength(table.rows.length)
   })
 
-  it('preserves the 54 normative and specification cards alongside the separate stock assortment', () => {
+  it('preserves the 57 normative and specification cards alongside the separate stock assortment', () => {
     const cards = [...pipeCatalog, ...productDetailCatalog, ...sdtCatalog.map((item) => ({ ...item, categorySlug: 'sdt' }))]
       .filter((item) => !['krug-i-kvadrat', 'balka-shveller-ugolok', 'kanaty', 'armatura', 'katanka', 'profnastil', 'list-riflenyj', 'list-pvl', 'shveller-gnutyj', 'shestigrannik', 'setki', 'lenta-upakovochnaya'].includes(item.slug))
-    expect(cards).toHaveLength(54)
+    expect(cards).toHaveLength(57)
     expect(cards.filter((item) => getProductSizeSeries(item.categorySlug, item.slug).length)).toHaveLength(45)
     expect(cards.filter((item) => getProductSizeSeries(item.categorySlug, item.slug).some((table) => table.kind !== 'requirements'))).toHaveLength(38)
     expect(cards.filter((item) => {
       const tables = getProductSizeSeries(item.categorySlug, item.slug)
       return tables.length && tables.every((table) => table.kind === 'requirements')
     })).toHaveLength(7)
-    expect(cards.filter((item) => !getProductSizeSeries(item.categorySlug, item.slug).length && getDimensionGuide(item.categorySlug, item.slug))).toHaveLength(9)
+    expect(cards.filter((item) => !getProductSizeSeries(item.categorySlug, item.slug).length && getDimensionGuide(item.categorySlug, item.slug))).toHaveLength(12)
     expect(cards.filter((item) => !getProductSizeSeries(item.categorySlug, item.slug).length && !getDimensionGuide(item.categorySlug, item.slug))).toEqual([])
     expect(new Set(dimensionGuides.map((g) => `${g.categorySlug}/${g.productSlug}`)).size).toBe(dimensionGuides.length)
   })
