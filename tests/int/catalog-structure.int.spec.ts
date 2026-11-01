@@ -79,8 +79,8 @@ describe('unified homepage catalog', () => {
       const canonical = productDetailCatalog.find(item => item.categorySlug === 'cvetnye-metally' && href === `/produkciya/cvetnye-metally/${item.slug}`)
       if (canonical) expect(columns[2]).toBe(canonical.grades.join(' · '))
     }
-    expect(Array.from(served.querySelectorAll('.home-size-series a'), link => link.getAttribute('href'))).toEqual(
-      Array.from(tree.querySelectorAll('.home-size-series a'), link => link.getAttribute('href')),
+    expect(Array.from(served.querySelectorAll('.home-size-series > a'), link => link.getAttribute('href'))).toEqual(
+      Array.from(tree.querySelectorAll('.home-size-series > a'), link => link.getAttribute('href')),
     )
     expect(tree.querySelectorAll('.catalog-group')).toHaveLength(homeCatalogGroups.length)
     expect(tree.querySelectorAll('.catalog-item')).toHaveLength(homeCatalogItemCount)

@@ -91,8 +91,8 @@ export default async function PipeDetailPage({ params }: { params: Promise<{ slu
     {((item.categorySlug === 'metizy-i-svarochnye-materialy' && ['lenta-upakovochnaya', 'svarochnye-materialy'].includes(item.slug)) || (item.categorySlug === 'pokovki-i-zagotovki' && item.slug === 'po-chertezhu')) && <SpecialProcurementPicker mode={item.slug === 'lenta-upakovochnaya' ? 'tape' : item.slug === 'svarochnye-materialy' ? 'welding' : 'forging'} requestHref={requestHref} />}
     {item.categorySlug === 'metizy-i-svarochnye-materialy' && (item.slug === 'kanaty' || item.slug === 'setki') && <MeshRopeRequestPicker type={item.slug === 'kanaty' ? 'rope' : 'mesh'} requestHref={requestHref} />}
     {item.categorySlug === 'metizy-i-svarochnye-materialy' && item.slug === 'kanaty' && <section className="product-size-series" id="stock-assortment" aria-labelledby="rope-stock-title">
-      <h2 id="rope-stock-title">Позиции складского ассортимента</h2>
-      <p className="size-series-intro">Стандартный складской ассортимент. Доступное количество, состояние и срок поставки подтвердим по заявке.</p>
+      <h2 id="rope-stock-title">Поставляемые канаты</h2>
+      <p className="size-series-intro">Позиции из перечня поставки. Доступное количество, состояние и срок поставки подтвердим по заявке.</p>
       <p>Выберите позицию: обозначение и исполнение попадут в заявку. Диаметр и единицу размера уточним по спецификации.</p>
       <div className="size-series-scroll" tabIndex={0} role="region" aria-label="Складской ассортимент канатов">
         <table className="size-series-generic-list">
