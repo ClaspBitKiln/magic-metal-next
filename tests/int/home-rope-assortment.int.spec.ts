@@ -2,40 +2,28 @@ import { describe, expect, it, vi } from 'vitest'
 import { gzipSync } from 'node:zlib'
 import { GET as getHomepage } from '@/app/(frontend)/route'
 
-const sourceRows = [
-  ['13', 'ГОСТ 2688-80'],
-  ['24', 'ГОСТ 2688-80'],
-  ['2', 'ГОСТ 3063-80 полимерн. покр 2/3 уценка'],
-  ['15', 'ГОСТ 7668-80'],
-  ['18', 'ГОСТ 7668-80'],
-  ['20', 'ГОСТ 7668-80'],
-]
-
 describe('homepage steel rope assortment', () => {
-  it('offers all six source positions directly from the native catalog disclosure', async () => {
+  it('presents the offered diameter range separately from construction designations', async () => {
+    const html = await (await getHomepage()).text()
+    const document = new DOMParser().parseFromString(html, 'text/html')
+    const link = document.querySelector('a[href^="/produkciya/metizy-i-svarochnye-materialy/kanaty"]')!
+    const rope = link.closest('details.catalog-item')!
+    expect(rope.querySelector('summary')?.textContent).toContain('1–56 мм')
+    expect(rope.textContent).toContain('1770')
+    expect(rope.textContent).toContain('1960')
+    expect(rope.textContent).toContain('Конструкции')
+    expect(rope.textContent).not.toMatch(/все диаметры для каждой конструкции|всегда в наличии/i)
+  })
+
+  it('opens the full offered assortment instead of limiting the homepage to six old positions', async () => {
     const html = await (await getHomepage()).text()
     const document = new DOMParser().parseFromString(html, 'text/html')
     const detail = document.querySelector('a[href="/produkciya/metizy-i-svarochnye-materialy/kanaty"]')
     expect(detail).not.toBeNull()
     const rope = detail!.closest('details.catalog-item')!
     expect(rope.querySelector('summary strong')?.textContent).toBe('Канаты стальные')
-    const rows = Array.from(rope.querySelectorAll('tbody tr'))
-    expect(rows).toHaveLength(sourceRows.length)
-    for (const [index, [size, description]] of sourceRows.entries()) {
-      const row = rows[index]
-      expect(row.textContent).toContain(size)
-      expect(row.textContent).toContain(description)
-      const request = row.querySelector('a[href*="product="]')?.getAttribute('href')
-      expect(request).toBeTruthy()
-      const url = new URL(request!, 'https://magicmet.ru')
-      expect(url.pathname).toBe('/')
-      expect(url.hash).toBe('#request')
-      const product = url.searchParams.get('product')!
-      expect(product).toContain(description)
-      expect(product).toContain(`размерное обозначение ${size}`)
-      expect(product).toContain('единица учёта м')
-    }
-    expect(detail!.textContent).toContain('Размеры, описание и ГОСТы')
+    expect(rope.querySelectorAll('tbody tr')).toHaveLength(0)
+    expect(detail!.textContent).toContain('Выбрать конструкцию')
   })
 
   it('keeps the analytics-enabled homepage within its compressed HTML budget', async () => {

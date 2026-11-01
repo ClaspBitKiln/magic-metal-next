@@ -2810,3 +2810,38 @@ main:not(.public-home) .product-facts h2 {
   line-height: 1.35 !important;
   letter-spacing: 0.08em !important;
 }
+
+/* Rope assortment: use the compact catalog scale and native disclosures. */
+.home-rope-sales { align-items: flex-start; }
+.home-rope-sales > div { min-width: 0; flex: 1; }
+.home-rope-sales p { margin: 0 0 10px; font-size: 14px; line-height: 1.5; }
+.home-rope-sales > a { flex-shrink: 0; }
+.home-rope-stock-disclosure { margin-top: 14px; }
+.home-rope-stock-disclosure > summary, .rope-stock-disclosure > summary { cursor: pointer; min-height: 44px; display: list-item; padding: 10px 0; font-size: 14px; line-height: 1.5; font-weight: 700; }
+.home-rope-sales .home-rope-stock { width: 100%; border-collapse: collapse; font-size: 14px; line-height: 1.5; text-align: left; }
+.home-rope-sales .home-rope-stock th, .home-rope-sales .home-rope-stock td { padding: 10px 14px 10px 0; text-align: left; vertical-align: top; font-variant-numeric: tabular-nums; }
+.home-rope-sales .home-rope-stock th:last-child, .home-rope-sales .home-rope-stock td:last-child { padding-right: 0; }
+.home-rope-sales .home-rope-stock a { white-space: nowrap; }
+.rope-sales .rope-sales-constructions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 16px; padding: 0; margin: 18px 0; list-style: none; }
+.rope-sales .rope-sales-constructions li { min-width: 0; }
+.rope-sales .rope-sales-constructions a { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; padding: 8px 10px; border: 1px solid #c5d1e5; color: #0757e8; font-size: 14px; line-height: 1.5; font-weight: 700; }
+.rope-sales .rope-sales-constructions a span:first-child { font-variant-numeric: tabular-nums; }
+.rope-sales .rope-sales-constructions a span:last-child { font-size: 13px; white-space: nowrap; }
+.rope-sales .rope-sales-constructions a:hover { background: #edf3fc; }
+.rope-sales .rope-sales-constructions a:focus-visible { outline: 2px solid #0757e8; outline-offset: 2px; }
+@media (max-width: 920px) { .rope-sales .rope-sales-constructions { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 580px) { .rope-sales .rope-sales-constructions { grid-template-columns: minmax(0, 1fr); } .home-rope-sales > a { flex-shrink: 1; } }
+
+/* Diameters remain bound to their supplied rope construction. */
+.rope-sales .rope-sales-diameter-choice { border: 1px solid #c5d1e5; min-width: 0; }
+.rope-sales .rope-sales-diameter-choice > summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; padding: 8px 10px; color: #0757e8; font-size: 14px; line-height: 1.5; font-weight: 700; cursor: pointer; }
+.rope-sales .rope-sales-diameter-choice > summary span:last-child { font-size: 13px; white-space: nowrap; }
+.rope-sales .rope-sales-diameter-choice > summary:hover { background: #edf3fc; }
+.rope-sales .rope-sales-diameter-choice > summary:focus-visible { outline: 2px solid #0757e8; outline-offset: 2px; }
+.rope-sales .rope-sales-diameter-form { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; padding: 10px; }
+.rope-sales .rope-sales-diameter-form label { display: grid; min-width: 0; gap: 6px; font-size: 14px; line-height: 1.5; }
+.rope-sales .rope-sales-diameter-form select { box-sizing: border-box; width: 100%; min-width: 0; min-height: 44px; padding: 8px; border: 1px solid #aab9d3; background: #fff; color: #10182f; font: inherit; font-variant-numeric: tabular-nums; }
+.rope-sales .rope-sales-diameter-form button { min-height: 44px; padding: 8px 12px; border: 1px solid #0757e8; background: #0757e8; color: #fff; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
+.rope-sales .rope-sales-diameter-form select:focus-visible, .rope-sales .rope-sales-diameter-form button:focus-visible { outline: 2px solid #0757e8; outline-offset: 2px; }
+@media (max-width: 580px) { .rope-sales .rope-sales-diameter-form select { font-size: 16px; } }
+.rope-sales .rope-sales-diameter-choice > a { margin: 0 10px 10px; }
