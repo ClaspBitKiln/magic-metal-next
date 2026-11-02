@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "project": "MagicMetal / Сайт1",
+  "repository": "ClaspBitKiln/magic-metal-next",
+  "defaultBranch": "main",
+  "bootstrapDocs": [
+    "docs/ai/CROSS_ACCOUNT_BOOTSTRAP.md",
+    "docs/ai/PROJECT_SYSTEM_ARCHITECTURE.md",
+    "AGENTS.md",
+    "MEMORY.md",
+    "docs/ai/AI_SITE_WORKFLOW.md"
+  ],
+  "automation": {
+    "onCodePushAndPR": ".github/workflows/site1-cross-account-validation.yml",
+    "userLoginTrigger": "not-configured",
+    "authRequired": true,
+    "workflowDeployment": "never",
+    "productionApprovalRequired": true
+  },
+  "run": {
+    "node": "22",
+    "install": "npm ci",
+    "lint": "npm run lint",
+    "integration": "npm run test:int",
+    "localDev": "npm run dev",
+    "build": "npm run build -- --webpack"
+  },
+  "integrations": {
+    "github": "authorized-connector",
+    "vercel": "separate-access",
+    "postgres": "server-secret",
+    "obsidian": "windows-task-local",
+    "desktopCommander": "device-consent",
+    "firecrawl": "per-account",
+    "tinyfish": "per-account"
+  },
+  "security": {
+    "shareSecretsAcrossAccounts": false,
+    "allowForcePush": false,
+    "allowDirectProductionDeploy": false,
+    "allowRealRequestSubmissionsDuringQA": false
+  }
+}
