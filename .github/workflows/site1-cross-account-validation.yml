@@ -1,0 +1,87 @@
+name: Site1 cross-account validation
+
+on:
+  workflow_dispatch:
+    inputs:
+      checks:
+        description: Validation level; never deploys
+        required: true
+        type: choice
+        default: focused
+        options:
+          - focused
+          - full-integration
+  push:
+    branches:
+      - 'review/**'
+      - 'feat/**'
+      - 'fix/**'
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'scripts/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/site1-cross-account-validation.yml'
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'scripts/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/site1-cross-account-validation.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site1-validate-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Checkout exact revision
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Use Node.js 22 and npm cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Clean install
+        run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Focused checks
+        if: github.event_name != 'workflow_dispatch' || inputs.checks == 'focused'
+        run: |
+          npx vitest run --config ./vitest.config.mts \
+            tests/int/catalog-structure.int.spec.ts \
+            tests/int/public-catalog-consistency.int.spec.ts \
+            tests/int/approved-nonferrous-grades.int.spec.ts \
+            tests/int/ferroalloy-search.int.spec.ts \
+            tests/int/specification-triage.int.spec.ts \
+            tests/int/request-consent.int.spec.ts \
+            tests/int/request-spam.int.spec.ts
+      - name: Full integration suite
+        if: github.event_name == 'workflow_dispatch' && inputs.checks == 'full-integration'
+        run: npm run test:int
+      - name: Store run metadata
+        if: always()
+        run: |
+          mkdir -p site1-validation-report
+          printf 'run=%s\nref=%s\nsha=%s\ntrigger=%s\n' \
+            "$GITHUB_RUN_ID" "$GITHUB_REF" "$GITHUB_SHA" "$GITHUB_EVENT_NAME" \
+            > site1-validation-report/run.txt
+      - name: Upload execution metadata
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: site1-validation-${{ github.run_id }}
+          path: site1-validation-report/
+          retention-days: 30
