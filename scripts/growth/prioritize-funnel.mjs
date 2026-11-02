@@ -13,6 +13,10 @@ if (!input.source || input.source !== 'metrika_aggregated_visits') errors.push('
 if (!input.period || !/^\d{4}-\d{2}-\d{2}\/\d{4}-\d{2}-\d{2}$/.test(input.period)) errors.push('period must be YYYY-MM-DD/YYYY-MM-DD')
 if (input.robot_filter !== 'excluded') errors.push('Robot traffic must be excluded')
 if (input.cohort_verified !== true) errors.push('Visit cohort comparability must be independently verified')
+if (input.unit !== 'distinct_visits') errors.push('Counts must be distinct visits, never event reaches or pageviews')
+if (input.goal_semantics_verified !== true) errors.push('Goal semantics must be checked against client and server behavior')
+if (input.excludes_internal_qa !== true) errors.push('Internal QA visits must be excluded')
+if (input.source_report_id === undefined || typeof input.source_report_id !== 'string' || !/^[a-zA-Z0-9_.-]{6,100}$/.test(input.source_report_id)) errors.push('Non-sensitive source_report_id is required for traceability')
 const minimum = 30
 const report = { period:input.period ?? null, source:'aggregated visit cohort', automatic_site_edits:false, verification_status:'requires_human_review', errors, recommendations:[] }
 if (!errors.length) {
