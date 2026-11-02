@@ -1,11 +1,12 @@
 import { describe, expect, it } from 'vitest'
 import { productDetailCatalog } from '@/data/productDetailCatalog'
 import { homeCatalogGroups } from '@/data/homeCatalog'
+import { alloyGradeExamples } from '@/data/alloyGradeExamples'
 
 const gradesBySlug: Record<string, string[]> = {
   med: ['М00', 'М0', 'М1', 'М2', 'М3', 'М1р', 'М2р', 'М3р'],
   latun: ['Л63', 'Л68', 'Л70', 'Л80', 'Л90', 'Л96', 'ЛС59-1'],
-  bronza: ['БрОФ6,5-0,15', 'БрБ2', 'БрАМц9-2', 'БрАЖ9-4'],
+  bronza: ['БрОФ6,5-0,15', 'БрБ2', 'БрАМц9-2', 'БрАЖ9-4', 'БрОЦС5-5-5', 'БрО10Ф1'],
   alyuminij: ['АД0', 'АД1', 'А5', 'А7', 'АМг2', 'АМг3', 'АМг6', 'Д16', 'В95'],
   titan: ['ВТ1-0', 'ВТ1-00', 'ВТ6', 'ВТ14', 'ОТ4', 'ПТ3В'],
   olovo: ['О1', 'О1пч', 'О2', 'О3', 'О4'],
@@ -22,6 +23,7 @@ describe('approved grade lists on detail pages and homepage', () => {
       expect(home).toBeDefined()
       expect(home!.grades).toBe(detail!.grades.join(' · '))
       for (const grade of required) expect(detail!.grades).toContain(grade)
+      if (slug === 'bronza') expect(alloyGradeExamples.bronza.grades).toEqual(detail!.grades)
       expect(home!.grades).not.toMatch(/после подтверждения заявки|марка .*по заявке/i)
     })
   }
