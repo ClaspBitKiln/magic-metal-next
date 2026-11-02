@@ -1,8 +1,6 @@
 name: Research swarm (safe, read-only)
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '17 4 * * 1,4'
 permissions:
   contents: read
 concurrency:
