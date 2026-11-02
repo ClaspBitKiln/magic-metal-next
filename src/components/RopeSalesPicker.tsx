@@ -1,10 +1,17 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useSyncExternalStore } from 'react'
 import { getRopeSalesDiameters, ropeSalesConstructions, ropeSalesSizedRequestHref } from '@/data/ropeSalesAssortment'
 import { formatDimensionValue } from '@/lib/dimensionDisplay'
 
+// Keep server and initial hydration markup identical; do not accept input
+// until React has attached the controlled selector's event handlers.
+const subscribeToHydration = () => () => {}
+const clientReady = () => true
+const serverReady = () => false
+
 export default function RopeSalesPicker() {
+  const ready = useSyncExternalStore(subscribeToHydration, clientReady, serverReady)
   const [construction, setConstruction] = useState('')
   const [diameter, setDiameter] = useState('')
   const diameters = getRopeSalesDiameters(construction)
@@ -25,7 +32,7 @@ export default function RopeSalesPicker() {
   return <div className="rope-sales-picker" role="region" aria-label="Выбор каната">
     <div className="rope-sales-picker-fields">
       <label>Конструкция каната
-        <select value={construction} required onChange={event => { setConstruction(event.target.value); setDiameter('') }}>
+        <select value={construction} required disabled={!ready} onChange={event => { setConstruction(event.target.value); setDiameter('') }}>
           <option value="">Выберите конструкцию</option>
           {ropeSalesConstructions.map(value => <option key={value} value={value}>{value}</option>)}
         </select>

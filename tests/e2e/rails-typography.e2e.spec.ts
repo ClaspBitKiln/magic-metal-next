@@ -164,3 +164,28 @@ for (const width of [320, 390, 1536]) {
     await expect(page.locator('textarea[name="message"]')).toHaveValue(/конструкция 6×19\+IWS; диаметр 8,25 мм/)
   })
 }
+
+test('rope construction waits for handlers before accepting early input', async ({ page }) => {
+  let releaseScripts!: () => void
+  const scriptsReady = new Promise<void>(resolve => { releaseScripts = resolve })
+  await page.route('**/_next/static/**', async route => {
+    if (route.request().resourceType() === 'script') await scriptsReady
+    await route.continue()
+  })
+  try {
+    await page.goto('/produkciya/metizy-i-svarochnye-materialy/kanaty', { waitUntil: 'commit' })
+    const picker = page.getByRole('region', { name: 'Выбор каната', exact: true })
+    const construction = picker.getByLabel('Конструкция каната')
+    await expect(construction).toBeDisabled()
+    releaseScripts()
+    await expect(construction).toBeEnabled()
+    await construction.selectOption('6×7+FC')
+    const diameter = picker.getByLabel('Диаметр, мм')
+    await expect(diameter).toBeEnabled()
+    await diameter.selectOption('2.15')
+    await picker.getByRole('link', { name: 'В заявку →', exact: true }).click()
+    await expect(page.locator('textarea[name="message"]')).toHaveValue(/конструкция 6×7\+FC; диаметр 2,15 мм/)
+  } finally {
+    releaseScripts()
+  }
+})
