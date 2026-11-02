@@ -116,7 +116,7 @@ test('root is the approved dependency-free public page', async ({ page, baseURL,
     expect(source.status()).toBe(200)
     return source.body()
   })
-  expect(gzipSync(sourceHtml).byteLength).toBeLessThan(15_000)
+  // The approved eight-card ferroalloy section adds ~325 compressed bytes; keep a 16 KB ceiling.\n  expect(gzipSync(sourceHtml).byteLength).toBeLessThan(16_000)
   expect(heroRequests, 'Responsive preload and picture must share one image request').toEqual([heroSource])
   expect(failures, failures.join('\n')).toEqual([])
 })
@@ -205,7 +205,7 @@ test('public image assets stay complete and within their delivery budgets', asyn
 
 test('the committed static document remains safely compressible', async () => {
   const html = await readFile('public/home-static.html')
-  expect(gzipSync(html).byteLength).toBeLessThan(15_000)
+  expect(gzipSync(html).byteLength).toBeLessThan(16_000)
   expect(html.toString()).not.toMatch(/<(script|link)[^>]+_next/)
   expect(html.toString()).not.toContain('site.css')
 })
@@ -269,11 +269,11 @@ test('approved client emblems decode after lazy loading', async ({ page, baseURL
 
 test('the restored catalog exposes details and preserves request prefill', async ({ page, baseURL }) => {
   expect((await page.goto(baseURL!, { waitUntil: 'domcontentloaded' }))?.status()).toBe(200)
-  await expect(page.locator('.catalog-group')).toHaveCount(11)
+  await expect(page.locator('.catalog-group')).toHaveCount(12)
   await expect(page.locator('.catalog-group[open]')).toHaveCount(0)
-  await expect(page.locator('.catalog-item')).toHaveCount(62)
+  await expect(page.locator('.catalog-item')).toHaveCount(70)
   const links = page.locator('.home-size-series > a')
-  await expect(links).toHaveCount(62)
+  await expect(links).toHaveCount(70)
   const railLinks = page.locator('.home-size-series a[href^="/produkciya/relsy/"]')
   await expect(railLinks).toHaveCount(6)
   expect(await railLinks.evaluateAll((nodes: HTMLAnchorElement[]) => nodes.map(node => node.getAttribute('href')))).toEqual([
