@@ -107,7 +107,7 @@ test('root is the approved dependency-free public page', async ({ page, baseURL 
   expect(await page.locator('script[src*="_next"]').count()).toBe(0)
   expect(await page.locator('link[href*="_next"]').count()).toBe(0)
   expect(await page.locator('link[rel="stylesheet"]').count()).toBe(0)
-  // Budget locally recompressed response HTML, before browser DOM mutations.
+  // Budget locally recompressed response HTML before browser DOM mutation.
   expect(gzipSync(await response!.body()).byteLength).toBeLessThan(15_000)
   expect(heroRequests, 'Responsive preload and picture must share one image request').toEqual([heroSource])
   expect(failures, failures.join('\n')).toEqual([])
@@ -286,16 +286,42 @@ test('the restored catalog exposes details and preserves request prefill', async
   await expect(ropeItem).toContainText('1770')
   await expect(ropeItem).toContainText('1960')
   await ropeItem.getByRole('link', { name: 'Выбрать конструкцию' }).click()
-  const construction = page.locator('.rope-sales-constructions li').filter({ hasText: '6×7+FC' })
-  await construction.locator('summary').click()
-  await expect(construction.locator('select')).toHaveValue('')
-  await construction.getByRole('button', { name: 'В заявку' }).click()
-  await expect(page.locator('#rope-sales')).toBeVisible()
-  await construction.locator('select').selectOption({ label: '2,15' })
-  await construction.getByRole('button', { name: 'В заявку' }).click()
+  const picker = page.getByRole('region', { name: 'Выбор каната', exact: true })
+  await picker.getByLabel('Конструкция каната').selectOption('6×7+FC')
+  await expect(picker.getByRole('button', { name: 'В заявку' })).toBeDisabled()
+  await picker.getByLabel('Диаметр, мм').selectOption('2.15')
+  await picker.getByRole('link', { name: 'В заявку' }).click()
   await expect(page.locator('textarea[name="message"]')).toHaveValue(/конструкция 6×7\+FC; диаметр 2,15 мм/)
   expect((await page.goto('/?product=%D0%A2%D1%80%D1%83%D0%B1%D1%8B#request', { waitUntil: 'domcontentloaded' }))?.status()).toBe(200)
   await expect(page.locator('textarea[name="message"]')).toHaveValue('Трубы: ')
+})
+
+test('rope search preserves the exact sales construction and diameter', async ({ page }) => {
+  await page.goto(`/poisk?q=${encodeURIComponent('6×7+FC 2,15 мм')}`)
+  const result = page.getByRole('link', { name: 'Открыть: Канат 6×7+FC — Ø 2,15 мм', exact: true })
+  await expect(result).toBeVisible()
+  await result.click()
+  await expect(page.locator('textarea[name="message"]')).toHaveValue(/конструкция 6×7\+FC; диаметр 2,15 мм/)
+  await page.goto(`/poisk?q=${encodeURIComponent('6×7+FC 56 мм')}`)
+  await expect(page.getByRole('heading', { name: 'Точного совпадения пока нет' })).toBeVisible()
+  await expect(page.locator('.search-results > a')).toHaveCount(0)
+})
+
+test('bronze square and hexagonal requests use the correct dimension', async ({ page }) => {
+  for (const [shape, label, designation] of [
+    ['Квадрат', 'Сторона, мм', 'Квадрат 20,5×20,5 мм'],
+    ['Шестигранник', 'Размер под ключ, мм', 'Шестигранник под ключ 20,5 мм'],
+  ]) {
+    await page.goto('/produkciya/cvetnye-metally/bronza')
+    const picker = page.getByRole('region', { name: 'Подбор цветного металла по форме и размерам' })
+    await picker.getByRole('combobox', { name: 'Форма изделия', exact: true }).selectOption(shape)
+    await picker.getByLabel(label, { exact: true }).fill('20.5')
+    await picker.getByRole('combobox', { name: 'Марка металла / сплава', exact: true }).selectOption('БрАМц9-2')
+    await expect(picker.getByLabel('ГОСТ / ТУ / ASTM', { exact: true })).toHaveValue('')
+    await picker.locator('.nonferrous-submit').click()
+    await expect(page.locator('textarea[name="message"]')).toHaveValue(new RegExp(designation))
+    await expect(page.locator('textarea[name="message"]')).toHaveValue(/марка сплава БрАМц9-2/)
+  }
 })
 
 test('www hostname redirects to the canonical apex host', async ({ page, baseURL }) => {

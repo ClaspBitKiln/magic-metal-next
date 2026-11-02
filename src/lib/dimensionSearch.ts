@@ -1,6 +1,8 @@
 import { productSizeSeries } from '@/data/productSizeSeries'
 import { searchIndex, normalizeSearch, type SearchItem } from '@/data/searchIndex'
 import { numericSizeKey, parseSizeSearchQuery } from './sizeSearchQuery'
+import { parseRopeSearchQuery } from './ropeSearchQuery'
+import { searchRopeAssortment } from './ropeSearch'
 
 const productsByPath = new Map<string, SearchItem>()
 for (const item of searchIndex) {
@@ -9,6 +11,8 @@ for (const item of searchIndex) {
 
 // Server-only caller: the normative tables never enter the search page's client bundle.
 export function searchDimensionTables(query: string): SearchItem[] {
+  const rope = parseRopeSearchQuery(query)
+  if (rope) return searchRopeAssortment(rope)
   const parsed = parseSizeSearchQuery(query)
   if (!parsed) return []
   // These qualifiers describe the query, independently of the candidate table.

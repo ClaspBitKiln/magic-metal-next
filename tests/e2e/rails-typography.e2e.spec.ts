@@ -121,63 +121,43 @@ for (const width of [320, 390, 1536]) {
 }
 
 for (const width of [320, 390, 1536]) {
-  test(`rope sales preserve discrete diameters and accessible layout at ${width}px`, async ({ page }, info) => {
+  test(`compact rope picker preserves exact source diameters at ${width}px`, async ({ page }, info) => {
     await page.setViewportSize({ width, height: 1000 })
-    const response = await page.goto('/produkciya/metizy-i-svarochnye-materialy/kanaty', { waitUntil: 'domcontentloaded' })
-    expect(response?.status()).toBe(200)
+    expect((await page.goto('/produkciya/metizy-i-svarochnye-materialy/kanaty'))?.status()).toBe(200)
     await fontsReady(page)
     const sales = page.locator('#rope-sales')
-    const constructions = sales.locator('.rope-sales-constructions > li')
-    await expect(constructions).toHaveCount(68)
-    await expect(sales.locator('form.rope-sales-diameter-form')).toHaveCount(47)
+    const picker = sales.locator('.rope-sales-picker')
+    const construction = picker.getByLabel('Конструкция каната')
+    const diameter = picker.getByLabel('Диаметр, мм', { exact: true })
+    await expect(construction.locator('option')).toHaveCount(69)
     await expect(page.locator('#stock-assortment')).toHaveCount(0)
     await expect(page.locator('#shenwei-matrix')).toHaveCount(0)
-    const fc = constructions.filter({ has: page.locator('summary > span:first-child', { hasText: /^6×7\+FC$/ }) })
-    const iws = constructions.filter({ has: page.locator('summary > span:first-child', { hasText: /^6×19\+IWS$/ }) })
-    const sevenIws = constructions.filter({ has: page.locator('summary > span:first-child', { hasText: /^6×7\+IWS$/ }) })
-    for (const entry of [fc, iws, sevenIws]) {
-      await expect(entry).toHaveCount(1)
-      await entry.locator('summary').click()
-      await expect(entry.locator('select')).toBeVisible()
-    }
-    const fcLabels = await fc.locator('select option').allTextContents()
-    expect(fcLabels.slice(1)).toEqual([
+    await construction.selectOption('6×7+FC')
+    expect((await diameter.locator('option').allTextContents()).slice(1)).toEqual([
       '1,8', '2', '2,15', '2,5', '3', '3,05', '3,6', '4', '4,1', '4,5', '5', '5,4',
       '6', '7', '8', '9', '10', '11', '12', '13', '14', '16', '18', '20', '22', '24',
       '26', '28', '30', '32', '34', '36',
     ])
-    const sevenIwsLabels = await sevenIws.locator('select option').allTextContents()
+    await diameter.selectOption('2.15')
+    await construction.selectOption('6×7+IWS')
+    await expect(diameter).toHaveValue('')
+    const sevenIwsLabels = await diameter.locator('option').allTextContents()
     expect(sevenIwsLabels.slice(1)).toHaveLength(31)
     expect(sevenIwsLabels).not.toContain('4,1')
-    const iwsLabels = await iws.locator('select option').allTextContents()
-    expect(iwsLabels).toContain('8,25')
-    expect(iwsLabels).toContain('4')
-    expect(iwsLabels).toContain('5')
+    await construction.selectOption('6×19+IWS')
+    const iwsLabels = await diameter.locator('option').allTextContents()
     expect(iwsLabels.slice(1)).toHaveLength(35)
-    for (const entry of [fc, iws, sevenIws]) {
-      const select = entry.locator('select')
-      await select.focus()
-      await expect(select).toBeFocused()
-      const box = await select.boundingBox()
-      expect(box).not.toBeNull()
-      expect(box!.x).toBeGreaterThanOrEqual(-1)
-      expect(box!.x + box!.width).toBeLessThanOrEqual(width + 1)
-    }
-    const layout = await measurements(page, sales)
-    expect(layout.document.scrollWidth).toBeLessThanOrEqual(layout.document.clientWidth + 1)
-    await attachEvidence(page, sales, info, `rope-sales-${width}`)
-    // GET navigation exercises the real form-to-request transfer. The shared
-    // guard blocks POST and analytics, so this never sends a lead.
-    await fc.locator('select').selectOption({ label: '2,15' })
-    await fc.getByRole('button', { name: /В заявку/ }).click()
-    await expect(page.locator('textarea[name="message"]')).toHaveValue(/конструкция 6×7\+FC; диаметр 2,15 мм/)
-    await page.goto('/produkciya/metizy-i-svarochnye-materialy/kanaty', { waitUntil: 'domcontentloaded' })
-    const iwsAgain = page.locator('.rope-sales-constructions > li').filter({
-      has: page.locator('summary > span:first-child', { hasText: /^6×19\+IWS$/ }),
-    })
-    await iwsAgain.locator('summary').click()
-    await iwsAgain.locator('select').selectOption({ label: '8,25' })
-    await iwsAgain.getByRole('button', { name: /В заявку/ }).click()
+    expect(iwsLabels).toEqual(expect.arrayContaining(['4', '5', '8,25']))
+    await diameter.focus()
+    await expect(diameter).toBeFocused()
+    const reference = sales.locator('#rope-assortment-table')
+    await reference.locator(':scope > summary').click()
+    await expect(reference.locator('tbody tr')).toHaveCount(25)
+    const measured = await measurements(page, sales)
+    expect(measured.document.scrollWidth).toBeLessThanOrEqual(measured.document.clientWidth + 1)
+    await attachEvidence(page, sales, info, `compact-ropes-${width}`)
+    await diameter.selectOption('8.25')
+    await picker.getByRole('link', { name: 'В заявку →', exact: true }).click()
     await expect(page.locator('textarea[name="message"]')).toHaveValue(/конструкция 6×19\+IWS; диаметр 8,25 мм/)
   })
 }
