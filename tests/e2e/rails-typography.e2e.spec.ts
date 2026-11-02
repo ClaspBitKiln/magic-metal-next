@@ -133,7 +133,8 @@ for (const width of [320, 390, 1536]) {
     await expect(page.locator('#stock-assortment')).toHaveCount(0)
     await expect(page.locator('#shenwei-matrix')).toHaveCount(0)
     await construction.selectOption('6×7+FC')
-    expect((await diameter.locator('option').allTextContents()).slice(1)).toEqual([
+    await expect(diameter.locator('option')).toHaveText([
+      'Выберите диаметр',
       '1,8', '2', '2,15', '2,5', '3', '3,05', '3,6', '4', '4,1', '4,5', '5', '5,4',
       '6', '7', '8', '9', '10', '11', '12', '13', '14', '16', '18', '20', '22', '24',
       '26', '28', '30', '32', '34', '36',
@@ -141,10 +142,12 @@ for (const width of [320, 390, 1536]) {
     await diameter.selectOption('2.15')
     await construction.selectOption('6×7+IWS')
     await expect(diameter).toHaveValue('')
+    await expect(diameter.locator('option')).toHaveCount(32)
     const sevenIwsLabels = await diameter.locator('option').allTextContents()
     expect(sevenIwsLabels.slice(1)).toHaveLength(31)
     expect(sevenIwsLabels).not.toContain('4,1')
     await construction.selectOption('6×19+IWS')
+    await expect(diameter.locator('option')).toHaveCount(36)
     const iwsLabels = await diameter.locator('option').allTextContents()
     expect(iwsLabels.slice(1)).toHaveLength(35)
     expect(iwsLabels).toEqual(expect.arrayContaining(['4', '5', '8,25']))
