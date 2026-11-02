@@ -170,17 +170,16 @@ describe('additional stock assortment', () => {
   })
 })
 
-describe('rope stock assortment', () => {
-  it('keeps six stock rows separate from normative tables and transfers exact execution into the request', async () => {
+describe('rope source matrices', () => {
+  it('replaces the six old stock rows with source-attributed Shenwei matrices, separate from normative tables', async () => {
     const page = await ProductDetailPage({ params: Promise.resolve({ slug: 'metizy-i-svarochnye-materialy', detail: 'kanaty' }) })
     const tree = new DOMParser().parseFromString(renderToStaticMarkup(page), 'text/html')
-    const rows = [...tree.querySelectorAll('#stock-assortment tbody tr')]
-    expect(rows).toHaveLength(6)
-    expect(rows.map(row => row.querySelector('th')?.textContent)).toEqual(['13', '24', '2', '15', '18', '20'])
-    expect(tree.querySelector('#stock-assortment')?.textContent).not.toMatch(/₽|руб\.|RUB|НДС|Цена/)
-    const selected = new URL(rows[2].querySelector('a')!.getAttribute('href')!, 'https://magicmet.ru')
-    expect(selected.hash).toBe('#request')
-    expect(selected.searchParams.get('product')).toContain('ГОСТ 3063-80 полимерн. покр 2/3 уценка; размерное обозначение 2; единица учёта м')
+    expect(tree.querySelector('#stock-assortment')).toBeNull()
+    expect(tree.querySelectorAll('.rope-sales-picker label:first-child select option')).toHaveLength(69)
+    expect(tree.querySelectorAll('.rope-sales-picker')).toHaveLength(1)
+    expect(tree.querySelectorAll('.rope-sales-reference-table tbody tr')).toHaveLength(25)
+    expect(tree.body.textContent).not.toContain('2/3 уценка')
+    expect(tree.querySelector('#rope-sales')?.textContent).toContain('конструкции')
     expect(tree.querySelectorAll('#sizes')).toHaveLength(0)
     expect(getProductSizeSeries('metizy-i-svarochnye-materialy', 'kanaty')).toEqual([])
   })
@@ -259,17 +258,17 @@ describe('normative product size tables', () => {
     expect(tree.querySelectorAll('tbody tr')).toHaveLength(table.rows.length)
   })
 
-  it('preserves the 54 normative and specification cards alongside the separate stock assortment', () => {
+  it('preserves the 57 normative and specification cards alongside the separate stock assortment', () => {
     const cards = [...pipeCatalog, ...productDetailCatalog, ...sdtCatalog.map((item) => ({ ...item, categorySlug: 'sdt' }))]
       .filter((item) => !['krug-i-kvadrat', 'balka-shveller-ugolok', 'kanaty', 'armatura', 'katanka', 'profnastil', 'list-riflenyj', 'list-pvl', 'shveller-gnutyj', 'shestigrannik', 'setki', 'lenta-upakovochnaya'].includes(item.slug))
-    expect(cards).toHaveLength(54)
+    expect(cards).toHaveLength(57)
     expect(cards.filter((item) => getProductSizeSeries(item.categorySlug, item.slug).length)).toHaveLength(45)
     expect(cards.filter((item) => getProductSizeSeries(item.categorySlug, item.slug).some((table) => table.kind !== 'requirements'))).toHaveLength(38)
     expect(cards.filter((item) => {
       const tables = getProductSizeSeries(item.categorySlug, item.slug)
       return tables.length && tables.every((table) => table.kind === 'requirements')
     })).toHaveLength(7)
-    expect(cards.filter((item) => !getProductSizeSeries(item.categorySlug, item.slug).length && getDimensionGuide(item.categorySlug, item.slug))).toHaveLength(9)
+    expect(cards.filter((item) => !getProductSizeSeries(item.categorySlug, item.slug).length && getDimensionGuide(item.categorySlug, item.slug))).toHaveLength(12)
     expect(cards.filter((item) => !getProductSizeSeries(item.categorySlug, item.slug).length && !getDimensionGuide(item.categorySlug, item.slug))).toEqual([])
     expect(new Set(dimensionGuides.map((g) => `${g.categorySlug}/${g.productSlug}`)).size).toBe(dimensionGuides.length)
   })

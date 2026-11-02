@@ -107,7 +107,8 @@ test('root is the approved dependency-free public page', async ({ page, baseURL 
   expect(await page.locator('script[src*="_next"]').count()).toBe(0)
   expect(await page.locator('link[href*="_next"]').count()).toBe(0)
   expect(await page.locator('link[rel="stylesheet"]').count()).toBe(0)
-  expect(gzipSync(Buffer.from(await page.content())).byteLength).toBeLessThan(15_000)
+  // Budget locally recompressed response HTML before browser DOM mutation.
+  expect(gzipSync(await response!.body()).byteLength).toBeLessThan(15_000)
   expect(heroRequests, 'Responsive preload and picture must share one image request').toEqual([heroSource])
   expect(failures, failures.join('\n')).toEqual([])
 })
@@ -262,15 +263,18 @@ test('the restored catalog exposes details and preserves request prefill', async
   expect((await page.goto(baseURL!, { waitUntil: 'domcontentloaded' }))?.status()).toBe(200)
   await expect(page.locator('.catalog-group')).toHaveCount(11)
   await expect(page.locator('.catalog-group[open]')).toHaveCount(0)
-  await expect(page.locator('.catalog-item')).toHaveCount(59)
+  await expect(page.locator('.catalog-item')).toHaveCount(62)
   const links = page.locator('.home-size-series > a')
-  await expect(links).toHaveCount(59)
+  await expect(links).toHaveCount(62)
   const railLinks = page.locator('.home-size-series a[href^="/produkciya/relsy/"]')
-  await expect(railLinks).toHaveCount(3)
+  await expect(railLinks).toHaveCount(6)
   expect(await railLinks.evaluateAll((nodes: HTMLAnchorElement[]) => nodes.map(node => node.getAttribute('href')))).toEqual([
     '/produkciya/relsy/zheleznodorozhnye#sizes',
-    '/produkciya/relsy/promyshlennye#sizes',
     '/produkciya/relsy/kranovye#sizes',
+    '/produkciya/relsy/promyshlennye#sizes',
+    '/produkciya/relsy/shahtnye#sizes',
+    '/produkciya/relsy/tramvaynye#sizes',
+    '/produkciya/relsy/specialnye#sizes',
   ])
   const hrefs = await links.evaluateAll((nodes: HTMLAnchorElement[]) => nodes.map((node) => node.getAttribute('href')))
   expect(hrefs.every((href) => href?.startsWith('/produkciya/') || href?.startsWith('/spravochnik-nalichiya?q=') || (href?.startsWith('/?product=') && href.endsWith('#request')))).toBe(true)

@@ -35,11 +35,12 @@ export type RopeSalesDiameterGroup = {
 // Only explicit construction/diameter pairs are listed, within 1–56 mm.
 // Constructions absent here remain available for a specification request.
 export const ropeSalesDiameterGroups: readonly RopeSalesDiameterGroup[] = [
-  { constructions: ['6×7+FC', '6×7+IWS'], diameters: [1.8, 2, 2.15, 2.5, 3, 3.05, 3.6, 4, 4.1, 4.5, 5, 5.4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36] },
+  { constructions: ['6×7+FC'], diameters: [1.8, 2, 2.15, 2.5, 3, 3.05, 3.6, 4, 4.1, 4.5, 5, 5.4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36] },
+  { constructions: ['6×7+IWS'], diameters: [1.8, 2, 2.15, 2.5, 3, 3.05, 3.6, 4, 4.5, 5, 5.4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36] },
   { constructions: ['6×9W+FC', '6×9W+IWRC'], diameters: [1.8, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36] },
   { constructions: ['6×12+7FC'], diameters: [8, 9, 10, 11, 12, 13, 14, 16, 18, 20, 22, 24, 26, 28, 32] },
   { constructions: ['6×19+FC'], diameters: [3, 3.3, 3.6, 4, 4.2, 4.8, 5, 5.1, 6, 6.2, 7, 8, 9, 10, 11, 12, 13, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46] },
-  { constructions: ['6×19+IWS'], diameters: [3, 3.2, 3.6, 4.2, 5.1, 6, 7, 7.5, 8, 8.25, 9, 9.75, 10, 11, 12, 13, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46] },
+  { constructions: ['6×19+IWS'], diameters: [3, 3.2, 3.6, 4, 4.2, 5, 5.1, 6, 7, 7.5, 8, 8.25, 9, 9.75, 10, 11, 12, 13, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46] },
   { constructions: ['6×19+IWRC'], diameters: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46] },
   { constructions: ['6×19S+FC', '6×19S+IWS', '6×19S+IWRC'], diameters: [6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40] },
   { constructions: ['6×19W+FC', '6×19W+IWS', '6×19W+IWRC'], diameters: [6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40] },

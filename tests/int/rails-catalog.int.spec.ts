@@ -5,12 +5,16 @@ import CategoryPage, { generateStaticParams as categories } from '@/app/(fronten
 import DetailPage, { generateStaticParams as details } from '@/app/(frontend)/(catalog)/produkciya/[slug]/[detail]/page'
 import sitemap from '@/app/(frontend)/sitemap'
 import { searchIndex, normalizeSearch } from '@/data/searchIndex'
+import { getProductDetailItem } from '@/data/productDetailCatalog'
 
-const railSlugs = ['zheleznodorozhnye', 'promyshlennye', 'kranovye']
+const railSlugs = ['zheleznodorozhnye', 'kranovye', 'promyshlennye', 'shahtnye', 'tramvaynye', 'specialnye']
 const railTitles: Record<string, string> = {
   zheleznodorozhnye: 'Рельсы железнодорожные',
   promyshlennye: 'Рельсы узкоколейные',
   kranovye: 'Рельсы крановые',
+  shahtnye: 'Рельсы шахтные и промышленные',
+  tramvaynye: 'Рельсы трамвайные',
+  specialnye: 'Рельсы специальные',
 }
 const href = (slug: string) => `/produkciya/relsy/${slug}`
 
@@ -51,6 +55,16 @@ describe('rails catalog customer journey', () => {
     const product = JSON.parse(page.querySelector('script[type="application/ld+json"]')!.textContent!)
     expect(product.name).toBe(railTitles[slug])
     expect(product.offers).toBeUndefined()
+  })
+
+  it('keeps industrial and narrow-gauge profiles within their documented standard scopes', () => {
+    const industrial = getProductDetailItem('relsy', 'shahtnye')!
+    expect(industrial.standards.join(' ')).toContain('ГОСТ 30165-94')
+    expect(industrial.standards.join(' ')).not.toContain('51685')
+    expect(industrial.range[0].value).toContain('Р33')
+    const light = getProductDetailItem('relsy', 'promyshlennye')!
+    expect(light.standards).toContain('ГОСТ 5876-82 — технические требования Р18, Р24')
+    expect(light.standards.find(value => value.includes('5876'))).not.toMatch(/Р8|Р11/)
   })
 
   it('allows prose requirements to wrap while preserving actual standard-code styling', async () => {

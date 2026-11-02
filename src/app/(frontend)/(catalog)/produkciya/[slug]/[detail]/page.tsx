@@ -16,7 +16,6 @@ import SpecialProcurementPicker from '@/components/SpecialProcurementPicker'
 import NonferrousRequestPicker from '@/components/NonferrousRequestPicker'
 import { getProductSizeSeries } from '@/data/productSizeSeries'
 import { getDimensionGuide } from '@/data/dimensionGuides'
-import { ropeStockAssortment, ropeStockRequestHref } from '@/data/ropeStockAssortment.server'
 import { ropeSalesAssortment, ropeSalesConstructions, ropeSalesDiameterGroups, ropeSalesRequestHref } from '@/data/ropeSalesAssortment'
 import './pipe-detail.css'
 
@@ -115,23 +114,6 @@ export default async function PipeDetailPage({ params }: { params: Promise<{ slu
     {(item.categorySlug === 'cvetnye-metally' || item.categorySlug === 'nerzhaveyushchaya-stal') && <NonferrousRequestPicker productSlug={item.slug} requestHref={requestHref} />}
     {((item.categorySlug === 'metizy-i-svarochnye-materialy' && ['lenta-upakovochnaya', 'svarochnye-materialy'].includes(item.slug)) || (item.categorySlug === 'pokovki-i-zagotovki' && item.slug === 'po-chertezhu')) && <SpecialProcurementPicker mode={item.slug === 'lenta-upakovochnaya' ? 'tape' : item.slug === 'svarochnye-materialy' ? 'welding' : 'forging'} requestHref={requestHref} />}
     {item.categorySlug === 'metizy-i-svarochnye-materialy' && item.slug === 'setki' && <MeshRopeRequestPicker type="mesh" requestHref={requestHref} />}
-    {item.categorySlug === 'metizy-i-svarochnye-materialy' && item.slug === 'kanaty' && <section className="product-size-series" id="stock-assortment" aria-labelledby="rope-stock-title">
-      <details className="rope-stock-disclosure"><summary id="rope-stock-title">Отдельные позиции по перечню поставки</summary>
-      <p className="size-series-intro">Позиции из перечня поставки. Доступное количество, состояние и срок поставки подтвердим по заявке.</p>
-      <p>Выберите позицию: обозначение и исполнение попадут в заявку. Диаметр и единицу размера уточним по спецификации.</p>
-      <div className="size-series-scroll" tabIndex={0} role="region" aria-label="Отдельные позиции канатов по перечню поставки">
-        <table className="size-series-generic-list">
-          <caption>Канаты: размерные обозначения, исполнение и выбор для заявки</caption>
-          <thead><tr><th scope="col">Размерное обозначение</th><th scope="col">Исполнение</th><th scope="col">Выбрать</th></tr></thead>
-          <tbody>{ropeStockAssortment.map(row => <tr key={row.id}>
-            <th scope="row">{formatDimensionValue(row.sizeDesignation)}</th>
-            <td>{row.description}<br /><small>Единица учёта: {row.unit}</small></td>
-            <td><a href={ropeStockRequestHref(row)} aria-label={`Запросить канат: ${row.description}, размерное обозначение ${row.sizeDesignation}`}>В заявку →</a></td>
-          </tr>)}</tbody>
-        </table>
-      </div>
-      </details>
-    </section>}
     <CatalogStockAssortment categorySlug={item.categorySlug} slug={item.slug} title={item.title} />
     <ProductSizeSeries series={getProductSizeSeries(item.categorySlug, item.slug)} guide={getDimensionGuide(item.categorySlug, item.slug)} requestHref={requestHref} />
     <section className="pipe-intro"><h2>Подбор по назначению, а не только по размеру</h2><div><p>{item.intro}</p><a href={requestHref}>Отправить заявку →</a></div></section>

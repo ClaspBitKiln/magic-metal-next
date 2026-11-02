@@ -23,6 +23,7 @@ describe('homepage steel rope assortment', () => {
     const rope = detail!.closest('details.catalog-item')!
     expect(rope.querySelector('summary strong')?.textContent).toBe('Канаты стальные')
     expect(rope.querySelectorAll('tbody tr')).toHaveLength(0)
+    expect(document.querySelector('.home-rope-stock')).toBeNull()
     expect(detail!.textContent).toContain('Выбрать конструкцию')
   })
 
