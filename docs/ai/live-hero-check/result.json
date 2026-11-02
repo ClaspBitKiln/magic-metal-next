@@ -1,1 +1,651 @@
-{"passed":false,"error":"Runner setup failed before browser checks"}
+{
+  "checkedAt": "2026-11-02T06:20:53.678Z",
+  "sourceCommit": "b507080129b806a264e3ba3e4533676dc033ffeb",
+  "results": [
+    {
+      "width": 390,
+      "mobile": true,
+      "blocked": false,
+      "http": 200,
+      "photo": {
+        "complete": true,
+        "width": 1,
+        "height": 1,
+        "currentSrc": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+        "displayWidth": 0,
+        "displayHeight": 0
+      },
+      "sourcePhoto": null,
+      "heroBytes": 0,
+      "heroRequests": 0,
+      "headingVisible": true,
+      "actionVisible": true,
+      "javaScriptEnabled": false,
+      "delivery": {
+        "contentEncoding": "br",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "vary": "Sec-CH-Prefers-Color-Scheme",
+        "contentLength": null,
+        "cdnCache": "HIT"
+      },
+      "overflow": 0,
+      "background": "rgb(247, 250, 255)",
+      "mosaicDisplay": "none",
+      "footerColors": [
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)"
+      ],
+      "footerWeights": [
+        "700",
+        "700",
+        "700",
+        "700",
+        "700"
+      ],
+      "overlayDisplay": "none",
+      "activePreloads": 0,
+      "htmlGzip": 14731,
+      "passed": true
+    },
+    {
+      "width": 390,
+      "mobile": true,
+      "blocked": true,
+      "http": 200,
+      "photo": {
+        "complete": true,
+        "width": 1,
+        "height": 1,
+        "currentSrc": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+        "displayWidth": 0,
+        "displayHeight": 0
+      },
+      "sourcePhoto": null,
+      "heroBytes": 0,
+      "heroRequests": 0,
+      "headingVisible": true,
+      "actionVisible": true,
+      "javaScriptEnabled": false,
+      "delivery": {
+        "contentEncoding": "br",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+        "contentLength": null,
+        "cdnCache": "HIT"
+      },
+      "overflow": 0,
+      "background": "rgb(247, 250, 255)",
+      "mosaicDisplay": "none",
+      "footerColors": [
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)"
+      ],
+      "footerWeights": [
+        "700",
+        "700",
+        "700",
+        "700",
+        "700"
+      ],
+      "overlayDisplay": "none",
+      "activePreloads": 0,
+      "htmlGzip": 14731,
+      "passed": true
+    },
+    {
+      "width": 390,
+      "mobile": true,
+      "blocked": false,
+      "http": 200,
+      "photo": {
+        "complete": true,
+        "width": 1,
+        "height": 1,
+        "currentSrc": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+        "displayWidth": 0,
+        "displayHeight": 0
+      },
+      "sourcePhoto": null,
+      "heroBytes": 0,
+      "heroRequests": 0,
+      "headingVisible": true,
+      "actionVisible": true,
+      "javaScriptEnabled": true,
+      "delivery": {
+        "contentEncoding": "br",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "vary": "Sec-CH-Prefers-Color-Scheme",
+        "contentLength": null,
+        "cdnCache": "HIT"
+      },
+      "overflow": 0,
+      "background": "rgb(247, 250, 255)",
+      "mosaicDisplay": "none",
+      "footerColors": [
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)"
+      ],
+      "footerWeights": [
+        "700",
+        "700",
+        "700",
+        "700",
+        "700"
+      ],
+      "overlayDisplay": "none",
+      "activePreloads": 0,
+      "htmlGzip": 14731,
+      "passed": true
+    },
+    {
+      "width": 390,
+      "mobile": true,
+      "blocked": true,
+      "http": 200,
+      "photo": {
+        "complete": true,
+        "width": 1,
+        "height": 1,
+        "currentSrc": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+        "displayWidth": 0,
+        "displayHeight": 0
+      },
+      "sourcePhoto": null,
+      "heroBytes": 0,
+      "heroRequests": 0,
+      "headingVisible": true,
+      "actionVisible": true,
+      "javaScriptEnabled": true,
+      "delivery": {
+        "contentEncoding": "br",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+        "contentLength": null,
+        "cdnCache": "HIT"
+      },
+      "overflow": 0,
+      "background": "rgb(247, 250, 255)",
+      "mosaicDisplay": "none",
+      "footerColors": [
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)"
+      ],
+      "footerWeights": [
+        "700",
+        "700",
+        "700",
+        "700",
+        "700"
+      ],
+      "overlayDisplay": "none",
+      "activePreloads": 0,
+      "htmlGzip": 14731,
+      "passed": true
+    },
+    {
+      "width": 900,
+      "mobile": true,
+      "blocked": false,
+      "http": 200,
+      "photo": {
+        "complete": true,
+        "width": 1,
+        "height": 1,
+        "currentSrc": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+        "displayWidth": 0,
+        "displayHeight": 0
+      },
+      "sourcePhoto": null,
+      "heroBytes": 0,
+      "heroRequests": 0,
+      "headingVisible": true,
+      "actionVisible": true,
+      "javaScriptEnabled": false,
+      "delivery": {
+        "contentEncoding": "br",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "vary": "Sec-CH-Prefers-Color-Scheme",
+        "contentLength": null,
+        "cdnCache": "HIT"
+      },
+      "overflow": 0,
+      "background": "rgb(247, 250, 255)",
+      "mosaicDisplay": "none",
+      "footerColors": [
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)"
+      ],
+      "footerWeights": [
+        "700",
+        "700",
+        "700",
+        "700",
+        "700"
+      ],
+      "overlayDisplay": "none",
+      "activePreloads": 0,
+      "htmlGzip": 14731,
+      "passed": true
+    },
+    {
+      "width": 900,
+      "mobile": true,
+      "blocked": true,
+      "http": 200,
+      "photo": {
+        "complete": true,
+        "width": 1,
+        "height": 1,
+        "currentSrc": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+        "displayWidth": 0,
+        "displayHeight": 0
+      },
+      "sourcePhoto": null,
+      "heroBytes": 0,
+      "heroRequests": 0,
+      "headingVisible": true,
+      "actionVisible": true,
+      "javaScriptEnabled": false,
+      "delivery": {
+        "contentEncoding": "br",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+        "contentLength": null,
+        "cdnCache": "HIT"
+      },
+      "overflow": 0,
+      "background": "rgb(247, 250, 255)",
+      "mosaicDisplay": "none",
+      "footerColors": [
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)"
+      ],
+      "footerWeights": [
+        "700",
+        "700",
+        "700",
+        "700",
+        "700"
+      ],
+      "overlayDisplay": "none",
+      "activePreloads": 0,
+      "htmlGzip": 14731,
+      "passed": true
+    },
+    {
+      "width": 900,
+      "mobile": true,
+      "blocked": false,
+      "http": 200,
+      "photo": {
+        "complete": true,
+        "width": 1,
+        "height": 1,
+        "currentSrc": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+        "displayWidth": 0,
+        "displayHeight": 0
+      },
+      "sourcePhoto": null,
+      "heroBytes": 0,
+      "heroRequests": 0,
+      "headingVisible": true,
+      "actionVisible": true,
+      "javaScriptEnabled": true,
+      "delivery": {
+        "contentEncoding": "br",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "vary": "Sec-CH-Prefers-Color-Scheme",
+        "contentLength": null,
+        "cdnCache": "HIT"
+      },
+      "overflow": 0,
+      "background": "rgb(247, 250, 255)",
+      "mosaicDisplay": "none",
+      "footerColors": [
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)"
+      ],
+      "footerWeights": [
+        "700",
+        "700",
+        "700",
+        "700",
+        "700"
+      ],
+      "overlayDisplay": "none",
+      "activePreloads": 0,
+      "htmlGzip": 14731,
+      "passed": true
+    },
+    {
+      "width": 900,
+      "mobile": true,
+      "blocked": true,
+      "http": 200,
+      "photo": {
+        "complete": true,
+        "width": 1,
+        "height": 1,
+        "currentSrc": "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+        "displayWidth": 0,
+        "displayHeight": 0
+      },
+      "sourcePhoto": null,
+      "heroBytes": 0,
+      "heroRequests": 0,
+      "headingVisible": true,
+      "actionVisible": true,
+      "javaScriptEnabled": true,
+      "delivery": {
+        "contentEncoding": "br",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+        "contentLength": null,
+        "cdnCache": "HIT"
+      },
+      "overflow": 0,
+      "background": "rgb(247, 250, 255)",
+      "mosaicDisplay": "none",
+      "footerColors": [
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)"
+      ],
+      "footerWeights": [
+        "700",
+        "700",
+        "700",
+        "700",
+        "700"
+      ],
+      "overlayDisplay": "none",
+      "activePreloads": 0,
+      "htmlGzip": 14731,
+      "passed": true
+    },
+    {
+      "width": 1536,
+      "mobile": false,
+      "blocked": false,
+      "http": 200,
+      "photo": {
+        "complete": true,
+        "width": 1536,
+        "height": 864,
+        "currentSrc": "https://magicmet.ru/images/hero-photo-1440.avif?v=20261028-sharp1",
+        "displayWidth": 1536,
+        "displayHeight": 864
+      },
+      "sourcePhoto": {
+        "width": 1440,
+        "height": 810
+      },
+      "heroBytes": 73884,
+      "heroRequests": 1,
+      "headingVisible": true,
+      "actionVisible": true,
+      "javaScriptEnabled": false,
+      "delivery": {
+        "contentEncoding": "br",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "vary": "Sec-CH-Prefers-Color-Scheme",
+        "contentLength": null,
+        "cdnCache": "HIT"
+      },
+      "overflow": 0,
+      "background": "rgb(247, 250, 255)",
+      "mosaicDisplay": "block",
+      "footerColors": [
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)"
+      ],
+      "footerWeights": [
+        "700",
+        "700",
+        "700",
+        "700",
+        "700"
+      ],
+      "overlayDisplay": "block",
+      "activePreloads": 1,
+      "htmlGzip": 14731,
+      "passed": true
+    },
+    {
+      "width": 1536,
+      "mobile": false,
+      "blocked": true,
+      "http": 200,
+      "photo": {
+        "complete": true,
+        "width": 0,
+        "height": 0,
+        "currentSrc": "https://magicmet.ru/images/hero-photo-1440.avif?v=20261028-sharp1",
+        "displayWidth": 1536,
+        "displayHeight": 864
+      },
+      "sourcePhoto": null,
+      "heroBytes": 0,
+      "heroRequests": 1,
+      "headingVisible": true,
+      "actionVisible": true,
+      "javaScriptEnabled": false,
+      "delivery": {
+        "contentEncoding": "br",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+        "contentLength": null,
+        "cdnCache": "HIT"
+      },
+      "overflow": 0,
+      "background": "rgb(247, 250, 255)",
+      "mosaicDisplay": "block",
+      "footerColors": [
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)"
+      ],
+      "footerWeights": [
+        "700",
+        "700",
+        "700",
+        "700",
+        "700"
+      ],
+      "overlayDisplay": "block",
+      "activePreloads": 1,
+      "htmlGzip": 14731,
+      "passed": true
+    },
+    {
+      "width": 1536,
+      "mobile": false,
+      "blocked": false,
+      "http": 200,
+      "photo": {
+        "complete": true,
+        "width": 1536,
+        "height": 864,
+        "currentSrc": "https://magicmet.ru/images/hero-photo-1440.avif?v=20261028-sharp1",
+        "displayWidth": 1536,
+        "displayHeight": 864
+      },
+      "sourcePhoto": {
+        "width": 1440,
+        "height": 810
+      },
+      "heroBytes": 73884,
+      "heroRequests": 1,
+      "headingVisible": true,
+      "actionVisible": true,
+      "javaScriptEnabled": true,
+      "delivery": {
+        "contentEncoding": "br",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "vary": "Sec-CH-Prefers-Color-Scheme",
+        "contentLength": null,
+        "cdnCache": "HIT"
+      },
+      "overflow": 0,
+      "background": "rgb(247, 250, 255)",
+      "mosaicDisplay": "block",
+      "footerColors": [
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)"
+      ],
+      "footerWeights": [
+        "700",
+        "700",
+        "700",
+        "700",
+        "700"
+      ],
+      "overlayDisplay": "block",
+      "activePreloads": 1,
+      "htmlGzip": 14731,
+      "passed": true
+    },
+    {
+      "width": 1536,
+      "mobile": false,
+      "blocked": true,
+      "http": 200,
+      "photo": {
+        "complete": true,
+        "width": 0,
+        "height": 0,
+        "currentSrc": "https://magicmet.ru/images/hero-photo-1440.avif?v=20261028-sharp1",
+        "displayWidth": 1536,
+        "displayHeight": 864
+      },
+      "sourcePhoto": null,
+      "heroBytes": 0,
+      "heroRequests": 1,
+      "headingVisible": true,
+      "actionVisible": true,
+      "javaScriptEnabled": true,
+      "delivery": {
+        "contentEncoding": "br",
+        "cacheControl": "public, max-age=0, must-revalidate",
+        "vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+        "contentLength": null,
+        "cdnCache": "HIT"
+      },
+      "overflow": 0,
+      "background": "rgb(247, 250, 255)",
+      "mosaicDisplay": "block",
+      "footerColors": [
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)",
+        "rgb(7, 87, 232)"
+      ],
+      "footerWeights": [
+        "700",
+        "700",
+        "700",
+        "700",
+        "700"
+      ],
+      "overlayDisplay": "block",
+      "activePreloads": 1,
+      "htmlGzip": 14731,
+      "passed": true
+    }
+  ],
+  "searchResults": [
+    {
+      "width": 390,
+      "query": "12Х1МФ",
+      "first": "12Х1МФ",
+      "count": 8,
+      "overflow": 0,
+      "passed": true
+    },
+    {
+      "width": 1536,
+      "query": "12Х1МФ",
+      "first": "12Х1МФ",
+      "count": 8,
+      "overflow": 0,
+      "passed": true
+    }
+  ],
+  "buyerResults": [
+    {
+      "kind": "attachment-feedback",
+      "width": 390,
+      "emptyText": "Прикреплено: 1 (0 МБ). qa-empty.pdf. Пустые файлы не будут отправлены: qa-empty.pdf. Выберите непустой файл или опишите, что требуется.",
+      "mixedText": "Прикреплено: 2 (0 МБ). qa-empty.pdf; qa-valid.pdf. Пустые файлы не будут отправлены: qa-empty.pdf. Остальные непустые файлы можно отправить.",
+      "invalidMixedText": "Прикреплено: 2 (0 МБ). qa-empty.pdf; qa-invalid.exe. Неподдерживаемый формат: qa-invalid.exe. Пустые файлы не будут отправлены: qa-empty.pdf. Проверьте остальные вложения перед отправкой.",
+      "oversizedMixedText": "Прикреплено: 2 (4 МБ). qa-empty.pdf; qa-large.pdf. Превышен лимит 4 МБ. Уберите файлы или отправьте их на m1@magicmet.ru. Пустые файлы не будут отправлены: qa-empty.pdf. Проверьте остальные вложения перед отправкой.",
+      "validText": "Прикреплено: 1 (0 МБ). qa-valid.pdf. Файлы готовы к отправке.",
+      "overflow": 0,
+      "fieldFont": 16,
+      "postAttempts": 0,
+      "passed": true
+    },
+    {
+      "kind": "size-selection-goals",
+      "width": 390,
+      "compactGoals": 1,
+      "dimensionGoals": 1,
+      "plainTextGoals": 0,
+      "passed": true
+    },
+    {
+      "kind": "attachment-feedback",
+      "width": 1536,
+      "emptyText": "Прикреплено: 1 (0 МБ). qa-empty.pdf. Пустые файлы не будут отправлены: qa-empty.pdf. Выберите непустой файл или опишите, что требуется.",
+      "mixedText": "Прикреплено: 2 (0 МБ). qa-empty.pdf; qa-valid.pdf. Пустые файлы не будут отправлены: qa-empty.pdf. Остальные непустые файлы можно отправить.",
+      "invalidMixedText": "Прикреплено: 2 (0 МБ). qa-empty.pdf; qa-invalid.exe. Неподдерживаемый формат: qa-invalid.exe. Пустые файлы не будут отправлены: qa-empty.pdf. Проверьте остальные вложения перед отправкой.",
+      "oversizedMixedText": "Прикреплено: 2 (4 МБ). qa-empty.pdf; qa-large.pdf. Превышен лимит 4 МБ. Уберите файлы или отправьте их на m1@magicmet.ru. Пустые файлы не будут отправлены: qa-empty.pdf. Проверьте остальные вложения перед отправкой.",
+      "validText": "Прикреплено: 1 (0 МБ). qa-valid.pdf. Файлы готовы к отправке.",
+      "overflow": 0,
+      "fieldFont": 13,
+      "postAttempts": 0,
+      "passed": true
+    },
+    {
+      "kind": "size-selection-goals",
+      "width": 1536,
+      "compactGoals": 1,
+      "dimensionGoals": 1,
+      "plainTextGoals": 0,
+      "passed": true
+    }
+  ],
+  "passed": true
+}
