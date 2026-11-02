@@ -22,7 +22,7 @@ describe('non-destructive specification triage', () => {
   })
   it('supports CRLF and retains original line content', () => {
     expect(inspectSpecification('Наименование\r\nМ1 — 2 т\r\n')).toEqual([
-      expect.objectContaining({ raw: 'М1 — 2 т', lineNumber: 2, status: 'ready-for-review' }),
+      expect.objectContaining({ raw: 'М1 — 2 т', lineNumber: 2, status: 'needs-review' }),
     ])
   })
   it('returns no positions for empty text and headings', () => {
