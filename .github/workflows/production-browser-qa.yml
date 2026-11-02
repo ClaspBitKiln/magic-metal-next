@@ -55,7 +55,32 @@ jobs:
       - name: Test complete site flow
         env:
           BASE_URL: ${{ github.event_name == 'pull_request' && 'http://127.0.0.1:3000' || 'https://magicmet.ru' }}
-        run: npx playwright test --config=playwright.production.config.ts --project=${{ matrix.browser }}
+          PLAYWRIGHT_JSON_OUTPUT_FILE: test-results/results.json
+        run: npx playwright test --config=playwright.production.config.ts --project=${{ matrix.browser }} --reporter=line,html,json
+      - name: Summarize browser failures
+        if: always()
+        run: |
+          node --input-type=module <<'JS'
+          import fs from 'node:fs';
+          const file = 'test-results/results.json';
+          if (!fs.existsSync(file)) process.exit(0);
+          const report = JSON.parse(fs.readFileSync(file, 'utf8'));
+          const escape = text => text.replace(/%/g, '%25').replace(/\r/g, '%0D').replace(/\n/g, '%0A');
+          const failures = [];
+          function visit(suite) {
+            for (const spec of suite.specs || []) for (const test of spec.tests || []) {
+              if (test.status !== 'unexpected') continue;
+              const result = [...test.results].reverse().find(result => result.error);
+              const message = `${spec.title}: ${result?.error?.message || 'Unexpected result'}`;
+              failures.push(message);
+              console.log(`::error file=${spec.file},line=${spec.line},title=Browser test failed::${escape(message.slice(0, 3500))}`);
+            }
+            for (const child of suite.suites || []) visit(child);
+          }
+          for (const suite of report.suites || []) visit(suite);
+          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,
+            `## Browser checks\n\n${JSON.stringify(report.stats)}\n\n${failures.map(message => '```text\n' + message.slice(0, 3500) + '\n```').join('\n\n')}\n`);
+          JS
       - uses: actions/upload-artifact@v4
         if: always()
         with:
