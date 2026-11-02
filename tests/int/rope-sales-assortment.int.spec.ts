@@ -65,6 +65,7 @@ describe('offered steel rope constructions', () => {
     expect(sales.textContent).toContain('1–56 мм')
     expect(tree.body.textContent).toContain(ropeSalesAssortment.documentNote)
     expect(sales.querySelectorAll('.rope-sales-picker')).toHaveLength(1)
+    expect(sales.querySelector<HTMLSelectElement>('.rope-sales-picker select')!.disabled).toBe(true)
     expect(sales.querySelectorAll('.rope-sales-constructions')).toHaveLength(0)
     const reference = sales.querySelector<HTMLDetailsElement>('.rope-sales-reference')!
     expect(reference).not.toBeNull()
