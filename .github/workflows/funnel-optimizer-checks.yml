@@ -1,0 +1,19 @@
+name: Funnel optimizer checks
+on:
+  pull_request:
+    paths:
+      - 'scripts/growth/**'
+      - '.github/workflows/funnel-optimizer-checks.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test scripts/growth/prioritize-funnel.test.mjs
