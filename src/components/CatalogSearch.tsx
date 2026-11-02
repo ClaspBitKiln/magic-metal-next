@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 import { normalizeSearch, searchIndex, type SearchItem } from '@/data/searchIndex'
 import { parseSizeSearchQuery } from '@/lib/sizeSearchQuery'
+import { parseRopeSearchQuery } from '@/lib/ropeSearchQuery'
 import { trackAnalyticsGoal } from '@/lib/analytics'
 
 type Filter = 'all' | SearchItem['type']
@@ -19,7 +20,7 @@ export default function CatalogSearch({ extraStandards = emptyItems, initialQuer
     title: normalizeSearch(item.title),
     haystack: normalizeSearch(`${item.title} ${item.searchText}`),
   })), [extraStandards])
-  const sizeQuery = Boolean(parseSizeSearchQuery(query))
+  const sizeQuery = Boolean(parseRopeSearchQuery(query) || parseSizeSearchQuery(query))
 
   useEffect(() => {
     const restore = () => {
@@ -77,14 +78,21 @@ export default function CatalogSearch({ extraStandards = emptyItems, initialQuer
     <div className="search-box">
       <label htmlFor="catalog-query">Товар, размер, марка, ГОСТ или назначение</label>
       <div><input id="catalog-query" value={query} maxLength={200} onChange={event => changeQuery(event.target.value)} autoFocus placeholder="Например: труба 57×3, лист 10, ГОСТ 8734" /><button type="button" onClick={() => changeQuery('')} aria-label="Очистить поиск">×</button></div>
-      <p>Название, марка и ГОСТ — по справочнику. Размеры — по нормативным таблицам каталога; наличие подтверждаем по заявке.</p>
+      <p>Название, марка и ГОСТ — по справочнику. Размеры — по таблицам каталога, канаты — по ассортименту продаж; наличие подтверждаем по заявке.</p>
     </div>
     <div className="search-filters" aria-label="Фильтр результатов">
       {([['all', 'Всё'], ['product', 'Продукция'], ['material', 'Материалы'], ['standard', 'ГОСТ']] as [Filter, string][]).map(([key, label]) => <button className={filter === key ? 'active' : ''} aria-pressed={filter === key} type="button" onClick={() => { setFilter(key); setVisibleCount(40) }} key={key}>{label}</button>)}
     </div>
     <div className="search-summary"><span role="status" aria-live="polite">{loading ? 'Ищем размер в таблицах…' : error ? 'Поиск размеров недоступен' : query ? `Найдено: ${results.length}` : `В индексе: ${index.length}`}</span>{query && <a href={`/?product=${encodeURIComponent(query)}#request`}>Не нашли точное исполнение? Отправить заявку →</a>}</div>
     {error && <p role="alert">{error}</p>}
-    <div className="search-results"><div className="search-results-head"><span>Раздел</span><span>Позиция</span><span>Описание</span><i aria-hidden="true" /></div>{results.slice(0, visibleCount).map(item => <Link prefetch={false} href={item.href} onClick={sizeQuery ? () => trackAnalyticsGoal('size_selected') : undefined} aria-label={`Открыть: ${item.title}`} key={`${item.type}-${item.href}`}><small>{item.typeLabel}</small><h2>{item.title}</h2><span className="search-result-description"><h3>{item.subtitle}</h3><p>{item.description}</p></span><b aria-hidden="true">→</b></Link>)}</div>
+    <div className="search-results"><div className="search-results-head"><span>Раздел</span><span>Позиция</span><span>Описание</span><i aria-hidden="true" /></div>{results.slice(0, visibleCount).map(item => {
+      const content = <><small>{item.typeLabel}</small><h2>{item.title}</h2><span className="search-result-description"><h3>{item.subtitle}</h3><p>{item.description}</p></span><b aria-hidden="true">→</b></>
+      const attributes = { href: item.href, onClick: sizeQuery ? () => trackAnalyticsGoal('size_selected') : undefined, 'aria-label': `Открыть: ${item.title}` }
+      // The homepage is an HTML Route Handler: use document navigation to initialize its request form.
+      return item.href.startsWith('/?product=')
+        ? <a {...attributes} key={`${item.type}-${item.href}`}>{content}</a>
+        : <Link {...attributes} prefetch={false} key={`${item.type}-${item.href}`}>{content}</Link>
+    })}</div>
     {results.length > visibleCount && <button className="search-more" type="button" onClick={() => setVisibleCount(count => count + 40)}>Показать ещё · {visibleCount} из {results.length}</button>}
     {!loading && !error && results.length === 0 && <div className="search-empty">
       <h2>Точного совпадения пока нет</h2>

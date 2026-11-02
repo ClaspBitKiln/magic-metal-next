@@ -1,6 +1,7 @@
-# Матрица покрытия каталога — без отложенного раздела
+# Матрица покрытия каталога
 
-Источник кода: `74152b7fda437e8fe6d903a5a26fc7e4f9e6f14f`. Канаты исключены по указанию владельца.
+Источник кода: `cc2606d06844c37526181ba5a2b0bd7ec540ce6d`. Все разделы включены в общем порядке. Предоставленный владельцем
+список канатов подтверждает ассортимент продаж; это отдельно от нормативного review.
 Это новый реестр, а не восстановленный аудит 25 строк. Указанные в коде ГОСТы,
 марки и диапазоны — **заявления для проверки**, а не нормативное заключение.
 Ссылка на внешний источник не подтверждает, что он актуален или применим.
@@ -8,9 +9,9 @@
 ## Объём
 
 - groups: 11
-- homeRows: 58
-- details: 65
-- productDetailCatalog: 41
+- homeRows: 59
+- details: 66
+- productDetailCatalog: 42
 - pipeCatalog: 16
 - sdtCatalog: 8
 - unmappedHomeRows: 0
@@ -18,8 +19,8 @@
 - procurementGuides: 16
 - externalSourceCandidates: 55
 
-41 запись productDetailCatalog + 16 трубных + 8 СДТ = 65 подробных URL.
-58 строк главной могут вести на карточку, категорию либо сразу в заявку;
+42 записи productDetailCatalog + 16 трубных + 8 СДТ = 66 подробных URL.
+59 строк главной могут вести на карточку, категорию либо сразу в заявку;
 эти количества не обязаны совпадать. Fragment/query удалены только для
 сопоставления маршрутов; исходные ссылки сохранены в JSON.
 
@@ -81,6 +82,7 @@
 | Цветной металлопрокат | Нихром | /produkciya/cvetnye-metally/nihrom | detail | 1 |
 | Цветной металлопрокат | Баббит | /produkciya/cvetnye-metally/babbit | detail | 1 |
 | Метизы и сварочные материалы | Крепёж | /produkciya/metizy-i-svarochnye-materialy/krepezh | detail | 1 |
+| Метизы и сварочные материалы | Канаты стальные | /produkciya/metizy-i-svarochnye-materialy/kanaty | detail | 1 |
 | Метизы и сварочные материалы | Сетки | /produkciya/metizy-i-svarochnye-materialy/setki | detail | 1 |
 | Метизы и сварочные материалы | Лента упаковочная | /produkciya/metizy-i-svarochnye-materialy/lenta-upakovochnaya | detail | 1 |
 | Метизы и сварочные материалы | Проволока и электроды | /produkciya/metizy-i-svarochnye-materialy/svarochnye-materialy | detail | 1 |
@@ -128,6 +130,7 @@
 | Швеллер горячекатаный | /produkciya/sortovoy-i-fasonny-prokat/shveller | size_series | 5 | — | не выполнен |
 | Швеллер гнутый | /produkciya/sortovoy-i-fasonny-prokat/shveller-gnutyj | product_description | 0 | — | не выполнен |
 | Промышленный крепёж | /produkciya/metizy-i-svarochnye-materialy/krepezh | size_series | 1 | — | не выполнен |
+| Канаты стальные | /produkciya/metizy-i-svarochnye-materialy/kanaty | product_description | 0 | — | не выполнен |
 | Сетки | /produkciya/metizy-i-svarochnye-materialy/setki | product_description | 0 | — | не выполнен |
 | Лента упаковочная холоднокатаная | /produkciya/metizy-i-svarochnye-materialy/lenta-upakovochnaya | product_description | 0 | — | не выполнен |
 | Сварочные материалы | /produkciya/metizy-i-svarochnye-materialy/svarochnye-materialy | size_series | 1 | external_source_candidate | не выполнен |

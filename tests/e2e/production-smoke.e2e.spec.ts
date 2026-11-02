@@ -292,6 +292,34 @@ test('the restored catalog exposes details and preserves request prefill', async
   await expect(page.locator('textarea[name="message"]')).toHaveValue('Трубы: ')
 })
 
+test('rope search preserves the exact sales construction and diameter', async ({ page }) => {
+  await page.goto(`/poisk?q=${encodeURIComponent('6×7+FC 2,15 мм')}`)
+  const result = page.getByRole('link', { name: 'Открыть: Канат 6×7+FC — Ø 2,15 мм', exact: true })
+  await expect(result).toBeVisible()
+  await result.click()
+  await expect(page.locator('textarea[name="message"]')).toHaveValue(/конструкция 6×7\+FC; диаметр 2,15 мм/)
+  await page.goto(`/poisk?q=${encodeURIComponent('6×7+FC 56 мм')}`)
+  await expect(page.getByRole('heading', { name: 'Точного совпадения пока нет' })).toBeVisible()
+  await expect(page.locator('.search-results > a')).toHaveCount(0)
+})
+
+test('bronze square and hexagonal requests use the correct dimension', async ({ page }) => {
+  for (const [shape, label, designation] of [
+    ['Квадрат', 'Сторона, мм', 'Квадрат 20,5×20,5 мм'],
+    ['Шестигранник', 'Размер под ключ, мм', 'Шестигранник под ключ 20,5 мм'],
+  ]) {
+    await page.goto('/produkciya/cvetnye-metally/bronza')
+    const picker = page.getByRole('region', { name: 'Подбор цветного металла по форме и размерам' })
+    await picker.getByRole('combobox', { name: 'Форма изделия', exact: true }).selectOption(shape)
+    await picker.getByLabel(label, { exact: true }).fill('20.5')
+    await picker.getByRole('combobox', { name: 'Марка металла / сплава', exact: true }).selectOption('БрАМц9-2')
+    await expect(picker.getByLabel('ГОСТ / ТУ / ASTM', { exact: true })).toHaveValue('')
+    await picker.locator('.nonferrous-submit').click()
+    await expect(page.locator('textarea[name="message"]')).toHaveValue(new RegExp(designation))
+    await expect(page.locator('textarea[name="message"]')).toHaveValue(/марка сплава БрАМц9-2/)
+  }
+})
+
 test('www hostname redirects to the canonical apex host', async ({ page, baseURL }) => {
   test.skip(new URL(baseURL!).hostname === '127.0.0.1', 'Canonical redirect is a production-only boundary')
   const response = await page.goto('https://www.magicmet.ru/', { waitUntil: 'domcontentloaded' })

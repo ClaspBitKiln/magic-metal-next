@@ -1,15 +1,13 @@
 {
   "schemaVersion": 1,
-  "sourceCommit": "74152b7fda437e8fe6d903a5a26fc7e4f9e6f14f",
-  "excludedPaths": [
-    "/produkciya/metizy-i-svarochnye-materialy/kanaty"
-  ],
+  "sourceCommit": "cc2606d06844c37526181ba5a2b0bd7ec540ce6d",
+  "excludedPaths": [],
   "original25RowAudit": "not_recovered",
   "counts": {
     "groups": 11,
-    "homeRows": 58,
-    "details": 65,
-    "productDetailCatalog": 41,
+    "homeRows": 59,
+    "details": 66,
+    "productDetailCatalog": 42,
     "pipeCatalog": 16,
     "sdtCatalog": 8,
     "unmappedHomeRows": 0,
@@ -37,6 +35,7 @@
         "standards": "ГОСТ 10704, 10705, 10706, 20295",
         "materials": "Ст3, 20, 09Г2С, 17Г1СУ, 10Г2ФБЮ"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -58,6 +57,7 @@
         "standards": "ГОСТ 3262-75",
         "materials": "малоуглеродистые стали"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -79,6 +79,7 @@
         "standards": "ГОСТ 8639, 8645, 30245",
         "materials": "Ст3, 09Г2С, С245, С255, С355"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -100,6 +101,7 @@
         "standards": "ГОСТ 8732, ГОСТ 550; ТУ 14-3Р-55, 460, 1128",
         "materials": "10, 20, 35, 45, 09Г2С, 15ХМ, 12Х1МФ, 15Х1М1Ф, 10Х9МФБ, 30ХГСА, 12Х1МФ-Ш — по марке и ТУ"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -121,6 +123,7 @@
         "standards": "ГОСТ 8734",
         "materials": "10, 20, 35, 45, 10Г2, 15Х, 20Х, 40Х, 30ХГСА, 15ХМ"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -142,6 +145,7 @@
         "standards": "ТУ 14-3Р-55; ГОСТ 550; ASTM A335",
         "materials": "20, 15ХМ, 12Х1МФ, 15Х1М1Ф, P5, P11, P22, P91"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -163,6 +167,7 @@
         "standards": "ГОСТ 9940, 9941; ASTM A312",
         "materials": "08Х18Н10, 12Х18Н10Т, 10Х17Н13М2Т, TP304, TP316, TP321"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -189,6 +194,7 @@
         "standards": "ГОСТ 632, 633; API 5CT",
         "materials": "НКТ, обсадные, бурильные трубы и муфты"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -210,6 +216,7 @@
         "standards": "ГОСТ 17375, 30753, 17380",
         "materials": "2D и 3D · углеродистые, низколегированные и нержавеющие стали"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -231,6 +238,7 @@
         "standards": "ГОСТ 17376, 17380",
         "materials": "равнопроходные и переходные исполнения"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -252,6 +260,7 @@
         "standards": "ГОСТ 17378, 17380",
         "materials": "концентрические и эксцентрические исполнения"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -273,6 +282,7 @@
         "standards": "ГОСТ 33259",
         "materials": "плоские, воротниковые, свободные · PN 1–250"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -294,6 +304,7 @@
         "standards": "ГОСТ 17379, 6533; ОСТ, АТК",
         "materials": "эллиптические, плоские и специальные исполнения"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -315,6 +326,7 @@
         "standards": "ГОСТ 30732-2020 · проектная документация тепловой сети",
         "materials": "стальная несущая труба · пенополиуретан · ПЭ или ОЦ оболочка"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -336,6 +348,7 @@
         "standards": "ГОСТ Р 51164-98 · ГОСТ 9.602-2016 · ТУ изготовителя и проекта",
         "materials": "стальная труба · адгезионный подслой · экструдированный полиэтилен"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -357,6 +370,7 @@
         "standards": "проектная документация · ТУ и технологический регламент системы покрытия · требования к защите от коррозии",
         "materials": "сталь трубы по проекту · эпоксидная система с подтверждённой применимостью"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -378,6 +392,7 @@
         "standards": "проектная документация · ТУ системы покрытия · требования к защите трубопровода",
         "materials": "материал СДТ по проекту · ТУМ-лента согласованной системы"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -399,6 +414,7 @@
         "standards": "ГОСТ 30732-2020 для соответствующих ППУ-фитингов · ГОСТ Р 51164-98 · ГОСТ 9.602-2016 · проект и ТУ изготовителя",
         "materials": "материал СДТ по проекту · система изоляции, совместимая с трубами"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -420,6 +436,7 @@
         "standards": "ГОСТ 19903-2015 · ГОСТ 14637 · ГОСТ 19281-2014 · ГОСТ 5520",
         "materials": "Ст3 · 09Г2С · 20 · 45 · С245 · С255 · С345 · С355 · 16ГС · 17Г1С · 10ХСНД · 65Г — применимость марки к толщине и стандарту проверяется"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -441,6 +458,7 @@
         "standards": "ГОСТ 19904-90 · ГОСТ 16523-97",
         "materials": "08пс · 08кп — из презентации; качество и состояние по стандарту"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -462,6 +480,7 @@
         "standards": "ГОСТ 14918-2020",
         "materials": "сталь и обозначение покрытия по ГОСТ 14918-2020"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -483,6 +502,7 @@
         "standards": "ГОСТ 8568-77 · ГОСТ/ТУ на марку исходного металла",
         "materials": "ромбическое рифление · чечевичное рифление — материал по сертификату партии"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -504,6 +524,7 @@
         "standards": "ТУ 36.26.11-5-89 (отдельные позиции ТД ММК) · СТО 25.93.13.110-058-2023 (отдельные позиции ТД ММК) · ТУ/СТО конкретного изготовителя — по обозначению ПВЛ",
         "materials": "ПВЛ 306, 406, 506, 510 — примеры обозначений из каталога ТД ММК · Ст3сп — для отдельных позиций; марка и документы по сертификату партии"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -525,6 +546,7 @@
         "standards": "ГОСТ 24045-2016 · стандарт/ТУ на сталь и покрытие",
         "materials": "несущий, стеновой или универсальный профиль по обозначению · оцинкованный или окрашенный — по спецификации"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -546,6 +568,7 @@
         "standards": "ГОСТ 34028-2016 — арматурный прокат для железобетонных конструкций",
         "materials": "А240 · А400 · А500 · А600 — классы по ГОСТ 34028-2016 · Ст3 · 25Г2С · 35ГС — марки стали по документации конкретной партии"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -567,6 +590,7 @@
         "standards": "ГОСТ 30136-95 — катанка из углеродистой стали обыкновенного качества · другие НД — по назначению",
         "materials": "углеродистая сталь обыкновенного качества — по ГОСТ 30136-95 · другие марки — по согласованному НД"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -588,6 +612,7 @@
         "standards": "ГОСТ 2590-2006 · ГОСТ 535-88 · ТУ по марке и назначению",
         "materials": "10 · 20 · 35 · 45 · 09Г2С · 40Х · 30ХГСА · 12Х1МФ · 38ХН3МА · ШХ15 · 5ХНМ · 9ХС · У8А · 20Х13 · 12Х18Н10Т · 40ХН2МА · 15Х1М1Ф · 12Х2Н4А · 18ХГТ · 9Х2МФ · 4Х5МФС · Марки дополнительно приведены в презентации; соответствие диаметра и НД проверяется по заявке."
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -609,6 +634,7 @@
         "standards": "ГОСТ 2591-2006 · ГОСТ 8559-75",
         "materials": "Ст0-Ст6 · 20 · 09Г2С · 45"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -630,6 +656,7 @@
         "standards": "ГОСТ 2879-2006 — горячекатаный шестигранник · НД на марку стали — по заказу",
         "materials": "горячекатаное шестигранное сечение · марка стали — по заказу и документу качества"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -651,6 +678,7 @@
         "standards": "ГОСТ 103-2006",
         "materials": "марка стали по спецификации"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -672,6 +700,7 @@
         "standards": "ГОСТ 8509-93 · ГОСТ 8510-86 · ГОСТ 19771-93 · ГОСТ 19772-93 · ТУ",
         "materials": "Ст3 · 09Г2С · С245 · С255 · С355"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -693,6 +722,7 @@
         "standards": "ГОСТ 8239-89 · ГОСТ 35087-2024 · СТО АСЧМ 20-93",
         "materials": "С235 · С245 · Ст3 · С255 · С275 · С345 · С375 · 09Г2С"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -714,6 +744,7 @@
         "standards": "ГОСТ 8240-97",
         "materials": "С235 · С245 · Ст3 · С255 · С275 · С345 · С375 · 09Г2С"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -735,6 +766,7 @@
         "standards": "ГОСТ 8278-83 — равнополочный · ГОСТ 8281-80 — неравнополочный · НД на марку стали и изготовление",
         "materials": "равнополочное исполнение · неравнополочное исполнение · марка стали — по сертификату конкретной позиции"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -756,6 +788,7 @@
         "standards": "Стандарт на профиль и технические требования из проекта пути",
         "materials": "Марка рельсовой стали и категория качества из документа на профиль"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -777,6 +810,7 @@
         "standards": "Стандарт или технические условия на выбранный профиль",
         "materials": "Материал и требования к качеству из проекта пути"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -798,6 +832,7 @@
         "standards": "Стандарт на крановый профиль и требования проекта подкранового пути",
         "materials": "Марка стали и требования к качеству для кранового профиля"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -819,6 +854,7 @@
         "standards": "ГОСТ 5582 · ГОСТ 7350 · ГОСТ 5632-2014 · ASTM A240/A240M",
         "materials": "08Х18Н10 · 12Х18Н10Т · 10Х17Н13М2Т · AISI 304 / 316L / 321 / 430"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -840,6 +876,7 @@
         "standards": "ГОСТ 9940-81 · ГОСТ 9941-2022 · ASTM A312/A312M",
         "materials": "12Х18Н10Т · 08Х18Н10 · 08Х18Н10Т · 08Х17Т · 10Х17Н13М2Т · TP304 / TP316 / TP321 · AISI 316L — марку и соответствие стандарту уточняют по заказу"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -861,6 +898,7 @@
         "standards": "ГОСТ 5949 · ГОСТ 5632-2014 · ASTM A276",
         "materials": "12Х18Н10Т · 20Х13 · 40Х13 · AISI 304 / 316 / 321"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -882,6 +920,7 @@
         "standards": "ГОСТ 8479-70 · ГОСТ 25054-81 · чертёж и ТУ",
         "materials": "углеродистые · легированные · нержавеющие и специальные стали"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -903,6 +942,7 @@
         "standards": "ГОСТ 8479-70 · ГОСТ 25054-81 · чертёж и ТУ",
         "materials": "35 · 40Х · 38ХН3МА · 34ХН1М · специальные марки по проекту"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -924,6 +964,7 @@
         "standards": "ГОСТ 8479-70 · ГОСТ 7829-70 · ГОСТ 25054-81 · чертёж и ТУ",
         "materials": "35 · 40Х · 09Г2С · 38ХН3МА · 12Х1МФ · 15Х1М1Ф · Примеры марок из презентации; изготовление, размер, контроль и норматив согласуются по чертежу."
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -945,6 +986,7 @@
         "standards": "ГОСТ 859-2014 (марки меди) · стандарт на конкретный полуфабрикат",
         "materials": "М00 · М0 · М1 · М2 · М3 · М1р · М2р · М3р"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -966,6 +1008,7 @@
         "standards": "ГОСТ 15527-2004 · стандарт на конкретный полуфабрикат",
         "materials": "Л63 · Л68 · Л70 · Л80 · Л90 · Л96 · ЛС59-1 · ЛС63-3 · ЛЖМц59-1-1"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -987,6 +1030,7 @@
         "standards": "ГОСТ 5017-2006 · ГОСТ 18175 · стандарт на полуфабрикат",
         "materials": "БрОФ6,5-0,15 · БрБ2 · БрАМц9-2 · БрАЖ9-4 · БрОЦС5-5-5 · БрО10Ф1"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -1008,6 +1052,7 @@
         "standards": "ГОСТ 4784-2019 · стандарт на конкретный полуфабрикат",
         "materials": "АД0 · АД1 · А5 · А7 · АМг2 · АМг3 · АМг5 · АМг6 · АМц · Д16 · В95 · АД31"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -1029,6 +1074,7 @@
         "standards": "ГОСТ 19807-91 · стандарт на конкретный полуфабрикат",
         "materials": "ВТ1-0 · ВТ1-00 · ВТ6 · ВТ14 · ОТ4 · ПТ3В"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -1050,6 +1096,7 @@
         "standards": "стандарт на марку и форму поставки",
         "materials": "О1 · О1пч · О2 · О3 · О4"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -1071,6 +1118,7 @@
         "standards": "ГОСТ и ТУ на марку и форму поставки",
         "materials": "С0 · С1 · С2 · С3"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -1092,6 +1140,7 @@
         "standards": "ГОСТ и ТУ на марку и форму поставки",
         "materials": "Ц0 · Ц1 · Ц2 · Ц3"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -1113,6 +1162,7 @@
         "standards": "ГОСТ и ТУ на сплав и полуфабрикат",
         "materials": "Х20Н80, Х15Н60 — примеры марок, применимость к форме изделия и наличие уточняются"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -1134,6 +1184,7 @@
         "standards": "ГОСТ 1320-74 · ТУ и требования проекта",
         "materials": "Б88, Б83, Б83С, Б16, БН, БС6 — примеры марок, применимость к форме изделия и наличие уточняются"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -1155,6 +1206,29 @@
         "standards": "ГОСТ и ТУ на конкретный крепёж · DIN / ISO по спецификации",
         "materials": "углеродистые · легированные · нержавеющие стали"
       },
+      "commercialEvidence": null,
+      "review": {
+        "normative": "not_assessed",
+        "independentReview": "not_performed",
+        "live": "not_checked_in_this_review"
+      }
+    },
+    {
+      "id": "home-10-2",
+      "group": "Метизы и сварочные материалы",
+      "title": "Канаты стальные",
+      "href": "/produkciya/metizy-i-svarochnye-materialy/kanaty",
+      "pathname": "/produkciya/metizy-i-svarochnye-materialy/kanaty",
+      "mapping": "detail",
+      "detailUrls": [
+        "/produkciya/metizy-i-svarochnye-materialy/kanaty"
+      ],
+      "codeClaims": {
+        "dimensions": "1–56 мм · 1770 / 1960 Н/мм² · оцинкованная / неоцинкованная · полимерное / без полимерного покрытия · Диаметр, конструкцию, сердечник и исполнение согласуем для выбранного каната. Диапазон 1–56 мм относится к ассортименту в целом.",
+        "standards": "Требования EN 12385-4:2015 и документы соответствия уточняем для выбранного каната при заказе.",
+        "materials": "1770 Н/мм² · 1960 Н/мм² · конструкция, сердечник, свивка и исполнение — по выбранному канату"
+      },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -1176,6 +1250,7 @@
         "standards": "ГОСТ 3826-82 — тканые с квадратной ячейкой · ГОСТ 23279-2012 — сварные арматурные · ГОСТ 5336-80 — плетёные одинарные",
         "materials": "тканая, сварная арматурная или плетёная — по виду изделия · диаметр проволоки, покрытие и материал — по документу качества"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -1197,6 +1272,7 @@
         "standards": "ГОСТ 3560-73 — стальная упаковочная лента",
         "materials": "низкоуглеродистая холоднокатаная сталь — по ГОСТ 3560-73 · ширина, толщина, состояние и покрытие — по заказу"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -1218,6 +1294,7 @@
         "standards": "ГОСТ и ТУ на конкретный материал · AWS / EN по спецификации",
         "materials": "по основному металлу и технологии сварки"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -1237,6 +1314,7 @@
         "standards": "По проекту и ТУ изготовителя",
         "materials": "Исполнение и комплектность по заявке"
       },
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -1292,6 +1370,7 @@
         }
       },
       "coverageKind": "procurement_guide",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -1345,6 +1424,7 @@
         }
       },
       "coverageKind": "procurement_guide",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -1398,6 +1478,7 @@
         }
       },
       "coverageKind": "procurement_guide",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -1477,6 +1558,7 @@
       ],
       "guide": null,
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -1563,6 +1645,7 @@
       ],
       "guide": null,
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -1699,6 +1782,7 @@
         }
       },
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -1762,6 +1846,7 @@
       ],
       "guide": null,
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -1825,6 +1910,7 @@
       ],
       "guide": null,
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -1886,6 +1972,7 @@
       ],
       "guide": null,
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -1954,6 +2041,7 @@
       ],
       "guide": null,
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -2015,6 +2103,7 @@
       ],
       "guide": null,
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -2090,6 +2179,7 @@
         }
       },
       "coverageKind": "procurement_guide",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -2165,6 +2255,7 @@
         }
       },
       "coverageKind": "procurement_guide",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -2240,6 +2331,7 @@
         }
       },
       "coverageKind": "procurement_guide",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -2295,6 +2387,7 @@
       ],
       "guide": null,
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -2367,6 +2460,7 @@
         }
       },
       "coverageKind": "procurement_guide",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -2423,6 +2517,7 @@
         }
       },
       "coverageKind": "procurement_guide",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -2481,6 +2576,7 @@
         }
       },
       "coverageKind": "procurement_guide",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -2542,6 +2638,7 @@
         }
       },
       "coverageKind": "procurement_guide",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -2646,6 +2743,7 @@
       ],
       "guide": null,
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -2739,6 +2837,7 @@
       ],
       "guide": null,
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -2812,6 +2911,7 @@
       ],
       "guide": null,
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -2850,6 +2950,7 @@
       "series": [],
       "guide": null,
       "coverageKind": "product_description",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -2889,6 +2990,7 @@
       "series": [],
       "guide": null,
       "coverageKind": "product_description",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -2927,6 +3029,7 @@
       "series": [],
       "guide": null,
       "coverageKind": "product_description",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -2969,6 +3072,7 @@
       "series": [],
       "guide": null,
       "coverageKind": "product_description",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -3007,6 +3111,7 @@
       "series": [],
       "guide": null,
       "coverageKind": "product_description",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -3051,6 +3156,7 @@
       "series": [],
       "guide": null,
       "coverageKind": "product_description",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -3094,6 +3200,7 @@
       "series": [],
       "guide": null,
       "coverageKind": "product_description",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -3172,6 +3279,7 @@
       ],
       "guide": null,
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -3251,6 +3359,7 @@
       ],
       "guide": null,
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -3289,6 +3398,7 @@
       "series": [],
       "guide": null,
       "coverageKind": "product_description",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -3344,6 +3454,7 @@
       ],
       "guide": null,
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -3424,6 +3535,7 @@
       ],
       "guide": null,
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -3615,6 +3727,7 @@
       ],
       "guide": null,
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -3745,6 +3858,7 @@
       ],
       "guide": null,
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -3785,6 +3899,7 @@
       "series": [],
       "guide": null,
       "coverageKind": "product_description",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -3843,6 +3958,61 @@
       ],
       "guide": null,
       "coverageKind": "size_series",
+      "commercialEvidence": null,
+      "review": {
+        "normative": "not_assessed",
+        "independentReview": "not_performed",
+        "live": "not_checked_in_this_review"
+      }
+    },
+    {
+      "url": "/produkciya/metizy-i-svarochnye-materialy/kanaty",
+      "title": "Канаты стальные",
+      "catalog": "productDetailCatalog",
+      "categorySlug": "metizy-i-svarochnye-materialy",
+      "codeClaims": {
+        "standards": [
+          "Требования EN 12385-4:2015 и документы соответствия уточняем для выбранного каната при заказе."
+        ],
+        "materials": [
+          "1770 Н/мм²",
+          "1960 Н/мм²",
+          "конструкция, сердечник, свивка и исполнение — по выбранному канату"
+        ],
+        "range": [
+          {
+            "label": "Диаметр",
+            "value": "1–56 мм"
+          },
+          {
+            "label": "Маркировочная группа",
+            "value": "1770 / 1960 Н/мм²"
+          },
+          {
+            "label": "Проволока",
+            "value": "оцинкованная / неоцинкованная"
+          },
+          {
+            "label": "Покрытие",
+            "value": "полимерное / без полимерного покрытия"
+          },
+          {
+            "label": "Подбор",
+            "value": "Диаметр, конструкцию, сердечник и исполнение согласуем для выбранного каната. Диапазон 1–56 мм относится к ассортименту в целом."
+          }
+        ]
+      },
+      "series": [],
+      "guide": null,
+      "coverageKind": "product_description",
+      "commercialEvidence": {
+        "status": "owner_confirmed_sales_assortment",
+        "source": "Owner-provided construction list and two diameter matrices; clarification on 2026-11-01",
+        "reference": "docs/ai/ROPE_SALES_ASSORTMENT_2026-11-01.md",
+        "constructions": 68,
+        "constructionsWithDiameters": 47,
+        "limitation": "Confirms offered assortment; does not certify current stock, conformity or universal grade/size compatibility"
+      },
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -3882,6 +4052,7 @@
       "series": [],
       "guide": null,
       "coverageKind": "product_description",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -3919,6 +4090,7 @@
       "series": [],
       "guide": null,
       "coverageKind": "product_description",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -3992,6 +4164,7 @@
         }
       },
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -4052,6 +4225,7 @@
       ],
       "guide": null,
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -4130,6 +4304,7 @@
       ],
       "guide": null,
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -4201,6 +4376,7 @@
       ],
       "guide": null,
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -4348,6 +4524,7 @@
       ],
       "guide": null,
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -4408,6 +4585,7 @@
       ],
       "guide": null,
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -4471,6 +4649,7 @@
       ],
       "guide": null,
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -4551,6 +4730,7 @@
       ],
       "guide": null,
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -4704,6 +4884,7 @@
         }
       },
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -4765,6 +4946,7 @@
       ],
       "guide": null,
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -4848,6 +5030,7 @@
       ],
       "guide": null,
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -4939,6 +5122,7 @@
         }
       },
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -5033,6 +5217,7 @@
         }
       },
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -5109,6 +5294,7 @@
         }
       },
       "coverageKind": "procurement_guide",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -5184,6 +5370,7 @@
         }
       },
       "coverageKind": "procurement_guide",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -5259,6 +5446,7 @@
         }
       },
       "coverageKind": "procurement_guide",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -5353,6 +5541,7 @@
         }
       },
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -5460,6 +5649,7 @@
       ],
       "guide": null,
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -5508,6 +5698,7 @@
         }
       },
       "coverageKind": "procurement_guide",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -5620,6 +5811,7 @@
       ],
       "guide": null,
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -5669,6 +5861,7 @@
         }
       },
       "coverageKind": "procurement_guide",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -5742,6 +5935,7 @@
       ],
       "guide": null,
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -5789,6 +5983,7 @@
         }
       },
       "coverageKind": "procurement_guide",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -5859,6 +6054,7 @@
       ],
       "guide": null,
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
@@ -5930,6 +6126,7 @@
       ],
       "guide": null,
       "coverageKind": "size_series",
+      "commercialEvidence": null,
       "review": {
         "normative": "not_assessed",
         "independentReview": "not_performed",
