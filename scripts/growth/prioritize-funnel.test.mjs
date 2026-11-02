@@ -4,7 +4,7 @@ import { mkdtemp,writeFile,readFile,rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { spawnSync } from 'node:child_process'
-const base={source:'metrika_aggregated_visits',period:'2026-10-01/2026-10-31',robot_filter:'excluded',cohort_verified:true,product_visits:100,request_click_visits:60,request_started_visits:50,request_sent_visits:20}
+const base={source:'metrika_aggregated_visits',period:'2026-10-01/2026-10-31',robot_filter:'excluded',cohort_verified:true,unit:'distinct_visits',goal_semantics_verified:true,excludes_internal_qa:true,source_report_id:'metrika-cohort-20261103',product_visits:100,request_click_visits:60,request_started_visits:50,request_sent_visits:20}
 async function run(input) {
  const dir=await mkdtemp(join(tmpdir(),'funnel-test-'))
  try {
@@ -23,4 +23,8 @@ test('refuses inconsistent visit cohort',async()=>{
 test('refuses robots and weak sample',async()=>{
  const robots=await run({...base,robot_filter:'included'});assert.equal(robots.status,1)
  const weak=await run({...base,product_visits:20,request_click_visits:10,request_started_visits:5,request_sent_visits:2});assert.equal(weak.status,1)
+})
+
+test('rejects raw pageviews and missing goal verification',async()=>{
+ const wrong=await run({...base,unit:'pageviews',goal_semantics_verified:false});assert.equal(wrong.status,1);assert.ok(wrong.data.errors.some(x=>x.includes('distinct visits')))
 })
