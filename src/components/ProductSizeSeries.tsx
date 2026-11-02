@@ -51,7 +51,7 @@ export default function ProductSizeSeries({ series, requestHref, guide }: { seri
   const heading = onlyRequirements ? 'Нормативные параметры' : hasRequirements ? 'Размеры и параметры' : 'Размерный ряд'
   return <section className="product-size-series" id="sizes" aria-labelledby="size-series-title">
     <h2 id="size-series-title">{series.length ? `${heading} по ${standardKind}` : 'Размеры по спецификации'}</h2>
-    <CatalogStandardRequest requestHref={requestHref} />
+    {series[0]?.categorySlug === 'sortovoy-i-fasonny-prokat' && series[0]?.productSlug === 'ugolok' && <CatalogStandardRequest requestHref={requestHref} />}
     <p className="size-series-intro">{onlyRequirements ? 'Сверьте форму поставки, числовые значения и условия применения. Укажите требования в заявке или приложите спецификацию.' : series.length ? 'Найдите нужное обозначение или выберите строку. Размеры и параметры попадут в заявку; спецификацию можно приложить файлом.' : 'Укажите размеры и требования к изделию или приложите чертёж. Проверим их по выбранному стандарту и техническим условиям.'}</p>
     {series.length > 0 && <p className="size-series-mobile-help">Широкие таблицы можно прокручивать вбок. Первый столбец и заголовки остаются видны.</p>}
     <a className="size-series-request" href={requestHref}>Отправить заявку ↗</a>
