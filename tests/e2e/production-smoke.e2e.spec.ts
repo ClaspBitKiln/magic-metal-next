@@ -346,6 +346,38 @@ test('bronze square and hexagonal requests use the correct dimension', async ({ 
   }
 })
 
+test('aluminum requests preserve all approved grades and keep standards explicit', async ({ page }, info) => {
+  for (const width of [320, 390, 1536]) {
+    await page.setViewportSize({ width, height: 1000 })
+    await page.goto('/produkciya/cvetnye-metally/alyuminij')
+    const picker = page.getByRole('region', { name: 'Подбор цветного металла по форме и размерам' })
+    await picker.getByRole('combobox', { name: 'Форма изделия', exact: true }).selectOption('Круг / пруток')
+    const grade = picker.getByRole('combobox', { name: 'Марка металла / сплава', exact: true })
+    await expect(grade.locator('option')).toHaveText([
+      'Выберите марку', 'АД0', 'АД1', 'А5', 'А7', 'АМг2', 'АМг3', 'АМг5', 'АМг6', 'АМц', 'Д16', 'В95', 'АД31', 'Другая марка по спецификации',
+    ])
+    await expect(picker.locator('.nonferrous-submit')).toHaveCount(0)
+    const selectedGrade = width === 320 ? 'А7' : 'АД31'
+    await grade.selectOption(selectedGrade)
+    await picker.getByRole('textbox', { name: 'Диаметр, мм', exact: true }).fill('20.5')
+    await expect(picker.getByLabel('ГОСТ / ТУ / ASTM', { exact: true })).toHaveValue('')
+    await expect(picker).toContainText('по согласованию изготовителя с потребителем')
+    await page.evaluate(() => document.fonts.ready)
+    const typography = await picker.evaluate(element => ({
+      clientWidth: document.documentElement.clientWidth, scrollWidth: document.documentElement.scrollWidth,
+      fonts: [...element.querySelectorAll('h2, p, strong, label, select, input, a')].map(node => ({ tag: node.tagName, fontSize: getComputedStyle(node).fontSize, lineHeight: getComputedStyle(node).lineHeight })),
+    }))
+    expect(typography.scrollWidth).toBeLessThanOrEqual(typography.clientWidth + 1)
+    await info.attach(`aluminum-${width}-typography`, { body: JSON.stringify(typography), contentType: 'application/json' })
+    await info.attach(`aluminum-${width}-screenshot`, { body: await picker.screenshot(), contentType: 'image/png' })
+    await picker.locator('.nonferrous-submit').click()
+    const message = page.locator('textarea[name="message"]')
+    await expect(message).toHaveValue(new RegExp(`марка сплава ${selectedGrade}`))
+    await expect(message).toHaveValue(/стандарт уточнить/)
+    await expect(message).not.toHaveValue(/ГОСТ 21488/)
+  }
+})
+
 test('www hostname redirects to the canonical apex host', async ({ page, baseURL }) => {
   test.skip(new URL(baseURL!).hostname === '127.0.0.1', 'Canonical redirect is a production-only boundary')
   const response = await page.goto('https://www.magicmet.ru/', { waitUntil: 'domcontentloaded' })
