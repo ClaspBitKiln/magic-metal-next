@@ -83,7 +83,7 @@ async function expectDecodedHero(page: Page) {
   return photo.source
 }
 
-test('root is the approved dependency-free public page', async ({ page, baseURL }) => {
+test('root is the approved dependency-free public page', async ({ page, baseURL, browserName }) => {
   const failures: string[] = []
   const heroRequests = recordExternalHeroRequests(page)
   page.on('requestfailed', (request) => {
@@ -108,7 +108,15 @@ test('root is the approved dependency-free public page', async ({ page, baseURL 
   expect(await page.locator('link[href*="_next"]').count()).toBe(0)
   expect(await page.locator('link[rel="stylesheet"]').count()).toBe(0)
   // Budget locally recompressed response HTML before browser DOM mutation.
-  expect(gzipSync(await response!.body()).byteLength).toBeLessThan(15_000)
+  const sourceHtml = await response!.body().catch(async (error: Error) => {
+    // Firefox may lose the navigation stream although the rendered page succeeds.
+    // Keep measuring original HTTP bytes; only this protocol error gets a fresh GET.
+    if (browserName !== 'firefox' || !error.message.includes('Network.getResponseBody')) throw error
+    const source = await page.request.get(response!.url(), { maxRedirects: 0 })
+    expect(source.status()).toBe(200)
+    return source.body()
+  })
+  expect(gzipSync(sourceHtml).byteLength).toBeLessThan(15_000)
   expect(heroRequests, 'Responsive preload and picture must share one image request').toEqual([heroSource])
   expect(failures, failures.join('\n')).toEqual([])
 })
