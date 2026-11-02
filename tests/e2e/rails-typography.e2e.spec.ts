@@ -128,7 +128,7 @@ for (const width of [320, 390, 1536]) {
     const sales = page.locator('#rope-sales')
     const picker = sales.locator('.rope-sales-picker')
     const construction = picker.getByLabel('Конструкция каната')
-    const diameter = picker.getByLabel('Диаметр, мм', { exact: true })
+    const diameter = picker.getByLabel('Диаметр, мм')
     await expect(construction.locator('option')).toHaveCount(69)
     await expect(page.locator('#stock-assortment')).toHaveCount(0)
     await expect(page.locator('#shenwei-matrix')).toHaveCount(0)
