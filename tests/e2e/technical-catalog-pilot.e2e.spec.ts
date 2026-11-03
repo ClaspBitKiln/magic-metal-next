@@ -42,7 +42,7 @@ for (const width of [320, 390, 1536]) {
 }
 
 test('Technical Catalog UI does not leak to other products', async ({ page }) => {
-  await page.goto('/produkciya/sortovoy-i-fasonny-prokat/polosa')
+  await page.goto('/produkciya/sortovoy-i-fasonny-prokat/shveller-gnutyj')
   await expect(page.locator('.technical-catalog-summary')).toHaveCount(0)
   await expect(page.locator('main.technical-catalog-pilot')).toHaveCount(0)
 })
