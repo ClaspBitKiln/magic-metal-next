@@ -68,7 +68,7 @@ export default async function PipeDetailPage({ params }: { params: Promise<{ slu
       { '@type': 'PropertyValue', name: 'Материалы', value: item.grades.join('; ') },
     ],
   }
-  return <main className="pipe-detail">
+  return <main className={`pipe-detail${item.categorySlug === 'sortovoy-i-fasonny-prokat' && item.slug === 'ugolok' ? ' technical-catalog-pilot' : ''}`}>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
     <header className="pipe-nav"><Link href={`/produkciya/${item.categorySlug}`}><b>←</b> {categoryLabel}</Link><LanguageSwitcher /><a href={requestHref}>Отправить заявку ↗</a></header>
     <section className="pipe-hero"><div><p>{categoryLabel}</p><h1>{item.title}</h1><span>{item.description}</span></div></section>
@@ -76,6 +76,20 @@ export default async function PipeDetailPage({ params }: { params: Promise<{ slu
     {/* The homepage is an HTML Route Handler; document navigation initializes the request form. */}
     {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
     <p className="size-series-intro">Сначала сверьте марку, размеры, исполнение и стандарт. Если спецификация уже готова, отправьте файл сразу — искать в каталоге необязательно. <a href="/#request">Отправить готовую заявку ↗</a></p>
+    {item.categorySlug === 'sortovoy-i-fasonny-prokat' && item.slug === 'ugolok' && <section className="technical-catalog-summary" aria-labelledby="technical-catalog-summary-heading">
+      <div className="technical-catalog-summary-heading">
+        <div><p className="technical-catalog-eyebrow">Техническая сводка</p><h2 id="technical-catalog-summary-heading">Уголок: основные параметры</h2></div>
+        <a href={requestHref}>В заявку ↗</a>
+      </div>
+      <dl>
+        <div><dt>Марки / классы</dt><dd>{item.grades.join(' · ')}</dd></div>
+        <div><dt>Исполнение</dt><dd>{item.range.find(row => row.label === 'Виды')?.value}</dd></div>
+        <div><dt>Размер</dt><dd>{item.range.find(row => row.label === 'Размер')?.value}; выберите точный типоразмер ниже</dd></div>
+        <div><dt>ГОСТ / ТУ</dt><dd>{item.standards.join(' · ')}</dd></div>
+      </dl>
+      <p className="technical-catalog-disclaimer">Марку, исполнение и стандарт согласуем для конкретного изделия. Перечень не подтверждает наличие на складе.</p>
+      <a className="technical-catalog-size-link" href="#sizes">Посмотреть размерный ряд ↓</a>
+    </section>}
     {item.categorySlug === 'metizy-i-svarochnye-materialy' && item.slug === 'kanaty' && <section className="product-size-series rope-sales" id="rope-sales" aria-labelledby="rope-sales-title">
       <h2 id="rope-sales-title">Выбрать стальной канат</h2>
       <p>Конструкция, диаметр, затем заявка. Диапазон ассортимента — {ropeSalesAssortment.diameterRange}; группы {ropeSalesAssortment.markingGroups.join(' и ')} {ropeSalesAssortment.markingGroupUnit}.</p>
