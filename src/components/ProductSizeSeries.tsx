@@ -40,7 +40,7 @@ const tableLabel = (table: SizeSeries) => {
   return table.title
 }
 
-export default function ProductSizeSeries({ series, requestHref, guide }: { series: SizeSeries[]; requestHref: string; guide?: ProductDimensionGuide }) {
+export default function ProductSizeSeries({ series, requestHref, guide, documentation = false, selectionOnly = false, showSelection = true }: { series: SizeSeries[]; requestHref: string; guide?: ProductDimensionGuide; documentation?: boolean; selectionOnly?: boolean; showSelection?: boolean }) {
   if (!series.length && !guide) return null
   const formatIndex = series.findIndex(table => table.title.startsWith('Форматы'))
   const initiallyOpen = formatIndex < 0 ? 0 : formatIndex
@@ -49,12 +49,19 @@ export default function ProductSizeSeries({ series, requestHref, guide }: { seri
   const hasRequirements = series.some(table => table.kind === 'requirements')
   const onlyRequirements = series.length > 0 && series.every(table => table.kind === 'requirements')
   const heading = onlyRequirements ? 'Нормативные параметры' : hasRequirements ? 'Размеры и параметры' : 'Размерный ряд'
+  const hasRequestForm = series[0]?.categorySlug === 'sortovoy-i-fasonny-prokat' && series[0]?.productSlug === 'ugolok'
+  const fastenerSelection = series[0]?.categorySlug === 'metizy-i-svarochnye-materialy' && series[0]?.productSlug === 'krepezh'
+  const galvanizedSelection = series[0]?.categorySlug === 'listovoy-prokat' && series[0]?.productSlug === 'ocinkovannyj'
+  const selection = hasRequestForm ? <CatalogStandardRequest requestHref={requestHref} />
+    : fastenerSelection ? <FastenerRequestPicker requestHref={requestHref} nutThreads={series.flatMap(table => table.standard === 'ГОСТ 5915-70' ? table.rows.map(row => row[0]) : [])} />
+    : galvanizedSelection ? <GalvanizedRequestPicker requestHref={requestHref} /> : null
+  if (selectionOnly) return selection
   return <section className="product-size-series" id="sizes" aria-labelledby="size-series-title">
     <h2 id="size-series-title">{series.length ? `${heading} по ${standardKind}` : 'Размеры по спецификации'}</h2>
-    {series[0]?.categorySlug === 'sortovoy-i-fasonny-prokat' && series[0]?.productSlug === 'ugolok' && <CatalogStandardRequest requestHref={requestHref} />}
+    {showSelection && selection}
     <p className="size-series-intro">{onlyRequirements ? 'Сверьте форму поставки, числовые значения и условия применения. Укажите требования в заявке или приложите спецификацию.' : series.length ? 'Найдите нужное обозначение или выберите строку. Размеры и параметры попадут в заявку; спецификацию можно приложить файлом.' : 'Укажите размеры и требования к изделию или приложите чертёж. Проверим их по выбранному стандарту и техническим условиям.'}</p>
     {series.length > 0 && <p className="size-series-mobile-help">Широкие таблицы можно прокручивать вбок. Первый столбец и заголовки остаются видны.</p>}
-    <a className="size-series-request" href={requestHref}>Отправить заявку ↗</a>
+    {(!documentation || !hasRequestForm) && <a className="size-series-request" href={requestHref}>Отправить заявку ↗</a>}
     {quickSectionRows(series).length > 0 && <div className="size-series-quick-examples">
       <strong>Примеры типоразмеров по ГОСТ — сразу в заявку:</strong>
       <nav aria-label="Выбор распространённых типоразмеров">{quickSectionRows(series).map(({ label, standard }) => {
@@ -64,8 +71,6 @@ export default function ProductSizeSeries({ series, requestHref, guide }: { seri
       })}</nav>
       <p>Это нормативные обозначения, а не сведения о наличии. Другой размер можно выбрать в таблице ниже или приложить спецификацию.</p>
     </div>}
-    {series[0]?.categorySlug === 'metizy-i-svarochnye-materialy' && series[0]?.productSlug === 'krepezh' && <FastenerRequestPicker requestHref={requestHref} nutThreads={series.flatMap(table => table.standard === 'ГОСТ 5915-70' ? table.rows.map(row => row[0]) : [])} />}
-    {series[0]?.categorySlug === 'listovoy-prokat' && series[0]?.productSlug === 'ocinkovannyj' && <GalvanizedRequestPicker requestHref={requestHref} />}
     {series.length > 1 && <nav className="size-series-nav" aria-label="Выбор размерной таблицы">
       {series.map((table, index) => <a key={`${table.standard}-${table.title}`} href={`#sizes-series-${index + 1}`}>{tableLabel(table)}</a>)}
     </nav>}
@@ -104,3 +109,4 @@ export default function ProductSizeSeries({ series, requestHref, guide }: { seri
     </div>}
   </section>
 }
+

@@ -1,10 +1,10 @@
 import { formatDimensionValue, formatDimensionDesignation } from '@/lib/dimensionDisplay'
 import { catalogStockRequestHref, getCatalogStockAssortment } from '@/data/catalogStockAssortment.server'
 
-export default function CatalogStockAssortment({ categorySlug, slug, title }: { categorySlug: string; slug: string; title: string }) {
+export default function CatalogStockAssortment({ categorySlug, slug, title, documentation = false }: { categorySlug: string; slug: string; title: string; documentation?: boolean }) {
   const rows = getCatalogStockAssortment(categorySlug, slug)
   if (!rows.length) return null
-  return <section className="product-size-series" id="stock-assortment" aria-labelledby="stock-assortment-title">
+  const content = <section className="product-size-series" id="stock-assortment" aria-labelledby="stock-assortment-title">
     <h2 id="stock-assortment-title">Позиции складского ассортимента</h2>
     <p className="size-series-intro">Стандартный складской ассортимент. Доступное количество, состояние и срок поставки подтвердим по заявке.</p>
     <p>Выберите позицию: её обозначение, исполнение и единица учёта попадут в заявку.</p>
@@ -20,4 +20,8 @@ export default function CatalogStockAssortment({ categorySlug, slug, title }: { 
       </table>
     </div>
   </section>
+  return documentation
+    ? <details className="product-document-stock"><summary>Складской ассортимент: {rows.length} позиций</summary>{content}</details>
+    : content
 }
+

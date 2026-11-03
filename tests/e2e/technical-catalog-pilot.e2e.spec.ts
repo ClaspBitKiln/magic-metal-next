@@ -1,4 +1,7 @@
 import { test, expect } from '@playwright/test'
+import { guardQaContext } from '../../qa/network-guard'
+
+test.beforeEach(async ({ context }) => { await guardQaContext(context) })
 
 const url = '/produkciya/sortovoy-i-fasonny-prokat/ugolok'
 
@@ -15,7 +18,7 @@ for (const width of [320, 390, 1536]) {
     await expect(summary).toContainText('ГОСТ 8509-93')
     await expect(summary).toContainText('Ст3')
     await expect(summary.getByRole('link', { name: /В заявку/ })).toHaveAttribute('href', /[?&]product=.*#request$/)
-    await expect(summary.getByRole('link', { name: /Посмотреть размерный ряд/ })).toHaveAttribute('href', '#sizes')
+    await expect(summary.getByRole('link', { name: /Размеры и подбор/ })).toHaveAttribute('href', '#sizes')
     await expect(page.locator('#sizes')).toHaveCount(1)
 
     const layout = await page.evaluate(() => {
@@ -44,8 +47,8 @@ for (const width of [320, 390, 1536]) {
 test('catalog summaries remain available without JavaScript', async ({ browser, baseURL }) => {
   const context = await browser.newContext({ javaScriptEnabled: false, baseURL, viewport: { width: 390, height: 900 } })
   try {
+    await guardQaContext(context)
     const page = await context.newPage()
-    await page.route('**/api/request', route => route.abort())
     for (const slug of ['krug-goryachekatanyj', 'armatura', 'shveller-gnutyj', 'krug-i-kvadrat', 'balka-shveller-ugolok']) {
       await page.goto(`/produkciya/sortovoy-i-fasonny-prokat/${slug}`)
       const summary = page.locator('.technical-catalog-summary')
@@ -58,9 +61,10 @@ test('catalog summaries remain available without JavaScript', async ({ browser, 
   } finally { await context.close() }
 })
 
-test('Technical Catalog UI does not leak to other products', async ({ page }) => {
+test('Technical Catalog UI extends to other product groups', async ({ page }) => {
   await page.goto('/produkciya/cvetnye-metally/bronza')
-  await expect(page.locator('.technical-catalog-summary')).toHaveCount(0)
+  await expect(page.locator('.technical-catalog-summary')).toHaveCount(1)
+  await expect(page.locator('main.product-document')).toHaveCount(1)
   await expect(page.locator('main.technical-catalog-pilot')).toHaveCount(0)
 })
 
@@ -95,10 +99,10 @@ for (const product of [
       await expect(section.getByRole('link', { name: /В заявку/ })).toHaveAttribute('href', /[?&]product=.*#request$/)
       const hasSizeSeries = await page.locator('#sizes').count() > 0
       if (hasSizeSeries) {
-        await expect(section.getByRole('link', { name: /Посмотреть размерный ряд/ })).toHaveAttribute('href', '#sizes')
+        await expect(section.getByRole('link', { name: /Размеры и подбор/ })).toHaveAttribute('href', '#sizes')
       } else {
         await expect(section.getByRole('link', { name: /Указать размер в заявке/ })).toHaveAttribute('href', /[?&]product=.*#request$/)
-        await expect(section.getByRole('link', { name: /Посмотреть размерный ряд/ })).toHaveCount(0)
+        await expect(section.getByRole('link', { name: /Размеры и подбор/ })).toHaveCount(0)
       }
       if ('profiles' in product) {
         const links = page.getByRole('navigation', { name: 'Размерные таблицы по видам профиля' }).getByRole('link')
@@ -132,3 +136,4 @@ for (const product of [
     })
   }
 }
+
