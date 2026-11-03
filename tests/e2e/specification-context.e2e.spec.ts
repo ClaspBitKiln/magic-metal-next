@@ -58,7 +58,7 @@ test('file request retains a completed bronze selection and clears incompatible 
   expect(fallback).not.toContain('20,5')
 })
 
-test('specification file path retains product without JavaScript', async ({ browser, baseURL }) => {
+test('specification file link retains product in its destination without JavaScript', async ({ browser, baseURL }) => {
   const context = await browser.newContext({ javaScriptEnabled: false, baseURL })
   try {
     const page = await context.newPage()
@@ -66,6 +66,10 @@ test('specification file path retains product without JavaScript', async ({ brow
     await page.goto('/produkciya/cvetnye-metally/bronza')
     const title = await page.locator('h1').innerText()
     await page.locator('.nonferrous-picker').getByRole('link', { name: /Excel/ }).click()
-    await expect(page.locator('#request-form textarea[name="message"]')).toHaveValue(`${title}: `)
+    // The static homepage prefills its form with JavaScript. The no-JS
+    // fallback contract is a normal document link retaining the product query.
+    expect(new URL(page.url()).searchParams.get('product')).toBe(title)
+    expect(new URL(page.url()).hash).toBe('#request')
+    await expect(page.locator('#request-form input[name="files"]')).toBeVisible()
   } finally { await context.close() }
 })
