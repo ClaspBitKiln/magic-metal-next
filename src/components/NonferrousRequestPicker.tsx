@@ -71,7 +71,7 @@ export default function NonferrousRequestPicker({ productSlug, requestHref }: { 
     </div>}
     <div className="nonferrous-fields">
       <label>Форма изделия
-        <select value={shape} onChange={e => {setShape(e.target.value as Shape);setA('');setB('');setLength('')}}><option value="">Выберите форму</option>{options.map(x=><option key={x} value={x}>{x}</option>)}</select>
+        <select value={shape} onChange={e => {setShape(e.target.value as Shape);setA('');setB('');setLength('');setGrade('');setOtherGrade('');setCondition('');setSurface('');setStandard('')}}><option value="">Выберите форму</option>{options.map(x=><option key={x} value={x}>{x}</option>)}</select>
       </label>
       {shape !== '' && <>
         {(flat || tube || bar || shaped) && <label>{flat ? 'Толщина, мм' : tube ? 'Наружный диаметр, мм' : shape === 'Шестигранник' ? 'Размер под ключ, мм' : shape === 'Квадрат' ? 'Сторона, мм' : shaped ? 'Основной габарит, мм (если известен)' : 'Диаметр, мм'}<input value={a} onChange={e=>setA(e.target.value)} inputMode="decimal" placeholder="Например, 20" /></label>}
