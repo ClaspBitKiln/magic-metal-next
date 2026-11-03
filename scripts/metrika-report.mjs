@@ -96,7 +96,7 @@ export async function main(argv = process.argv.slice(2)) {
   const current = await report(ranges.current)
   const previous = await report(ranges.previous)
   const breakdowns = {}
-  for (const [name, dimension, paths] of [['sources', 'ym:s:lastTrafficSource', false], ['devices', 'ym:s:deviceCategory', false], ['landingPages', 'ym:s:startURLPath', true]]) {
+  for (const [name, dimension, paths] of [['sources', 'ym:s:lastTrafficSource', false], ['devices', 'ym:s:deviceCategory', false], ['countries', 'ym:s:regionCountryName', false], ['regions', 'ym:s:regionAreaName', false], ['landingPages', 'ym:s:startURLPath', true]]) {
     try {
       breakdowns[name] = { current: await report(ranges.current, dimension, METRICS, paths), previous: await report(ranges.previous, dimension, METRICS, paths) }
     } catch (error) { breakdowns[name] = { unavailable: error.message } }
