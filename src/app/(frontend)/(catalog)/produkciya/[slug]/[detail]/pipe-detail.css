@@ -410,12 +410,15 @@
 
 /* Angle only: put the buyer's practical specification above the fold. */
 .technical-catalog-pilot .pipe-hero{min-height:0;padding-top:28px;padding-bottom:30px}
-.technical-catalog-pilot .pipe-hero h1{font-size:clamp(28px,3vw,40px);line-height:1.2}
+main.technical-catalog-pilot .pipe-hero h1{font-size:clamp(28px,3vw,40px) !important;line-height:1.2 !important}
 .technical-catalog-pilot .pipe-hero>div>span{margin-top:12px;font-size:16px;line-height:1.5}
 .technical-catalog-pilot .pipe-breadcrumb{padding-top:10px;padding-bottom:10px}
 .technical-catalog-pilot .size-series-intro{margin-top:12px;margin-bottom:12px}
 @media(max-width:560px){
  .technical-catalog-pilot .pipe-hero{padding:24px 22px}
- .technical-catalog-pilot .pipe-hero h1{font-size:28px;line-height:1.2}
+ main.technical-catalog-pilot .pipe-hero h1{font-size:28px !important;line-height:1.2 !important}
  .technical-catalog-pilot .pipe-hero>div>span{font-size:15px}
 }
+
+/* The existing global typography rules use !important. Override only this pilot. */
+main.technical-catalog-pilot .technical-catalog-summary h2{font-size:clamp(22px,2.2vw,28px) !important;line-height:1.25 !important}
