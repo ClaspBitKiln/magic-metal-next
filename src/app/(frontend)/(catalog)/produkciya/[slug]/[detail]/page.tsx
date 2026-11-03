@@ -56,13 +56,13 @@ export default async function PipeDetailPage({ params }: { params: Promise<{ slu
   const requestHref = `/?product=${encodeURIComponent(item.title)}#request`
   const sizeSeries = getProductSizeSeries(item.categorySlug, item.slug)
   const dimensionGuide = getDimensionGuide(item.categorySlug, item.slug)
-  const hasSizeReference = sizeSeries.length > 0 || Boolean(dimensionGuide)
   const sizeProfiles = item.categorySlug === 'sortovoy-i-fasonny-prokat'
     ? (profileSizePages[item.slug] || []).flatMap((profileSlug) => {
       const profile = getProductDetailItem(item.categorySlug, profileSlug)
       return profile ? [profile] : []
     })
     : []
+  const hasSizeReference = sizeSeries.length > 0 || Boolean(dimensionGuide) || sizeProfiles.length > 0
   const jsonLd = {
     '@context': 'https://schema.org', '@type': 'Product', name: item.title, description: item.description,
     category: categoryLabel, brand: { '@type': 'Brand', name: 'Мэджик Металл' },
@@ -71,7 +71,7 @@ export default async function PipeDetailPage({ params }: { params: Promise<{ slu
       { '@type': 'PropertyValue', name: 'Материалы', value: item.grades.join('; ') },
     ],
   }
-  return <main className={`pipe-detail${item.categorySlug === 'sortovoy-i-fasonny-prokat' && ['ugolok', 'shveller', 'balka-dvutavrovaya', 'kvadrat', 'shestigrannik', 'katanka', 'polosa', 'krug-goryachekatanyj', 'armatura'].includes(item.slug) ? ' technical-catalog-pilot' : ''}`}>
+  return <main className={`pipe-detail${item.categorySlug === 'sortovoy-i-fasonny-prokat' && ['ugolok', 'shveller', 'balka-dvutavrovaya', 'kvadrat', 'shestigrannik', 'katanka', 'polosa', 'krug-goryachekatanyj', 'armatura', 'shveller-gnutyj', 'krug-i-kvadrat', 'balka-shveller-ugolok'].includes(item.slug) ? ' technical-catalog-pilot' : ''}`}>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
     <header className="pipe-nav"><Link href={`/produkciya/${item.categorySlug}`}><b>←</b> {categoryLabel}</Link><LanguageSwitcher /><a href={requestHref}>Отправить заявку ↗</a></header>
     <section className="pipe-hero"><div><p>{categoryLabel}</p><h1>{item.title}</h1><span>{item.description}</span></div></section>
@@ -93,13 +93,13 @@ export default async function PipeDetailPage({ params }: { params: Promise<{ slu
       <p className="technical-catalog-disclaimer">Марку, исполнение и стандарт согласуем для конкретного изделия. Перечень не подтверждает наличие на складе.</p>
       <a className="technical-catalog-size-link" href="#sizes">Посмотреть размерный ряд ↓</a>
     </section>}
-    {item.categorySlug === 'sortovoy-i-fasonny-prokat' && ['shveller', 'balka-dvutavrovaya', 'kvadrat', 'shestigrannik', 'katanka', 'polosa', 'krug-goryachekatanyj', 'armatura'].includes(item.slug) && <section className="technical-catalog-summary" aria-labelledby="technical-catalog-summary-heading">
+    {item.categorySlug === 'sortovoy-i-fasonny-prokat' && ['shveller', 'balka-dvutavrovaya', 'kvadrat', 'shestigrannik', 'katanka', 'polosa', 'krug-goryachekatanyj', 'armatura', 'shveller-gnutyj', 'krug-i-kvadrat', 'balka-shveller-ugolok'].includes(item.slug) && <section className="technical-catalog-summary" aria-labelledby="technical-catalog-summary-heading">
       <div className="technical-catalog-summary-heading">
         <div><p className="technical-catalog-eyebrow">Техническая сводка</p><h2 id="technical-catalog-summary-heading">{item.shortTitle}: основные параметры</h2></div>
         <a href={requestHref}>В заявку ↗</a>
       </div>
       <dl>
-        <div><dt>{item.slug === 'shestigrannik' ? 'Материал / исполнение' : 'Марки / классы'}</dt><dd>{item.grades.join(' · ')}</dd></div>
+        <div><dt>{['shestigrannik', 'shveller-gnutyj'].includes(item.slug) ? 'Материал / исполнение' : 'Марки / классы'}</dt><dd>{item.grades.join(' · ')}</dd></div>
         {item.range.map((row) => <div key={row.label}><dt>{row.label}</dt><dd>{row.value}</dd></div>)}
         <div><dt>ГОСТ / ТУ</dt><dd>{item.standards.join(' · ')}</dd></div>
       </dl>

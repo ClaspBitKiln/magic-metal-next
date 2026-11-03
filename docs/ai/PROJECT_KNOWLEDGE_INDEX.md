@@ -7,6 +7,8 @@ tags: [magic-metal, catalog, automation, obsidian]
 
 # Мэджик Металл — центр знаний и работ
 
+Следующая группа 03.11: гнутый швеллер и сводные страницы круга/квадрата и фасонного проката — [правила сводки и размерных переходов](TECHNICAL_CATALOG_UI_STANDARD_2026-11-03.md). Статус приёмки — [Issue #115](https://github.com/ClaspBitKiln/magic-metal-next/issues/115).
+
 Продолжение 03.11: [Technical Catalog UI](TECHNICAL_CATALOG_UI_STANDARD_2026-11-03.md) — следующая малая группа: существующие горячекатаный круг и арматура; исходные нормативы и ассортимент сохранены. Актуальные проверки и публикация — в [едином журнале #115](https://github.com/ClaspBitKiln/magic-metal-next/issues/115).
 
 Актуальное продолжение 31 октября: [рельсы и канаты опубликованы, live QA пройден](RELEASE_RAILS_ROPES_2026-10-31.md).

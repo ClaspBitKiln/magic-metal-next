@@ -41,12 +41,12 @@ for (const width of [320, 390, 1536]) {
   })
 }
 
-test('round bar and rebar summaries remain available without JavaScript', async ({ browser, baseURL }) => {
+test('catalog summaries remain available without JavaScript', async ({ browser, baseURL }) => {
   const context = await browser.newContext({ javaScriptEnabled: false, baseURL, viewport: { width: 390, height: 900 } })
   try {
     const page = await context.newPage()
     await page.route('**/api/request', route => route.abort())
-    for (const slug of ['krug-goryachekatanyj', 'armatura']) {
+    for (const slug of ['krug-goryachekatanyj', 'armatura', 'shveller-gnutyj', 'krug-i-kvadrat', 'balka-shveller-ugolok']) {
       await page.goto(`/produkciya/sortovoy-i-fasonny-prokat/${slug}`)
       const summary = page.locator('.technical-catalog-summary')
       await expect(summary).toBeVisible()
@@ -59,7 +59,7 @@ test('round bar and rebar summaries remain available without JavaScript', async 
 })
 
 test('Technical Catalog UI does not leak to other products', async ({ page }) => {
-  await page.goto('/produkciya/sortovoy-i-fasonny-prokat/shveller-gnutyj')
+  await page.goto('/produkciya/cvetnye-metally/bronza')
   await expect(page.locator('.technical-catalog-summary')).toHaveCount(0)
   await expect(page.locator('main.technical-catalog-pilot')).toHaveCount(0)
 })
@@ -74,6 +74,9 @@ for (const product of [
   { slug: 'polosa', title: 'Полоса', standard: 'ГОСТ 103-2006', field: 'Сечение', material: 'марка стали по спецификации' },
   { slug: 'krug-goryachekatanyj', title: 'Круг горячекатаный', standard: 'ГОСТ 2590-2006', field: 'Диаметр', material: '12Х18Н10Т' },
   { slug: 'armatura', title: 'Арматура', standard: 'ГОСТ 34028-2016', field: 'Класс', material: '35ГС — марки стали по документации конкретной партии' },
+  { slug: 'shveller-gnutyj', title: 'Швеллер гнутый', standard: 'ГОСТ 8278-83', field: 'Тип', material: 'марка стали — по сертификату конкретной позиции' },
+  { slug: 'krug-i-kvadrat', title: 'Круг и квадрат', standard: 'ГОСТ 1050-2013', field: 'Форма', material: '30ХГСА', profiles: ['krug-goryachekatanyj', 'kvadrat'] },
+  { slug: 'balka-shveller-ugolok', title: 'Фасонный прокат', standard: 'ГОСТ 35087-2024', field: 'Профиль', material: 'С345 / С355 по НД', profiles: ['balka-dvutavrovaya', 'shveller', 'ugolok'] },
 ]) {
   for (const width of [320, 390, 1536]) {
     test(`Technical Catalog UI: ${product.slug} at ${width}px`, async ({ page }) => {
@@ -86,6 +89,9 @@ for (const product of [
       await expect(section).toContainText(product.material)
       await expect(section).toContainText(product.standard)
       await expect(section).toContainText(product.field)
+      if (product.slug === 'shveller-gnutyj') {
+        await expect(section.locator('dt').first()).toHaveText('Материал / исполнение')
+      }
       await expect(section.getByRole('link', { name: /В заявку/ })).toHaveAttribute('href', /[?&]product=.*#request$/)
       const hasSizeSeries = await page.locator('#sizes').count() > 0
       if (hasSizeSeries) {
@@ -93,6 +99,13 @@ for (const product of [
       } else {
         await expect(section.getByRole('link', { name: /Указать размер в заявке/ })).toHaveAttribute('href', /[?&]product=.*#request$/)
         await expect(section.getByRole('link', { name: /Посмотреть размерный ряд/ })).toHaveCount(0)
+      }
+      if ('profiles' in product) {
+        const links = page.getByRole('navigation', { name: 'Размерные таблицы по видам профиля' }).getByRole('link')
+        await expect(links).toHaveCount(product.profiles.length)
+        for (const [index, slug] of product.profiles.entries()) {
+          await expect(links.nth(index)).toHaveAttribute('href', `/produkciya/sortovoy-i-fasonny-prokat/${slug}#sizes`)
+        }
       }
       const result = await page.evaluate(() => {
         const title = document.querySelector<HTMLElement>('.technical-catalog-summary h2')!
@@ -109,7 +122,7 @@ for (const product of [
       expect(result.titleSize).toBeLessThanOrEqual(29)
       expect(result.heroSize).toBeLessThanOrEqual(41)
       expect(result.buttonHeight).toBeGreaterThanOrEqual(44)
-      if (['krug-goryachekatanyj', 'armatura'].includes(product.slug)) {
+      if (['krug-goryachekatanyj', 'armatura', 'shveller-gnutyj', 'krug-i-kvadrat', 'balka-shveller-ugolok'].includes(product.slug)) {
         expect(result.summaryTop).toBeLessThan(900)
         expect(result.textSize).toBe('15px')
         expect(result.actionSize).toBe('15px')
