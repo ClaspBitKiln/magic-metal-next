@@ -1,0 +1,50 @@
+name: Technical Catalog UI pilot verification
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'src/app/(frontend)/(catalog)/produkciya/[slug]/[detail]/page.tsx'
+      - 'src/app/(frontend)/(catalog)/produkciya/[slug]/[detail]/pipe-detail.css'
+      - 'tests/e2e/technical-catalog-pilot.e2e.spec.ts'
+      - 'playwright.pilot.config.ts'
+      - '.github/workflows/technical-catalog-pilot.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  pilot-local:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Build exactly this PR (no remote preview auth required)
+        run: npm run build
+      - name: Start built application
+        run: |
+          npm run start -- --hostname 127.0.0.1 --port 3000 > /tmp/technical-catalog.log 2>&1 &
+          for attempt in {1..60}; do
+            curl --fail --silent http://127.0.0.1:3000/ > /dev/null && exit 0
+            sleep 1
+          done
+          cat /tmp/technical-catalog.log
+          exit 1
+      - name: Verify technical summary, responsive layout and RFQ navigation
+        env:
+          BASE_URL: http://127.0.0.1:3000
+        run: npx playwright test --config=playwright.pilot.config.ts
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: technical-catalog-pilot-screenshots
+          path: |
+            test-results
+            playwright-report-pilot
+          if-no-files-found: ignore
