@@ -66,8 +66,14 @@ for (const product of [
       await expect(section).toContainText(product.standard)
       await expect(section).toContainText(product.field)
       await expect(section.getByRole('link', { name: /В заявку/ })).toHaveAttribute('href', /[?&]product=.*#request$/)
-      await expect(section.getByRole('link', { name: /Посмотреть размерный ряд/ })).toHaveAttribute('href', '#sizes')
-      await expect(page.locator('#sizes')).toHaveCount(1)
+      if (product.slug === 'shestigrannik') {
+        await expect(section.getByRole('link', { name: /Указать размер в заявке/ })).toHaveAttribute('href', /[?&]product=.*#request$/)
+        await expect(page.locator('#sizes')).toHaveCount(0)
+        await expect(section.getByRole('link', { name: /Посмотреть размерный ряд/ })).toHaveCount(0)
+      } else {
+        await expect(section.getByRole('link', { name: /Посмотреть размерный ряд/ })).toHaveAttribute('href', '#sizes')
+        await expect(page.locator('#sizes')).toHaveCount(1)
+      }
       const result = await page.evaluate(() => {
         const title = document.querySelector<HTMLElement>('.technical-catalog-summary h2')!
         const hero = document.querySelector<HTMLElement>('.pipe-hero h1')!
