@@ -83,7 +83,8 @@ form?.addEventListener('submit', async (event) => {
     const result = await response.json().catch(() => ({}))
     if (!response.ok) throw new Error(result.error || 'Не удалось отправить заявку')
     const recorded = result.ok === true && (typeof result.id === 'number' || (typeof result.id === 'string' && result.id.length > 0) || result.emailDelivered === true || result.crmDelivered === true)
-    if (recorded) track('request_sent')
+    if (!recorded) throw new Error('Сервер не подтвердил получение заявки. Уточните статус по телефону или email перед повторной отправкой.')
+    track('request_sent')
     form.reset()
     renderSelectedFiles()
     status.textContent = result.id ? `Заявка № ${result.id} принята. Мы свяжемся с вами.` : 'Заявка принята. Мы свяжемся с вами.'
