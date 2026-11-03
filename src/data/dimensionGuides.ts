@@ -3,8 +3,9 @@ import { nonferrousDimensionGuides } from './nonferrousDimensionGuides'
 import { pipeDimensionGuides } from './pipeDimensionGuides'
 import { weldedSdtDimensionGuides } from './weldedSdtDimensionGuides'
 import { railsDimensionGuides } from './railsDimensionGuides'
+import { ferroDimensionGuides } from './ferroDimensionGuides'
 
-export const dimensionGuides = [...productDimensionGuides, ...nonferrousDimensionGuides, ...pipeDimensionGuides, ...weldedSdtDimensionGuides, ...railsDimensionGuides]
+export const dimensionGuides = [...productDimensionGuides, ...nonferrousDimensionGuides, ...pipeDimensionGuides, ...weldedSdtDimensionGuides, ...railsDimensionGuides, ...ferroDimensionGuides]
 export const getDimensionGuide = (categorySlug: string, productSlug: string) =>
   dimensionGuides.find(guide => guide.categorySlug === categorySlug && guide.productSlug === productSlug)
 export const hasDimensionGuide = (href: string) =>
