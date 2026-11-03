@@ -50,6 +50,9 @@ tags: [magic-metal, catalog, automation, obsidian]
 - [Исследование конкурентов](https://github.com/ClaspBitKiln/magic-metal-next/blob/content/concrete-material-grades-buyer-20261029/docs/qa/COMPETITOR_CATALOG_RESEARCH_2026-10-29.md) — рабочая ветка, требуется независимая техническая сверка.
 
 ### Управление задачами
+**Текущий единый журнал и приоритеты двух аккаунтов:** [Issue #115](https://github.com/ClaspBitKiln/magic-metal-next/issues/115). Проверять перед любым новым PR; список ниже — тематические задачи, не доказательство их незавершённости.
+
+
 - [[Каталог — рой агентов и план 2026-10-29]]
 - [#93 Трубы](https://github.com/ClaspBitKiln/magic-metal-next/issues/93)
 - [#94 СДТ и изоляция](https://github.com/ClaspBitKiln/magic-metal-next/issues/94)
