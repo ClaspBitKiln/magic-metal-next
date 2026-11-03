@@ -4,7 +4,7 @@ import { chromium } from '@playwright/test'
 
 const browser = await chromium.launch({ headless: false, args: ['--window-size=1536,900'] })
 try {
-  const context = await browser.newContext({ viewport: null, deviceScaleFactor: 1 })
+  const context = await browser.newContext({ viewport: null })
   const page = await context.newPage()
   const response = await page.goto((process.env.BASE_URL || 'http://127.0.0.1:3000') + '/produkciya/sortovoy-i-fasonny-prokat/ugolok', { waitUntil: 'domcontentloaded' })
   assert.equal(response?.status(), 200, 'Angle card should be rendered')
