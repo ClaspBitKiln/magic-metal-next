@@ -259,10 +259,10 @@ describe('normative product size tables', () => {
     expect(tree.querySelectorAll('tbody tr')).toHaveLength(table.rows.length)
   })
 
-  it('preserves the 57 normative and specification cards alongside the separate stock assortment', () => {
+  it('preserves the 65 normative and specification cards alongside the separate stock assortment', () => {
     const cards = [...pipeCatalog, ...productDetailCatalog, ...sdtCatalog.map((item) => ({ ...item, categorySlug: 'sdt' }))]
       .filter((item) => !['krug-i-kvadrat', 'balka-shveller-ugolok', 'kanaty', 'armatura', 'katanka', 'profnastil', 'list-riflenyj', 'list-pvl', 'shveller-gnutyj', 'shestigrannik', 'setki', 'lenta-upakovochnaya'].includes(item.slug))
-    expect(cards).toHaveLength(57)
+    expect(cards).toHaveLength(65)
     expect(cards.filter((item) => getProductSizeSeries(item.categorySlug, item.slug).length)).toHaveLength(45)
     expect(cards.filter((item) => getProductSizeSeries(item.categorySlug, item.slug).some((table) => table.kind !== 'requirements'))).toHaveLength(38)
     expect(cards.filter((item) => {
