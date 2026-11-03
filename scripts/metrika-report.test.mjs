@@ -35,12 +35,14 @@ test('API reports use fixed HTTPS GET, keep token out of output, and preserve sa
   }
   try {
     await main(['--counter', '123'])
-    assert.equal(calls.length, 16)
+    assert.equal(calls.length, 20)
     const statsCalls = calls.map(({url}) => new URL(url)).filter(u => u.pathname === '/stat/v1/data')
     assert.ok(statsCalls.every(u => u.searchParams.get('filters') === "ym:s:isRobot=='No'"))
     assert.ok(statsCalls.some(u => u.searchParams.get('metrics')?.startsWith('ym:pv:') && u.searchParams.get('sort') === '-ym:pv:pageviews'))
     assert.ok(statsCalls.some(u => u.searchParams.get('dimensions') === 'ym:pv:URLPathLevel4Hash'))
     assert.ok(statsCalls.some(u => u.searchParams.get('dimensions') === 'ym:s:endURLPathLevel4Hash'))
+    assert.ok(statsCalls.some(u => u.searchParams.get('dimensions') === 'ym:s:regionAreaName'))
+    assert.ok(statsCalls.some(u => u.searchParams.get('dimensions') === 'ym:s:regionCountryName'))
     const summary = JSON.parse(output.join(''))
     assert.equal(summary.currentQuality.sampled, true)
     assert.equal(summary.requestSentGoalPresent, true)
