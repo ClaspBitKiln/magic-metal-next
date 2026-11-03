@@ -124,7 +124,7 @@ export async function main(argv = process.argv.slice(2)) {
       const event = (goal.conditions || []).some((condition) => condition.url === 'request_sent') || goal.name === 'request_sent'
       const metrics = `ym:s:goal${goal.id}reaches,ym:s:goal${goal.id}users,ym:s:goal${goal.id}conversionRate`
       const goalReport = async (range) => {
-        const result = await api('/stat/v1/data', { ids: id, ...range, metrics, accuracy: 'full' }, token)
+        const result = await api('/stat/v1/data', { ids: id, ...range, metrics, filters: "ym:s:isRobot=='No'", accuracy: 'full' }, token)
         return { totals: result.totals, quality: quality(result) }
       }
       try { goals.push({ id: goal.id, name: goal.name, type: goal.type, requestSent: event, metricNames: ['reaches', 'users', 'conversionRatePercent'], current: await goalReport(ranges.current), previous: await goalReport(ranges.previous) }) }
