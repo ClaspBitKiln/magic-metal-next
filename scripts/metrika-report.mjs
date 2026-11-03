@@ -92,17 +92,35 @@ export async function main(argv = process.argv.slice(2)) {
     if (options.date2 >= today) throw new Error('date2 must be a completed day in the counter time zone.')
   }
   const report = async (range, dimensions, metrics = METRICS, paths = false) => {
-    const result = await api('/stat/v1/data', { ids: id, ...range, ...segment, metrics, ...(dimensions ? { dimensions } : {}), limit: 50, sort: '-ym:s:visits', accuracy: 'full', lang: 'ru' }, token)
-    return { period: result.query ? { date1: result.query.date1, date2: result.query.date2 } : range, totals: result.totals, quality: quality(result), ...(dimensions ? { rows: sanitizeRows(result.data, paths) } : {}) }
+    const result = await api('/stat/v1/data', { ids: id, ...range, ...segment, metrics, ...(dimensions ? { dimensions } : {}), limit: 50, sort: metrics.startsWith('ym:pv:') ? '-ym:pv:pageviews' : '-ym:s:visits', accuracy: 'full', lang: 'ru' }, token)
+    return { period: result.query ? { date1: result.query.date1, date2: result.query.date2 } : range, totals: result.totals, quality: quality(result), ...(dimensions && metrics.startsWith('ym:pv:') ? { pageviewCoverage: { listed: (result.data || []).reduce((sum, row) => sum + (row.metrics?.[0] || 0), 0), total: result.totals?.[0] ?? null, complete: result.totals?.[0] != null && (result.data || []).reduce((sum, row) => sum + (row.metrics?.[0] || 0), 0) === result.totals[0] } } : {}), ...(dimensions ? { rows: sanitizeRows(result.data, paths) } : {}) }
   }
   const current = await report(ranges.current)
   const previous = await report(ranges.previous)
   const breakdowns = {}
-  for (const [name, dimension, paths] of [['sources', 'ym:s:lastTrafficSource', false], ['devices', 'ym:s:deviceCategory', false], ['landingPages', 'ym:s:startURLPath', true]]) {
+  for (const [name, dimension, paths] of [['sources', 'ym:s:lastTrafficSource', false], ['devices', 'ym:s:deviceCategory', false], ['countries', 'ym:s:regionCountryName', false], ['regions', 'ym:s:regionAreaName', false], ['landingPages', 'ym:s:startURLPath', true]]) {
     try {
-      breakdowns[name] = { current: await report(ranges.current, dimension, METRICS, paths), previous: await report(ranges.previous, dimension, METRICS, paths) }
+      breakdowns[name] = { metricNames: METRIC_NAMES, current: await report(ranges.current, dimension, METRICS, paths), previous: await report(ranges.previous, dimension, METRICS, paths) }
     } catch (error) { breakdowns[name] = { unavailable: error.message } }
   }
+  // Pageviews measure popular content, not visit duration or time on each page.
+  // Use identical path depth in both periods so product-level rows are comparable.
+  const pageMetrics = 'ym:pv:pageviews,ym:pv:users'
+  try {
+    breakdowns.popularPages = {
+      metricNames: ['pageviews', 'users'],
+      current: await report(ranges.current, 'ym:pv:URLPath', pageMetrics, true),
+      previous: await report(ranges.previous, 'ym:pv:URLPath', pageMetrics, true),
+    }
+  } catch (error) { breakdowns.popularPages = { unavailable: error.message } }
+  // An exit page records the visit's end, not evidence of dissatisfaction.
+  try {
+    breakdowns.exitPages = {
+      metricNames: METRIC_NAMES,
+      current: await report(ranges.current, 'ym:s:endURLPath', METRICS, true),
+      previous: await report(ranges.previous, 'ym:s:endURLPath', METRICS, true),
+    }
+  } catch (error) { breakdowns.exitPages = { unavailable: error.message } }
   let goals
   try {
     const result = await api(`/management/v1/counter/${id}/goals`, null, token)
@@ -122,7 +140,7 @@ export async function main(argv = process.argv.slice(2)) {
     const now = current.totals?.[index] ?? null, before = previous.totals?.[index] ?? null
     return [name, { current: now, previous: before, absoluteChange: now === null || before === null ? null : now - before, percentChange: now === null || before === null || before === 0 ? null : (now - before) / before * 100 }]
   }))
-  const result = { generatedAt: new Date().toISOString(), counter: { id, name: counter.name, timeZone, createdAt: counter.create_time }, segment: options.excludeRobots ? 'metrika_non_robot' : 'all_traffic', ranges, metricNames: METRIC_NAMES, comparison, current, previous, breakdowns, goals, limitations: ['Counts are measured browsers/devices, not an exact count of people.', 'Historical traffic before counter installation cannot be reconstructed by this API.', options.excludeRobots ? 'Report excludes visits classified as robots by Metrika; this classification does not guarantee human-only or customer-only traffic. Counter filtering settings were not changed.' : 'Robot filtering settings were not changed. No separate robot metric was requested; do not call these verified human-only counts.', 'accuracy=full is requested; inspect quality.sampled and sample_share. Data lag is recorded only when returned by the API.', 'Breakdowns contain at most 50 rows per period; totals include the complete API report.', 'Landing-page paths exclude query strings and fragments. Goals do not prove lead quality or completed sales.', 'For explicit dates, use completed days in the counter time zone; if no time zone metadata is returned, completion cannot be verified.'] }
+  const result = { generatedAt: new Date().toISOString(), counter: { id, name: counter.name, timeZone, createdAt: counter.create_time }, segment: options.excludeRobots ? 'metrika_non_robot' : 'all_traffic', ranges, metricNames: METRIC_NAMES, comparison, current, previous, breakdowns, goals, limitations: ['Counts are measured browsers/devices, not an exact count of people.', 'Historical traffic before counter installation cannot be reconstructed by this API.', options.excludeRobots ? 'Report excludes visits classified as robots by Metrika; this classification does not guarantee human-only or customer-only traffic. Counter filtering settings were not changed.' : 'Robot filtering settings were not changed. No separate robot metric was requested; do not call these verified human-only counts.', 'accuracy=full is requested; inspect quality.sampled and sample_share. Data lag is recorded only when returned by the API.', 'Breakdowns contain at most 50 rows per period; returned rows may not cover totals even below that limit. Check pageviewCoverage before interpreting popular-page rankings; absent rows are not zero visits.', 'Landing, popular and exit page paths exclude query strings and fragments. Popular pages compare complete paths without query or fragment and report pageviews/users, not time spent on each page. Exit pages are not proof of dissatisfaction. Goals do not prove lead quality or completed sales.', 'For explicit dates, use completed days in the counter time zone; if no time zone metadata is returned, completion cannot be verified.'] }
   if (options.out) {
     const target = resolve(options.out)
     await mkdir(dirname(target), { recursive: true, mode: 0o700 })
