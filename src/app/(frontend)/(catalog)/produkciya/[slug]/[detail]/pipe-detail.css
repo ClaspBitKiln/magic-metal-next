@@ -407,3 +407,15 @@
 .technical-catalog-summary .technical-catalog-disclaimer{margin:13px 0;font-size:13px;line-height:1.5;color:#52617b}
 .technical-catalog-size-link{min-height:44px;display:inline-flex;align-items:center;font-size:15px;font-weight:700;color:#0757e8}
 @media(max-width:560px){.technical-catalog-summary{margin:0 16px 20px;padding:18px 16px}.technical-catalog-summary-heading{align-items:stretch;flex-direction:column}.technical-catalog-summary-heading>a{justify-content:center}.technical-catalog-summary dl>div{grid-template-columns:1fr;gap:4px}}
+
+/* Angle only: put the buyer's practical specification above the fold. */
+.technical-catalog-pilot .pipe-hero{min-height:0;padding-top:28px;padding-bottom:30px}
+.technical-catalog-pilot .pipe-hero h1{font-size:clamp(28px,3vw,40px);line-height:1.2}
+.technical-catalog-pilot .pipe-hero>div>span{margin-top:12px;font-size:16px;line-height:1.5}
+.technical-catalog-pilot .pipe-breadcrumb{padding-top:10px;padding-bottom:10px}
+.technical-catalog-pilot .size-series-intro{margin-top:12px;margin-bottom:12px}
+@media(max-width:560px){
+ .technical-catalog-pilot .pipe-hero{padding:24px 22px}
+ .technical-catalog-pilot .pipe-hero h1{font-size:28px;line-height:1.2}
+ .technical-catalog-pilot .pipe-hero>div>span{font-size:15px}
+}
