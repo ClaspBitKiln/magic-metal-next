@@ -1,0 +1,20 @@
+name: Funnel analytics report tests
+on:
+  pull_request:
+    paths:
+      - 'scripts/metrika-report.mjs'
+      - 'scripts/metrika-report.test.mjs'
+      - '.github/workflows/funnel-analytics-tests.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  offline-report:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test scripts/metrika-report.test.mjs
