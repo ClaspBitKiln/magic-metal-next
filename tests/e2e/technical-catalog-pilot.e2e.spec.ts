@@ -41,6 +41,23 @@ for (const width of [320, 390, 1536]) {
   })
 }
 
+test('round bar and rebar summaries remain available without JavaScript', async ({ browser, baseURL }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false, baseURL, viewport: { width: 390, height: 900 } })
+  try {
+    const page = await context.newPage()
+    await page.route('**/api/request', route => route.abort())
+    for (const slug of ['krug-goryachekatanyj', 'armatura']) {
+      await page.goto(`/produkciya/sortovoy-i-fasonny-prokat/${slug}`)
+      const summary = page.locator('.technical-catalog-summary')
+      await expect(summary).toBeVisible()
+      const action = summary.getByRole('link', { name: 'В заявку ↗' })
+      const title = await page.locator('h1').innerText()
+      expect(new URL((await action.getAttribute('href'))!, 'https://magicmet.ru').searchParams.get('product')).toBe(title)
+      await expect(summary).toContainText('перечень не подтверждает наличие')
+    }
+  } finally { await context.close() }
+})
+
 test('Technical Catalog UI does not leak to other products', async ({ page }) => {
   await page.goto('/produkciya/sortovoy-i-fasonny-prokat/shveller-gnutyj')
   await expect(page.locator('.technical-catalog-summary')).toHaveCount(0)
@@ -55,6 +72,8 @@ for (const product of [
   { slug: 'shestigrannik', title: 'Шестигранник', standard: 'ГОСТ 2879-2006', field: 'Размеры заказа', material: 'марка стали — по заказу' },
   { slug: 'katanka', title: 'Катанка', standard: 'ГОСТ 30136-95', field: 'Диаметр', material: 'углеродистая сталь' },
   { slug: 'polosa', title: 'Полоса', standard: 'ГОСТ 103-2006', field: 'Сечение', material: 'марка стали по спецификации' },
+  { slug: 'krug-goryachekatanyj', title: 'Круг горячекатаный', standard: 'ГОСТ 2590-2006', field: 'Диаметр', material: '12Х18Н10Т' },
+  { slug: 'armatura', title: 'Арматура', standard: 'ГОСТ 34028-2016', field: 'Класс', material: '35ГС — марки стали по документации конкретной партии' },
 ]) {
   for (const width of [320, 390, 1536]) {
     test(`Technical Catalog UI: ${product.slug} at ${width}px`, async ({ page }) => {
@@ -81,12 +100,22 @@ for (const product of [
         const button = document.querySelector<HTMLElement>('.technical-catalog-summary-heading > a')!
         return { scroll: document.documentElement.scrollWidth, client: document.documentElement.clientWidth,
           titleSize: parseFloat(getComputedStyle(title).fontSize), heroSize: parseFloat(getComputedStyle(hero).fontSize),
-          buttonHeight: button.getBoundingClientRect().height }
+          buttonHeight: button.getBoundingClientRect().height,
+          textSize: getComputedStyle(document.querySelector('.technical-catalog-summary dd')!).fontSize,
+          actionSize: getComputedStyle(button).fontSize,
+          summaryTop: title.getBoundingClientRect().top + window.scrollY }
       })
       expect(result.scroll).toBeLessThanOrEqual(result.client)
       expect(result.titleSize).toBeLessThanOrEqual(29)
       expect(result.heroSize).toBeLessThanOrEqual(41)
       expect(result.buttonHeight).toBeGreaterThanOrEqual(44)
+      if (['krug-goryachekatanyj', 'armatura'].includes(product.slug)) {
+        expect(result.summaryTop).toBeLessThan(900)
+        expect(result.textSize).toBe('15px')
+        expect(result.actionSize).toBe('15px')
+        console.log(JSON.stringify({ product: product.slug, width, typography: result }))
+        await page.screenshot({ path: `test-results/technical-${product.slug}-${width}.png`, fullPage: true })
+      }
     })
   }
 }
