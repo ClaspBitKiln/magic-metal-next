@@ -15,7 +15,7 @@ for (const width of [390, 1536]) {
     await picker.getByLabel('ГОСТ / ТУ / ASTM').fill('ГОСТ 1628-2019')
     await picker.getByLabel('Количество').fill('12')
     const action = picker.getByRole('link', { name: /Передать параметры в заявку/ })
-    await expect(action).toHaveAttribute('href', /БрАМц9-2/)
+    await expect.poll(async () => new URL((await action.getAttribute('href'))!, 'https://magicmet.ru').searchParams.get('product')).toContain('БрАМц9-2')
     await shape.selectOption('Шестигранник')
     await expect(picker.getByLabel('Марка металла / сплава')).toHaveValue('')
     await expect(picker.getByLabel('Состояние / способ изготовления')).toHaveValue('')
