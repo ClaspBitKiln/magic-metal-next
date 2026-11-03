@@ -35,7 +35,14 @@ test('API reports use fixed HTTPS GET, keep token out of output, and preserve sa
   }
   try {
     await main(['--counter', '123'])
-    assert.equal(calls.length, 12)
+    assert.equal(calls.length, 20)
+    const statsCalls = calls.map(({url}) => new URL(url)).filter(u => u.pathname === '/stat/v1/data')
+    assert.ok(statsCalls.every(u => u.searchParams.get('filters') === "ym:s:isRobot=='No'"))
+    assert.ok(statsCalls.some(u => u.searchParams.get('metrics')?.startsWith('ym:pv:') && u.searchParams.get('sort') === '-ym:pv:pageviews'))
+    assert.ok(statsCalls.some(u => u.searchParams.get('dimensions') === 'ym:pv:URLPathLevel4Hash'))
+    assert.ok(statsCalls.some(u => u.searchParams.get('dimensions') === 'ym:s:endURLPathLevel4Hash'))
+    assert.ok(statsCalls.some(u => u.searchParams.get('dimensions') === 'ym:s:regionAreaName'))
+    assert.ok(statsCalls.some(u => u.searchParams.get('dimensions') === 'ym:s:regionCountryName'))
     const summary = JSON.parse(output.join(''))
     assert.equal(summary.currentQuality.sampled, true)
     assert.equal(summary.requestSentGoalPresent, true)
@@ -46,35 +53,5 @@ test('API reports use fixed HTTPS GET, keep token out of output, and preserve sa
     console.log = originalLog
     if (previousToken === undefined) delete process.env.YANDEX_METRIKA_TOKEN
     else process.env.YANDEX_METRIKA_TOKEN = previousToken
-  }
-})
-
-
-test('non-robot segment applies equally to visits, breakdowns and goals without management writes', async () => {
-  const { main } = await import('./metrika-report.mjs')
-  const originalFetch = globalThis.fetch, originalLog = console.log, token = process.env.YANDEX_METRIKA_TOKEN
-  const calls = [], output = []
-  process.env.YANDEX_METRIKA_TOKEN = 'offline-test-secret'
-  console.log = value => output.push(value)
-  globalThis.fetch = async (url, init) => {
-    url = new URL(url); calls.push({ url, init })
-    const body = url.pathname.endsWith('/goals') ? { goals: [{ id: 10, name: 'request_sent', type: 'action', conditions: [{ url: 'request_sent' }] }] }
-      : url.pathname.startsWith('/management/') ? { counter: { name: 'test' } }
-      : { totals: [2, 3, 4, 5, 6, 7], sampled: false, sample_share: 1, data: [] }
-    return { ok: true, json: async () => body }
-  }
-  try {
-    await main(['--counter', '123', '--days', '7', '--exclude-robots'])
-    const stats = calls.filter(({ url }) => url.pathname.startsWith('/stat/'))
-    assert.equal(stats.length, 10)
-    for (const { url, init } of calls) {
-      assert.equal(init.method, undefined)
-      assert.equal(url.searchParams.get('filters'), url.pathname.startsWith('/stat/') ? "ym:s:isRobot=='no'" : null)
-    }
-    assert.equal(JSON.parse(output[0]).segment, 'metrika_non_robot')
-    assert.equal(output.join('').includes('offline-test-secret'), false)
-  } finally {
-    globalThis.fetch = originalFetch; console.log = originalLog
-    if (token === undefined) delete process.env.YANDEX_METRIKA_TOKEN; else process.env.YANDEX_METRIKA_TOKEN = token
   }
 })
