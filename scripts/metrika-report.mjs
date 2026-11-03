@@ -105,14 +105,14 @@ export async function main(argv = process.argv.slice(2)) {
   const pageMetrics = 'ym:pv:pageviews,ym:pv:users'
   try {
     breakdowns.popularPages = {
-      current: await report(ranges.current, 'ym:pv:URLPathLevel3Hash', pageMetrics, true),
+      current: await report(ranges.current, 'ym:pv:URLPathLevel4Hash', pageMetrics, true),
       previous: await report(ranges.previous, 'ym:pv:URLPathLevel3Hash', pageMetrics, true),
     }
   } catch (error) { breakdowns.popularPages = { unavailable: error.message } }
   // Visit exit page, not necessarily the page where a user lost interest.
   try {
     breakdowns.exitPages = {
-      current: await report(ranges.current, 'ym:s:endURLPathLevel3Hash', METRICS, true),
+      current: await report(ranges.current, 'ym:s:endURLPathLevel4Hash', METRICS, true),
       previous: await report(ranges.previous, 'ym:s:endURLPathLevel3Hash', METRICS, true),
     }
   } catch (error) { breakdowns.exitPages = { unavailable: error.message } }
@@ -135,7 +135,7 @@ export async function main(argv = process.argv.slice(2)) {
     const now = current.totals?.[index] ?? null, before = previous.totals?.[index] ?? null
     return [name, { current: now, previous: before, absoluteChange: now === null || before === null ? null : now - before, percentChange: now === null || before === null || before === 0 ? null : (now - before) / before * 100 }]
   }))
-  const result = { generatedAt: new Date().toISOString(), counter: { id, name: counter.name, timeZone, createdAt: counter.create_time }, ranges, metricNames: METRIC_NAMES, comparison, current, previous, breakdowns, goals, limitations: ['Counts are measured browsers/devices, not an exact count of people.', 'Historical traffic before counter installation cannot be reconstructed by this API.', 'Robot filtering settings were not changed. No separate robot metric was requested; do not call these verified human-only counts.', 'accuracy=full is requested; inspect quality.sampled and sample_share. Data lag is recorded only when returned by the API.', 'Breakdowns contain at most 50 rows per period; totals include the complete API report.', 'Landing and exit page paths exclude query strings and fragments. Popular pages show views/users, not time spent on a given page. Exit pages are not proof of dissatisfaction. Goals do not prove lead quality or completed sales.', 'For explicit dates, use completed days in the counter time zone; if no time zone metadata is returned, completion cannot be verified.'] }
+  const result = { generatedAt: new Date().toISOString(), counter: { id, name: counter.name, timeZone, createdAt: counter.create_time }, ranges, metricNames: METRIC_NAMES, comparison, current, previous, breakdowns, goals, limitations: ['Counts are measured browsers/devices, not an exact count of people.', 'Historical traffic before counter installation cannot be reconstructed by this API.', 'Robot filtering settings were not changed. No separate robot metric was requested; do not call these verified human-only counts.', 'accuracy=full is requested; inspect quality.sampled and sample_share. Data lag is recorded only when returned by the API.', 'Breakdowns contain at most 50 rows per period; totals include the complete API report.', 'Landing and exit page paths exclude query strings and fragments. Popular pages use up to 4 path levels to distinguish products and show views/users, not time spent on a given page. Exit pages are not proof of dissatisfaction. Goals do not prove lead quality or completed sales.', 'For explicit dates, use completed days in the counter time zone; if no time zone metadata is returned, completion cannot be verified.'] }
   if (options.out) {
     const target = resolve(options.out)
     await mkdir(dirname(target), { recursive: true, mode: 0o700 })
