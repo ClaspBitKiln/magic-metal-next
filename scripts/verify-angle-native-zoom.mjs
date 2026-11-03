@@ -40,7 +40,10 @@ try {
   assert.ok(after.dpr >= 1.8, 'Native browser zoom must affect devicePixelRatio')
   assert.ok(after.overflow <= 0, 'Document must not overflow horizontally at true browser zoom')
   assert.ok(after.actionHeight >= 44, 'RFQ action must remain accessible')
-  await page.screenshot({ path: 'test-results/native-zoom-' + productSlug + '.png', fullPage: true })
+  // Headed Chromium/Xvfb may reject Page.captureScreenshot even when native zoom works.
+  // Responsive Playwright runs already capture screenshots; here numerical zoom is the gate.
+  try { await page.screenshot({ path: 'test-results/native-zoom-' + productSlug + '.png', fullPage: true }) }
+  catch (error) { console.log('Optional native-zoom screenshot unavailable:', error.message) }
   await context.close()
 } finally {
   await browser.close()
