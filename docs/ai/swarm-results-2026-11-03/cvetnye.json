@@ -1,0 +1,488 @@
+{
+  "source": "Firecrawl research agent",
+  "jobId": "01a19d74-a771-775e-ac56-efe380febbc2",
+  "checkedAt": "2026-11-03",
+  "status": "unverified_research_candidate",
+  "warning": "Исследование не является нормативной проверкой, подтверждением наличия или основанием для автоматической публикации. Сверяйте точные URL и применимость с текущим main.",
+  "data": {
+    "source_site": "magicmet.ru",
+    "scope_note": "Выборка по страницам каталога magicmet.ru и справочникам ГОСТ на сайте; значения марок и размеров взяты только со страниц, где они указаны. Марки не переносились между формами без подтверждения страницы этой формы.",
+    "metals": [
+      {
+        "metal": "Медь",
+        "sources": [
+          "https://magicmet.ru/produkciya/cvetnye-metally/med",
+          "https://magicmet.ru/spravochnik-gost/gost-1535-2016"
+        ],
+        "forms_listed": [
+          "лист",
+          "лента",
+          "труба",
+          "пруток",
+          "проволока"
+        ],
+        "grades_listed": [
+          "М00",
+          "М0",
+          "М1",
+          "М2",
+          "М3",
+          "М1р",
+          "М2р",
+          "М3р"
+        ],
+        "grades_citation": "https://magicmet.ru/produkciya/cvetnye-metally/med",
+        "standard_grades": "ГОСТ 859-2014 (марки меди, по тексту страницы)",
+        "standard_citation": "https://magicmet.ru/produkciya/cvetnye-metally/med",
+        "round_bar_size": "диаметр 20–180 мм (ГОСТ 1535-2016, прессованные прутки); немерная длина 2000–5000 мм для диаметров 20–32 мм, 500–2000 мм для 180 мм",
+        "round_bar_citation": "https://magicmet.ru/spravochnik-gost/gost-1535-2016",
+        "scope_limit": "ГОСТ 1535-2016 таблица не относится к листу, трубе и проволоке"
+      },
+      {
+        "metal": "Латунь",
+        "sources": [
+          "https://magicmet.ru/produkciya/cvetnye-metally/latun",
+          "https://magicmet.ru/spravochnik-gost/gost-15527-2004"
+        ],
+        "forms_listed": [
+          "лист",
+          "лента",
+          "пруток",
+          "труба",
+          "проволока"
+        ],
+        "grades_listed": [
+          "Л63",
+          "Л68",
+          "Л70",
+          "Л80",
+          "Л90",
+          "Л96",
+          "ЛС59-1",
+          "ЛС63-3",
+          "ЛЖМц59-1-1"
+        ],
+        "grades_citation": "https://magicmet.ru/produkciya/cvetnye-metally/latun",
+        "standard_grades": "ГОСТ 15527-2004 (деформируемые латуни)",
+        "standard_citation": "https://magicmet.ru/spravochnik-gost/gost-15527-2004",
+        "round_bar_size": "диаметры до 180 мм по таблице допусков ГОСТ 2060-2006 (интервалы, не номиналы): до 10 мм ±0,18 (повыш.) / ±0,29 (норм.)",
+        "round_bar_citation": "https://magicmet.ru/spravochnik-gost/gost-2060-2006"
+      },
+      {
+        "metal": "Бронза",
+        "sources": [
+          "https://magicmet.ru/produkciya/cvetnye-metally/bronza",
+          "https://magicmet.ru/spravochnik-gost/gost-1628-2019"
+        ],
+        "forms_listed": [
+          "втулка",
+          "пруток",
+          "лента",
+          "плита",
+          "заготовка"
+        ],
+        "grades_listed": [
+          "БрОФ6,5-0,15",
+          "БрБ2",
+          "БрАМц9-2",
+          "БрАЖ9-4",
+          "БрОЦС5-5-5",
+          "БрО10Ф1"
+        ],
+        "grades_citation": "https://magicmet.ru/produkciya/cvetnye-metally/bronza",
+        "standard_grades": "ГОСТ 5017-2006 (деформируемые оловянные бронзы); ГОСТ 18175 и ГОСТ 613-79 упомянуты на странице",
+        "standard_citation": "https://magicmet.ru/produkciya/cvetnye-metally/bronza",
+        "round_square_hex_size": "безоловянная бронза (ГОСТ 1628-2019): круг, квадрат, шестигранник, размер сечения от 5 мм (интервалы таблицы до 41 мм); для квадрата и шестигранника из БрАМц9-2 отдельный диапазон 14–36 мм",
+        "round_square_hex_citation": "https://magicmet.ru/spravochnik-gost/gost-1628-2019"
+      },
+      {
+        "metal": "Алюминий",
+        "sources": [
+          "https://magicmet.ru/produkciya/cvetnye-metally/alyuminij",
+          "https://magicmet.ru/spravochnik-gost/gost-21488-2025"
+        ],
+        "forms_listed": [
+          "лист",
+          "плита",
+          "труба",
+          "пруток",
+          "проволока"
+        ],
+        "grades_listed": [
+          "АД0",
+          "АД1",
+          "А5",
+          "А7",
+          "АМг2",
+          "АМг3",
+          "АМг5",
+          "АМг6",
+          "АМц",
+          "Д16",
+          "В95",
+          "АД31"
+        ],
+        "grades_citation": "https://magicmet.ru/produkciya/cvetnye-metally/alyuminij",
+        "standard_grades": "ГОСТ 4784-2019; ГОСТ 11069-2019 для А5 и А7",
+        "standard_citation": "https://magicmet.ru/produkciya/cvetnye-metally/alyuminij",
+        "round_bar_size": "диаметр 8–400 мм (ГОСТ 21488-2025, прессованные прутки)",
+        "round_bar_citation": "https://magicmet.ru/spravochnik-gost/gost-21488-2025"
+      },
+      {
+        "metal": "Титан",
+        "sources": [
+          "https://magicmet.ru/produkciya/cvetnye-metally/titan",
+          "https://magicmet.ru/spravochnik-gost/gost-26492-85"
+        ],
+        "forms_listed": [
+          "лист",
+          "труба",
+          "пруток",
+          "поковка"
+        ],
+        "grades_listed": [
+          "ВТ1-00",
+          "ВТ1-0",
+          "ВТ6",
+          "ВТ14",
+          "ОТ4",
+          "ПТ3В"
+        ],
+        "grades_citation": "https://magicmet.ru/produkciya/cvetnye-metally/titan",
+        "standard_grades": "ГОСТ 19807-91",
+        "standard_citation": "https://magicmet.ru/produkciya/cvetnye-metally/titan",
+        "round_bar_size": "диаметр 10–150 мм (ГОСТ 26492-85, катаный круг); немерная длина 500–4000 мм для 10–12 мм, 500–2000 мм для 150 мм",
+        "round_bar_citation": "https://magicmet.ru/spravochnik-gost/gost-26492-85"
+      },
+      {
+        "metal": "Нержавеющая сталь",
+        "sources": [
+          "https://magicmet.ru/produkciya/nerzhaveyushchaya-stal/list",
+          "https://magicmet.ru/produkciya/nerzhaveyushchaya-stal/truby"
+        ],
+        "forms_listed": [
+          "лист",
+          "лента",
+          "труба (бесшовная/сварная)",
+          "круг",
+          "квадрат",
+          "шестигранник",
+          "полоса"
+        ],
+        "grades_by_form": "см. by_form",
+        "standard_grades": "ГОСТ 5632-2014 (марки сталей)",
+        "standard_citation": "https://magicmet.ru/spravochnik-gost/gost-5632-2014"
+      }
+    ],
+    "by_form": {
+      "лист": [
+        {
+          "metal": "Медь",
+          "grades": "М00, М0, М1, М2, М3, М1р, М2р, М3р (страница меди, без привязки к листу)",
+          "standard": "ГОСТ 859-2014 (по тексту страницы)",
+          "size": "по спецификации (размерного ряда для листа на странице нет)",
+          "_citation": "https://magicmet.ru/produkciya/cvetnye-metally/med"
+        },
+        {
+          "metal": "Латунь",
+          "grades": "Л63, Л68, Л70, Л80, Л90, Л96, ЛС59-1, ЛС63-3, ЛЖМц59-1-1 (страница латуни, без привязки к листу)",
+          "standard": "ГОСТ 15527-2004 (марки); стандарт на лист — по полуфабрикату",
+          "size": "по заявке",
+          "_citation": "https://magicmet.ru/produkciya/cvetnye-metally/latun"
+        },
+        {
+          "metal": "Бронза",
+          "grades": "нет марок, подтверждённых именно для листа; на странице лист указан в форме выбора, в списке форм листа нет",
+          "size": "не подтверждён",
+          "_citation": "https://magicmet.ru/produkciya/cvetnye-metally/bronza"
+        },
+        {
+          "metal": "Алюминий",
+          "grades": "АД0, АД1, А5, А7, АМг2, АМг3, АМг5, АМг6, АМц, Д16, В95, АД31 (страница алюминия, без привязки к листу)",
+          "standard": "ГОСТ 4784-2019 (лист, плита, профиль, труба, поковка)",
+          "size": "по спецификации",
+          "_citation": "https://magicmet.ru/spravochnik-gost/gost-4784-2019"
+        },
+        {
+          "metal": "Титан",
+          "grades": "ВТ1-00, ВТ1-0, ВТ6, ВТ14, ОТ4, ПТ3В (страница титана, без привязки к листу)",
+          "standard": "ГОСТ 19807-91 (лист, пруток, трубу или поковку)",
+          "size": "по спецификации",
+          "_citation": "https://magicmet.ru/spravochnik-gost/gost-19807-91"
+        },
+        {
+          "metal": "Нержавеющая сталь",
+          "grades": "08Х18Н10, 12Х18Н10Т, 10Х17Н13М2Т, AISI 304 / 316L / 321 / 430",
+          "standard": "ГОСТ 5632-2014 (марки); ГОСТ 5582-75 (тонколистовой); ГОСТ 7350-77 (толстолистовой)",
+          "size": "ГОСТ 5582-75: горячекатаный 1,5–3,9 мм, холоднокатаный 0,5–3,9 мм; ГОСТ 7350-77: горячекатаный 4–50 мм, холоднокатаный 4–5 мм",
+          "_citation": "https://magicmet.ru/produkciya/nerzhaveyushchaya-stal/list"
+        }
+      ],
+      "труба": [
+        {
+          "metal": "Медь",
+          "grades": "как на странице меди (без привязки к трубе)",
+          "size": "по спецификации; ГОСТ 1535 не применим к трубе",
+          "_citation": "https://magicmet.ru/produkciya/cvetnye-metally/med"
+        },
+        {
+          "metal": "Латунь",
+          "grades": "как на странице латуни (без привязки к трубе)",
+          "standard": "ГОСТ 15527-2004 (труба входит в список полуфабрикатов)",
+          "size": "по заявке",
+          "_citation": "https://magicmet.ru/produkciya/cvetnye-metally/latun"
+        },
+        {
+          "metal": "Алюминий",
+          "grades": "как на странице алюминия (без привязки к трубе)",
+          "standard": "ГОСТ 4784-2019 (труба входит в список)",
+          "size": "по спецификации",
+          "_citation": "https://magicmet.ru/spravochnik-gost/gost-4784-2019"
+        },
+        {
+          "metal": "Титан",
+          "grades": "как на странице титана (без привязки к трубе)",
+          "standard": "ГОСТ 19807-91",
+          "size": "по спецификации",
+          "_citation": "https://magicmet.ru/spravochnik-gost/gost-19807-91"
+        },
+        {
+          "metal": "Нержавеющая сталь (горячедеформированная)",
+          "grades": "08Х18Н10, 12Х18Н10Т, 10Х17Н13М2Т, TP304 / TP316 / TP321 по ASTM",
+          "standard": "ГОСТ 9940-81",
+          "size": "наружный диаметр 57–325 мм; например, D 57 мм — стенка 4,5–8 мм; D 325 мм — стенка 12–16 мм",
+          "_citation": "https://magicmet.ru/produkciya/truby-besshovnye/nerzhaveyushchie"
+        },
+        {
+          "metal": "Нержавеющая сталь (труба, каталог труб)",
+          "grades": "12Х18Н10Т, 08Х18Н10, 08Х18Н10Т, 08Х17Т, 10Х17Н13М2Т, TP304 / TP316 / TP321, AISI 316L (уточняется по заказу)",
+          "standard": "ГОСТ 9940-81; ГОСТ 9941-2022; ASTM A312/A312M",
+          "size": "наружный диаметр × стенка по выбранному ГОСТ",
+          "_citation": "https://magicmet.ru/produkciya/nerzhaveyushchaya-stal/truby"
+        }
+      ],
+      "пруток / круг": [
+        {
+          "metal": "Медь",
+          "grades": "как на странице меди (без привязки к прутку)",
+          "standard": "ГОСТ 1535-2016",
+          "size": "диаметр 20–180 мм",
+          "_citation": "https://magicmet.ru/spravochnik-gost/gost-1535-2016"
+        },
+        {
+          "metal": "Латунь",
+          "grades": "как на странице латуни (без привязки к прутку)",
+          "standard": "ГОСТ 2060-2006",
+          "size": "диаметры до 180 мм, интервалы допусков",
+          "_citation": "https://magicmet.ru/spravochnik-gost/gost-2060-2006"
+        },
+        {
+          "metal": "Бронза",
+          "grades": "БрОФ6,5-0,15, БрБ2, БрАМц9-2, БрАЖ9-4, БрОЦС5-5-5, БрО10Ф1 (страница бронзы; БрАМц9-2 отдельно указан для квадрата и шестигранника)",
+          "standard": "ГОСТ 1628-2019 (круг, квадрат, шестигранник)",
+          "size": "5–41 мм (интервалы таблицы); квадрат/шестигранник из БрАМц9-2: 14–36 мм",
+          "_citation": "https://magicmet.ru/spravochnik-gost/gost-1628-2019"
+        },
+        {
+          "metal": "Алюминий",
+          "grades": "как на странице алюминия (без привязки к прутку); A5 и A7 — по согласованию (ГОСТ 21488-2025, п. 5.1.1)",
+          "standard": "ГОСТ 21488-2025",
+          "size": "диаметр 8–400 мм",
+          "_citation": "https://magicmet.ru/spravochnik-gost/gost-21488-2025"
+        },
+        {
+          "metal": "Титан",
+          "grades": "как на странице титана (без привязки к прутку)",
+          "standard": "ГОСТ 26492-85",
+          "size": "диаметр 10–150 мм",
+          "_citation": "https://magicmet.ru/spravochnik-gost/gost-26492-85"
+        },
+        {
+          "metal": "Нержавеющая сталь (круг горячекатаный)",
+          "grades": "12Х18Н10Т, 20Х13, 40Х13, AISI 304 / 316 / 321 (страница сортового проката)",
+          "standard": "ГОСТ 5949-2018 (ГОСТ 2590-2006 для сортамента)",
+          "size": "номинальный диаметр 5–200 мм",
+          "_citation": "https://magicmet.ru/produkciya/nerzhaveyushchaya-stal/sortovoy-prokat"
+        }
+      ],
+      "лента": [
+        {
+          "metal": "Медь",
+          "grades": "как на странице меди; размеры и стандарт не подтверждены",
+          "_citation": "https://magicmet.ru/produkciya/cvetnye-metally/med"
+        },
+        {
+          "metal": "Латунь",
+          "grades": "как на странице латуни; размеры не подтверждены",
+          "standard": "ГОСТ 15527-2004 (лента входит в список)",
+          "_citation": "https://magicmet.ru/produkciya/cvetnye-metally/latun"
+        },
+        {
+          "metal": "Бронза",
+          "grades": "как на странице бронзы; размеры не подтверждены",
+          "_citation": "https://magicmet.ru/produkciya/cvetnye-metally/bronza"
+        },
+        {
+          "metal": "Нержавеющая сталь",
+          "grades": "лента указана в форме выбора на странице листа; марки и размеры для ленты не подтверждены отдельно",
+          "_citation": "https://magicmet.ru/produkciya/nerzhaveyushchaya-stal/list"
+        }
+      ],
+      "проволока": [
+        {
+          "metal": "Медь",
+          "grades": "как на странице меди; размеры не подтверждены",
+          "_citation": "https://magicmet.ru/produkciya/cvetnye-metally/med"
+        },
+        {
+          "metal": "Латунь",
+          "grades": "как на странице латуни; размеры не подтверждены",
+          "standard": "ГОСТ 15527-2004 (по списку полуфабрикатов)",
+          "_citation": "https://magicmet.ru/produkciya/cvetnye-metally/latun"
+        },
+        {
+          "metal": "Алюминий",
+          "grades": "проволока указана в форме выбора; марки и стандарт для проволоки не подтверждены",
+          "_citation": "https://magicmet.ru/produkciya/cvetnye-metally/alyuminij"
+        }
+      ]
+    },
+    "evidence": [
+      {
+        "claim": "Медь: формы лист, лента, труба, пруток, проволока; ГОСТ 859-2014",
+        "url": "https://magicmet.ru/produkciya/cvetnye-metally/med"
+      },
+      {
+        "claim": "Медь: прутки диаметр 20–180 мм, таблица не относится к листу, трубе и проволоке",
+        "url": "https://magicmet.ru/spravochnik-gost/gost-1535-2016"
+      },
+      {
+        "claim": "Латунь: формы лист, лента, пруток, труба, проволока; марки Л63…ЛЖМц59-1-1; ГОСТ 15527-2004",
+        "url": "https://magicmet.ru/produkciya/cvetnye-metally/latun"
+      },
+      {
+        "claim": "Латунь ГОСТ 15527-2004 устанавливает марки деформируемых латуней для полуфабрикатов обработкой давлением",
+        "url": "https://magicmet.ru/spravochnik-gost/gost-15527-2004"
+      },
+      {
+        "claim": "Бронза: формы втулка, пруток, лента, плита, заготовка; марки БрОФ6,5-0,15…БрО10Ф1; ГОСТ 5017-2006",
+        "url": "https://magicmet.ru/produkciya/cvetnye-metally/bronza"
+      },
+      {
+        "claim": "Бронза безоловянная: ГОСТ 1628-2019, круг/квадрат/шестигранник, БрАМц9-2 14–36 мм",
+        "url": "https://magicmet.ru/spravochnik-gost/gost-1628-2019"
+      },
+      {
+        "claim": "Алюминий: формы лист, плита, профиль, труба, пруток; марки АД0…АД31; ГОСТ 4784-2019; А5/А7 по ГОСТ 11069-2019",
+        "url": "https://magicmet.ru/produkciya/cvetnye-metally/alyuminij"
+      },
+      {
+        "claim": "Алюминиевые прутки диаметр 8–400 мм; А5 и А7 по согласованию",
+        "url": "https://magicmet.ru/spravochnik-gost/gost-21488-2025"
+      },
+      {
+        "claim": "Титан: формы лист, труба, пруток, поковка; ГОСТ 19807-91",
+        "url": "https://magicmet.ru/produkciya/cvetnye-metally/titan"
+      },
+      {
+        "claim": "Титановые катаные прутки диаметр 10–150 мм (ГОСТ 26492-85)",
+        "url": "https://magicmet.ru/spravochnik-gost/gost-26492-85"
+      },
+      {
+        "claim": "Нержавеющий лист: марки 08Х18Н10, 12Х18Н10Т, 10Х17Н13М2Т; ГОСТ 5632-2014; лист/лента",
+        "url": "https://magicmet.ru/produkciya/nerzhaveyushchaya-stal/list"
+      },
+      {
+        "claim": "ГОСТ 5582-75: горячекатаный лист 1,5–3,9 мм, холоднокатаный 0,5–3,9 мм",
+        "url": "https://magicmet.ru/spravochnik-gost/gost-5582-75"
+      },
+      {
+        "claim": "ГОСТ 7350-77: горячекатаный лист 4–50 мм, холоднокатаный 4–5 мм",
+        "url": "https://magicmet.ru/spravochnik-gost/gost-7350-77"
+      },
+      {
+        "claim": "Нержавеющие трубы: марки 12Х18Н10Т, 08Х18Н10, 08Х18Н10Т, 08Х17Т, 10Х17Н13М2Т; ГОСТ 9940-81, ГОСТ 9941-2022",
+        "url": "https://magicmet.ru/produkciya/nerzhaveyushchaya-stal/truby"
+      },
+      {
+        "claim": "Горячедеформированные нержавеющие трубы наружный диаметр 57–325 мм; стенки по таблице",
+        "url": "https://magicmet.ru/spravochnik-gost/gost-9940-81"
+      },
+      {
+        "claim": "Бесшовные нержавеющие трубы: марки 08Х18Н10, 12Х18Н10Т, 10Х17Н13М2Т",
+        "url": "https://magicmet.ru/produkciya/truby-besshovnye/nerzhaveyushchie"
+      },
+      {
+        "claim": "Нержавеющий сортовой прокат: марки 12Х18Н10Т, 20Х13, 40Х13, AISI 304/316/321; ГОСТ 5632-2014, ГОСТ 5949",
+        "url": "https://magicmet.ru/produkciya/nerzhaveyushchaya-stal/sortovoy-prokat"
+      },
+      {
+        "claim": "ГОСТ 5949-2018 круглый горячекатаный нержавеющий прокат, номинальные размеры 5–200 мм",
+        "url": "https://magicmet.ru/spravochnik-gost/gost-5949-2018"
+      }
+    ],
+    "conflicts": [
+      {
+        "metal": "Медь",
+        "issue": "Список марок на странице меди расходится: строка марок — М00, М0, М1, М2, М3, М1р, М2р, М3р; текст ГОСТ 859-2014 — М0, М1, М1р, М1ф, М2, М2р, М3, М3р.",
+        "sources": [
+          "https://magicmet.ru/produkciya/cvetnye-metally/med"
+        ],
+        "resolution": "Отмечено оба варианта; М00 и М1ф не подтверждаются второй строкой страницы"
+      },
+      {
+        "metal": "Латунь",
+        "issue": "Строка марок содержит Л80, Л96, ЛС63-3, ЛЖМц59-1-1, а текст под таблицей перечисляет только Л63, Л68, Л70, Л90, ЛС59-1.",
+        "sources": [
+          "https://magicmet.ru/produkciya/cvetnye-metally/latun"
+        ],
+        "resolution": "В каталоге оставлены все марки из строки; примечание считать неполным"
+      },
+      {
+        "metal": "Титан",
+        "issue": "Строка марок: ВТ1-0, ВТ1-00, ВТ6, ВТ14, ОТ4, ПТ3В; примечание: ВТ1-00, ВТ1-0, ОТ4, ВТ5, ВТ6. ВТ5 есть только в примечании, ВТ14 и ПТ3В только в строке.",
+        "sources": [
+          "https://magicmet.ru/produkciya/cvetnye-metally/titan"
+        ],
+        "resolution": "Приняты обе группы как заявленные на странице, без выбора одной"
+      },
+      {
+        "metal": "Бронза",
+        "issue": "Форма «плита» есть в списке форм, но в селекторе формы страницы её нет; селектор содержит «Лист», которого нет в списке форм.",
+        "sources": [
+          "https://magicmet.ru/produkciya/cvetnye-metally/bronza"
+        ],
+        "resolution": "Лист для бронзы не подтверждён; плита как форма — только из списка"
+      },
+      {
+        "metal": "Нержавеющая сталь",
+        "issue": "Марка 08Х17Т и 08Х18Н10Т указаны только на странице труб; 20Х13 и 40Х13 — только на странице сортового проката; AISI 430 — только на странице листа.",
+        "sources": [
+          "https://magicmet.ru/produkciya/nerzhaveyushchaya-stal/truby",
+          "https://magicmet.ru/produkciya/nerzhaveyushchaya-stal/sortovoy-prokat",
+          "https://magicmet.ru/produkciya/nerzhaveyushchaya-stal/list"
+        ],
+        "resolution": "Марки не перенесены между формами"
+      },
+      {
+        "metal": "Нержавеющая сталь",
+        "issue": "Для AISI 316L на странице труб указано «уточняют по заказу», а на странице листа AISI 316L приведён без оговорок.",
+        "sources": [
+          "https://magicmet.ru/produkciya/nerzhaveyushchaya-stal/truby",
+          "https://magicmet.ru/produkciya/nerzhaveyushchaya-stal/list"
+        ],
+        "resolution": "Соответствие AISI 316L конкретной форме не подтверждено для труб"
+      },
+      {
+        "metal": "Медь/алюминий/титан",
+        "issue": "Для большинства форм (лист, лента, труба, проволока) на страницах каталога размеры только «по спецификации»; таблицы размеров относятся только к прутку (медь, алюминий, титан) и к отдельным ГОСТ.",
+        "sources": [
+          "https://magicmet.ru/produkciya/cvetnye-metally/med",
+          "https://magicmet.ru/produkciya/cvetnye-metally/alyuminij",
+          "https://magicmet.ru/produkciya/cvetnye-metally/titan"
+        ],
+        "resolution": "Размеры для этих форм не заполнены"
+      }
+    ]
+  }
+}
