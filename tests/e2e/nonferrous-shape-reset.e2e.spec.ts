@@ -25,10 +25,12 @@ for (const width of [390, 1536]) {
     await expect(picker.getByLabel('Размер под ключ, мм')).toHaveValue('')
     await picker.getByLabel('Размер под ключ, мм').fill('24')
     const href = await action.getAttribute('href')
-    expect(href).toContain('количество%2012')
-    expect(href).not.toContain('БрАМц9-2')
-    expect(href).not.toContain('1628-2019')
-    expect(href).not.toContain('без%20покрытия')
+    const request = new URL(href!, 'https://magicmet.ru').searchParams.get('product') || ''
+    expect(request).toContain('количество 12')
+    expect(request).toContain('Шестигранник под ключ 24 мм')
+    expect(request).not.toContain('БрАМц9-2')
+    expect(request).not.toContain('1628-2019')
+    expect(request).not.toContain('без покрытия')
     expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1)
   })
 }
