@@ -3,7 +3,7 @@ import { execFileSync } from 'node:child_process'
 import { chromium } from '@playwright/test'
 
 const productSlug = process.argv[2] || 'ugolok'
-assert.ok(['ugolok', 'shveller', 'balka-dvutavrovaya'].includes(productSlug), 'Unknown catalog product')
+assert.ok(['ugolok', 'shveller', 'balka-dvutavrovaya', 'kvadrat', 'shestigrannik'].includes(productSlug), 'Unknown catalog product')
 
 const browser = await chromium.launch({ headless: false, args: ['--window-size=1536,900'] })
 try {
