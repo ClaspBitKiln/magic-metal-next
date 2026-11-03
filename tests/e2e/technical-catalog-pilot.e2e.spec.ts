@@ -53,7 +53,6 @@ for (const product of [
   { slug: 'balka-dvutavrovaya', title: 'Балка двутавровая', standard: 'ГОСТ 35087-2024', field: 'Профиль', material: '09Г2С' },
   { slug: 'kvadrat', title: 'Квадрат', standard: 'ГОСТ 2591-2006', field: 'Сторона', material: '09Г2С' },
   { slug: 'shestigrannik', title: 'Шестигранник', standard: 'ГОСТ 2879-2006', field: 'Размеры заказа', material: 'марка стали — по заказу' },
-  { slug: 'armatura', title: 'Арматура', standard: 'ГОСТ 34028-2016', field: 'Класс', material: 'А500' },
   { slug: 'katanka', title: 'Катанка', standard: 'ГОСТ 30136-95', field: 'Диаметр', material: 'углеродистая сталь' },
   { slug: 'polosa', title: 'Полоса', standard: 'ГОСТ 103-2006', field: 'Сечение', material: 'марка стали по спецификации' },
 ]) {
