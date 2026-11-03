@@ -21,6 +21,10 @@ for (const width of [320, 390, 1536]) {
     for (const [path, picker] of cases) {
       await page.goto(path)
       const title = await page.locator('h1').innerText()
+      const containingTable = page.locator('#sizes details').filter({ has: page.locator(picker) })
+      if (await containingTable.count() && await containingTable.getAttribute('open') === null) {
+        await containingTable.locator('summary').first().click()
+      }
       const fileLink = page.locator(picker).getByRole('link', { name: /Excel/ })
       const url = new URL((await fileLink.getAttribute('href'))!, 'https://magicmet.ru')
       expect(url.searchParams.get('product')).toBe(title)
