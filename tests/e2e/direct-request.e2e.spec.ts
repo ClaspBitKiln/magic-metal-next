@@ -119,7 +119,7 @@ test('product pages pass readable names and the former cart redirects to the req
   await expect(page.locator('#request-form')).toBeVisible()
 })
 
-test('request keeps specifications on failure and sends them with the attachment', async ({ page }) => {
+test('request preserves specifications until delivery is confirmed', async ({ page }) => {
   await page.goto('/?product=Труба%2057×3;%20сталь%2020;%20ГОСТ%208734#request')
   const form = page.locator('#request-form')
   const message = 'Труба 57×3; сталь 20; ГОСТ 8734; 2 т; длина 6 м'
@@ -131,7 +131,10 @@ test('request keeps specifications on failure and sends them with the attachment
   const payloads: string[] = []
   await page.route('**/api/request', async (route) => {
     payloads.push(route.request().postDataBuffer()!.toString())
-    await route.fulfill({ status: payloads.length === 1 ? 503 : 200, contentType: 'application/json', body: payloads.length === 1 ? JSON.stringify({ error: 'Попробуйте позже' }) : JSON.stringify({ ok: true }) })
+    const result = payloads.length === 1
+      ? { error: 'Попробуйте позже' }
+      : payloads.length === 2 ? { ok: true } : { ok: true, emailDelivered: true }
+    await route.fulfill({ status: payloads.length === 1 ? 503 : 200, contentType: 'application/json', body: JSON.stringify(result) })
   })
   await form.getByRole('button', { name: 'Отправить на расчёт' }).click()
   await expect(page.locator('#form-status')).toHaveText('Попробуйте позже')
@@ -139,8 +142,18 @@ test('request keeps specifications on failure and sends them with the attachment
   expect(await form.locator('input[name="files"]').evaluate((input: HTMLInputElement) => input.files?.[0]?.name)).toBe('specification.pdf')
   await expect(form.getByRole('button', { name: 'Отправить на расчёт' })).toBeEnabled()
   await form.getByRole('button', { name: 'Отправить на расчёт' }).click()
+  await expect(page.locator('#form-status')).toHaveText('Сервер не подтвердил получение заявки. Уточните статус по телефону или email перед повторной отправкой.')
+  await expect(form.locator('textarea[name="message"]')).toHaveValue(message)
+  await expect(form.locator('input[name="email"]')).toHaveValue('browser-test@example.invalid')
+  await expect(form.locator('input[name="delivery"]')).toHaveValue('Самовывоз')
+  await expect(form.locator('input[name="consent"]')).toBeChecked()
+  expect(await form.locator('input[name="files"]').evaluate((input: HTMLInputElement) => input.files?.[0]?.name)).toBe('specification.pdf')
+  await expect(form.getByRole('button', { name: 'Отправить на расчёт' })).toBeEnabled()
+  await form.getByRole('button', { name: 'Отправить на расчёт' }).click()
   await expect(page.locator('#form-status')).toHaveText('Заявка принята. Мы свяжемся с вами.')
-  expect(payloads).toHaveLength(2)
+  await expect(form.locator('textarea[name="message"]')).toHaveValue('')
+  expect(await form.locator('input[name="files"]').evaluate((input: HTMLInputElement) => input.files?.length)).toBe(0)
+  expect(payloads).toHaveLength(3)
   for (const payload of payloads) {
     expect(payload).toContain(message)
     expect(payload).toContain('specification.pdf')
