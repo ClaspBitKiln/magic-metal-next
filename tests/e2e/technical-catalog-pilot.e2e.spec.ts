@@ -42,15 +42,17 @@ for (const width of [320, 390, 1536]) {
 }
 
 test('Technical Catalog UI does not leak to other products', async ({ page }) => {
-  await page.goto('/produkciya/sortovoy-i-fasonny-prokat/kvadrat')
+  await page.goto('/produkciya/sortovoy-i-fasonny-prokat/polosa')
   await expect(page.locator('.technical-catalog-summary')).toHaveCount(0)
   await expect(page.locator('main.technical-catalog-pilot')).toHaveCount(0)
 })
 
 
 for (const product of [
-  { slug: 'shveller', title: 'Швеллер', standard: 'ГОСТ 8240-97', field: 'Номер и серия' },
-  { slug: 'balka-dvutavrovaya', title: 'Балка двутавровая', standard: 'ГОСТ 35087-2024', field: 'Профиль' },
+  { slug: 'shveller', title: 'Швеллер', standard: 'ГОСТ 8240-97', field: 'Номер и серия', material: '09Г2С' },
+  { slug: 'balka-dvutavrovaya', title: 'Балка двутавровая', standard: 'ГОСТ 35087-2024', field: 'Профиль', material: '09Г2С' },
+  { slug: 'kvadrat', title: 'Квадрат', standard: 'ГОСТ 2591-2006', field: 'Сторона', material: '09Г2С' },
+  { slug: 'shestigrannik', title: 'Шестигранник', standard: 'ГОСТ 2879-2006', field: 'Размеры заказа', material: 'марка стали — по заказу' },
 ]) {
   for (const width of [320, 390, 1536]) {
     test(`Technical Catalog UI: ${product.slug} at ${width}px`, async ({ page }) => {
@@ -60,7 +62,7 @@ for (const product of [
       await page.evaluate(() => document.fonts.ready)
       const section = page.locator('.technical-catalog-summary')
       await expect(section.getByRole('heading', { name: `${product.title}: основные параметры` })).toBeVisible()
-      await expect(section).toContainText('09Г2С')
+      await expect(section).toContainText(product.material)
       await expect(section).toContainText(product.standard)
       await expect(section).toContainText(product.field)
       await expect(section.getByRole('link', { name: /В заявку/ })).toHaveAttribute('href', /[?&]product=.*#request$/)
