@@ -91,12 +91,15 @@ export default function RequestForm() {
       if (!response.ok) {
         throw new Error(result?.error || 'Не удалось отправить заявку')
       }
+      if (!isRecordedRequest(result)) {
+        throw new Error('Сервер не подтвердил получение заявки. Уточните статус по телефону или email перед повторной отправкой.')
+      }
       form.reset()
       setSelectedFiles(0)
       setFormError('')
       setFormStep(1)
       setStatus('success')
-      if (isRecordedRequest(result)) trackAnalyticsGoal('request_sent')
+      trackAnalyticsGoal('request_sent')
     } catch (error) {
       trackAnalyticsGoal('request_error')
       setFormError(error instanceof Error && error.name === 'TimeoutError' ? 'Время ожидания истекло. Заявка могла поступить — уточните по телефону или email перед повторной отправкой.' : error instanceof Error ? error.message : 'Не удалось отправить заявку. Попробуйте ещё раз или позвоните нам.')

@@ -12,8 +12,8 @@ function rowByTitle(title: string) {
 }
 
 describe('public catalog source consistency', () => {
-  it('keeps all 62 public catalog rows with nonempty size, standard and grades/finish columns', () => {
-    expect(rows).toHaveLength(62)
+  it('keeps all 70 public catalog rows with nonempty size, standard and grades/finish columns', () => {
+    expect(rows).toHaveLength(70)
     for (const row of rows) {
       const cols = [...row.matchAll(/<span>([^<]*)<\/span>/g)].map((m) => m[1].trim())
       expect(cols.length).toBeGreaterThanOrEqual(3)

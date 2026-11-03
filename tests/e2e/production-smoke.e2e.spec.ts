@@ -116,7 +116,7 @@ test('root is the approved dependency-free public page', async ({ page, baseURL,
     expect(source.status()).toBe(200)
     return source.body()
   })
-  expect(gzipSync(sourceHtml).byteLength).toBeLessThan(15_000)
+  expect(gzipSync(sourceHtml).byteLength).toBeLessThan(16_000)
   expect(heroRequests, 'Responsive preload and picture must share one image request').toEqual([heroSource])
   expect(failures, failures.join('\n')).toEqual([])
 })
@@ -205,7 +205,7 @@ test('public image assets stay complete and within their delivery budgets', asyn
 
 test('the committed static document remains safely compressible', async () => {
   const html = await readFile('public/home-static.html')
-  expect(gzipSync(html).byteLength).toBeLessThan(15_000)
+  expect(gzipSync(html).byteLength).toBeLessThan(16_000)
   expect(html.toString()).not.toMatch(/<(script|link)[^>]+_next/)
   expect(html.toString()).not.toContain('site.css')
 })
@@ -269,11 +269,14 @@ test('approved client emblems decode after lazy loading', async ({ page, baseURL
 
 test('the restored catalog exposes details and preserves request prefill', async ({ page, baseURL }) => {
   expect((await page.goto(baseURL!, { waitUntil: 'domcontentloaded' }))?.status()).toBe(200)
-  await expect(page.locator('.catalog-group')).toHaveCount(11)
+  await expect(page.locator('.catalog-group')).toHaveCount(12)
   await expect(page.locator('.catalog-group[open]')).toHaveCount(0)
-  await expect(page.locator('.catalog-item')).toHaveCount(62)
+  await expect(page.locator('.catalog-item')).toHaveCount(70)
   const links = page.locator('.home-size-series > a')
-  await expect(links).toHaveCount(62)
+  await expect(links).toHaveCount(70)
+  const ferroLinks = page.locator('.home-size-series > a[href^="/produkciya/ferrosplavy/"]')
+  await expect(ferroLinks).toHaveCount(8)
+  await expect(page.locator('.catalog-group').filter({ hasText: 'Ферросплавы' }).locator('.catalog-item')).toHaveCount(8)
   const railLinks = page.locator('.home-size-series a[href^="/produkciya/relsy/"]')
   await expect(railLinks).toHaveCount(6)
   expect(await railLinks.evaluateAll((nodes: HTMLAnchorElement[]) => nodes.map(node => node.getAttribute('href')))).toEqual([
@@ -383,4 +386,45 @@ test('www hostname redirects to the canonical apex host', async ({ page, baseURL
   const response = await page.goto('https://www.magicmet.ru/', { waitUntil: 'domcontentloaded' })
   expect(response?.status()).toBe(200)
   expect(new URL(page.url()).hostname).toBe('magicmet.ru')
+})
+
+test('angle request preserves grade and requested standard when selecting a table size', async ({ page }) => {
+  for (const width of [320, 390, 1536]) {
+    await page.setViewportSize({ width, height: 1000 })
+    await page.goto('/produkciya/sortovoy-i-fasonny-prokat/ugolok', { waitUntil: 'networkidle' })
+    const picker = page.locator('.catalog-standard-request')
+    await picker.getByPlaceholder('Например, 40×40×4 мм').fill('99×99×9')
+    await picker.getByPlaceholder('Например, 09Г2С').fill('09Г2С & + №1')
+    await picker.getByLabel('Укажу известный ГОСТ / ТУ').check()
+    await picker.getByPlaceholder('Номер, если известен').fill('ТУ 1/2 & №3 + 4')
+    const row = page.locator('#sizes a').filter({ hasText: '40 × 40 × 4 мм' }).first()
+    await expect.poll(async () => new URL((await row.getAttribute('href'))!, 'https://magicmet.ru').searchParams.get('product')).toContain('09Г2С & + №1')
+    const product = new URL((await row.getAttribute('href'))!, 'https://magicmet.ru').searchParams.get('product')!
+    expect(product).toContain('40 × 40 × 4 мм')
+    expect(product).not.toContain('99×99×9')
+    expect(product).toContain('ГОСТ 8509-93')
+    expect(product).toContain('Требуемый ГОСТ / ТУ: ТУ 1/2 & №3 + 4')
+    await row.click({ force: true })
+    const message = page.locator('textarea[name="message"]')
+    await expect(message).toHaveValue(/09Г2С & \+ №1/)
+    await expect(message).toHaveValue(/40 × 40 × 4 мм/)
+    await expect(message).toHaveValue(/Требуемый ГОСТ \/ ТУ: ТУ 1\/2 & №3 \+ 4/)
+  }
+})
+
+test('angle request provides an honest native fallback without JavaScript', async ({ browser, baseURL }) => {
+  const context = await guardedContext(browser, { javaScriptEnabled: false })
+  try {
+    const page = await context.newPage()
+    await page.goto(new URL('/produkciya/sortovoy-i-fasonny-prokat/ugolok', baseURL).href, { waitUntil: 'load' })
+    const picker = page.locator('.catalog-standard-request')
+    await expect(picker.getByRole('button', { name: 'В заявку →', includeHidden: true })).toBeHidden()
+    const fallback = picker.locator('noscript a')
+    await expect(fallback).toBeVisible()
+    await fallback.click({ force: true })
+    await expect(page).toHaveURL(url => url.pathname === '/' && url.hash === '#request')
+    await expect(page.locator('#request')).toBeVisible()
+  } finally {
+    await context.close()
+  }
 })

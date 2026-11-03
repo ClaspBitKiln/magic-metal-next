@@ -58,8 +58,9 @@ export async function main(argv = process.argv.slice(2)) {
   for (let i = 0; i < argv.length; i++) {
     const key = argv[i]
     if (key === '--list-counters') options.list = true
+    else if (key === '--exclude-robots') options.excludeRobots = true
     else if (['--counter', '--days', '--date1', '--date2', '--out'].includes(key) && argv[i + 1] && !argv[i + 1].startsWith('--')) options[key.slice(2)] = argv[++i]
-    else throw new Error('Usage: --list-counters OR --counter ID [--days 28 | --date1 YYYY-MM-DD --date2 YYYY-MM-DD] [--out PRIVATE_FILE]')
+    else throw new Error('Usage: --list-counters OR --counter ID [--days 28 | --date1 YYYY-MM-DD --date2 YYYY-MM-DD] [--exclude-robots] [--out PRIVATE_FILE]')
   }
   const token = process.env.YANDEX_METRIKA_TOKEN?.trim()
   if (!token) throw new Error('Set YANDEX_METRIKA_TOKEN with read-only Metrika access.')
@@ -80,6 +81,7 @@ export async function main(argv = process.argv.slice(2)) {
   if (options.days && (options.date1 || options.date2)) throw new Error('Use either days or explicit dates.')
   const ranges = periods({ days: options.days ? Number(options.days) : 28, date1: options.date1, date2: options.date2 })
   const id = options.counter
+  const segment = options.excludeRobots ? { filters: "ym:s:isRobot=='no'" } : {}
   const { counter = {} } = await api(`/management/v1/counter/${id}`, null, token)
   const timeZone = counter.time_zone_name || null
   // Relative dates are evaluated by Metrika, avoiding the CLI machine's time zone.
@@ -90,30 +92,33 @@ export async function main(argv = process.argv.slice(2)) {
     if (options.date2 >= today) throw new Error('date2 must be a completed day in the counter time zone.')
   }
   const report = async (range, dimensions, metrics = METRICS, paths = false) => {
-    const result = await api('/stat/v1/data', { ids: id, ...range, metrics, ...(dimensions ? { dimensions } : {}), filters: "ym:s:isRobot=='No'", limit: 50, sort: metrics.startsWith('ym:pv:') ? '-ym:pv:pageviews' : '-ym:s:visits', accuracy: 'full', lang: 'ru' }, token)
-    return { period: result.query ? { date1: result.query.date1, date2: result.query.date2 } : range, totals: result.totals, quality: quality(result), ...(dimensions ? { rows: sanitizeRows(result.data, paths) } : {}) }
+    const result = await api('/stat/v1/data', { ids: id, ...range, ...segment, metrics, ...(dimensions ? { dimensions } : {}), limit: 50, sort: metrics.startsWith('ym:pv:') ? '-ym:pv:pageviews' : '-ym:s:visits', accuracy: 'full', lang: 'ru' }, token)
+    return { period: result.query ? { date1: result.query.date1, date2: result.query.date2 } : range, totals: result.totals, quality: quality(result), ...(dimensions && metrics.startsWith('ym:pv:') ? { pageviewCoverage: { listed: (result.data || []).reduce((sum, row) => sum + (row.metrics?.[0] || 0), 0), total: result.totals?.[0] ?? null, complete: result.totals?.[0] != null && (result.data || []).reduce((sum, row) => sum + (row.metrics?.[0] || 0), 0) === result.totals[0] } } : {}), ...(dimensions ? { rows: sanitizeRows(result.data, paths) } : {}) }
   }
   const current = await report(ranges.current)
   const previous = await report(ranges.previous)
   const breakdowns = {}
   for (const [name, dimension, paths] of [['sources', 'ym:s:lastTrafficSource', false], ['devices', 'ym:s:deviceCategory', false], ['countries', 'ym:s:regionCountryName', false], ['regions', 'ym:s:regionAreaName', false], ['landingPages', 'ym:s:startURLPath', true]]) {
     try {
-      breakdowns[name] = { current: await report(ranges.current, dimension, METRICS, paths), previous: await report(ranges.previous, dimension, METRICS, paths) }
+      breakdowns[name] = { metricNames: METRIC_NAMES, current: await report(ranges.current, dimension, METRICS, paths), previous: await report(ranges.previous, dimension, METRICS, paths) }
     } catch (error) { breakdowns[name] = { unavailable: error.message } }
   }
-  // Popular content is pageview-based, unlike visit duration. Do not label this as time on page.
+  // Pageviews measure popular content, not visit duration or time on each page.
+  // Use identical path depth in both periods so product-level rows are comparable.
   const pageMetrics = 'ym:pv:pageviews,ym:pv:users'
   try {
     breakdowns.popularPages = {
-      current: await report(ranges.current, 'ym:pv:URLPathLevel4Hash', pageMetrics, true),
-      previous: await report(ranges.previous, 'ym:pv:URLPathLevel3Hash', pageMetrics, true),
+      metricNames: ['pageviews', 'users'],
+      current: await report(ranges.current, 'ym:pv:URLPath', pageMetrics, true),
+      previous: await report(ranges.previous, 'ym:pv:URLPath', pageMetrics, true),
     }
   } catch (error) { breakdowns.popularPages = { unavailable: error.message } }
-  // Visit exit page, not necessarily the page where a user lost interest.
+  // An exit page records the visit's end, not evidence of dissatisfaction.
   try {
     breakdowns.exitPages = {
-      current: await report(ranges.current, 'ym:s:endURLPathLevel4Hash', METRICS, true),
-      previous: await report(ranges.previous, 'ym:s:endURLPathLevel3Hash', METRICS, true),
+      metricNames: METRIC_NAMES,
+      current: await report(ranges.current, 'ym:s:endURLPath', METRICS, true),
+      previous: await report(ranges.previous, 'ym:s:endURLPath', METRICS, true),
     }
   } catch (error) { breakdowns.exitPages = { unavailable: error.message } }
   let goals
@@ -124,7 +129,7 @@ export async function main(argv = process.argv.slice(2)) {
       const event = (goal.conditions || []).some((condition) => condition.url === 'request_sent') || goal.name === 'request_sent'
       const metrics = `ym:s:goal${goal.id}reaches,ym:s:goal${goal.id}users,ym:s:goal${goal.id}conversionRate`
       const goalReport = async (range) => {
-        const result = await api('/stat/v1/data', { ids: id, ...range, metrics, filters: "ym:s:isRobot=='No'", accuracy: 'full' }, token)
+        const result = await api('/stat/v1/data', { ids: id, ...range, ...segment, metrics, accuracy: 'full' }, token)
         return { totals: result.totals, quality: quality(result) }
       }
       try { goals.push({ id: goal.id, name: goal.name, type: goal.type, requestSent: event, metricNames: ['reaches', 'users', 'conversionRatePercent'], current: await goalReport(ranges.current), previous: await goalReport(ranges.previous) }) }
@@ -135,13 +140,13 @@ export async function main(argv = process.argv.slice(2)) {
     const now = current.totals?.[index] ?? null, before = previous.totals?.[index] ?? null
     return [name, { current: now, previous: before, absoluteChange: now === null || before === null ? null : now - before, percentChange: now === null || before === null || before === 0 ? null : (now - before) / before * 100 }]
   }))
-  const result = { generatedAt: new Date().toISOString(), counter: { id, name: counter.name, timeZone, createdAt: counter.create_time }, ranges, metricNames: METRIC_NAMES, comparison, current, previous, breakdowns, goals, limitations: ['Counts are measured browsers/devices, not an exact count of people.', 'Historical traffic before counter installation cannot be reconstructed by this API.', 'All reports request the Yandex segment ym:s:isRobot==No without changing permanent counter filtering; behavioral bot detection remains an estimate, not proof of human-only traffic.', 'accuracy=full is requested; inspect quality.sampled and sample_share. Data lag is recorded only when returned by the API.', 'Breakdowns contain at most 50 rows per period; totals include the complete API report.', 'Landing and exit page paths exclude query strings and fragments. Popular pages use up to 4 path levels to distinguish products and show views/users, not time spent on a given page. Exit pages are not proof of dissatisfaction. Goals do not prove lead quality or completed sales.', 'For explicit dates, use completed days in the counter time zone; if no time zone metadata is returned, completion cannot be verified.'] }
+  const result = { generatedAt: new Date().toISOString(), counter: { id, name: counter.name, timeZone, createdAt: counter.create_time }, segment: options.excludeRobots ? 'metrika_non_robot' : 'all_traffic', ranges, metricNames: METRIC_NAMES, comparison, current, previous, breakdowns, goals, limitations: ['Counts are measured browsers/devices, not an exact count of people.', 'Historical traffic before counter installation cannot be reconstructed by this API.', options.excludeRobots ? 'Report excludes visits classified as robots by Metrika; this classification does not guarantee human-only or customer-only traffic. Counter filtering settings were not changed.' : 'Robot filtering settings were not changed. No separate robot metric was requested; do not call these verified human-only counts.', 'accuracy=full is requested; inspect quality.sampled and sample_share. Data lag is recorded only when returned by the API.', 'Breakdowns contain at most 50 rows per period; returned rows may not cover totals even below that limit. Check pageviewCoverage before interpreting popular-page rankings; absent rows are not zero visits.', 'Landing, popular and exit page paths exclude query strings and fragments. Popular pages compare complete paths without query or fragment and report pageviews/users, not time spent on each page. Exit pages are not proof of dissatisfaction. Goals do not prove lead quality or completed sales.', 'For explicit dates, use completed days in the counter time zone; if no time zone metadata is returned, completion cannot be verified.'] }
   if (options.out) {
     const target = resolve(options.out)
     await mkdir(dirname(target), { recursive: true, mode: 0o700 })
     await writeFile(target, `${JSON.stringify(result, null, 2)}\n`, { mode: 0o600 })
   }
-  console.log(JSON.stringify({ counter: id, timeZone, ranges, comparison, currentQuality: current.quality, previousQuality: previous.quality, requestSentGoalPresent: Array.isArray(goals) ? goals.some((goal) => goal.requestSent) : null, reportWritten: Boolean(options.out) }, null, 2))
+  console.log(JSON.stringify({ counter: id, timeZone, segment: options.excludeRobots ? 'metrika_non_robot' : 'all_traffic', ranges, comparison, currentQuality: current.quality, previousQuality: previous.quality, requestSentGoalPresent: Array.isArray(goals) ? goals.some((goal) => goal.requestSent) : null, reportWritten: Boolean(options.out) }, null, 2))
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {

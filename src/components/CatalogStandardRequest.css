@@ -1,0 +1,13 @@
+.catalog-standard-request{margin:1.25rem 0;padding:1rem;border:1px solid #dbe1e7;border-radius:8px;background:#fff;color:#202c37}
+.catalog-standard-request h3{margin:0 0 .35rem;font-size:1.15rem}.catalog-standard-request p{margin:.2rem 0 1rem;font-size:.9rem;line-height:1.5}
+.catalog-standard-request-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:.8rem}
+.catalog-standard-request label{display:flex;flex-direction:column;gap:.35rem;font-weight:600;font-size:.9rem}
+.catalog-standard-request label span{font-weight:400;color:#556475}
+.catalog-standard-request input:not([type=radio]){min-width:0;max-width:100%;padding:.7rem;border:1px solid #9da9b4;border-radius:5px;font:inherit;font-size:16px;background:#fff;color:#162636}
+.catalog-standard-request fieldset{display:flex;flex-wrap:wrap;gap:.65rem 1.2rem;margin:1rem 0;padding:0;border:0}
+.catalog-standard-request legend{font-weight:600;margin-bottom:.45rem}
+.catalog-standard-request fieldset>label:not(.catalog-standard-request-known){flex-direction:row;align-items:center;font-weight:400}.catalog-standard-request-known{flex-basis:100%}
+.catalog-standard-request button{padding:.75rem 1.25rem;border:0;border-radius:5px;background:#1769aa;color:white;font:inherit;font-weight:600;cursor:pointer}
+.catalog-standard-request button:focus-visible,.catalog-standard-request input:focus-visible{outline:3px solid #75b8eb;outline-offset:2px}
+.catalog-standard-request small{display:block;margin-top:.75rem;color:#526171;line-height:1.4}
+@media(max-width:390px){.catalog-standard-request{padding:.75rem}}
