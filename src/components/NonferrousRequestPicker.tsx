@@ -91,6 +91,6 @@ export default function NonferrousRequestPicker({ productSlug, requestHref }: { 
     <p className="nonferrous-note">Это запрос на расчёт, не подтверждение наличия. ГОСТы и марки не подставляются автоматически: применимость конкретного сплава, состояния и размера проверяется по документации.</p>
     {/* The homepage is an HTML Route Handler; document navigation initializes the request form. */}
     {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-    <div className="nonferrous-actions">{href ? <a className="nonferrous-submit" href={href}>Передать параметры в заявку ↗</a> : <span>Выберите форму и заполните размеры</span>}<a href="/#request">Есть спецификация? Прикрепить Excel / PDF / чертёж →</a></div>
+    <div className="nonferrous-actions">{href ? <a className="nonferrous-submit" href={href}>Передать параметры в заявку ↗</a> : <span>Выберите форму и заполните размеры</span>}<a href={href || requestHref}>Есть спецификация? Прикрепить Excel / PDF / чертёж →</a></div>
   </section>
 }

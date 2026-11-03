@@ -69,6 +69,6 @@ export default function MeshRopeRequestPicker({ type, requestHref }: { type: Pro
     <p className="mesh-rope-note">{mesh ? 'Для сварных, тканых и плетёных сеток могут действовать разные стандарты. Совпадение ячейки и диаметра не подтверждает одинаковое исполнение.' : 'Нельзя выбирать канат только по диаметру: конструкция, свивка, сердечник, разрывное усилие и назначение влияют на применимость.'} Ни один введённый размер не означает подтверждённый складской остаток.</p>
     {/* The homepage is an HTML Route Handler; document navigation initializes the request form. */}
     {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-    <div className="mesh-rope-actions">{href ? <a className="mesh-rope-submit" href={href}>Отправить параметры в заявку ↗</a> : <span>{mesh ? 'Выберите вид и укажите ячейку и диаметр' : 'Укажите диаметр и длину'}</span>}<a href="/#request">Есть спецификация? Прикрепить Excel/PDF →</a></div>
+    <div className="mesh-rope-actions">{href ? <a className="mesh-rope-submit" href={href}>Отправить параметры в заявку ↗</a> : <span>{mesh ? 'Выберите вид и укажите ячейку и диаметр' : 'Укажите диаметр и длину'}</span>}<a href={href || requestHref}>Есть спецификация? Прикрепить Excel/PDF →</a></div>
   </section>
 }

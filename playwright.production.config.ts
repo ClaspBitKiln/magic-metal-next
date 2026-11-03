@@ -2,7 +2,7 @@ import { defineConfig, devices } from '@playwright/test'
 
 export default defineConfig({
   testDir: './tests/e2e',
-  testMatch: ['production-smoke.e2e.spec.ts', 'rails-typography.e2e.spec.ts'],
+  testMatch: ['production-smoke.e2e.spec.ts', 'rails-typography.e2e.spec.ts', 'specification-context.e2e.spec.ts'],
   timeout: 45_000,
   expect: { timeout: 10_000 },
   fullyParallel: true,
