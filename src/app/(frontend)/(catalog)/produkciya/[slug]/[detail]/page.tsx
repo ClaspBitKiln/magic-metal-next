@@ -8,6 +8,7 @@ import { getPipeCatalogItem, getPipeItemsByCategory, pipeCatalog } from '@/data/
 import { getProductDetailItem, getProductDetailsByCategory, productDetailCatalog, type ProductDetailItem } from '@/data/productDetailCatalog'
 import { getSeoCategory } from '@/data/seoCatalog'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
+import TechnicalCatalogSummary, { ProductDocumentRequest } from '@/components/TechnicalCatalogSummary'
 import CatalogStockAssortment from '@/components/CatalogStockAssortment'
 import ProductSizeSeries from '@/components/ProductSizeSeries'
 import MeshRopeRequestPicker from '@/components/MeshRopeRequestPicker'
@@ -18,6 +19,7 @@ import { getProductSizeSeries } from '@/data/productSizeSeries'
 import { getDimensionGuide } from '@/data/dimensionGuides'
 import { ropeSalesAssortment, ropeSalesConstructions, ropeSalesDiameterGroups, ropeSalesRequestHref } from '@/data/ropeSalesAssortment'
 import './pipe-detail.css'
+import '@/components/ProductDocumentation.css'
 
 export const dynamicParams = false
 
@@ -56,13 +58,15 @@ export default async function PipeDetailPage({ params }: { params: Promise<{ slu
   const requestHref = `/?product=${encodeURIComponent(item.title)}#request`
   const sizeSeries = getProductSizeSeries(item.categorySlug, item.slug)
   const dimensionGuide = getDimensionGuide(item.categorySlug, item.slug)
+  const hasSizeReference = sizeSeries.length > 0 || Boolean(dimensionGuide)
+  const hasSeriesSelection = (item.categorySlug === 'sortovoy-i-fasonny-prokat' && item.slug === 'ugolok') || (item.categorySlug === 'metizy-i-svarochnye-materialy' && item.slug === 'krepezh') || (item.categorySlug === 'listovoy-prokat' && item.slug === 'ocinkovannyj')
+  const hasStandaloneSelection = ['cvetnye-metally', 'nerzhaveyushchaya-stal'].includes(item.categorySlug) || (item.categorySlug === 'metizy-i-svarochnye-materialy' && ['kanaty', 'lenta-upakovochnaya', 'svarochnye-materialy', 'setki'].includes(item.slug)) || (item.categorySlug === 'pokovki-i-zagotovki' && item.slug === 'po-chertezhu')
   const sizeProfiles = item.categorySlug === 'sortovoy-i-fasonny-prokat'
     ? (profileSizePages[item.slug] || []).flatMap((profileSlug) => {
       const profile = getProductDetailItem(item.categorySlug, profileSlug)
       return profile ? [profile] : []
     })
     : []
-  const hasSizeReference = sizeSeries.length > 0 || Boolean(dimensionGuide) || sizeProfiles.length > 0
   const jsonLd = {
     '@context': 'https://schema.org', '@type': 'Product', name: item.title, description: item.description,
     category: categoryLabel, brand: { '@type': 'Brand', name: 'Мэджик Металл' },
@@ -71,43 +75,26 @@ export default async function PipeDetailPage({ params }: { params: Promise<{ slu
       { '@type': 'PropertyValue', name: 'Материалы', value: item.grades.join('; ') },
     ],
   }
-  return <main className={`pipe-detail${item.categorySlug === 'sortovoy-i-fasonny-prokat' && ['ugolok', 'shveller', 'balka-dvutavrovaya', 'kvadrat', 'shestigrannik', 'katanka', 'polosa', 'krug-goryachekatanyj', 'armatura', 'shveller-gnutyj', 'krug-i-kvadrat', 'balka-shveller-ugolok'].includes(item.slug) ? ' technical-catalog-pilot' : ''}`}>
+  return <main className="pipe-detail product-document">
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
-    <header className="pipe-nav"><Link href={`/produkciya/${item.categorySlug}`}><b>←</b> {categoryLabel}</Link><LanguageSwitcher /><a href={requestHref}>Отправить заявку ↗</a></header>
-    <section className="pipe-hero"><div><p>{categoryLabel}</p><h1>{item.title}</h1><span>{item.description}</span></div></section>
+    {/* eslint-disable-next-line @next/next/no-img-element */}
+    <header className="pipe-nav product-document-header"><Link prefetch={false} className="product-document-brand" href="/" aria-label="Мэджик Металл"><img src="/images/logo.png?v=20261006-3" width={74} height={51} alt="" /></Link><nav className="product-document-header-links" aria-label="Основная навигация"><Link href={`/produkciya/${item.categorySlug}`}>Каталог</Link><Link prefetch={false} href="/spravochnik-materialov">Марки металлов</Link><Link prefetch={false} href="/#contacts">Контакты</Link></nav><LanguageSwitcher /><a className="product-document-header-action" href={requestHref}>Отправить заявку ↗</a></header>
     <nav className="pipe-breadcrumb" aria-label="Хлебные крошки"><Link prefetch={false} href="/">Главная</Link><b>/</b><Link href={`/produkciya/${item.categorySlug}`}>{categoryLabel}</Link><b>/</b><span>{item.shortTitle}</span></nav>
-    {/* The homepage is an HTML Route Handler; document navigation initializes the request form. */}
-    {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-    <p className="size-series-intro">Сначала сверьте марку, размеры, исполнение и стандарт. Если спецификация уже готова, отправьте файл сразу — искать в каталоге необязательно. <a href="/#request">Отправить готовую заявку ↗</a></p>
-    {item.categorySlug === 'sortovoy-i-fasonny-prokat' && item.slug === 'ugolok' && <section className="technical-catalog-summary" aria-labelledby="technical-catalog-summary-heading">
-      <div className="technical-catalog-summary-heading">
-        <div><p className="technical-catalog-eyebrow">Техническая сводка</p><h2 id="technical-catalog-summary-heading">Уголок: основные параметры</h2></div>
-        <a href={requestHref}>В заявку ↗</a>
-      </div>
-      <dl>
-        <div><dt>Марки / классы</dt><dd>{item.grades.join(' · ')}</dd></div>
-        <div><dt>Исполнение</dt><dd>{item.range.find(row => row.label === 'Виды')?.value}</dd></div>
-        <div><dt>Размер</dt><dd>{item.range.find(row => row.label === 'Размер')?.value}; выберите точный типоразмер ниже</dd></div>
-        <div><dt>ГОСТ / ТУ</dt><dd>{item.standards.join(' · ')}</dd></div>
-      </dl>
-      <p className="technical-catalog-disclaimer">Марку, исполнение и стандарт согласуем для конкретного изделия. Перечень не подтверждает наличие на складе.</p>
-      <a className="technical-catalog-size-link" href="#sizes">Посмотреть размерный ряд ↓</a>
-    </section>}
-    {item.categorySlug === 'sortovoy-i-fasonny-prokat' && ['shveller', 'balka-dvutavrovaya', 'kvadrat', 'shestigrannik', 'katanka', 'polosa', 'krug-goryachekatanyj', 'armatura', 'shveller-gnutyj', 'krug-i-kvadrat', 'balka-shveller-ugolok'].includes(item.slug) && <section className="technical-catalog-summary" aria-labelledby="technical-catalog-summary-heading">
-      <div className="technical-catalog-summary-heading">
-        <div><p className="technical-catalog-eyebrow">Техническая сводка</p><h2 id="technical-catalog-summary-heading">{item.shortTitle}: основные параметры</h2></div>
-        <a href={requestHref}>В заявку ↗</a>
-      </div>
-      <dl>
-        <div><dt>{['shestigrannik', 'shveller-gnutyj'].includes(item.slug) ? 'Материал / исполнение' : 'Марки / классы'}</dt><dd>{item.grades.join(' · ')}</dd></div>
-        {item.range.map((row) => <div key={row.label}><dt>{row.label}</dt><dd>{row.value}</dd></div>)}
-        <div><dt>ГОСТ / ТУ</dt><dd>{item.standards.join(' · ')}</dd></div>
-      </dl>
-      <p className="technical-catalog-disclaimer">Марку, размер профиля, исполнение и стандарт согласуем по спецификации; перечень не подтверждает наличие.</p>
-      {hasSizeReference
-        ? <a className="technical-catalog-size-link" href="#sizes">Посмотреть размерный ряд ↓</a>
-        : <a className="technical-catalog-size-link" href={requestHref}>Указать размер в заявке ↗</a>}
-    </section>}
+    <section className="pipe-hero"><div><p>{categoryLabel}</p><h1>{item.title}</h1><span>{item.description}</span></div></section>
+    <div className="product-document-workspace product-size-series">
+      <div className="product-document-stage">
+    <TechnicalCatalogSummary
+      title={item.shortTitle}
+      materialLabel={item.slug === 'kanaty' ? 'Группа / исполнение' : item.categorySlug === 'sortovoy-i-fasonny-prokat' && ['shestigrannik', 'shveller-gnutyj'].includes(item.slug) ? 'Материал / исполнение' : 'Марки / материалы'}
+      materialValues={item.grades}
+      rows={item.range.map(row => ({ label: row.label, values: [row.value] }))}
+      standards={item.standards}
+      requestHref={requestHref}
+      hasSizeReference={hasSizeReference || sizeProfiles.length > 0}
+      imageSrc={item.image}
+      imageAlt={item.shortTitle}
+    />
+        <aside className="product-document-selection" aria-label="Подбор и заявка">
     {item.categorySlug === 'metizy-i-svarochnye-materialy' && item.slug === 'kanaty' && <section className="product-size-series rope-sales" id="rope-sales" aria-labelledby="rope-sales-title">
       <h2 id="rope-sales-title">Выбрать стальной канат</h2>
       <p>Конструкция, диаметр, затем заявка. Диапазон ассортимента — {ropeSalesAssortment.diameterRange}; группы {ropeSalesAssortment.markingGroups.join(' и ')} {ropeSalesAssortment.markingGroupUnit}.</p>
@@ -131,10 +118,18 @@ export default async function PipeDetailPage({ params }: { params: Promise<{ slu
       </details>
       <details className="rope-sales-extra"><summary>Подбор по назначению и дополнительные параметры</summary><MeshRopeRequestPicker type="rope" requestHref={requestHref} /></details>
     </section>}
-    <section className="pipe-spec"><div><p>Продукция</p><h2>Основные параметры для закупки</h2></div><dl>{item.range.map((row) => <div key={row.label}><dt>{row.label}</dt><dd>{row.value}</dd></div>)}</dl></section>
-    <section className="pipe-facts"><div className="pipe-facts-heading"><p>Сводные характеристики</p><h2>Марки и применение</h2></div><dl><div><dt>Марки и материалы</dt><dd>{item.grades.map((value) => <span key={value}>{value}</span>)}</dd></div><div><dt>Применение</dt><dd>{item.applications.map((value) => <span key={value}>{value}</span>)}</dd></div></dl></section>
-    {item.standards.length > 0 && <section className="pipe-standards"><div><p>Документы</p><h2>Стандарты</h2></div><div>{item.standards.map((value) => { const standard = findStandard(value); return standard ? <Link prefetch={false} href={`/spravochnik-gost/${standard.slug}`} key={value}><span className={/^(?:ГОСТ|ТУ|ОСТ|СТО|ASTM|DIN|ISO|API|EN|AWS)\s+[A-ZА-Я]?\d/u.test(value) ? 'standard-code' : undefined}>{value}</span><small>{standard.status}</small><b>↗</b></Link> : <div key={value}><span className={/^(?:ГОСТ|ТУ|ОСТ|СТО|ASTM|DIN|ISO|API|EN|AWS)\s+[A-ZА-Я]?\d/u.test(value) ? 'standard-code' : undefined}>{value}</span></div> })}</div></section>}
-    <section className="pipe-request"><div><p>Для точного предложения</p><h2>Что указать в заявке</h2></div><ol>{item.requestFields.map((value, index) => <li key={value}><b>{String(index + 1).padStart(2, '0')}</b><span>{value}</span></li>)}</ol></section>
+    {(item.categorySlug === 'cvetnye-metally' || item.categorySlug === 'nerzhaveyushchaya-stal') && <NonferrousRequestPicker productSlug={item.slug} requestHref={requestHref} />}
+    {((item.categorySlug === 'metizy-i-svarochnye-materialy' && ['lenta-upakovochnaya', 'svarochnye-materialy'].includes(item.slug)) || (item.categorySlug === 'pokovki-i-zagotovki' && item.slug === 'po-chertezhu')) && <SpecialProcurementPicker mode={item.slug === 'lenta-upakovochnaya' ? 'tape' : item.slug === 'svarochnye-materialy' ? 'welding' : 'forging'} requestHref={requestHref} />}
+    {item.categorySlug === 'metizy-i-svarochnye-materialy' && item.slug === 'setki' && <MeshRopeRequestPicker type="mesh" requestHref={requestHref} />}
+          {hasSeriesSelection && <ProductSizeSeries series={sizeSeries} guide={dimensionGuide} requestHref={requestHref} documentation selectionOnly />}
+          {!hasStandaloneSelection && !hasSeriesSelection && <ProductDocumentRequest requestHref={requestHref} fields={item.requestFields} hasSizeReference={hasSizeReference || sizeProfiles.length > 0} />}
+        </aside>
+      </div>
+    <nav className="product-document-nav" aria-label="Разделы карточки">
+      {(hasSizeReference || sizeProfiles.length > 0) && <a href="#sizes">Размеры и подбор</a>}
+      <a href="#technical-reference">Применение и документы</a>
+      <a href="#related-products">Другие позиции</a>
+    </nav>
     {sizeProfiles.length > 0 && <section className="product-size-series" id="sizes" aria-labelledby="profile-sizes-title">
       <h2 id="profile-sizes-title">Размерный ряд по ГОСТ</h2>
       <p className="size-series-intro">Выберите вид профиля, чтобы открыть его размеры, серии и стандарты.</p>
@@ -143,13 +138,17 @@ export default async function PipeDetailPage({ params }: { params: Promise<{ slu
         {sizeProfiles.map((profile) => <a key={profile.slug} href={`/produkciya/${profile.categorySlug}/${profile.slug}#sizes`}>{profile.shortTitle} →</a>)}
       </nav>
     </section>}
-    {(item.categorySlug === 'cvetnye-metally' || item.categorySlug === 'nerzhaveyushchaya-stal') && <NonferrousRequestPicker productSlug={item.slug} requestHref={requestHref} />}
-    {((item.categorySlug === 'metizy-i-svarochnye-materialy' && ['lenta-upakovochnaya', 'svarochnye-materialy'].includes(item.slug)) || (item.categorySlug === 'pokovki-i-zagotovki' && item.slug === 'po-chertezhu')) && <SpecialProcurementPicker mode={item.slug === 'lenta-upakovochnaya' ? 'tape' : item.slug === 'svarochnye-materialy' ? 'welding' : 'forging'} requestHref={requestHref} />}
-    {item.categorySlug === 'metizy-i-svarochnye-materialy' && item.slug === 'setki' && <MeshRopeRequestPicker type="mesh" requestHref={requestHref} />}
-    <CatalogStockAssortment categorySlug={item.categorySlug} slug={item.slug} title={item.title} />
-    <ProductSizeSeries series={sizeSeries} guide={dimensionGuide} requestHref={requestHref} />
-    <section className="pipe-intro"><h2>Подбор по назначению, а не только по размеру</h2><div><p>{item.intro}</p><a href={requestHref}>Отправить заявку →</a></div></section>
-    <section className="pipe-more"><p>Другие позиции раздела</p><div>{siblings.filter(({ slug }) => slug !== item.slug).slice(0, 5).map((related) => <Link href={`/produkciya/${related.categorySlug}/${related.slug}`} key={related.slug}>{related.shortTitle}<b>↗</b></Link>)}</div></section>
-    <section className="pipe-conversion"><p>Пришлите Excel, PDF, Word, фото маркировки или сертификат</p><h2>Проверим стандарт,<br />размер и исполнение</h2><a href={requestHref}>Отправить заявку ↗</a></section>
+    <CatalogStockAssortment categorySlug={item.categorySlug} slug={item.slug} title={item.title} documentation />
+    <ProductSizeSeries series={sizeSeries} guide={dimensionGuide} requestHref={requestHref} documentation showSelection={false} />
+    </div>
+    <details className="product-document-reference" id="technical-reference">
+      <summary>Применение, документы и требования к заявке</summary>
+      <section className="product-document-reference-section"><h2>Применение</h2><ul>{item.applications.map(value => <li key={value}>{value}</li>)}</ul></section>
+    {item.standards.length > 0 && <section className="pipe-standards"><div><p>Документы</p><h2>Стандарты</h2></div><div>{item.standards.map((value) => { const standard = findStandard(value); return standard ? <Link prefetch={false} href={`/spravochnik-gost/${standard.slug}`} key={value}><span className={/^(?:ГОСТ|ТУ|ОСТ|СТО|ASTM|DIN|ISO|API|EN|AWS)\s+[A-ZА-Я]?\d/u.test(value) ? 'standard-code' : undefined}>{value}</span><small>{standard.status}</small><b>↗</b></Link> : <div key={value}><span className={/^(?:ГОСТ|ТУ|ОСТ|СТО|ASTM|DIN|ISO|API|EN|AWS)\s+[A-ZА-Я]?\d/u.test(value) ? 'standard-code' : undefined}>{value}</span></div> })}</div></section>}
+      <section className="product-document-reference-section"><h2>Что указать в заявке</h2><ol>{item.requestFields.map(value => <li key={value}>{value}</li>)}</ol></section>
+      <section className="product-document-reference-section"><h2>Подбор по назначению, а не только по размеру</h2><p>{item.intro}</p></section>
+    </details>
+    <section className="pipe-more" id="related-products"><p>Другие позиции раздела</p><div>{siblings.filter(({ slug }) => slug !== item.slug).slice(0, 5).map(related => <Link href={`/produkciya/${related.categorySlug}/${related.slug}`} key={related.slug}>{related.shortTitle}<b>↗</b></Link>)}</div></section>
+    <section className="product-document-conversion"><div><h2>Есть готовая спецификация?</h2><p>Пришлите Excel, PDF, Word, фото маркировки или сертификат.</p></div><a href={requestHref}>Отправить заявку ↗</a></section>
   </main>
 }

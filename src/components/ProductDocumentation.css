@@ -1,0 +1,212 @@
+/* Product details only: a technical document with the existing brand and font. */
+main.product-document {
+  --document-line: #dce3ed;
+  --document-muted: #536481;
+  min-height: 100vh;
+  background: #fff;
+  color: #10182f;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.product-document > :is(.pipe-breadcrumb,.sdt-breadcrumb,.pipe-hero,.sdt-hero,.technical-catalog-summary,.product-document-nav,.product-size-series,.rope-sales,.nonferrous-picker,.special-procurement-picker,.pipe-more,.sdt-more,.product-document-reference,.product-document-conversion,.product-document-stock) {
+  box-sizing: border-box;
+  width: min(calc(100% - 48px), 1180px);
+  margin: 0 auto 24px;
+  min-width: 0;
+}
+.product-document :is(.pipe-nav,.sdt-nav) {
+  box-sizing: border-box;
+  min-height: 64px;
+  height: auto;
+  gap: 16px;
+  padding: 12px max(24px, calc((100vw - 1180px) / 2));
+  border-bottom: 1px solid var(--document-line);
+  background: #fff;
+  font-size: 13px;
+}
+.product-document :is(.pipe-nav,.sdt-nav) a:last-child { min-height: 44px; display: inline-flex; align-items: center; padding: 8px 14px; font-size: 14px; letter-spacing: 0; }
+.product-document :is(.pipe-breadcrumb,.sdt-breadcrumb) { display: flex; flex-wrap: wrap; gap: 7px; padding: 16px 0 0; margin-bottom: 12px; font-size: 12px; background: none; }
+.product-document :is(.pipe-hero,.sdt-hero) { display: block; min-height: 0; padding: 0; background: none; border: 0; }
+.product-document :is(.pipe-hero,.sdt-hero) > div > p { margin: 0 0 7px; color: var(--document-muted); font-size: 11px; letter-spacing: .08em; }
+main.product-document :is(.pipe-hero,.sdt-hero) h1 { max-width: 44ch; margin: 0; font-size: clamp(28px,3vw,40px) !important; line-height: 1.2 !important; letter-spacing: -.025em; color: #071c62; }
+.product-document :is(.pipe-hero,.sdt-hero) > div > span { display: block; max-width: 88ch; margin: 12px 0 0; font-size: 16px; line-height: 1.5; color: #4d5b72; }
+.product-document .technical-catalog-summary { padding: 20px 24px; border: 1px solid var(--document-line); border-radius: 6px; background: #fff; }
+.product-document .technical-catalog-summary-heading { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; gap: 16px; }
+.product-document .technical-catalog-eyebrow { margin: 0 0 5px; color: var(--document-muted); font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+main.product-document .technical-catalog-summary h2 { margin: 0; font-size: clamp(22px,2.2vw,28px) !important; line-height: 1.25 !important; }
+.product-document .technical-catalog-summary-heading > a { box-sizing: border-box; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; min-height: 44px; padding: 9px 16px; border-radius: 4px; background: #0757e8; color: #fff; font-size: 15px; font-weight: 700; white-space: nowrap; }
+.product-document .technical-catalog-summary dl { margin: 0; border-top: 1px solid var(--document-line); }
+.product-document .technical-catalog-summary dl > div { display: grid; grid-template-columns: minmax(135px,.28fr) minmax(0,1fr); gap: 20px; padding: 10px 0; border-bottom: 1px solid #e9edf3; }
+.product-document .technical-catalog-summary dt { font-size: 13px; font-weight: 600; color: var(--document-muted); }
+.product-document .technical-catalog-summary dd { min-width: 0; margin: 0; color: #26364e; font-size: 15px; line-height: 1.5; overflow-wrap: anywhere; }
+.product-document .technical-catalog-summary dd > span:not(:last-of-type)::after { content: ' · '; color: #8794a8; white-space: pre-wrap; }
+.product-document .technical-catalog-summary dd a { color: #0757e8; text-decoration: underline; text-decoration-color: #b2c7ed; text-underline-offset: 3px; }
+.product-document .technical-catalog-summary dd small { display: block; margin-top: 6px; color: var(--document-muted); font-size: 12px; line-height: 1.5; }
+.product-document .technical-catalog-disclaimer { margin: 12px 0 2px; color: var(--document-muted); font-size: 13px; line-height: 1.5; }
+.product-document .technical-catalog-size-link { display: inline-flex; align-items: center; min-height: 44px; color: #0757e8; font-size: 14px; font-weight: 700; }
+.product-document .product-document-nav { display: flex; flex-wrap: wrap; gap: 4px 20px; padding: 0 0 12px; border-bottom: 1px solid var(--document-line); }
+.product-document-nav a { display: inline-flex; align-items: center; min-height: 44px; color: #0757e8; font-size: 14px; font-weight: 600; }
+.product-document :is(.product-size-series,.nonferrous-picker,.special-procurement-picker) { padding: 20px 0; border: 0; border-bottom: 1px solid var(--document-line); background: #fff; }
+main.product-document :is(.product-size-series,.nonferrous-picker,.special-procurement-picker) h2 { margin: 0 0 12px; font-size: clamp(22px,2.2vw,28px) !important; line-height: 1.25 !important; color: #071c62; }
+.product-document :is(.product-size-series,.nonferrous-picker,.special-procurement-picker) > p { max-width: 92ch; margin: 10px 0; font-size: 14px; line-height: 1.5; }
+.product-document :is(.nonferrous-note,.size-series-note,.size-series-mobile-help,.size-series-legend) { font-size: 13px; line-height: 1.5; }
+.product-document :is(.nonferrous-fields,.special-procurement-fields) { gap: 12px; }
+.product-document :is(input:not([type=radio]):not([type=checkbox]),select,textarea) { box-sizing: border-box; max-width: 100%; min-height: 44px; font-size: 16px; }
+.product-document .catalog-standard-request { margin: 16px 0; padding: 18px; border: 1px solid var(--document-line); border-radius: 5px; background: #f8faff; }
+.product-document .catalog-standard-request h3 { font-size: 18px !important; line-height: 1.35 !important; }
+.product-document .catalog-standard-request button { min-height: 44px; background: #0757e8; border-radius: 4px; }
+.product-document .size-series-quick-examples { margin: 16px 0; padding: 14px 16px; background: #f8faff; border: 1px solid var(--document-line); }
+.product-document .size-series-nav { margin: 16px 0; gap: 8px; }
+.product-document .size-series-nav a { min-height: 44px; font-size: 13px; }
+.product-document .product-size-series > details { margin: 12px 0; border: 1px solid var(--document-line); border-radius: 5px; background: #fff; }
+.product-document .product-size-series > details > summary { min-height: 44px; box-sizing: border-box; padding: 12px 16px; background: #f8faff; font-size: 14px; line-height: 1.5; }
+.product-document .size-series-heading { gap: 8px; }
+.product-document .size-series-standard-label { font-size: 12px; font-weight: 500; }
+.product-document :is(.size-series-scroll,.size-series-generic-viewport) { max-width: 100%; overflow-x: auto; }
+.product-document table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.product-document :is(th,td) { padding: 9px 12px; font-size: 13px; line-height: 1.5; text-align: left !important; vertical-align: top; }
+.product-document table caption { padding: 10px 12px; text-align: left; font-size: 13px; font-weight: 600; }
+.product-document th { color: #34415d; background: #f8faff; }
+.product-document :is(.size-series-guide,.rope-sales-reference,.rope-sales-extra) { margin-top: 16px; padding: 16px; border: 1px solid var(--document-line); background: #fff; }
+.product-document :is(.product-document-reference,.product-document-stock) { border: 1px solid var(--document-line); border-radius: 5px; background: #fff; }
+.product-document :is(.product-document-reference,.product-document-stock) > summary { box-sizing: border-box; min-height: 48px; padding: 12px 18px; cursor: pointer; color: #071c62; font-size: 15px; font-weight: 600; background: #f8faff; }
+.product-document .product-document-reference-section { padding: 18px 20px; border-top: 1px solid var(--document-line); }
+main.product-document .product-document-reference-section h2 { margin: 0 0 12px; font-size: 20px !important; line-height: 1.35 !important; }
+.product-document .product-document-reference-section :is(p,ul,ol) { margin: 8px 0; font-size: 15px; line-height: 1.6; }
+.product-document .product-document-reference-section :is(ul,ol) { padding-left: 22px; }
+.product-document :is(.pipe-standards,.sdt-standards) { display: block; padding: 18px 20px; gap: 0; background: #fff; border-top: 1px solid var(--document-line); }
+.product-document :is(.pipe-standards,.sdt-standards) > div:first-child > p { display: none; }
+main.product-document :is(.pipe-standards,.sdt-standards) h2 { margin: 0 0 12px; font-size: 20px !important; line-height: 1.35 !important; }
+.product-document :is(.pipe-standards,.sdt-standards) > div:last-child { display: grid; gap: 6px; }
+.product-document :is(.pipe-standards,.sdt-standards) :is(a,div > div) { padding: 8px 0; font-size: 14px; }
+.product-document :is(.pipe-standards,.sdt-standards) small { font-size: 12px; }
+.product-document .product-document-stock .product-size-series { box-sizing: border-box; margin: 0; width: 100%; padding: 18px; }
+.product-document :is(.pipe-more,.sdt-more) { display: block; padding: 20px 0; background: #fff; border-top: 1px solid var(--document-line); }
+.product-document :is(.pipe-more,.sdt-more) > p { margin: 0 0 10px; color: var(--document-muted); font-size: 12px; letter-spacing: 0; }
+.product-document :is(.pipe-more,.sdt-more) > div { display: flex; flex-wrap: wrap; gap: 8px; }
+.product-document :is(.pipe-more,.sdt-more) a { display: inline-flex; align-items: center; justify-content: space-between; min-height: 44px; padding: 8px 12px; gap: 12px; border: 1px solid var(--document-line); background: #fff; color: #0757e8; font-size: 14px; }
+.product-document .product-document-conversion { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 20px 0 32px; border-top: 1px solid var(--document-line); }
+main.product-document .product-document-conversion h2 { margin: 0; font-size: 22px !important; line-height: 1.3 !important; }
+.product-document-conversion p { margin: 8px 0 0; font-size: 14px; color: var(--document-muted); }
+.product-document-conversion > a { display: inline-flex; align-items: center; flex-shrink: 0; min-height: 44px; padding: 10px 16px; border-radius: 4px; background: #0757e8; color: #fff; font-size: 15px; font-weight: 700; }
+.product-document :is(a,button,input,select,summary):focus-visible { outline: 3px solid #8ab6f7; outline-offset: 3px; }
+@media (max-width: 650px) {
+  .product-document > :is(.pipe-breadcrumb,.sdt-breadcrumb,.pipe-hero,.sdt-hero,.technical-catalog-summary,.product-document-nav,.product-size-series,.rope-sales,.nonferrous-picker,.special-procurement-picker,.pipe-more,.sdt-more,.product-document-reference,.product-document-conversion,.product-document-stock) { width: calc(100% - 32px); margin-bottom: 20px; }
+  .product-document :is(.pipe-nav,.sdt-nav) { flex-wrap: wrap; padding: 10px 16px; gap: 8px 12px; }
+  .product-document :is(.pipe-nav,.sdt-nav) a:first-child { min-width: 0; max-width: 100%; font-size: 12px; }
+  .product-document .technical-catalog-summary { padding: 16px; }
+  .product-document .technical-catalog-summary-heading { flex-direction: column; align-items: stretch; gap: 12px; }
+  .product-document .technical-catalog-summary-heading > a { justify-content: center; }
+  .product-document .technical-catalog-summary dl > div { grid-template-columns: 1fr; gap: 4px; padding: 10px 0; }
+  .product-document .technical-catalog-summary dd { font-size: 15px; }
+  .product-document .catalog-standard-request { padding: 14px; }
+  .product-document .product-document-conversion { flex-direction: column; align-items: stretch; }
+  .product-document-conversion > a { justify-content: center; }
+  .product-document :is(.nonferrous-fields,.special-procurement-fields) { grid-template-columns: 1fr; }
+}
+
+/* Approved card composition: illustration and data beside the real request. */
+.product-document > .product-document-workspace {
+  box-sizing: border-box;
+  width: min(calc(100% - 48px), 1320px);
+  margin: 0 auto 24px;
+  padding: 0;
+  border: 0;
+  background: #fff;
+}
+.product-document .product-document-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(350px, 390px);
+  align-items: start;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+.product-document-stage > .technical-catalog-summary {
+  box-sizing: border-box;
+  width: auto;
+  min-width: 0;
+  margin: 0;
+  padding: 20px;
+}
+.product-document .product-document-summary-body {
+  display: grid;
+  grid-template-columns: minmax(150px, 200px) minmax(0, 1fr);
+  align-items: start;
+  gap: 20px;
+}
+.product-document .product-document-image {
+  min-width: 0;
+  margin: 0;
+  padding: 10px 14px 0 0;
+  border-right: 1px solid var(--document-line);
+}
+.product-document-image img {
+  display: block;
+  width: 100%;
+  max-width: 220px;
+  height: 200px;
+  margin: 0 auto;
+  object-fit: contain;
+}
+.product-document-image figcaption { margin-top: 8px; color: var(--document-muted); font-size: 11px; line-height: 1.5; text-align: center; }
+.product-document .product-document-summary-body > dl { min-width: 0; }
+.product-document .product-document-summary-body dl > div { grid-template-columns: 1fr; gap: 3px; padding: 9px 0; }
+.product-document .product-document-selection {
+  box-sizing: border-box;
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid var(--document-line);
+  border-radius: 6px;
+  background: #fff;
+}
+.product-document-selection :is(.catalog-standard-request,.nonferrous-picker,.special-procurement-picker,.mesh-rope-picker,.fastener-picker,.galv-picker,.rope-sales) {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: #fff;
+}
+main.product-document .product-document-selection :is(h2,h3) { margin: 0 0 12px; font-size: 22px !important; line-height: 1.3 !important; }
+.product-document-selection :is(.nonferrous-fields,.special-procurement-fields,.mesh-rope-fields,.fastener-fields,.galv-fields,.rope-sales-picker-fields,.catalog-standard-request-fields) {
+  display: grid;
+  grid-template-columns: minmax(0,1fr);
+  gap: 12px;
+}
+.product-document-selection :is(input:not([type=radio]):not([type=checkbox]),select,textarea) { box-sizing: border-box; min-width: 0; width: 100%; max-width: 100%; min-height: 44px; font-size: 16px; }
+.product-document-selection :is(.catalog-standard-request button,.nonferrous-submit,.special-procurement-submit,.mesh-rope-submit,.fastener-submit,.galv-submit,.rope-sales-picker-action a,.rope-sales-picker-action button) { box-sizing: border-box; display: flex; justify-content: center; align-items: center; width: 100%; min-height: 44px; padding: 10px 14px; font-size: 15px; }
+.product-document .product-document-native-request > h2 { margin: 0 0 12px; }
+.product-document-native-request > p { margin: 0 0 12px; color: #4d5b72; font-size: 14px; line-height: 1.5; }
+.product-document-native-request ul { margin: 0 0 18px; padding-left: 20px; font-size: 14px; line-height: 1.6; }
+.product-document-native-request li { margin: 6px 0; }
+.product-document-native-request .product-document-request-action { box-sizing: border-box; display: flex; justify-content: center; align-items: center; min-height: 44px; padding: 11px 16px; border-radius: 4px; background: #0757e8; color: #fff; font-size: 15px; font-weight: 700; }
+.product-document-selection-link { display: flex; align-items: center; min-height: 44px; margin-top: 8px; color: #0757e8; font-size: 14px; font-weight: 600; }
+.product-document-native-request > small { display: block; margin-top: 10px; color: var(--document-muted); font-size: 12px; line-height: 1.5; }
+.product-document-workspace > .product-document-nav { display: flex; flex-wrap: wrap; gap: 4px 20px; margin: 0 0 20px; padding: 0 0 10px; border-bottom: 1px solid var(--document-line); }
+.product-document-workspace > .product-size-series { box-sizing: border-box; width: 100%; margin: 0 0 24px; padding: 20px 0; }
+.product-document-workspace > .product-document-stock { width: 100%; box-sizing: border-box; margin: 0 0 20px; }
+.product-document .product-document-header { gap: 20px; padding-top: 8px; padding-bottom: 8px; }
+.product-document-header .product-document-brand { display: flex; flex-shrink: 0; align-items: center; padding: 0; background: none; border: 0; }
+.product-document-header .product-document-brand img { display: block; width: 95px; height: 65px; object-fit: contain; }
+.product-document-header-links { display: flex; flex: 1; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 24px; }
+.product-document .product-document-header-links a { display: inline-flex; align-items: center; min-height: 44px; padding: 0; background: none; border: 0; color: #071c62; font-size: 14px; font-weight: 600; letter-spacing: 0; }
+.product-document .product-document-header > .product-document-header-action { flex-shrink: 0; background: #0757e8; color: #fff; border-radius: 4px; }
+@media (max-width: 1000px) {
+  .product-document .product-document-stage { grid-template-columns: minmax(0,1fr); gap: 20px; }
+  .product-document .product-document-summary-body { grid-template-columns: minmax(140px,200px) minmax(0,1fr); }
+  .product-document-selection :is(.nonferrous-fields,.special-procurement-fields,.mesh-rope-fields,.fastener-fields,.galv-fields,.catalog-standard-request-fields) { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .product-document-header-links { gap: 8px 14px; }
+}
+@media (max-width: 650px) {
+  .product-document > .product-document-workspace { width: calc(100% - 32px); }
+  .product-document .product-document-summary-body { grid-template-columns: minmax(0,1fr); gap: 12px; }
+  .product-document .product-document-image { padding: 0 0 12px; border: 0; border-bottom: 1px solid var(--document-line); }
+  .product-document-image img { height: 150px; max-width: 180px; }
+  .product-document .product-document-selection { padding: 16px; }
+  .product-document-selection :is(.nonferrous-fields,.special-procurement-fields,.mesh-rope-fields,.fastener-fields,.galv-fields,.catalog-standard-request-fields) { grid-template-columns: minmax(0,1fr); }
+  .product-document .product-document-header { gap: 8px 12px; }
+  .product-document-header .product-document-brand img { width: 74px; height: 51px; }
+  .product-document-header-links { order: 4; flex-basis: 100%; justify-content: flex-start; gap: 8px 20px; }
+  .product-document .product-document-header > .product-document-header-action { margin-left: auto; padding: 8px 10px; font-size: 12px; }
+}

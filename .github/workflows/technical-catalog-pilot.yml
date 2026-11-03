@@ -1,4 +1,4 @@
-name: Technical Catalog UI pilot verification
+name: Technical Catalog UI verification
 
 on:
   pull_request:
@@ -6,7 +6,14 @@ on:
     paths:
       - 'src/app/(frontend)/(catalog)/produkciya/[slug]/[detail]/page.tsx'
       - 'src/app/(frontend)/(catalog)/produkciya/[slug]/[detail]/pipe-detail.css'
+      - 'src/app/(frontend)/(catalog)/produkciya/sdt/[detail]/page.tsx'
+      - 'src/components/TechnicalCatalogSummary.tsx'
+      - 'src/components/ProductDocumentation.css'
+      - 'src/components/ProductSizeSeries.tsx'
+      - 'src/components/CatalogStockAssortment.tsx'
+      - 'tests/e2e/product-documentation.e2e.spec.ts'
       - 'tests/e2e/technical-catalog-pilot.e2e.spec.ts'
+      - 'playwright.documentation.config.ts'
       - 'playwright.pilot.config.ts'
       - '.github/workflows/technical-catalog-pilot.yml'
 
@@ -40,6 +47,10 @@ jobs:
         env:
           BASE_URL: http://127.0.0.1:3000
         run: npx playwright test --config=playwright.pilot.config.ts
+      - name: Verify all 77 documentation cards and request flow
+        env:
+          BASE_URL: http://127.0.0.1:3000
+        run: npx playwright test --config=playwright.documentation.config.ts --grep 'all product detail routes|approved layout'
       - name: Check native Chromium browser zoom 200% (Xvfb + X11 input)
         env:
           BASE_URL: http://127.0.0.1:3000
@@ -56,3 +67,4 @@ jobs:
             test-results
             playwright-report-pilot
           if-no-files-found: ignore
+
