@@ -1,0 +1,26 @@
+name: Ferroalloy catalog regression
+on:
+  pull_request:
+    paths:
+      - 'src/data/**'
+      - 'public/home-static.html'
+      - 'tests/int/ferroalloy-search.int.spec.ts'
+      - 'tests/int/catalog-structure.int.spec.ts'
+      - 'tests/int/public-catalog-consistency.int.spec.ts'
+      - '.github/workflows/ferroalloy-catalog-regression.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  catalog:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Check ferroalloy catalog, search and homepage source
+        run: npx vitest run --config ./vitest.config.mts tests/int/ferroalloy-search.int.spec.ts tests/int/catalog-structure.int.spec.ts tests/int/public-catalog-consistency.int.spec.ts

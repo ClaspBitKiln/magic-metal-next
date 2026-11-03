@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { mkdtemp,writeFile,readFile,rm } from 'node:fs/promises'
+import { mkdtemp,writeFile,readFile,rm,stat } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { spawnSync } from 'node:child_process'
@@ -11,11 +11,11 @@ async function run(input) {
   const src=join(dir,'data.json'),dst=join(dir,'out.json')
   await writeFile(src,JSON.stringify(input))
   const result=spawnSync(process.execPath,['scripts/growth/prioritize-funnel.mjs',src,dst],{encoding:'utf8'})
-  return {status:result.status,data:JSON.parse(await readFile(dst,'utf8'))}
+  return {status:result.status,data:JSON.parse(await readFile(dst,'utf8')),mode:(await stat(dst)).mode & 0o777}
  } finally {await rm(dir,{recursive:true,force:true})}
 }
 test('identifies largest comparable attrition and never edits site',async()=>{
- const r=await run(base);assert.equal(r.status,0);assert.equal(r.data.primary_constraint.stage,'Товар → нажатие «В заявку»');assert.equal(r.data.automatic_site_edits,false)
+ const r=await run(base);assert.equal(r.status,0);assert.equal(r.data.primary_constraint.stage,'Товар → нажатие «В заявку»');assert.equal(r.data.automatic_site_edits,false);assert.equal(r.data.source_report_id,base.source_report_id);assert.equal(r.data.temporal_order_verified,false);assert.equal(r.mode,0o600)
 })
 test('refuses inconsistent visit cohort',async()=>{
  const r=await run({...base,request_started_visits:90});assert.equal(r.status,1);assert.ok(r.data.errors.some(x=>x.includes('not comparable')))
@@ -27,4 +27,10 @@ test('refuses robots and weak sample',async()=>{
 
 test('rejects raw pageviews and missing goal verification',async()=>{
  const wrong=await run({...base,unit:'pageviews',goal_semantics_verified:false});assert.equal(wrong.status,1);assert.ok(wrong.data.errors.some(x=>x.includes('distinct visits')))
+})
+
+
+
+test('refuses unverified internal QA and does not label it a proven constraint',async()=>{
+ const r=await run({...base,excludes_internal_qa:false});assert.equal(r.status,1);assert.deepEqual(r.data.recommendations,[]);assert.equal(r.data.primary_constraint,undefined)
 })

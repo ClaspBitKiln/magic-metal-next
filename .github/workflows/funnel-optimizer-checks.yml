@@ -17,3 +17,4 @@ jobs:
         with:
           node-version: '22'
       - run: node --test scripts/growth/prioritize-funnel.test.mjs
+
