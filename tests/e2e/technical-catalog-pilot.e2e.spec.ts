@@ -33,6 +33,7 @@ for (const width of [320, 390, 1536]) {
     })
     expect(layout.scrollWidth).toBeLessThanOrEqual(layout.clientWidth)
     expect(layout.titleSize).toBeGreaterThanOrEqual(21)
+    expect(layout.titleSize).toBeLessThanOrEqual(29)
     expect(layout.headingSize).toBeLessThanOrEqual(41)
     expect(layout.buttonHeight).toBeGreaterThanOrEqual(44)
     expect(layout.firstSummaryTop).toBeLessThan(900)
