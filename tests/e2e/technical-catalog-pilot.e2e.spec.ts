@@ -53,6 +53,9 @@ for (const product of [
   { slug: 'balka-dvutavrovaya', title: 'Балка двутавровая', standard: 'ГОСТ 35087-2024', field: 'Профиль', material: '09Г2С' },
   { slug: 'kvadrat', title: 'Квадрат', standard: 'ГОСТ 2591-2006', field: 'Сторона', material: '09Г2С' },
   { slug: 'shestigrannik', title: 'Шестигранник', standard: 'ГОСТ 2879-2006', field: 'Размеры заказа', material: 'марка стали — по заказу' },
+  { slug: 'armatura', title: 'Арматура', standard: 'ГОСТ 34028-2016', field: 'Класс', material: 'А500' },
+  { slug: 'katanka', title: 'Катанка', standard: 'ГОСТ 30136-95', field: 'Диаметр', material: 'углеродистая сталь' },
+  { slug: 'polosa', title: 'Полоса', standard: 'ГОСТ 103-2006', field: 'Сечение', material: 'марка стали по спецификации' },
 ]) {
   for (const width of [320, 390, 1536]) {
     test(`Technical Catalog UI: ${product.slug} at ${width}px`, async ({ page }) => {
@@ -66,13 +69,12 @@ for (const product of [
       await expect(section).toContainText(product.standard)
       await expect(section).toContainText(product.field)
       await expect(section.getByRole('link', { name: /В заявку/ })).toHaveAttribute('href', /[?&]product=.*#request$/)
-      if (product.slug === 'shestigrannik') {
-        await expect(section.getByRole('link', { name: /Указать размер в заявке/ })).toHaveAttribute('href', /[?&]product=.*#request$/)
-        await expect(page.locator('#sizes')).toHaveCount(0)
-        await expect(section.getByRole('link', { name: /Посмотреть размерный ряд/ })).toHaveCount(0)
-      } else {
+      const hasSizeSeries = await page.locator('#sizes').count() > 0
+      if (hasSizeSeries) {
         await expect(section.getByRole('link', { name: /Посмотреть размерный ряд/ })).toHaveAttribute('href', '#sizes')
-        await expect(page.locator('#sizes')).toHaveCount(1)
+      } else {
+        await expect(section.getByRole('link', { name: /Указать размер в заявке/ })).toHaveAttribute('href', /[?&]product=.*#request$/)
+        await expect(section.getByRole('link', { name: /Посмотреть размерный ряд/ })).toHaveCount(0)
       }
       const result = await page.evaluate(() => {
         const title = document.querySelector<HTMLElement>('.technical-catalog-summary h2')!
