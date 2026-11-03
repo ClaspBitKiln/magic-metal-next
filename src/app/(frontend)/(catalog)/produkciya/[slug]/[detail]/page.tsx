@@ -71,7 +71,7 @@ export default async function PipeDetailPage({ params }: { params: Promise<{ slu
       { '@type': 'PropertyValue', name: 'Материалы', value: item.grades.join('; ') },
     ],
   }
-  return <main className={`pipe-detail${item.categorySlug === 'sortovoy-i-fasonny-prokat' && ['ugolok', 'shveller', 'balka-dvutavrovaya', 'kvadrat', 'shestigrannik', 'katanka', 'polosa'].includes(item.slug) ? ' technical-catalog-pilot' : ''}`}>
+  return <main className={`pipe-detail${item.categorySlug === 'sortovoy-i-fasonny-prokat' && ['ugolok', 'shveller', 'balka-dvutavrovaya', 'kvadrat', 'shestigrannik', 'katanka', 'polosa', 'krug-goryachekatanyj', 'armatura'].includes(item.slug) ? ' technical-catalog-pilot' : ''}`}>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />
     <header className="pipe-nav"><Link href={`/produkciya/${item.categorySlug}`}><b>←</b> {categoryLabel}</Link><LanguageSwitcher /><a href={requestHref}>Отправить заявку ↗</a></header>
     <section className="pipe-hero"><div><p>{categoryLabel}</p><h1>{item.title}</h1><span>{item.description}</span></div></section>
@@ -93,7 +93,7 @@ export default async function PipeDetailPage({ params }: { params: Promise<{ slu
       <p className="technical-catalog-disclaimer">Марку, исполнение и стандарт согласуем для конкретного изделия. Перечень не подтверждает наличие на складе.</p>
       <a className="technical-catalog-size-link" href="#sizes">Посмотреть размерный ряд ↓</a>
     </section>}
-    {item.categorySlug === 'sortovoy-i-fasonny-prokat' && ['shveller', 'balka-dvutavrovaya', 'kvadrat', 'shestigrannik', 'katanka', 'polosa'].includes(item.slug) && <section className="technical-catalog-summary" aria-labelledby="technical-catalog-summary-heading">
+    {item.categorySlug === 'sortovoy-i-fasonny-prokat' && ['shveller', 'balka-dvutavrovaya', 'kvadrat', 'shestigrannik', 'katanka', 'polosa', 'krug-goryachekatanyj', 'armatura'].includes(item.slug) && <section className="technical-catalog-summary" aria-labelledby="technical-catalog-summary-heading">
       <div className="technical-catalog-summary-heading">
         <div><p className="technical-catalog-eyebrow">Техническая сводка</p><h2 id="technical-catalog-summary-heading">{item.shortTitle}: основные параметры</h2></div>
         <a href={requestHref}>В заявку ↗</a>

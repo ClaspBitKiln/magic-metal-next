@@ -404,7 +404,9 @@ test('angle request preserves grade and requested standard when selecting a tabl
     expect(product).not.toContain('99×99×9')
     expect(product).toContain('ГОСТ 8509-93')
     expect(product).toContain('Требуемый ГОСТ / ТУ: ТУ 1/2 & №3 + 4')
-    await row.click({ force: true })
+    // Wait for a stable, visible target; a forced click can hit a different
+    // example while the responsive size table finishes laying out.
+    await row.click()
     const message = page.locator('textarea[name="message"]')
     await expect(message).toHaveValue(/09Г2С & \+ №1/)
     await expect(message).toHaveValue(/40 × 40 × 4 мм/)
