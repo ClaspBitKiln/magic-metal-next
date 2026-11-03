@@ -1,26 +1,38 @@
 'use client'
-import { useState, type FormEvent } from 'react'
+import { useEffect, useRef, useState, useSyncExternalStore, type FormEvent } from 'react'
+import { catalogRequestHref, enhanceCatalogRequestLinks } from '@/lib/catalogRequestParameters'
 import './CatalogStandardRequest.css'
 
+const subscribe = () => () => {}
+const getSnapshot = () => true
+const getServerSnapshot = () => false
+
 export default function CatalogStandardRequest({ requestHref }: { requestHref: string }) {
+  const form = useRef<HTMLFormElement>(null)
+  const ready = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
   const [size, setSize] = useState('')
   const [grade, setGrade] = useState('')
   const [known, setKnown] = useState(false)
   const [standard, setStandard] = useState('')
+  useEffect(() => {
+    const scope = form.current?.closest<HTMLElement>('.product-size-series')
+    if (!scope) return
+    return enhanceCatalogRequestLinks(scope, requestHref, window.location.origin, {
+      grade, knownStandard: known, standard,
+    })
+  }, [requestHref, grade, known, standard])
+
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    const url = new URL(requestHref, window.location.origin)
-    const detail = [
-      url.searchParams.get('product') || '',
-      size.trim() ? `Размер / обозначение: ${size.trim()}` : '',
-      grade.trim() ? `Марка стали / материала: ${grade.trim()}` : '',
-      known && standard.trim() ? `ГОСТ / ТУ: ${standard.trim()}` : 'ГОСТ / ТУ: помогите подобрать стандарт'
-    ].filter(Boolean).join('; ')
-    url.searchParams.set('product', detail)
-    url.hash = 'request'
-    window.location.assign(url.toString())
+    window.location.assign(catalogRequestHref(requestHref, window.location.origin, {
+      size, grade, knownStandard: known, standard,
+    }))
   }
-  return <form className="catalog-standard-request" onSubmit={submit}>
+  return <form ref={form} className="catalog-standard-request" onSubmit={submit}>
+    <noscript>
+      <style>{'.catalog-standard-request > :not(noscript){display:none!important}'}</style>
+      <p>Подбор параметров требует JavaScript. <a href={requestHref}>Перейти к заявке и приложить спецификацию ↗</a></p>
+    </noscript>
     <h3>Параметры для заявки</h3>
     <p>Укажите известные характеристики. Знать ГОСТ необязательно.</p>
     <div className="catalog-standard-request-fields">
@@ -39,7 +51,8 @@ export default function CatalogStandardRequest({ requestHref }: { requestHref: s
         <input value={standard} onChange={e => setStandard(e.target.value)} placeholder="Номер, если известен" />
       </label>}
     </fieldset>
-    <button type="submit">В заявку →</button>
-    <small>Можно сразу приложить Excel, PDF или чертёж в форме заявки.</small>
+    <button type="submit" disabled={!ready}>В заявку →</button>
+    <small><a href={requestHref}>Можно сразу приложить Excel, PDF или чертёж в форме заявки ↗</a></small>
   </form>
 }
+
