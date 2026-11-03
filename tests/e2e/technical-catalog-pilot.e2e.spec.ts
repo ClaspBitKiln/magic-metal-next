@@ -46,3 +46,38 @@ test('Technical Catalog UI does not leak to other products', async ({ page }) =>
   await expect(page.locator('.technical-catalog-summary')).toHaveCount(0)
   await expect(page.locator('main.technical-catalog-pilot')).toHaveCount(0)
 })
+
+
+for (const product of [
+  { slug: 'shveller', title: 'Швеллер', standard: 'ГОСТ 8240-97', field: 'Номер и серия' },
+  { slug: 'balka-dvutavrovaya', title: 'Балка двутавровая', standard: 'ГОСТ 35087-2024', field: 'Профиль' },
+]) {
+  for (const width of [320, 390, 1536]) {
+    test(`Technical Catalog UI: ${product.slug} at ${width}px`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 })
+      const response = await page.goto(`/produkciya/sortovoy-i-fasonny-prokat/${product.slug}`, { waitUntil: 'domcontentloaded' })
+      expect(response?.status()).toBe(200)
+      await page.evaluate(() => document.fonts.ready)
+      const section = page.locator('.technical-catalog-summary')
+      await expect(section.getByRole('heading', { name: `${product.title}: основные параметры` })).toBeVisible()
+      await expect(section).toContainText('09Г2С')
+      await expect(section).toContainText(product.standard)
+      await expect(section).toContainText(product.field)
+      await expect(section.getByRole('link', { name: /В заявку/ })).toHaveAttribute('href', /[?&]product=.*#request$/)
+      await expect(section.getByRole('link', { name: /Посмотреть размерный ряд/ })).toHaveAttribute('href', '#sizes')
+      await expect(page.locator('#sizes')).toHaveCount(1)
+      const result = await page.evaluate(() => {
+        const title = document.querySelector<HTMLElement>('.technical-catalog-summary h2')!
+        const hero = document.querySelector<HTMLElement>('.pipe-hero h1')!
+        const button = document.querySelector<HTMLElement>('.technical-catalog-summary-heading > a')!
+        return { scroll: document.documentElement.scrollWidth, client: document.documentElement.clientWidth,
+          titleSize: parseFloat(getComputedStyle(title).fontSize), heroSize: parseFloat(getComputedStyle(hero).fontSize),
+          buttonHeight: button.getBoundingClientRect().height }
+      })
+      expect(result.scroll).toBeLessThanOrEqual(result.client)
+      expect(result.titleSize).toBeLessThanOrEqual(29)
+      expect(result.heroSize).toBeLessThanOrEqual(41)
+      expect(result.buttonHeight).toBeGreaterThanOrEqual(44)
+    })
+  }
+}
