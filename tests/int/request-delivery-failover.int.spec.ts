@@ -17,7 +17,7 @@ import { POST } from '@/app/(frontend)/api/request/route'
 
 let requestNumber = 0
 
-function submit(attachment?: { name: string; bytes: Uint8Array; mimeType: string }) {
+function submit(attachment?: { name: string; bytes: Uint8Array; mimeType: string }, options: { referer?: string; context?: string } = {}) {
   const form = new FormData()
   for (const [key, value] of Object.entries({
     consent: 'on',
@@ -25,6 +25,8 @@ function submit(attachment?: { name: string; bytes: Uint8Array; mimeType: string
     message: 'Труба 57×3, 12 метров',
     startedAt: '1',
   })) form.set(key, value)
+
+  if (options.context !== undefined) form.set('context', options.context)
 
   if (attachment) {
     // jsdom File lacks arrayBuffer(), while real browser/Node multipart files expose it.
@@ -37,7 +39,8 @@ function submit(attachment?: { name: string; bytes: Uint8Array; mimeType: string
   }
 
   return POST({
-    headers: new Headers({ 'x-forwarded-for': `192.0.2.${++requestNumber}` }),
+    url: 'https://magicmet.ru/api/request',
+    headers: new Headers({ 'x-forwarded-for': `192.0.2.${++requestNumber}`, ...(options.referer ? { referer: options.referer } : {}) }),
     formData: async () => form,
   } as Request)
 }
@@ -70,6 +73,39 @@ describe('request delivery failover without external services', () => {
     vi.unstubAllEnvs()
     vi.unstubAllGlobals()
     vi.restoreAllMocks()
+  })
+
+  it('recovers selected item from same-origin Referer when JavaScript did not set context', async () => {
+    const response = await submit(undefined, {
+      referer: 'https://magicmet.ru/?product=%D0%A3%D0%B3%D0%BE%D0%BB%D0%BE%D0%BA%2040x40x4&standard=%D0%93%D0%9E%D0%A1%D0%A2%208509-93#request',
+    })
+    expect(response.status).toBe(200)
+    expect(mocks.create).toHaveBeenCalledWith(expect.objectContaining({
+      collection: 'requests',
+      data: expect.objectContaining({ context: 'Уголок 40x40x4; ГОСТ 8509-93' }),
+    }))
+    expect(mocks.sendMail).toHaveBeenCalledWith(expect.objectContaining({
+      html: expect.stringContaining('Уголок 40x40x4; ГОСТ 8509-93'),
+    }))
+  })
+
+  it('ignores foreign Referer even if it supplies a selected item', async () => {
+    const response = await submit(undefined, { referer: 'https://other.example/?product=Spoofed' })
+    expect(response.status).toBe(200)
+    expect(mocks.create).toHaveBeenCalledWith(expect.objectContaining({
+      collection: 'requests', data: expect.objectContaining({ context: '' }),
+    }))
+  })
+
+  it('preserves explicitly submitted context over Referer fallback', async () => {
+    const response = await submit(undefined, {
+      context: 'Указано закупщиком',
+      referer: 'https://magicmet.ru/?product=Other',
+    })
+    expect(response.status).toBe(200)
+    expect(mocks.create).toHaveBeenCalledWith(expect.objectContaining({
+      collection: 'requests', data: expect.objectContaining({ context: 'Указано закупщиком' }),
+    }))
   })
 
   it('accepts SMTP delivery when database initialization fails', async () => {

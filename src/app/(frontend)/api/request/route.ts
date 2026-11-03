@@ -4,6 +4,7 @@ import nodemailer from 'nodemailer'
 import { createHmac } from 'node:crypto'
 import { hasRequestConsent, hasValidRequestContact, REQUEST_CONSENT_ERROR, REQUEST_CONTACT_ERROR } from '@/lib/requestValidation'
 import { getRequestSpamReason } from '@/lib/requestSpam'
+import { fallbackRequestContext } from '@/lib/requestContext'
 
 export const runtime = 'nodejs'
 
@@ -87,7 +88,7 @@ export async function POST(request: Request) {
   const email = text(form, 'email', 180)
   const message = text(form, 'message', 8000)
   const delivery = text(form, 'delivery', 240)
-  const context = text(form, 'context', 300)
+  const context = text(form, 'context', 300) || fallbackRequestContext(request.url, request.headers.get('referer'))
   const productDirection = text(form, 'productDirection', 80)
   const files = form.getAll('files').filter((value): value is File => value instanceof File && value.size > 0)
   if (!phone && !email) return NextResponse.json({ error: 'Укажите телефон или email' }, { status: 400 })
