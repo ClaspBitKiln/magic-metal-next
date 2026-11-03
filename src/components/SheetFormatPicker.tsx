@@ -93,7 +93,7 @@ export default function SheetFormatPicker({ rows, nominalThicknesses, requestHre
       {href ? <a href={href}>Отправить выбранный размер в заявку ↗</a> : <span>Выберите ширину и толщину, чтобы отправить параметры</span>}
       {/* The homepage is an HTML Route Handler; document navigation initializes the request form. */}
       {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-      <a href="/#request">Есть Excel или чертёж? Отправить файл →</a>
+      <a href={href || requestHref}>Есть Excel или чертёж? Отправить файл →</a>
     </div>
     <button type="button" className="size-series-reference-toggle" aria-expanded={showReference} onClick={() => {
       const parent = document.getElementById(uid + '-reference-anchor')
