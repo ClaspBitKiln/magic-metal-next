@@ -35,7 +35,13 @@ test('API reports use fixed HTTPS GET, keep token out of output, and preserve sa
   }
   try {
     await main(['--counter', '123'])
-    assert.equal(calls.length, 12)
+    assert.equal(calls.length, 20)
+    const stats = calls.map(({url}) => new URL(url)).filter(u => u.pathname.startsWith('/stat/'))
+    assert.ok(stats.some(u => u.searchParams.get('dimensions') === 'ym:pv:URLPath' && u.searchParams.get('sort') === '-ym:pv:pageviews'))
+    assert.ok(stats.some(u => u.searchParams.get('dimensions') === 'ym:s:endURLPath'))
+    assert.ok(stats.some(u => u.searchParams.get('dimensions') === 'ym:s:regionAreaName'))
+    assert.ok(stats.some(u => u.searchParams.get('dimensions') === 'ym:s:regionCountryName'))
+    assert.ok(stats.every(u => u.searchParams.get('filters') === null))
     const summary = JSON.parse(output.join(''))
     assert.equal(summary.currentQuality.sampled, true)
     assert.equal(summary.requestSentGoalPresent, true)
@@ -66,7 +72,8 @@ test('non-robot segment applies equally to visits, breakdowns and goals without 
   try {
     await main(['--counter', '123', '--days', '7', '--exclude-robots'])
     const stats = calls.filter(({ url }) => url.pathname.startsWith('/stat/'))
-    assert.equal(stats.length, 10)
+    assert.equal(stats.length, 18)
+    assert.ok(stats.some(({url}) => url.searchParams.get('dimensions') === 'ym:pv:URLPath'))
     for (const { url, init } of calls) {
       assert.equal(init.method, undefined)
       assert.equal(url.searchParams.get('filters'), url.pathname.startsWith('/stat/') ? "ym:s:isRobot=='no'" : null)
