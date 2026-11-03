@@ -1,0 +1,143 @@
+{
+  "source": "Firecrawl research agent",
+  "jobId": "01a19d74-2fd9-7609-83a0-77ba42168d05",
+  "checkedAt": "2026-11-03",
+  "status": "unverified_research_candidate",
+  "warning": "Исследование не является нормативной проверкой, подтверждением наличия или основанием для автоматической публикации. Сверяйте точные URL и применимость с текущим main.",
+  "data": {
+    "verified_examples": [
+      {
+        "pipe_type": "Электросварные прямошовные трубы",
+        "normative_assortment": {
+          "standards": [
+            "ГОСТ 10704-91 (статус на magicmet: Действует)",
+            "ГОСТ 10705-80",
+            "ГОСТ 10706-76"
+          ],
+          "scope_confirmed": "ГОСТ 10704-91 — сортамент: наружные диаметры, толщины стенок, длины и допустимые отклонения; ТУ по ГОСТ 10705 или 10706 уточняются отдельно",
+          "parameters_on_magicmet": "наружный диаметр 10–1420 мм по применимому НД; толщина стенки по сочетанию диаметра и стандарта; длина мерная, кратная или немерная по НД; сталь Ст3, 2009Г2С, другие по ТУ"
+        },
+        "urls": [
+          "https://magicmet.ru/produkciya/truby-elektrosvarnye/pryamoshovnye",
+          "https://magicmet.ru/spravochnik-gost/gost-10704-91",
+          "https://www.tmk-group.ru/lw-LDP"
+        ]
+      },
+      {
+        "pipe_type": "ВГП (водогазопроводные) трубы",
+        "normative_assortment": {
+          "standards": [
+            "ГОСТ 3262-75"
+          ],
+          "scope_confirmed": "ГОСТ 3262-75: обыкновенные, легкие и усиленные трубы; таблица 1 — условный проход и наружный диаметр, толщина стенки по серии; таблица 2 — исполнение легкой серии для накатки резьбы",
+          "parameters_on_magicmet": "DN 6–150; исполнения легкие, обыкновенные, усиленные; поверхность черные или оцинкованные"
+        },
+        "urls": [
+          "https://magicmet.ru/produkciya/truby-elektrosvarnye/vodogazoprovodnye",
+          "https://magicmet.ru/spravochnik-gost/gost-3262-75",
+          "https://www.tmk-group.ru/welded-water"
+        ]
+      },
+      {
+        "pipe_type": "Бесшовные горячедеформированные трубы",
+        "normative_assortment": {
+          "standards": [
+            "ГОСТ 8731-2025 (действует с 01.03.2026)",
+            "ГОСТ 8732-2025 (действует с 01.03.2026)"
+          ],
+          "scope_confirmed": "ГОСТ 8732-2025: сортамент круглых бесшовных горячедеформированных труб — диаметры, толщины стенок, длины, предельные отклонения; поставка по группе и требованиям ГОСТ 8731-2025",
+          "parameters_on_magicmet": "наружный диаметр по ГОСТ 8732-2025; стенка по допустимому сочетанию сортамента; марки 10, 20, 35, 45, 09Г2С, легированные по НД"
+        },
+        "urls": [
+          "https://magicmet.ru/produkciya/truby-besshovnye/goryachedeformirovannye",
+          "https://magicmet.ru/spravochnik-gost/gost-8732-2025",
+          "https://www.tmk-group.ru/seamless-standard",
+          "https://www.tmk-group.ru/Seamless_industrial_pipe"
+        ]
+      },
+      {
+        "pipe_type": "Профильные трубы (квадратные и прямоугольные)",
+        "normative_assortment": {
+          "standards": [
+            "ГОСТ 8639-82",
+            "ГОСТ 8645-68",
+            "ГОСТ 30245-2003 (на magicmet: Действует)"
+          ],
+          "scope_confirmed": "ГОСТ 8639-82: основной размерный ряд квадратных труб (таблица 1 издания 1997 г., в т.ч. подраздел специальных размеров)",
+          "parameters_on_magicmet": "квадратное или прямоугольное сечение; размер и стенка по сортаменту выбранного ГОСТ; длина по НД и заявке; стали Ст3, 09Г2С, по ГОСТ 30245"
+        },
+        "urls": [
+          "https://magicmet.ru/produkciya/truby-elektrosvarnye/profilnye",
+          "https://magicmet.ru/spravochnik-gost/gost-8639-82",
+          "https://www.tmk-group.ru/welded-structurals"
+        ]
+      }
+    ],
+    "evidence_urls": [
+      "https://magicmet.ru",
+      "https://magicmet.ru/produkciya/truby-elektrosvarnye",
+      "https://magicmet.ru/produkciya/truby-elektrosvarnye/pryamoshovnye",
+      "https://magicmet.ru/produkciya/truby-elektrosvarnye/vodogazoprovodnye",
+      "https://magicmet.ru/produkciya/truby-elektrosvarnye/profilnye",
+      "https://magicmet.ru/produkciya/truby-besshovnye/goryachedeformirovannye",
+      "https://magicmet.ru/spravochnik-gost/gost-10704-91",
+      "https://magicmet.ru/spravochnik-gost/gost-3262-75",
+      "https://magicmet.ru/spravochnik-gost/gost-8639-82",
+      "https://magicmet.ru/spravochnik-gost/gost-8732-2025",
+      "https://www.tmk-group.ru/Welded_industrial_pipe",
+      "https://www.tmk-group.ru/Seamless_industrial_pipe",
+      "https://www.tmk-group.ru/Welded_LDP",
+      "https://www.tmk-group.ru/lw-LDP",
+      "https://www.tmk-group.ru/welded-standard",
+      "https://www.tmk-group.ru/welded-water",
+      "https://www.tmk-group.ru/welded-structurals",
+      "https://www.tmk-group.ru/seamless-standard"
+    ],
+    "uncertainty": [
+      "Нормативный сортамент (ГОСТ) и складское наличие разделены: на magicmet.ru наличие, остатки, цены и сроки не публикуются — 'Наличие и срок поставки подтвердим по вашей спецификации'.",
+      "Официальные страницы TMK (welded-standard, welded-water, welded-structurals, seamless-standard) содержат только названия видов продукции без текста ГОСТ и размеров; ГОСТ-привязка для них не подтверждена.",
+      "ГОСТ 10705-80, ГОСТ 10706-76, ГОСТ 8645-68, ГОСТ 30245-2003 и ГОСТ 8731-2025 упомянуты на страницах magicmet.ru, но их текст и статус не открывались отдельно (кроме статуса, указанного на magicmet).",
+      "Статус действия ГОСТ 10704-91, 3262-75, 8639-82 взят из карточек magicmet.ru; независимая проверка по базе стандартов не проводилась.",
+      "Магистральные трубы (ГОСТ 20295-85, ТУ) и спиральношовные трубы на magicmet не входят в указанные четыре вида и не разобраны."
+    ],
+    "buyer_fields": {
+      "common": [
+        "наружный диаметр (мм) или DN",
+        "толщина стенки (мм) или серия (для ВГП: легкая/обыкновенная/усиленная)",
+        "длина (мерная, кратная, немерная)",
+        "марка стали",
+        "стандарт/ТУ изготовления",
+        "покрытие (черная/оцинкованная для ВГП)",
+        "количество",
+        "требования к контролю и испытаниям",
+        "документы качества"
+      ],
+      "by_type": {
+        "электросварные прямошовные": [
+          "наружный диаметр 10–1420 мм",
+          "толщина стенки по сочетанию с диаметром и ГОСТ",
+          "ГОСТ 10704/10705/10706 или ТУ",
+          "группа поставки"
+        ],
+        "ВГП": [
+          "условный проход DN 6–150",
+          "серия: легкая, обыкновенная, усиленная",
+          "с резьбой/муфтой или без",
+          "черная или оцинкованная"
+        ],
+        "бесшовные горячедеформированные": [
+          "наружный диаметр по ГОСТ 8732-2025",
+          "толщина стенки",
+          "марка стали и группа поставки по ГОСТ 8731-2025",
+          "термообработка"
+        ],
+        "профильные": [
+          "сечение квадратное или прямоугольное",
+          "размеры сторон и стенка по ГОСТ 8639/8645/30245",
+          "марка стали",
+          "требования к геометрии и поверхности"
+        ]
+      }
+    }
+  }
+}

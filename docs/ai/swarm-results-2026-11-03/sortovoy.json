@@ -1,0 +1,187 @@
+{
+  "source": "Firecrawl research agent",
+  "jobId": "01a19d74-9ea7-7458-9811-0c285bbe2d37",
+  "checkedAt": "2026-11-03",
+  "status": "unverified_research_candidate",
+  "warning": "Исследование не является нормативной проверкой, подтверждением наличия или основанием для автоматической публикации. Сверяйте точные URL и применимость с текущим main.",
+  "data": {
+    "research_scope": "magicmet.ru: уголок, швеллер, двутавр, круг, квадрат, полоса, шестигранник, арматура, катанка",
+    "product_types": [
+      {
+        "name": "Уголок",
+        "standard": "ГОСТ 8509-93 (равнополочный, горячекатаный, сортамент)",
+        "designation_series": "Равнополочный; на сайте также неравнополочный ГОСТ 8510-86 и гнутый ГОСТ 19771-93 / ГОСТ 19772-93 (не проверены по первоисточнику)",
+        "size_range_on_site": "полки 20–250 мм (равнополочный); неравнополочный 25×16–200×125 мм",
+        "steel_grades_on_site": "Ст3, 09Г2С, С245, С255, С355",
+        "standard_url": "https://meganorm.ru/Index2/1/4294852/4294852730.htm",
+        "standard_url_citation": "https://meganorm.ru/Index2/1/4294852/4294852730.htm",
+        "magicmet_url": "https://magicmet.ru/produkciya/sortovoy-i-fasonny-prokat/ugolok",
+        "magicmet_url_citation": "https://magicmet.ru/produkciya/sortovoy-i-fasonny-prokat/ugolok",
+        "selection_fields_needed": "полка×толщина, марка стали, исполнение (равнополочный/неравнополочный/гнутый), длина"
+      },
+      {
+        "name": "Швеллер горячекатаный",
+        "standard": "ГОСТ 8240-97 (сортамент)",
+        "designation_series": "У (уклон внутренних граней полок), П (параллельные грани), Э (экономичный), Л (легкий), С (специальный)",
+        "size_range_on_site": "высота 50–400 мм, ширина полки 32–115 мм по ГОСТ 8240-97",
+        "steel_grades_on_site": "С235, С245, Ст3, С255, С275, С345, С375, 09Г2С",
+        "standard_url": "https://meganorm.ru/Data2/1/4294847/4294847929.pdf",
+        "standard_url_citation": "https://meganorm.ru/Data2/1/4294847/4294847929.pdf",
+        "magicmet_url": "https://magicmet.ru/produkciya/sortovoy-i-fasonny-prokat/shveller",
+        "magicmet_url_citation": "https://magicmet.ru/produkciya/sortovoy-i-fasonny-prokat/shveller",
+        "selection_fields_needed": "номер профиля с буквенной серией (например 12П), марка стали, длина",
+        "selection_fields_note": "Серия обязательна: 12П и 12У — разные профили"
+      },
+      {
+        "name": "Двутавр (балка двутавровая)",
+        "standard": "ГОСТ 35087-2024 (тип Б, как на magicmet.ru); ГОСТ 8239-89 (с уклоном граней полок, №10–60); ГОСТ 26020-83 (широкополочные, серии Б1/Б2 и т.п.)",
+        "designation_series": "Б, Ш, К, С, ДБ, ДК, У (по сайту, ГОСТ 35087); серии 10Б1, 12Б1, 12Б2, 20Б1 и т.п. (по ГОСТ 26020-83 и ГОСТ 35087-2024)",
+        "size_range_on_site": "ГОСТ 8239: №10–60; ГОСТ 35087 тип Б: 49 профилей, высота от 100 мм",
+        "steel_grades_on_site": "С235, С245, Ст3, С255, С275, С345, С375, 09Г2С",
+        "standard_url": "https://magicmet.ru/spravochnik-gost/gost-35087-2024",
+        "standard_url_citation": "https://magicmet.ru/spravochnik-gost/gost-35087-2024",
+        "magicmet_url": "https://magicmet.ru/produkciya/sortovoy-i-fasonny-prokat/balka-dvutavrovaya",
+        "magicmet_url_citation": "https://magicmet.ru/produkciya/sortovoy-i-fasonny-prokat/balka-dvutavrovaya",
+        "selection_fields_needed": "стандарт (ГОСТ 8239 / 26020 / 35087), серия и номер профиля, марка стали, длина"
+      },
+      {
+        "name": "Круг горячекатаный",
+        "standard": "ГОСТ 2590-2006 (сортамент)",
+        "size_range_on_site": "диаметр 5–270 мм; свыше 270 до 330 мм — по согласованию",
+        "steel_grades_on_site": "10, 20, 35, 45, 09Г2С, 40Х, 30ХГСА, 12Х1МФ, 38ХН3МА, ШХ15, 5ХНМ, 9ХС, У8А, 20Х13, 12Х18Н10Т, 10Х17Н13М2Т и др.",
+        "standard_url": "https://files.stroyinf.ru/Data2/1/4293833/4293833071.pdf",
+        "standard_url_citation": "https://files.stroyinf.ru/Data2/1/4293833/4293833071.pdf",
+        "magicmet_url": "https://magicmet.ru/produkciya/sortovoy-i-fasonny-prokat/krug-goryachekatanyj",
+        "magicmet_url_citation": "https://magicmet.ru/produkciya/sortovoy-i-fasonny-prokat/krug-goryachekatanyj",
+        "selection_fields_needed": "диаметр, марка стали, длина"
+      },
+      {
+        "name": "Квадрат горячекатаный",
+        "standard": "ГОСТ 2591-2006 (сортамент)",
+        "size_range_on_site": "горячекатаный сторона 6–200 мм; калиброванный 3–100 мм (ГОСТ 8559-75 на сайте)",
+        "steel_grades_on_site": "Ст0–Ст6, 20, 09Г2С, 45",
+        "standard_url": "https://files.stroyinf.ru/Data2/1/4293832/4293832576.pdf",
+        "standard_url_citation": "https://files.stroyinf.ru/Data2/1/4293832/4293832576.pdf",
+        "magicmet_url": "https://magicmet.ru/produkciya/sortovoy-i-fasonny-prokat/kvadrat",
+        "magicmet_url_citation": "https://magicmet.ru/produkciya/sortovoy-i-fasonny-prokat/kvadrat",
+        "selection_fields_needed": "сторона, горячекатаный или калиброванный, марка стали, длина"
+      },
+      {
+        "name": "Полоса горячекатаная",
+        "standard": "ГОСТ 103-2006 (сортамент)",
+        "size_range_on_site": "ширина 10–200 мм, толщина 4–80 мм (по сайту)",
+        "steel_grades_on_site": "марка стали по спецификации",
+        "standard_url": "https://aksvil.by/upload/gost/gost_103-2006.pdf",
+        "standard_url_citation": "https://aksvil.by/upload/gost/gost_103-2006.pdf",
+        "magicmet_url": "https://magicmet.ru/produkciya/sortovoy-i-fasonny-prokat/polosa",
+        "magicmet_url_citation": "https://magicmet.ru/produkciya/sortovoy-i-fasonny-prokat/polosa",
+        "selection_fields_needed": "ширина×толщина, марка стали, длина"
+      },
+      {
+        "name": "Шестигранник горячекатаный",
+        "standard": "ГОСТ 2879-2006 (сортамент)",
+        "size_range_on_site": "диаметр вписанного круга 8–103 мм",
+        "steel_grades_on_site": "марка стали по сертификату / стандарту на материал",
+        "standard_url": "https://metall-office.ru/gost/gost-2879-06.pdf",
+        "standard_url_citation": "https://metall-office.ru/gost/gost-2879-06.pdf",
+        "magicmet_url": "https://magicmet.ru/produkciya/sortovoy-i-fasonny-prokat/shestigrannik",
+        "magicmet_url_citation": "https://magicmet.ru/produkciya/sortovoy-i-fasonny-prokat/shestigrannik",
+        "selection_fields_needed": "размер под ключ / диаметр вписанного круга, марка стали, длина"
+      },
+      {
+        "name": "Арматура",
+        "standard": "ГОСТ 34028-2016 (классы, по сайту); ГОСТ 5781-82 (исходный стандарт горячекатаной арматурной стали, на сайте не указан)",
+        "designation_series": "Классы А240, А400, А500, А600",
+        "steel_grades_on_site": "Ст3, 25Г2С, 35ГС (по документам)",
+        "standard_url": "https://files.stroyinf.ru/Data2/1/4294852/4294852762.htm",
+        "standard_url_citation": "https://files.stroyinf.ru/Data2/1/4294852/4294852762.htm",
+        "magicmet_url": "https://magicmet.ru/produkciya/sortovoy-i-fasonny-prokat/armatura",
+        "magicmet_url_citation": "https://magicmet.ru/produkciya/sortovoy-i-fasonny-prokat/armatura",
+        "selection_fields_needed": "класс, номинальный диаметр, вид профиля, длина или мотки"
+      },
+      {
+        "name": "Катанка",
+        "standard": "ГОСТ 30136-95 (катанка углеродистая обыкновенного качества)",
+        "steel_grades_on_site": "углеродистая сталь обыкновенного качества; другие марки по НД",
+        "standard_url": "https://files.stroyinf.ru/Data2/1/4294850/4294850470.pdf",
+        "standard_url_citation": "https://files.stroyinf.ru/Data2/1/4294850/4294850470.pdf",
+        "magicmet_url": "https://magicmet.ru/produkciya/sortovoy-i-fasonny-prokat/katanka",
+        "magicmet_url_citation": "https://magicmet.ru/produkciya/sortovoy-i-fasonny-prokat/katanka",
+        "selection_fields_needed": "номинальный диаметр, марка стали, форма поставки (мотки), масса мотка"
+      }
+    ],
+    "examples": [
+      {
+        "type": "Швеллер 12П (ГОСТ 8240-97)",
+        "h_mm": "120",
+        "b_mm": "52",
+        "s_mm": "4,8",
+        "t_mm": "7,8",
+        "mass_kg_per_m": "10,40",
+        "source_citation": "https://meganorm.ru/Data2/1/4294847/4294847929.pdf"
+      },
+      {
+        "type": "Швеллер 20П (ГОСТ 8240-97)",
+        "h_mm": "200",
+        "b_mm": "76",
+        "s_mm": "5,2",
+        "t_mm": "9,0",
+        "mass_kg_per_m": "18,40",
+        "source_citation": "https://meganorm.ru/Data2/1/4294847/4294847929.pdf"
+      },
+      {
+        "type": "Двутавр 20Б1 (ГОСТ 35087-2024, как указано на magicmet.ru)",
+        "h_mm": "200",
+        "b_mm": "100",
+        "s_mm": "5,5",
+        "t_mm": "8",
+        "mass_kg_per_m": "21,30",
+        "source_citation": "https://magicmet.ru/produkciya/sortovoy-i-fasonny-prokat/balka-dvutavrovaya"
+      },
+      {
+        "type": "Двутавр 20Б1 (ГОСТ 26020-83, по справочнику ros-met)",
+        "h_mm": "200",
+        "b_mm": "100",
+        "s_mm": "5,6",
+        "t_mm": "8,5",
+        "mass_kg_per_m": "22,4",
+        "source_citation": "https://ros-met.com/gost-26020-83-dvutavry/"
+      },
+      {
+        "type": "Круг",
+        "diameter_range_mm": "5–270",
+        "source_citation": "https://files.stroyinf.ru/Data2/1/4293833/4293833071.pdf"
+      },
+      {
+        "type": "Квадрат горячекатаный",
+        "side_range_mm": "6–200",
+        "source_citation": "https://files.stroyinf.ru/Data2/1/4293832/4293832576.pdf"
+      },
+      {
+        "type": "Шестигранник",
+        "inscribed_circle_diameter_range_mm": "8–103",
+        "source_citation": "https://metall-office.ru/gost/gost-2879-06.pdf"
+      },
+      {
+        "type": "Полоса горячекатаная",
+        "width_range_mm": "10–200",
+        "source_citation": "https://aksvil.by/upload/gost/gost_103-2006.pdf"
+      },
+      {
+        "type": "Катанка",
+        "standard": "ГОСТ 30136-95",
+        "source_citation": "https://files.stroyinf.ru/Data2/1/4294850/4294850470.pdf"
+      }
+    ],
+    "risks": [
+      "Одно обозначение серии относится к разным стандартам с разными размерами: 20Б1 по ГОСТ 26020-83 имеет s=5,6 и t=8,5 мм, а по ГОСТ 35087-2024 (как на magicmet.ru) s=5,5 и t=8 мм. В заявке обязательно указывать стандарт.",
+      "ГОСТ 8239-89 на сайте stroyinf.ru отмечен как «отменен в РФ», но magicmet.ru продолжает ссылаться на него (№10–60; на странице справочника указано 17 профилей с уклоном граней полок). Нужна проверка действующего стандарта перед закупкой.",
+      "Серия швеллера (У, П, Э, Л, С) и серия двутавра (Б, Ш, К и т.д.) — отдельные параметры; 12П и 12У имеют разные размеры, их нельзя подменять друг другом.",
+      "Совместимость марок стали с типоразмером не подтверждена: на сайте указаны списки марок «по документам» и «по спецификации», поэтому марка должна быть согласована по ТУ/НД на конкретный проект.",
+      "Диапазон полосы на magicmet.ru (толщина 4–80 мм) не удалось проверить по тексту ГОСТ 103-2006; проверена только ширина 10–200 мм.",
+      "Стандарты ГОСТ 8510-86, ГОСТ 19771-93, ГОСТ 19772-93 (уголки неравнополочные и гнутые), ГОСТ 8559-75 (квадрат калиброванный), ГОСТ 535-88, ГОСТ 5632-2014 и ГОСТ 34028-2016 упомянуты на сайте, но их текст в этом исследовании не открывался.",
+      "ГОСТ 5781-82 не указан на magicmet.ru для арматуры (сайт ссылается на ГОСТ 34028-2016); актуальность 5781-82 не проверена.",
+      "Наличие на складе и сроки поставки на сайте не подтверждаются заранее («наличие и срок поставки подтвердим по спецификации»), поэтому в данных наличие не указано."
+    ]
+  }
+}

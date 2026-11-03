@@ -1,0 +1,350 @@
+{
+  "source": "Firecrawl research agent",
+  "jobId": "01a19d74-38f0-7638-b891-2bf04fba251e",
+  "checkedAt": "2026-11-03",
+  "status": "unverified_research_candidate",
+  "warning": "Исследование не является нормативной проверкой, подтверждением наличия или основанием для автоматической публикации. Сверяйте точные URL и применимость с текущим main.",
+  "data": {
+    "categories": [
+      {
+        "type": "Трубы в ППУ-изоляции (прямые)",
+        "designation_forms": [
+          "Стальная труба D (мм) + толщина стенки; изоляция тип 1 или 2; оболочка ПЭ или ОЦ; ГОСТ 30732-2020"
+        ],
+        "standard_source": "ГОСТ 30732-2020 (раздел 1, сфера: подземная прокладка ПЭ; канал/тоннель/надземная ОЦ)",
+        "scope": "тепловые сети, перегретая вода до 150 °C; ПЭ — подземно/в каналах; ОЦ — проходные каналы, тоннели, надземно",
+        "size_basis": {
+          "steel_pipe": "наружный диаметр стальной трубы D, мм",
+          "shell": "наружный диаметр оболочки D, мм (отдельно для типа 1 и 2)",
+          "DN": "не используется в таблицах магазина для прямых труб"
+        },
+        "magicmet_table_example": {
+          "steel_D_mm": 159,
+          "shell_PE_type1_mm": 250,
+          "shell_PE_type2_mm": 280,
+          "shell_OC_type2_mm": 280,
+          "source_note": "таблица 1/2 на странице ППУ"
+        },
+        "magicmet_url": "https://magicmet.ru/produkciya/truby-i-sdt-v-izolyacii/ppu",
+        "gost_url": "https://magicmet.ru/spravochnik-gost/gost-30732-2020",
+        "evidence_urls": [
+          "https://magicmet.ru/produkciya/truby-i-sdt-v-izolyacii/ppu",
+          "https://magicmet.ru/spravochnik-gost/gost-30732-2020",
+          "https://zti-ppu.ru/upload/DNcbyi7Fk1JOAPoq14ka7h003844Kp6w.pdf"
+        ]
+      },
+      {
+        "type": "Отводы в ППУ-изоляции (стальной отвод + ППУ + оболочка)",
+        "designation_forms": [
+          "Отвод э/св Ст 273х7-90º-1-ППУ-ПЭ /400 (L=1000) (L1=1000)  [пример производителя СМИТ-Ярцево через Констрактика]",
+          "Отвод 90°, d 159 мм, s 5 мм, тип 1, ПЭ (ГОСТ 30732, Д.1.2)"
+        ],
+        "standard_source": "ГОСТ 30732-2020, приложение Д, Д.1 и таблица Д.1 (рекомендуемое приложение)",
+        "scope": "изменение направления трубопровода; ПЭ или ОЦ оболочка; тип 1 — стандарт, тип 2 — усиленная ППУ; таблица Д.1 не распространяется на все системы изоляции",
+        "size_basis": {
+          "steel_elbow": "наружный диаметр стального отвода d, мм (на магазине — колонка «Диаметр отвода d»)",
+          "shell": "наружный диаметр оболочки D, мм",
+          "L": "длина плеча L, мм, по углу 90/60/45/30°",
+          "DN": "не используется в таблице Д.1"
+        },
+        "magicmet_example": {
+          "steel_d_mm": 219,
+          "shell_PE_type1_mm": 315,
+          "shell_PE_type2_mm": 355,
+          "shell_OC_type1_mm": 315,
+          "L_90_mm": 1000,
+          "source_note": "страница СДТ в изоляции"
+        },
+        "seamless_base_fitting_standards": [
+          "ГОСТ 17375-2001 (исп.1 и 2, углы 45/60/90/180)",
+          "ГОСТ 30753-2001 (2D)",
+          "ГОСТ 17380-2001 (технические условия)"
+        ],
+        "seamless_base_example": {
+          "DN": 200,
+          "D_mm": 219.1,
+          "T_mm": "6,3; 8; 12,5",
+          "R_mm": 305,
+          "standard": "ГОСТ 17375-2001 исп.1",
+          "source_note": "страница Отводы бесшовные приварные"
+        },
+        "magicmet_url": "https://magicmet.ru/produkciya/truby-i-sdt-v-izolyacii/sdt-v-izolyacii",
+        "magicmet_seamless_url": "https://magicmet.ru/produkciya/sdt/otvody-besshovnye",
+        "evidence_urls": [
+          "https://magicmet.ru/produkciya/truby-i-sdt-v-izolyacii/sdt-v-izolyacii",
+          "https://magicmet.ru/produkciya/sdt/otvody-besshovnye",
+          "https://www.konstraktika.ru/ppu-truboprovody-smit/otvody-stalnye-ppu/",
+          "https://zti-ppu.ru/upload/DNcbyi7Fk1JOAPoq14ka7h003844Kp6w.pdf"
+        ]
+      },
+      {
+        "type": "Тройники в ППУ-изоляции",
+        "designation_forms": [
+          "Тройник 219×8/159×4,5-20 ГОСТ 20295-ППУ1-ПЭ ГОСТ 30732—2020 (ГОСТ, Д.3)",
+          "Тройник э/св Ст 273х7-89х4-1-ППУ-ПЭ /400/160 L=1000, H=500 (производитель через Констрактика)",
+          "Тройник в ППУ ОЦ 159х159 мм ГОСТ 30732-2020; L 1400; H 700; D1 159 (pipes-ppu)"
+        ],
+        "standard_source": "ГОСТ 30732-2020, приложение Д, Д.3 и таблица Д.3; стальной тройник — по ГОСТ 17376-2001 (п. 5.2.2 ГОСТ 30732)",
+        "scope": "ответвление в ППУ, ПЭ или ОЦ оболочка, тип 1/2; размеры L и H по таблице Д.3 (L 1200–2700 мм, H 700–1500 мм по строкам)",
+        "size_basis": {
+          "main_and_branch": "наружные диаметры стальных труб d1 (основной) и d2 (ответвление), мм",
+          "shells": "наружные диаметры оболочек D1 и D2, мм",
+          "H_L": "длина ответвления H и длина тройника L, мм"
+        },
+        "magicmet_status": "На магазине для ППУ-тройников отдельной таблицы нет; магазин отсылает к проекту и ГОСТ 30732. Стальной бесшовный тройник ГОСТ 17376 — отдельная страница.",
+        "seamless_tee_example": {
+          "DN": 100,
+          "D_mm": 108,
+          "T_mm": "4; 6; 8; 9",
+          "F_mm": 100,
+          "H_mm": 80,
+          "r_mm_min": 5,
+          "standard": "ГОСТ 17376-2001 исп.2 (равнопроходный)",
+          "source_note": "страница Тройники бесшовные приварные"
+        },
+        "magicmet_seamless_url": "https://magicmet.ru/produkciya/sdt/troyniki-besshovnye",
+        "evidence_urls": [
+          "https://magicmet.ru/produkciya/sdt/troyniki-besshovnye",
+          "https://zti-ppu.ru/upload/DNcbyi7Fk1JOAPoq14ka7h003844Kp6w.pdf",
+          "https://www.konstraktika.ru/ppu-truboprovody-smit/troyniki-stalnye-ppu/",
+          "https://pipes-ppu.ru/katalog/izoljatsija-truboprovodov/fasonnyye-izdelija-v-ppu/trojniki-v-ppu/trojnik-ppu-otsinkovannij/p/trojnik-v-ppu-ots-159h159-mm-gost-30732-2006/"
+        ]
+      },
+      {
+        "type": "Переходы в ППУ-изоляции",
+        "designation_forms": [
+          "Переход 219×8-159×4,5-20 ГОСТ 20295-ППУ1(2)-ПЭ (ОЦ) ГОСТ 30732—2020 (ГОСТ, Д.2)",
+          "Переход ст К 89/160-76/140 ППУ-ПЭ (читается от большего диаметра к меньшему; 160 — наружный диаметр оболочки; производитель СИС)"
+        ],
+        "standard_source": "ГОСТ 30732-2020, приложение Д, Д.2 и таблица Д.2; стальной переход — ГОСТ 17378-2001 (п. 5.2.2 ГОСТ 30732)",
+        "scope": "смена диаметра в ППУ-трубопроводе; ПЭ или ОЦ оболочка; тип 1 или 2; концентрический или эксцентрический (в маркировке К/Э)",
+        "size_basis": {
+          "steel": "наружный диаметр стальных патрубков d, мм (больший и меньший)",
+          "shell": "наружный диаметр оболочки D, мм",
+          "DN": "не используется для ППУ-перехода в примерах"
+        },
+        "seamless_reducer_example": {
+          "DN": 32,
+          "D_big_mm": 38,
+          "D_small_mm": 25,
+          "T_T1_pairs_mm": "2/1,6; 3/3; 4/3",
+          "L_mm": 30,
+          "standard": "ГОСТ 17378-2001 исп.2",
+          "source_note": "страница Переходы бесшовные приварные"
+        },
+        "magicmet_seamless_url": "https://magicmet.ru/produkciya/sdt/perekhody-besshovnye",
+        "evidence_urls": [
+          "https://magicmet.ru/produkciya/sdt/perekhody-besshovnye",
+          "https://zti-ppu.ru/upload/DNcbyi7Fk1JOAPoq14ka7h003844Kp6w.pdf",
+          "https://sis-truba.ru/perekhod-v-ppu-pe-izolyatsii"
+        ]
+      },
+      {
+        "type": "Фланцы стальные (не ППУ-изделие)",
+        "designation_forms": [
+          "Фланец тип 01, PN 16, ряд 1, DN 50: D 160, D1 125, b 22, d 18, n 4, М16 (магазин)"
+        ],
+        "standard_source": "ГОСТ 33259-2015 (типы 01 и 11, PN 16 ряд 1 на магазине); архивные ГОСТ 12820-80, 12821-80, 12822-80",
+        "scope": "присоединительные фланцы арматуры, соединительных частей и трубопроводов; в ГОСТ 30732-2020 фланцев нет (п. 5.2.2 перечисляет только отводы, тройники, переходы, ГОСТ 17375/17376/17378/17380/30753)",
+        "size_basis": {
+          "DN": "номинальный диаметр, мм",
+          "PN": "номинальное давление по стандарту (PN 16 = 16 кгс/см²)",
+          "D": "наружный диаметр фланца, мм",
+          "D1": "диаметр окружности болтов, мм"
+        },
+        "magicmet_example": {
+          "type": "01",
+          "PN": 16,
+          "DN": 50,
+          "D_mm": 160,
+          "D1_mm": 125,
+          "b_mm": 22,
+          "d_mm": 18,
+          "n": 4,
+          "bolt": "М16"
+        },
+        "magicmet_url": "https://magicmet.ru/produkciya/sdt/flantsy",
+        "evidence_urls": [
+          "https://magicmet.ru/produkciya/sdt/flantsy",
+          "https://owen.ru/uploads/34/gost_33259-2015.pdf"
+        ]
+      }
+    ],
+    "buyer_fields": [
+      {
+        "field": "Тип изделия",
+        "options": [
+          "труба ППУ прямая",
+          "отвод",
+          "тройник",
+          "переход",
+          "фланец (без ППУ)"
+        ]
+      },
+      {
+        "field": "Стальной наружный диаметр d (мм) — для ППУ-изделий",
+        "note": "не путать с DN"
+      },
+      {
+        "field": "DN (мм) — только для бесшовных стальных деталей и фланцев",
+        "note": "номинальный диаметр, не наружный"
+      },
+      {
+        "field": "PN — только для фланцев (ГОСТ 33259) и по проекту для остальных",
+        "note": "не путать с DN и с МПа"
+      },
+      {
+        "field": "Наружный диаметр оболочки D (мм), тип 1 или 2, отдельно для ПЭ и ОЦ"
+      },
+      {
+        "field": "Оболочка: ПЭ (подземно) или ОЦ (канал, тоннель, надземно)"
+      },
+      {
+        "field": "Угол и длина плеча L (мм) — для отводов",
+        "options": [
+          "90°",
+          "60°",
+          "45°",
+          "30°"
+        ]
+      },
+      {
+        "field": "Толщины стенок T / T1 (мм) — парами для переходов и тройников"
+      },
+      {
+        "field": "Длина L и высота H (мм) — для тройников и переходов ППУ"
+      },
+      {
+        "field": "Марка стали / стандарт стали (например, ГОСТ 20295, сталь 20, 09Г2С)"
+      },
+      {
+        "field": "Исполнение СОДК и выводы кабеля (по проекту)"
+      }
+    ],
+    "verified_examples": [
+      {
+        "item": "Труба ППУ, стальная труба 159, оболочка ПЭ тип 1",
+        "shell_D_mm": 250,
+        "source_url": "https://magicmet.ru/produkciya/truby-i-sdt-v-izolyacii/ppu"
+      },
+      {
+        "item": "Отвод 90° ППУ, стальной d 219, оболочка ПЭ тип 1",
+        "shell_D_mm": 315,
+        "L_90_mm": 1000,
+        "source_url": "https://magicmet.ru/produkciya/truby-i-sdt-v-izolyacii/sdt-v-izolyacii"
+      },
+      {
+        "item": "Тройник 219×8/159×4,5-20 ППУ1-ПЭ, пример обозначения",
+        "designation": "Тройник 219×8/159×4,5-20 ГОСТ 20295-ППУ1-ПЭ ГОСТ 30732—2020",
+        "source_url": "https://zti-ppu.ru/upload/DNcbyi7Fk1JOAPoq14ka7h003844Kp6w.pdf"
+      },
+      {
+        "item": "Переход 219×8-159×4,5-20 ППУ1(2)-ПЭ (ОЦ), пример обозначения",
+        "designation": "Переход 219×8-159×4,5-20 ГОСТ 20295-ППУ1(2)-ПЭ (ОЦ) ГОСТ 30732—2020",
+        "source_url": "https://zti-ppu.ru/upload/DNcbyi7Fk1JOAPoq14ka7h003844Kp6w.pdf"
+      },
+      {
+        "item": "Фланец тип 01 PN 16 DN 50",
+        "D_mm": 160,
+        "D1_mm": 125,
+        "source_url": "https://magicmet.ru/produkciya/sdt/flantsy"
+      }
+    ],
+    "evidence_urls": [
+      "https://magicmet.ru/",
+      "https://magicmet.ru/produkciya/sdt/flantsy",
+      "https://magicmet.ru/produkciya/sdt/otvody-besshovnye",
+      "https://magicmet.ru/produkciya/sdt/perekhody-besshovnye",
+      "https://magicmet.ru/produkciya/sdt/troyniki-besshovnye",
+      "https://magicmet.ru/produkciya/truby-i-sdt-v-izolyacii/ppu",
+      "https://magicmet.ru/produkciya/truby-i-sdt-v-izolyacii/sdt-v-izolyacii",
+      "https://magicmet.ru/spravochnik-gost/gost-30732-2020",
+      "https://owen.ru/uploads/34/gost_33259-2015.pdf",
+      "https://pipes-ppu.ru/katalog/izoljatsija-truboprovodov/fasonnyye-izdelija-v-ppu/trojniki-v-ppu/trojnik-ppu-otsinkovannij/p/trojnik-v-ppu-ots-159h159-mm-gost-30732-2006/",
+      "https://sis-truba.ru/perekhod-v-ppu-pe-izolyatsii",
+      "https://www.konstraktika.ru/ppu-truboprovody-smit/otvody-stalnye-ppu/",
+      "https://www.konstraktika.ru/ppu-truboprovody-smit/troyniki-stalnye-ppu/",
+      "https://zti-ppu.ru/upload/DNcbyi7Fk1JOAPoq14ka7h003844Kp6w.pdf"
+    ],
+    "conflicts": [
+      {
+        "topic": "DN 3D-отводов",
+        "detail": "Главная страница magicmet: тип 3D DN 15–1000, тип 2D DN 50–800. Страница отводов: ориентир каталога 3D DN 15–820, 2D DN 325–820.",
+        "urls": [
+          "https://magicmet.ru/",
+          "https://magicmet.ru/produkciya/sdt/otvody-besshovnye"
+        ]
+      },
+      {
+        "topic": "Диапазон DN переходов",
+        "detail": "Главная: DN 20–500. Страница переходов: концентрические DN 32–1220, эксцентрические DN 426–1020; таблица ГОСТ 17378 исп.1 DN 20–1000.",
+        "urls": [
+          "https://magicmet.ru/",
+          "https://magicmet.ru/produkciya/sdt/perekhody-besshovnye"
+        ]
+      },
+      {
+        "topic": "Оболочка ПЭ тип 1 для стальной трубы 114",
+        "detail": "Таблица прямых труб: 200 мм; таблица Д.1 отводов: 180 мм. Разные типы изделий, значения не взаимозаменяемы.",
+        "urls": [
+          "https://magicmet.ru/produkciya/truby-i-sdt-v-izolyacii/ppu",
+          "https://magicmet.ru/produkciya/truby-i-sdt-v-izolyacii/sdt-v-izolyacii"
+        ]
+      },
+      {
+        "topic": "Оболочка ОЦ тип 2 для стальной трубы 159",
+        "detail": "Прямая труба: 280 мм; отвод (ОЦ тип 2): 315 мм.",
+        "urls": [
+          "https://magicmet.ru/produkciya/truby-i-sdt-v-izolyacii/ppu",
+          "https://magicmet.ru/produkciya/truby-i-sdt-v-izolyacii/sdt-v-izolyacii"
+        ]
+      },
+      {
+        "topic": "Отвод d 920 ОЦ тип 1",
+        "detail": "Магазин отмечает: для сварного отвода 920 мм наружный диаметр ОЦ типа 1 — 1075 мм; значение 1100 мм относится к другому исполнению таблицы Д.1.",
+        "urls": [
+          "https://magicmet.ru/produkciya/truby-i-sdt-v-izolyacii/sdt-v-izolyacii"
+        ]
+      },
+      {
+        "topic": "Обозначение колонки в таблице ППУ-отводов",
+        "detail": "В ППУ-таблице отводов колонка — «Диаметр отвода d» (наружный диаметр стали), а в бесшовных отводах — DN. Нельзя считать эти значения одним параметром.",
+        "urls": [
+          "https://magicmet.ru/produkciya/truby-i-sdt-v-izolyacii/sdt-v-izolyacii",
+          "https://magicmet.ru/produkciya/sdt/otvody-besshovnye"
+        ]
+      },
+      {
+        "topic": "Год редакции ГОСТ 30732 в названии страницы",
+        "detail": "Страница pipes-ppu.ru имеет в адресе «30732-2006», а в заголовке — «ГОСТ 30732-2020». Заголовок и текст ссылаются на 2020.",
+        "urls": [
+          "https://pipes-ppu.ru/katalog/izoljatsija-truboprovodov/fasonnyye-izdelija-v-ppu/trojniki-v-ppu/trojnik-ppu-otsinkovannij/p/trojnik-v-ppu-ots-159h159-mm-gost-30732-2006/"
+        ]
+      },
+      {
+        "topic": "Фланцы и ГОСТ 30732",
+        "detail": "Магазин относит фланцы к ГОСТ 33259-2015, а ГОСТ 30732-2020 фланцев в ППУ не содержит. Фланец в ППУ как изделие в источниках не подтверждён.",
+        "urls": [
+          "https://magicmet.ru/produkciya/sdt/flantsy",
+          "https://zti-ppu.ru/upload/DNcbyi7Fk1JOAPoq14ka7h003844Kp6w.pdf"
+        ]
+      },
+      {
+        "topic": "Тройники и переходы в ППУ на magicmet",
+        "detail": "На magicmet нет таблиц размеров ППУ-тройников и ППУ-переходов; есть только бесшовные стальные тройники и переходы и общая отсылка к ГОСТ 30732 и проекту.",
+        "urls": [
+          "https://magicmet.ru/produkciya/truby-i-sdt-v-izolyacii/sdt-v-izolyacii",
+          "https://magicmet.ru/produkciya/sdt/troyniki-besshovnye",
+          "https://magicmet.ru/produkciya/sdt/perekhody-besshovnye"
+        ]
+      },
+      {
+        "topic": "Таблица Д.2 / Д.3 ГОСТ (распознавание текста PDF)",
+        "detail": "Таблицы Д.2 (переход) и Д.3 (тройник) в открытом PDF распознаны с искажениями; матрица d1/d2 прочитана с осторожностью.",
+        "urls": [
+          "https://zti-ppu.ru/upload/DNcbyi7Fk1JOAPoq14ka7h003844Kp6w.pdf"
+        ]
+      }
+    ]
+  }
+}

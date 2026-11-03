@@ -1,0 +1,247 @@
+{
+  "source": "Firecrawl research agent",
+  "jobId": "01a19d74-9448-76af-be75-0ab05df1a28f",
+  "checkedAt": "2026-11-03",
+  "status": "unverified_research_candidate",
+  "warning": "Исследование не является нормативной проверкой, подтверждением наличия или основанием для автоматической публикации. Сверяйте точные URL и применимость с текущим main.",
+  "data": {
+    "scope": "Независимая проверка сортамента и подбора для magicmet.ru: листовой прокат. Наличие на складе не проверялось и не подтверждается.",
+    "magicmet_site_note": "Страницы magicmet.ru подают размеры как справочные ряды ГОСТ и форму заявки. Складское наличие на страницах не подтверждено, все сочетания требуют ручной проверки по спецификации.",
+    "categories": [
+      {
+        "category": "Лист горячекатаный",
+        "standards": [
+          "ГОСТ 19903-2015 (ранее ГОСТ 19903-74)"
+        ],
+        "selection_fields": [
+          "толщина, мм",
+          "ширина, мм",
+          "длина от/до, мм",
+          "марка стали",
+          "точность прокатки",
+          "плоскостность",
+          "кромка",
+          "ТУ"
+        ],
+        "thickness_mm": "0,40–160,0 (лист); рулон отдельно",
+        "width_mm": "от 500 и выше (номинальные значения до 4400)",
+        "length_mm": "710…12000 (номинальный ряд)",
+        "confirmed_examples": [
+          {
+            "thickness_mm": "0,40",
+            "width_mm": "500",
+            "length_min_mm": "1200",
+            "length_max_mm": "1200",
+            "source_url": "https://files.stroyinf.ru/Data2/1/4293755/4293755668.pdf"
+          },
+          {
+            "thickness_mm": "0,40",
+            "width_mm": "600",
+            "length_min_mm": "1200",
+            "length_max_mm": "2000",
+            "source_url": "https://files.stroyinf.ru/Data2/1/4293755/4293755668.pdf"
+          },
+          {
+            "thickness_mm": "1,0",
+            "width_mm": "650",
+            "length_min_mm": "1420",
+            "length_max_mm": "2000",
+            "source_url": "https://files.stroyinf.ru/Data2/1/4293755/4293755668.pdf"
+          },
+          {
+            "thickness_mm": "1,0",
+            "width_mm": "670",
+            "length_min_mm": "1420",
+            "length_max_mm": "6000",
+            "source_url": "https://files.stroyinf.ru/Data2/1/4293755/4293755668.pdf"
+          }
+        ],
+        "urls": [
+          "https://files.stroyinf.ru/Data2/1/4293755/4293755668.pdf",
+          "https://mkm-metal.ru/upload/iblock/ccb/gost19903_2015.pdf",
+          "https://magicmet.ru/produkciya/listovoy-prokat/goryachekatanyj"
+        ],
+        "uncertainties": [
+          "Таблица форматов на magicmet.ru расходится с Приложением А ГОСТ 19903-2015 (в PDF stroyinf): например, толщина 1,0 при ширине 650 мм в ГОСТ дает длину 1420–2000, на magicmet — 2000–2000; при толщине 0,4–0,6 ширина 700 мм в ГОСТ 1200–2000, на magicmet — 1420.",
+          "Приложение А имеет справочный статус; длины — минимум и максимум, фактические размеры задаются в заказе."
+        ]
+      },
+      {
+        "category": "Лист холоднокатаный",
+        "standards": [
+          "ГОСТ 19904-90 (ранее ГОСТ 19904-74)"
+        ],
+        "selection_fields": [
+          "толщина, мм",
+          "ширина, мм",
+          "длина, мм",
+          "марка стали",
+          "категория вытяжки",
+          "качество поверхности",
+          "точность",
+          "ТУ"
+        ],
+        "thickness_mm": "0,35–5,00 (лист); рулон 0,35–3,50",
+        "width_mm": "от 500 и выше",
+        "length_mm": "1000–6000 (номинальный ряд таблицы 1)",
+        "confirmed_examples": [
+          {
+            "thickness_mm": "0,35",
+            "width_mm": "500",
+            "length_nominal_mm": "1000",
+            "source_url": "https://www.trubnik.by/gosts/gost-19904-90.php"
+          }
+        ],
+        "urls": [
+          "https://www.trubnik.by/gosts/gost-19904-90.php",
+          "https://uptk65.ru/wp-content/uploads/2020/08/gost_19904.pdf",
+          "https://magicmet.ru/produkciya/listovoy-prokat/holodnokatanyj"
+        ],
+        "uncertainties": [
+          "Сочетания толщины, ширины и длины на magicmet.ru (например, 0,35–0,75 × 500 × 1000–2500) не проверены по полной таблице ГОСТ 19904-90; подтверждены только номинальные ряды толщины, ширины и длины.",
+          "Приложение 1 таблица 9 — справочная; ряд длин в скачанных источниках частично не читается."
+        ]
+      },
+      {
+        "category": "Лист оцинкованный",
+        "standards": [
+          "ГОСТ 14918-2020 (ГОСТ 14918-80 — заменен)"
+        ],
+        "selection_fields": [
+          "форма поставки (лист, рулон, лента)",
+          "толщина с покрытием, мм",
+          "ширина, мм",
+          "длина (указывается в заказе)",
+          "марка основы",
+          "тип и класс покрытия",
+          "точность",
+          "кромка",
+          "поверхность"
+        ],
+        "thickness_mm": "0,22–4,50 (толщина включает покрытие)",
+        "width_mm": "лист 700–1800; рулон 600–1800; лента менее 600",
+        "length_mm": "не дискретный ряд; задается в заказе (п. 5.13)",
+        "confirmed_examples": [
+          {
+            "designation": "Прокат марки 01 в листах толщиной 1,00 мм, шириной 1000 мм, длиной 2000 мм (пример обозначения)",
+            "source_url": "https://vladimir.metallprofil.ru/upload/iblock/8d4/GOST-14918_2020-Prokat-listovoy-goryacheotsinkovannyy.-Tekhnicheskie-usloviya.pdf"
+          }
+        ],
+        "urls": [
+          "https://vladimir.metallprofil.ru/upload/iblock/8d4/GOST-14918_2020-Prokat-listovoy-goryacheotsinkovannyy.-Tekhnicheskie-usloviya.pdf",
+          "https://andrometa.ru/assets/files/biblioteka/normativy/federalnye-normativy/gost-14918-2020-prokat-listovoj-goryacheocinkovannyj.-tehnicheskie-usloviya_tekst.pdf",
+          "https://magicmet.ru/produkciya/listovoy-prokat/ocinkovannyj"
+        ],
+        "uncertainties": [
+          "Распространенные размеры 0,5×1250×2500 и др. на magicmet.ru — не из ГОСТ, это ориентир по каталогам; ГОСТ фиксированных форматов не задает.",
+          "В ГОСТ 14918-80 толщина 0,5–2,5 мм и ширина 710–1800 мм; действующий ГОСТ 14918-2020 — 0,22–4,50 мм. Нужно указывать версию стандарта в заявке."
+        ]
+      },
+      {
+        "category": "Лист нержавеющий",
+        "standards": [
+          "ГОСТ 7350-77 (толстолистовой)",
+          "ГОСТ 5582-75 (тонколистовой, по magicmet.ru)",
+          "ГОСТ 5632 (марки)"
+        ],
+        "selection_fields": [
+          "прокат (горячекатаный / холоднокатаный)",
+          "толщина, мм",
+          "номинальная толщина, мм",
+          "марка стали",
+          "поверхность (2B, BA, №1 и др.)",
+          "формат (лист / лента)"
+        ],
+        "thickness_mm": "ГОСТ 7350-77: горячекатаный 4–50, холоднокатаный 4–5",
+        "width_mm": "не подтверждено в проверенных источниках",
+        "length_mm": "не подтверждено в проверенных источниках",
+        "confirmed_examples": [
+          {
+            "thickness_range_mm": "4–50 (горячекатаный), 4–5 (холоднокатаный)",
+            "standard": "ГОСТ 7350-77",
+            "source_url": "https://online.budstandart.com/ru/catalog/doc-page.html?id_doc=61161"
+          }
+        ],
+        "urls": [
+          "https://online.budstandart.com/ru/catalog/doc-page.html?id_doc=61161",
+          "https://magicmet.ru/produkciya/nerzhaveyushchaya-stal/list"
+        ],
+        "uncertainties": [
+          "Тонколистовой ГОСТ 5582-75 (горячекатаный 1,5–3,9 мм, холоднокатаный 0,5–3,9 мм) взят только с magicmet.ru; независимо не подтвержден.",
+          "vestametall.ru ссылается на ГОСТ 19903-74 и 19904-74 для нержавеющего тонкого листа — расходится с magicmet.ru.",
+          "magicmet.ru сообщает, что ГОСТ 7350-2026 вводится с 01.01.2027 с правом досрочного применения; это не проверено по официальному источнику.",
+          "Марки 08Х18Н10Т, 12Х18Н10Т и др. упомянуты на magicmet.ru, по ГОСТ 5632 независимо не проверялись."
+        ]
+      },
+      {
+        "category": "Лист просечно-вытяжной (ПВЛ)",
+        "standards": [
+          "ГОСТ 8706-78",
+          "ТУ 36.26.11-5-89 (отдельные позиции ТД ММК)",
+          "СТО 25.93.13.110-058-2023 (отдельные позиции ТД ММК)"
+        ],
+        "selection_fields": [
+          "обозначение ПВЛ",
+          "формат (ширина × длина), мм",
+          "исходный металл (марка, например Ст3сп)",
+          "толщина",
+          "состояние",
+          "количество (т)"
+        ],
+        "designations": [
+          "204",
+          "206",
+          "208",
+          "306",
+          "406",
+          "408",
+          "410",
+          "506",
+          "508",
+          "510",
+          "606"
+        ],
+        "designation_meaning": "первая цифра — толщина заготовки (мм), вторая — шаг ячейки/подача по ГОСТ 8706-78 (пример: 508 — заготовка 5 мм, подача 8 мм)",
+        "confirmed_examples": [
+          {
+            "designation": "ПВЛ 406",
+            "blank_thickness_mm": "4",
+            "cell_pitch_mm": "90",
+            "feed_mm": "6",
+            "overall_thickness_mm": "12,7",
+            "source_url": "https://lsst.ru/spravochnik-metalloprokata/list-pvl-prosechno-vytjazhnoj/list-pvl-510-tu-36-26-11-5-8/"
+          },
+          {
+            "designation": "ПВЛ 510",
+            "blank_thickness_mm": "6",
+            "cell_pitch_mm": "110",
+            "feed_mm": "10",
+            "overall_thickness_mm": "20,5",
+            "source_url": "https://www.lsst.ru/spravochnik-metalloprokata/list-pvl-prosechno-vytjazhnoj/list-pvl-510-tu-36-26-11-5-8/"
+          },
+          {
+            "designation": "ПВЛ 510",
+            "format_mm": "1200 × 2500 (пример листа с ценой за м²)",
+            "source_url": "https://apex-metal.ru/articles/list_pvl_406_408_506_508_510/"
+          },
+          {
+            "designation": "ПВЛ 406",
+            "format_mm": "1200 × 3000–3500 (пример ТД ММК)",
+            "source_url": "https://magicmet.ru/produkciya/listovoy-prokat/list-pvl"
+          }
+        ],
+        "urls": [
+          "https://www.lsst.ru/spravochnik-metalloprokata/list-pvl-prosechno-vytjazhnoj/list-pvl-510-tu-36-26-11-5-8/",
+          "https://apex-metal.ru/articles/list_pvl_406_408_506_508_510/",
+          "https://magicmet.ru/produkciya/listovoy-prokat/list-pvl"
+        ],
+        "uncertainties": [
+          "Внутреннее противоречие lsst.ru: в одной части страницы толщина исходного листа ПВЛ 510 указана 5 мм, в таблице — 6 мм.",
+          "ПВЛ 406 в одном источнике — заготовка 4 мм; ПВЛ 510 — 6 мм; соответствие ТУ 36.26.11-5-89 не проверено по самому ТУ.",
+          "Размеры 1200 × 2500 (apex-metal) и 1000 × 3000 (lsst.ru) для ПВЛ 510 — каталожные примеры, не ГОСТ-ряд.",
+          "Марка стали Ст3сп и ряд ширин ПВЛ на magicmet.ru не подтверждены независимой технической нормой."
+        ]
+      }
+    ]
+  }
+}
