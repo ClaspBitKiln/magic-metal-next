@@ -1,6 +1,6 @@
 {
-  "checkedAt": "2026-11-03T06:53:47.872Z",
-  "sourceCommit": "0cf576f77c87a2ba65fd2d7f80addaa8a007aa31",
+  "checkedAt": "2026-11-03T12:30:59.450Z",
+  "sourceCommit": "de6be8615e4442c4306dfb0d17162259ecee5287",
   "results": [
     {
       "width": 390,
@@ -47,8 +47,8 @@
       ],
       "overlayDisplay": "none",
       "activePreloads": 0,
-      "htmlGzip": 14731,
-      "passed": true
+      "htmlGzip": 15454,
+      "passed": false
     },
     {
       "width": 390,
@@ -95,8 +95,8 @@
       ],
       "overlayDisplay": "none",
       "activePreloads": 0,
-      "htmlGzip": 14731,
-      "passed": true
+      "htmlGzip": 15454,
+      "passed": false
     },
     {
       "width": 390,
@@ -143,8 +143,8 @@
       ],
       "overlayDisplay": "none",
       "activePreloads": 0,
-      "htmlGzip": 14731,
-      "passed": true
+      "htmlGzip": 15454,
+      "passed": false
     },
     {
       "width": 390,
@@ -191,8 +191,8 @@
       ],
       "overlayDisplay": "none",
       "activePreloads": 0,
-      "htmlGzip": 14731,
-      "passed": true
+      "htmlGzip": 15454,
+      "passed": false
     },
     {
       "width": 900,
@@ -239,8 +239,8 @@
       ],
       "overlayDisplay": "none",
       "activePreloads": 0,
-      "htmlGzip": 14731,
-      "passed": true
+      "htmlGzip": 15454,
+      "passed": false
     },
     {
       "width": 900,
@@ -287,8 +287,8 @@
       ],
       "overlayDisplay": "none",
       "activePreloads": 0,
-      "htmlGzip": 14731,
-      "passed": true
+      "htmlGzip": 15454,
+      "passed": false
     },
     {
       "width": 900,
@@ -335,8 +335,8 @@
       ],
       "overlayDisplay": "none",
       "activePreloads": 0,
-      "htmlGzip": 14731,
-      "passed": true
+      "htmlGzip": 15454,
+      "passed": false
     },
     {
       "width": 900,
@@ -383,8 +383,8 @@
       ],
       "overlayDisplay": "none",
       "activePreloads": 0,
-      "htmlGzip": 14731,
-      "passed": true
+      "htmlGzip": 15454,
+      "passed": false
     },
     {
       "width": 1536,
@@ -434,8 +434,8 @@
       ],
       "overlayDisplay": "block",
       "activePreloads": 1,
-      "htmlGzip": 14731,
-      "passed": true
+      "htmlGzip": 15454,
+      "passed": false
     },
     {
       "width": 1536,
@@ -482,8 +482,8 @@
       ],
       "overlayDisplay": "block",
       "activePreloads": 1,
-      "htmlGzip": 14731,
-      "passed": true
+      "htmlGzip": 15454,
+      "passed": false
     },
     {
       "width": 1536,
@@ -533,8 +533,8 @@
       ],
       "overlayDisplay": "block",
       "activePreloads": 1,
-      "htmlGzip": 14731,
-      "passed": true
+      "htmlGzip": 15454,
+      "passed": false
     },
     {
       "width": 1536,
@@ -581,8 +581,8 @@
       ],
       "overlayDisplay": "block",
       "activePreloads": 1,
-      "htmlGzip": 14731,
-      "passed": true
+      "htmlGzip": 15454,
+      "passed": false
     }
   ],
   "searchResults": [
@@ -647,5 +647,5 @@
       "passed": true
     }
   ],
-  "passed": true
+  "passed": false
 }
