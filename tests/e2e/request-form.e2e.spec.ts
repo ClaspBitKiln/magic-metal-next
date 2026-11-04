@@ -24,7 +24,7 @@ for (const width of [390, 1440]) {
       const payloads: string[] = []
       await page.route('**/api/request', async (route) => {
         payloads.push(route.request().postDataBuffer()!.toString())
-        await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ok: true }) })
+        await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ok: true, emailDelivered: true }) })
       })
       await form.getByRole('button', { name: 'Отправить на расчёт' }).click()
       await expect(page.locator('#form-status')).toHaveText('Заявка принята. Мы свяжемся с вами.')
