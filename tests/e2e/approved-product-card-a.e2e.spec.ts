@@ -14,3 +14,14 @@ for (const width of [320, 390, 1536]) {
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
   })
 }
+
+
+test('nonferrous approved card keeps catalog name and unrestricted request action', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 900 })
+  await page.goto('/produkciya/cvetnye-metally/med')
+  await expect(page.locator('h1')).toBeVisible()
+  await expect(page.locator('.technical-catalog-summary .product-document-image')).toHaveCount(0)
+  await expect(page.locator('.technical-catalog-summary .product-document-summary-body')).toHaveClass(/product-document-summary-no-image/)
+  await expect(page.locator('.nonferrous-picker').getByRole('link', { name: /Excel/ })).toBeVisible()
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
+})
