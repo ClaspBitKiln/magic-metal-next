@@ -35,7 +35,7 @@ export default function CompactSizeRows({ column, values, total, requestHref, co
   const limit = useRef(20)
   const selected = useRef('')
   const table = useCallback(() => root.current?.closest('details')?.querySelector<HTMLTableElement>('.size-series-reference table'), [])
-  const key = useCallback(() => root.current?.closest('details')?.querySelector('.size-series-scope')?.id.replace('sizes-series-', '') || '', [])
+  const key = useCallback(() => root.current?.closest('details')?.id.replace('sizes-series-', '') || '', [])
   const href = useCallback((detail: string) => {
     const url = new URL(requestHref, window.location.href)
     const product = url.searchParams.get('product') || ''
