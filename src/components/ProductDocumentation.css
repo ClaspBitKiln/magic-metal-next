@@ -198,6 +198,7 @@ main.product-document .product-document-selection :is(h2,h3) { margin: 0 0 12px;
 @media (max-width: 1000px) {
   .product-document .product-document-stage { grid-template-columns: minmax(0,1fr); gap: 20px; }
   .product-document .product-document-summary-body { grid-template-columns: minmax(140px,200px) minmax(0,1fr); }
+  .product-document .product-document-summary-body.product-document-summary-no-image { grid-template-columns: minmax(0,1fr); }
   .product-document-selection :is(.nonferrous-fields,.special-procurement-fields,.mesh-rope-fields,.fastener-fields,.galv-fields,.catalog-standard-request-fields) { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .product-document-header-links { gap: 8px 14px; }
 }
