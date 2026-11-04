@@ -125,3 +125,27 @@ for (const slug of ['bronza', 'med', 'alyuminij', 'titan', 'list'] as const) {
     })
   }
 }
+
+for (const [slug, grade, destination, unlinked] of [
+  ['bronza', 'БрАЖ9-4', 'bronza-brazh9-4', 'БрОФ6,5-0,15'],
+  ['med', 'М1', 'med-m1', 'М0'],
+  ['alyuminij', 'АД31', 'alyuminij-ad31', 'В95'],
+  ['titan', 'ВТ6', 'titan-vt6', 'ОТ4'],
+] as const) {
+  for (const width of [320, 1536]) {
+    test(`material pages are linked consistently and other grades stay text: ${slug} at ${width}`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 })
+      await page.goto(`/produkciya/cvetnye-metally/${slug}`)
+      const examples = page.locator('.nonferrous-grade-reference-list')
+      await expect(examples).toBeVisible()
+      await expect(examples.getByRole('link', { name: grade, exact: true })).toHaveAttribute('href', `/spravochnik-materialov/${destination}`)
+      await expect(examples.locator('span', { hasText: unlinked })).toHaveCount(1)
+      await expect(examples.getByRole('link', { name: unlinked, exact: true })).toHaveCount(0)
+      await expect(page.locator('.technical-catalog-summary dd').first().getByRole('link', { name: grade, exact: true })).toHaveAttribute('href', `/spravochnik-materialov/${destination}`)
+      const notes = page.locator('.nonferrous-grade-reference')
+      await expect(notes.locator('.nonferrous-grade-reference-explanation')).toBeVisible()
+      await expect(notes.locator('.nonferrous-grade-reference-source')).toBeVisible()
+      expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
+    })
+  }
+}
