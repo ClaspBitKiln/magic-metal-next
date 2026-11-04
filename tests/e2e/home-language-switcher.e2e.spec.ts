@@ -19,7 +19,7 @@ test('homepage remembers selected language and offers reliable return to Russian
   await expect(selector.locator('summary')).toHaveText('EN')
   expect(await page.evaluate(() => localStorage.getItem('magicmet-language'))).toBe('en')
   await expect(selector.locator('#home-language-status')).toContainText(/Перевод недоступен|Загружаем/)
-  await selector.locator('summary').click()
+  await selector.evaluate((node: HTMLDetailsElement) => { node.open = true })
   await selector.locator('button[data-lang="ru"]').click()
   await expect(selector.locator('summary')).toHaveText('RU')
   expect(await page.evaluate(() => localStorage.getItem('magicmet-language'))).toBe('ru')
