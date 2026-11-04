@@ -79,3 +79,22 @@ test('approved A has no invented item photo or price claim', async ({ page }) =>
   await expect(page.locator('.technical-catalog-summary')).not.toContainText('В наличии')
   await expect(page.locator('.technical-catalog-summary')).not.toContainText('₽')
 })
+
+for (const width of [320, 390, 1536]) {
+  test(`approved A copper rod sizes are factual and directly selectable at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 })
+    await page.goto('/produkciya/cvetnye-metally/med#sizes')
+    const sizes = page.locator('.product-document-quick-sizes')
+    await expect(sizes).toBeVisible()
+    await expect(sizes).toContainText('прессованных прутков')
+    const links = sizes.locator('nav a')
+    expect(await links.count()).toBeGreaterThan(5)
+    const choice = links.filter({ hasText: /^20$/ }).first()
+    await expect(choice).toHaveAttribute('href', /product=.+#request$/)
+    const destination = await choice.getAttribute('href')
+    const params = new URL(destination!, 'https://magicmet.ru').searchParams.get('product')
+    expect(params).toContain('круг прессованный, диаметр 20 мм')
+    expect(params).toContain('ГОСТ 1535-2016')
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
+  })
+}

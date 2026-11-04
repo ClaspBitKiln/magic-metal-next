@@ -55,6 +55,18 @@ export default function ProductSizeSeries({ series, requestHref, guide, document
   const hasRequirements = series.some(table => table.kind === 'requirements')
   const onlyRequirements = series.length > 0 && series.every(table => table.kind === 'requirements')
   const heading = onlyRequirements ? 'Нормативные параметры' : hasRequirements ? 'Размеры и параметры' : 'Размерный ряд'
+  // Compact verified size choices for the existing copper rod table (not all copper forms).
+  // Read directly from the normative table; never imply stock or a valid grade/size combination.
+  const copperRodTable = series.find(table =>
+    table.categorySlug === 'cvetnye-metally' &&
+    table.productSlug === 'med' &&
+    /круг|прутки/iu.test(table.title) &&
+    /диаметр/iu.test(table.columns[0]) &&
+    table.kind !== 'requirements'
+  )
+  const copperRodDiameters = copperRodTable
+    ? [...new Set(copperRodTable.rows.map(row => row[0]).filter(value => /^\d+(?:[.,]\d+)?$/u.test(value)))].slice(0, 16)
+    : []
   const hasRequestForm = series[0]?.categorySlug === 'sortovoy-i-fasonny-prokat' && series[0]?.productSlug === 'ugolok'
   const fastenerSelection = series[0]?.categorySlug === 'metizy-i-svarochnye-materialy' && series[0]?.productSlug === 'krepezh'
   const galvanizedSelection = series[0]?.categorySlug === 'listovoy-prokat' && series[0]?.productSlug === 'ocinkovannyj'
@@ -68,6 +80,17 @@ export default function ProductSizeSeries({ series, requestHref, guide, document
     <p className="size-series-intro">{onlyRequirements ? 'Сверьте форму поставки, числовые значения и условия применения. Укажите требования в заявке или приложите спецификацию.' : series.length ? 'Найдите нужное обозначение или выберите строку. Размеры и параметры попадут в заявку; спецификацию можно приложить файлом.' : 'Укажите размеры и требования к изделию или приложите чертёж. Проверим их по выбранному стандарту и техническим условиям.'}</p>
     {series.length > 0 && <p className="size-series-mobile-help">Широкие таблицы можно прокручивать вбок. Первый столбец и заголовки остаются видны.</p>}
     {(!documentation || !hasRequestForm) && <a className="size-series-request" href={requestHref}>Отправить заявку ↗</a>}
+    {copperRodTable && copperRodDiameters.length > 0 && <div className="size-series-quick-examples product-document-quick-sizes">
+      <strong>Медный круг — выбрать диаметр из ГОСТ</strong>
+      <nav aria-label="Диаметры медных прессованных прутков из нормативной таблицы">
+        {copperRodDiameters.map(diameter => {
+          const original = new URL(requestHref, 'https://magicmet.ru').searchParams.get('product') || 'Медный прокат'
+          const request = [original, `круг прессованный, диаметр ${diameter} мм`, copperRodTable.standard].join('; ')
+          return <a key={diameter} href={`/?product=${encodeURIComponent(request)}#request`}>{formatDimensionValue(diameter)}</a>
+        })}
+      </nav>
+      <p>Диаметры взяты из нормативной таблицы для <strong>прессованных прутков</strong>, а не для листа, трубы или проволоки. Это не подтверждает наличие. Другие размеры — в таблице ниже либо по заявке.</p>
+    </div>}
     {quickSectionRows(series).length > 0 && <div className="size-series-quick-examples">
       <strong>Примеры типоразмеров по ГОСТ — сразу в заявку:</strong>
       <nav aria-label="Выбор распространённых типоразмеров">{quickSectionRows(series).map(({ label, standard }) => {
