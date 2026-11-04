@@ -41,7 +41,7 @@ export default function NonferrousRequestPicker({ productSlug, requestHref }: { 
   const bar = shape === 'Круг / пруток' || shape === 'Квадрат' || shape === 'Шестигранник' || shape === 'Проволока'
   const shaped = shape === 'Втулка / заготовка'
   const block = shape === 'Чушка / блок'
-  const valid = Boolean(shape) && (flat ? numeric(a) && numeric(b) : tube ? numeric(a) && numeric(b) : bar ? numeric(a) : shaped ? numeric(a) : true) && (!amount || numeric(amount)) && (!length || numeric(length)) && (!block || !a || numeric(a))
+  const valid = Boolean(shape) && (flat ? numeric(a) && numeric(b) : tube ? numeric(a) && numeric(b) && 2 * Number(b.replace(',', '.')) < Number(a.replace(',', '.')) : bar ? numeric(a) : shaped ? numeric(a) : true) && (!amount || numeric(amount)) && (!length || numeric(length)) && (!block || !a || numeric(a))
   const name = flat ? `${shape} ${f(a)}×${f(b)}${length ? `×${f(length)}` : ''} мм`
     : tube ? `Труба Ø${f(a)}×${f(b)}${length ? `×${f(length)}` : ''} мм`
     : bar ? `${shape} ${shape === 'Квадрат' ? `${f(a)}×${f(a)}` : shape === 'Шестигранник' ? `под ключ ${f(a)}` : `Ø${f(a)}`} мм`
@@ -77,6 +77,7 @@ export default function NonferrousRequestPicker({ productSlug, requestHref }: { 
         {(flat || tube || bar || shaped) && <label>{flat ? 'Толщина, мм' : tube ? 'Наружный диаметр, мм' : shape === 'Шестигранник' ? 'Размер под ключ, мм' : shape === 'Квадрат' ? 'Сторона, мм' : shaped ? 'Основной габарит, мм (если известен)' : 'Диаметр, мм'}<input value={a} onChange={e=>setA(e.target.value)} inputMode="decimal" placeholder="Например, 20" /></label>}
         {(flat || tube) && <label>{flat ? 'Ширина, мм' : 'Толщина стенки, мм'}<input value={b} onChange={e=>setB(e.target.value)} inputMode="decimal" placeholder={tube ? 'Например, 2' : 'Например, 1000'} /></label>}
         {(flat || tube || bar) && <label>Длина, мм (если известна)<input value={length} onChange={e=>setLength(e.target.value)} inputMode="decimal" placeholder="По спецификации" /></label>}
+        {tube && numeric(a) && numeric(b) && 2 * Number(b.replace(',', '.')) >= Number(a.replace(',', '.')) && <p role="alert" className="nonferrous-note">Толщина стенки должна быть меньше половины наружного диаметра трубы.</p>}
         {gradeExamples ? <label>Марка {productSlug === 'list' || productSlug === 'truby' || productSlug === 'sortovoy-prokat' ? 'стали' : 'металла / сплава'}
           <select value={grade} onChange={e => {setGrade(e.target.value);setOtherGrade('')}}><option value="">Выберите марку</option>{gradeExamples.grades.map(value=><option key={value} value={value}>{value}</option>)}<option value="__other__">Другая марка по спецификации</option></select>
         </label> : <label>Марка сплава<input value={grade} onChange={e=>setGrade(e.target.value)} placeholder="Укажите из чертежа / спецификации" /></label>}
