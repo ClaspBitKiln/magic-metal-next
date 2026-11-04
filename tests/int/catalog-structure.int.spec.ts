@@ -646,8 +646,9 @@ describe('normative product size tables', () => {
     expect(links.slice(0, 7).map((link) => link.textContent)).toEqual(['Тип Б', 'Тип Ш', 'Тип К', 'Тип С', 'Тип ДБ', 'Тип ДК', 'Тип У'])
     for (const [index, link] of links.entries()) {
       const target = tree.getElementById(link.getAttribute('href')!.slice(1))!
-      expect(target.textContent).toBe(series[index].scope)
-      expect(target.closest('details')).toBe(tree.querySelectorAll('#sizes details')[index])
+      expect(target.tagName.toLowerCase()).toBe('details')
+      expect(target.querySelector('.size-series-scope')?.textContent).toBe(series[index].scope)
+      expect(target).toBe(tree.querySelectorAll('#sizes details')[index])
     }
     expect(tree.querySelectorAll('#sizes details[open]')).toHaveLength(1)
     expect(markup).not.toContain('<script')
