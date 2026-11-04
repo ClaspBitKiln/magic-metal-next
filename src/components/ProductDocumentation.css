@@ -502,3 +502,60 @@ main.product-document .product-document-selection :is(h2,h3) {
   .product-document .product-document-quick-sizes { padding: 14px; }
   .product-document .product-document-quick-sizes nav a { min-width: 48px; }
 }
+
+/* Readable standards and grade references in the purchase panel.
+   Keep distinct paragraphs so alloy grades, applicability and source cannot run together. */
+.product-document .product-document-selection .nonferrous-grade-reference {
+  margin: 16px 0 18px;
+  padding: 16px;
+  border: 1px solid #d9e3f1;
+  border-radius: 8px;
+  background: #fff;
+  color: #26364e;
+}
+.product-document .nonferrous-grade-reference > p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+.product-document .nonferrous-grade-reference > p + p {
+  margin-top: 10px;
+}
+.product-document .nonferrous-grade-reference .nonferrous-grade-reference-heading {
+  color: #071c62;
+  font-size: 14px;
+  line-height: 1.4;
+}
+.product-document .nonferrous-grade-reference .nonferrous-grade-reference-list {
+  font-weight: 650;
+  font-size: 14px;
+  color: #122e5d;
+}
+.product-document .nonferrous-grade-reference .nonferrous-grade-reference-explanation {
+  color: #526481;
+}
+.product-document .nonferrous-grade-reference .nonferrous-grade-reference-caution {
+  padding: 10px 12px;
+  border-left: 3px solid #b7c8e4;
+  background: #f5f8fd;
+}
+.product-document .nonferrous-grade-reference .nonferrous-grade-reference-source {
+  padding-top: 8px;
+  border-top: 1px solid #e8eef7;
+}
+.product-document .nonferrous-grade-reference-source a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: #0757e8;
+  font-size: 13px;
+  font-weight: 650;
+  text-underline-offset: 3px;
+}
+@media (max-width: 650px) {
+  .product-document .product-document-selection .nonferrous-grade-reference {
+    margin: 12px 0 16px;
+    padding: 13px;
+  }
+}
