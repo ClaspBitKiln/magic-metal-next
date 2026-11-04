@@ -559,3 +559,57 @@ main.product-document .product-document-selection :is(h2,h3) {
     padding: 13px;
   }
 }
+
+/* Keep multi-value specifications and grade links visibly separated across all cards. */
+.product-document .technical-catalog-summary dd {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 12px;
+  row-gap: 6px;
+}
+.product-document .technical-catalog-summary dd > span {
+  display: inline;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.product-document .technical-catalog-summary dd > span:not(:last-of-type)::after {
+  content: none;
+}
+.product-document .technical-catalog-summary dd > small {
+  flex-basis: 100%;
+  margin-top: 3px;
+}
+.product-document .nonferrous-grade-reference-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  padding: 0;
+}
+.product-document .nonferrous-grade-reference-list > :is(a,span) {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 4px 8px;
+  border: 1px solid #dbe5f2;
+  border-radius: 5px;
+  background: #f8fbff;
+  color: #17335f;
+  font-size: 13px;
+  line-height: 1.35;
+  font-weight: 650;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.product-document .nonferrous-grade-reference-list > a {
+  border-color: #b8cbed;
+  color: #0757e8;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.product-document .nonferrous-grade-reference-list > a:hover,
+.product-document .nonferrous-grade-reference-list > a:focus-visible {
+  background: #edf4ff;
+  border-color: #0757e8;
+}
