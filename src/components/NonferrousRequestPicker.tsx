@@ -60,11 +60,12 @@ export default function NonferrousRequestPicker({ productSlug, requestHref }: { 
   return <section className="nonferrous-picker" aria-label="Подбор цветного металла по форме и размерам">
     <h2>Указать форму и размеры для заявки</h2>
     <p>Вы можете отправить заявку с любыми параметрами, включая нестандартные размеры и марки. Если данных пока нет, отправьте запрос или приложите спецификацию — менеджер уточнит детали.</p>
-    {gradeExamples && <div className="nonferrous-note">
-      <strong>Марки — {gradeExamples.title}: {gradeExamples.grades.join(', ')}.</strong>{' '}
-      <span>Примеры обозначений по {gradeExamples.standard}. Выбранная марка не означает подтверждённого наличия или совместимости с любой формой изделия.</span>{' '}
-      {gradeExamples.caution && <span>{gradeExamples.caution} </span>}
-      <a href={gradeExamples.source} target="_blank" rel="noopener noreferrer">Источник стандарта ↗</a>
+    {gradeExamples && <div className="nonferrous-note nonferrous-grade-reference" aria-label={`Справочные марки: ${gradeExamples.title}`}>
+      <p className="nonferrous-grade-reference-heading"><strong>Марки — {gradeExamples.title}</strong></p>
+      <p className="nonferrous-grade-reference-list">{gradeExamples.grades.join(' · ')}</p>
+      <p className="nonferrous-grade-reference-explanation">Примеры обозначений по {gradeExamples.standard}. Выбранная марка не означает подтверждённого наличия или совместимости с любой формой изделия.</p>
+      {gradeExamples.caution && <p className="nonferrous-grade-reference-caution">{gradeExamples.caution}</p>}
+      <p className="nonferrous-grade-reference-source"><a href={gradeExamples.source} target="_blank" rel="noopener noreferrer">Источник стандарта ↗</a></p>
     </div>}
     <div className="nonferrous-fields">
       <label>Форма изделия
