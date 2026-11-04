@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import { alloyGradeExamples } from '@/data/alloyGradeExamples'
+import { getMaterialPageSlug } from '@/data/materialPageLinks'
 
 type Shape = 'Лист' | 'Лента' | 'Плита' | 'Полоса' | 'Труба' | 'Круг / пруток' | 'Квадрат' | 'Шестигранник' | 'Проволока' | 'Чушка / блок' | 'Втулка / заготовка'
 const shapes: Record<string, Shape[]> = {
@@ -62,7 +63,14 @@ export default function NonferrousRequestPicker({ productSlug, requestHref }: { 
     <p>Вы можете отправить заявку с любыми параметрами, включая нестандартные размеры и марки. Если данных пока нет, отправьте запрос или приложите спецификацию — менеджер уточнит детали.</p>
     {gradeExamples && <div className="nonferrous-note nonferrous-grade-reference" aria-label={`Справочные марки: ${gradeExamples.title}`}>
       <p className="nonferrous-grade-reference-heading"><strong>Марки — {gradeExamples.title}</strong></p>
-      <p className="nonferrous-grade-reference-list">{gradeExamples.grades.join(' · ')}</p>
+      <div className="nonferrous-grade-reference-list" aria-label="Перечень марок">
+        {gradeExamples.grades.map(value => {
+          const slug = getMaterialPageSlug(value)
+          return slug
+            ? <a key={value} href={`/spravochnik-materialov/${slug}`}>{value}</a>
+            : <span key={value}>{value}</span>
+        })}
+      </div>
       <p className="nonferrous-grade-reference-explanation">Примеры обозначений по {gradeExamples.standard}. Выбранная марка не означает подтверждённого наличия или совместимости с любой формой изделия.</p>
       {gradeExamples.caution && <p className="nonferrous-grade-reference-caution">{gradeExamples.caution}</p>}
       <p className="nonferrous-grade-reference-source"><a href={gradeExamples.source} target="_blank" rel="noopener noreferrer">Источник стандарта ↗</a></p>
