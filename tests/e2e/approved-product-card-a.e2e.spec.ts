@@ -25,3 +25,33 @@ test('nonferrous approved card keeps catalog name and unrestricted request actio
   await expect(page.locator('.nonferrous-picker').getByRole('link', { name: /Excel/ })).toBeVisible()
   expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
 })
+
+for (const [slug, label] of [
+  ['/produkciya/cvetnye-metally/med', 'copper'],
+  ['/produkciya/truby-elektrosvarnye/vodogazoprovodnye', 'pipe'],
+  ['/produkciya/sdt/otvody-besshovnye', 'fitting'],
+] as const) {
+  for (const width of [320, 390, 1536]) {
+    test(`approved A composition ${label} at ${width}px`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 })
+      await page.goto(slug)
+      const stage = page.locator('.product-document-stage')
+      const summary = stage.locator('.technical-catalog-summary')
+      const selection = stage.locator('.product-document-selection')
+      await expect(summary).toBeVisible()
+      await expect(selection).toBeVisible()
+      const a = await summary.boundingBox()
+      const b = await selection.boundingBox()
+      expect(a).not.toBeNull()
+      expect(b).not.toBeNull()
+      if (width >= 1050) {
+        expect(b!.x).toBeGreaterThan(a!.x + a!.width - 2)
+        expect(Math.abs(b!.y - a!.y)).toBeLessThanOrEqual(3)
+      } else {
+        expect(b!.y).toBeGreaterThan(a!.y + a!.height - 2)
+      }
+      expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
+      await expect(stage.locator('.technical-catalog-summary h2')).toBeVisible()
+    })
+  }
+}
