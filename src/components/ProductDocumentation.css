@@ -214,3 +214,75 @@ main.product-document .product-document-selection :is(h2,h3) { margin: 0 0 12px;
   .product-document-header-links { order: 4; flex-basis: 100%; justify-content: flex-start; gap: 8px 20px; }
   .product-document .product-document-header > .product-document-header-action { margin-left: auto; padding: 8px 10px; font-size: 12px; }
 }
+
+/* Approved card A: make the technical sheet and request selector a coherent, visible first-screen composition. */
+main.product-document {
+  --document-line: #cbd5e3;
+  --document-muted: #536481;
+}
+.product-document .product-document-workspace > .product-document-stage {
+  gap: 20px;
+  padding: 20px;
+  border: 1px solid #d5dfec;
+  border-radius: 12px;
+  background: #f3f6fb;
+}
+.product-document .product-document-stage > .technical-catalog-summary,
+.product-document .product-document-stage > .product-document-selection {
+  height: 100%;
+  border-color: #d5dfec;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 2px 12px rgb(7 28 98 / 5%);
+}
+.product-document .product-document-stage > .technical-catalog-summary {
+  border-top: 4px solid #071c62;
+  padding: 22px;
+}
+.product-document .product-document-stage > .product-document-selection {
+  border-top: 4px solid #0757e8;
+  padding: 22px;
+}
+.product-document .product-document-stage .technical-catalog-eyebrow {
+  color: #0757e8;
+  font-size: 12px;
+}
+.product-document .product-document-stage .technical-catalog-summary h2 {
+  color: #071c62;
+  font-weight: 750;
+}
+.product-document .product-document-stage .technical-catalog-summary dl > div {
+  padding: 12px 0;
+}
+.product-document .product-document-stage .technical-catalog-summary dt {
+  color: #536481;
+  font-weight: 700;
+}
+.product-document .product-document-stage .product-document-native-request > h2,
+.product-document .product-document-stage .product-document-selection h2 {
+  color: #071c62;
+}
+.product-document .product-document-stage :is(.product-document-request-action,.nonferrous-submit,.special-procurement-submit,.mesh-rope-submit,.fastener-submit,.galv-submit) {
+  border-radius: 6px;
+}
+@media (max-width: 1000px) {
+  .product-document .product-document-workspace > .product-document-stage {
+    padding: 14px;
+    gap: 14px;
+  }
+  .product-document .product-document-stage > .technical-catalog-summary,
+  .product-document .product-document-stage > .product-document-selection {
+    height: auto;
+  }
+}
+@media (max-width: 650px) {
+  .product-document .product-document-workspace > .product-document-stage {
+    padding: 10px;
+    gap: 12px;
+    border-radius: 8px;
+  }
+  .product-document .product-document-stage > .technical-catalog-summary,
+  .product-document .product-document-stage > .product-document-selection {
+    padding: 16px;
+  }
+}
