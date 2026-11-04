@@ -613,3 +613,7 @@ main.product-document .product-document-selection :is(h2,h3) {
   background: #edf4ff;
   border-color: #0757e8;
 }
+
+.product-document .nonferrous-grade-reference > .nonferrous-grade-reference-list + p {
+  margin-top: 12px;
+}
