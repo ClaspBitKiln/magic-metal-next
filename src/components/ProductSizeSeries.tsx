@@ -65,7 +65,7 @@ export default function ProductSizeSeries({ series, requestHref, guide, document
     table.kind !== 'requirements'
   )
   const copperRodDiameters = copperRodTable
-    ? [...new Set(copperRodTable.rows.map(row => row[0]).filter(value => /^\\d+(?:[.,]\\d+)?$/u.test(value)))].slice(0, 16)
+    ? [...new Set(copperRodTable.rows.map(row => row[0]).filter(value => /^\d+(?:[.,]\d+)?$/u.test(value)))].slice(0, 16)
     : []
   const hasRequestForm = series[0]?.categorySlug === 'sortovoy-i-fasonny-prokat' && series[0]?.productSlug === 'ugolok'
   const fastenerSelection = series[0]?.categorySlug === 'metizy-i-svarochnye-materialy' && series[0]?.productSlug === 'krepezh'
