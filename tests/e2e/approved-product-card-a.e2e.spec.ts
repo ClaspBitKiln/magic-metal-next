@@ -55,3 +55,27 @@ for (const [slug, label] of [
     })
   }
 }
+
+test('approved A shows factual highlights before technical table and request beside it', async ({ page }) => {
+  await page.setViewportSize({ width: 1536, height: 960 })
+  await page.goto('/produkciya/cvetnye-metally/med')
+  const summary = page.locator('.technical-catalog-summary')
+  const tiles = summary.locator('.product-document-highlight')
+  await expect(tiles).toHaveCount(4)
+  await expect(tiles.first()).toContainText('лист')
+  await expect(tiles.last()).toContainText('ГОСТ 859-2014')
+  const tileBox = await tiles.first().boundingBox()
+  const tableBox = await summary.locator('dl').boundingBox()
+  expect(tileBox).not.toBeNull()
+  expect(tableBox).not.toBeNull()
+  expect(tileBox!.y + tileBox!.height).toBeLessThan(tableBox!.y)
+  await expect(page.locator('.product-document-selection')).toBeVisible()
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
+})
+
+test('approved A has no invented item photo or price claim', async ({ page }) => {
+  await page.goto('/produkciya/cvetnye-metally/med')
+  await expect(page.locator('.product-document-image')).toHaveCount(0)
+  await expect(page.locator('.technical-catalog-summary')).not.toContainText('В наличии')
+  await expect(page.locator('.technical-catalog-summary')).not.toContainText('₽')
+})
