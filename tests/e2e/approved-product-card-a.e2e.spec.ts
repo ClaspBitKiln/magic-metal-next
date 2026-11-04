@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-for (const width of [320, 390, 1536]) {
+for (const width of [320, 390, 900, 1536]) {
   test(`approved product card has no illustrative photo or empty photo column at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 })
     await page.goto('/produkciya/truby-elektrosvarnye/vodogazoprovodnye')
