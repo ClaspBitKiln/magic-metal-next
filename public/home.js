@@ -100,3 +100,80 @@ form?.addEventListener('submit', async (event) => {
 document.querySelector('.mobile-menu')?.addEventListener('click', event => {
   if (event.target instanceof Element && event.target.closest('a')) event.currentTarget.open = false
 })
+
+
+// Homepage shares the existing product-page languages and Google Translate.
+// Russian remains independent of the external script.
+{
+  const selector = document.getElementById('home-language')
+  const supported = { ru: 'RU', uz: 'UZ', kk: 'KZ', ky: 'KG', be: 'BY', tr: 'TR', en: 'EN' }
+  const status = document.getElementById('home-language-status')
+  let language = 'ru'
+  try {
+    const saved = localStorage.getItem('magicmet-language')
+    if (saved && Object.hasOwn(supported, saved)) language = saved
+  } catch { /* storage may be disabled */ }
+
+  const selected = language
+  const heading = selector?.querySelector('summary')
+  if (heading) {
+    heading.textContent = supported[language]
+    heading.setAttribute('aria-label', 'Язык сайта: ' + language.toUpperCase())
+  }
+  selector?.querySelectorAll('button[data-lang]').forEach(button => {
+    if (button.dataset.lang === language) button.setAttribute('aria-current', 'true')
+    button.addEventListener('click', () => {
+      const next = button.dataset.lang
+      if (!Object.hasOwn(supported, next)) return
+      try { localStorage.setItem('magicmet-language', next) } catch { /* cookie still works */ }
+      const value = next === 'ru' ? '' : '/ru/' + next
+      const expiry = next === 'ru' ? ';max-age=0' : ';max-age=31536000'
+      document.cookie = 'googtrans=' + value + ';path=/' + expiry + ';SameSite=Lax'
+      document.cookie = 'googtrans=' + value + ';path=/;domain=.' + location.hostname + expiry + ';SameSite=Lax'
+      location.reload()
+    })
+  })
+  if (selected !== 'ru') {
+    if (status) {
+      status.hidden = false
+      status.textContent = 'Загружаем машинный перевод…'
+    }
+    let initialized = false
+    const callback = () => {
+      if (initialized) return
+      const TranslateElement = window.google?.translate?.TranslateElement
+      if (!TranslateElement) return
+      initialized = true
+      try {
+        new TranslateElement({
+          pageLanguage: 'ru',
+          includedLanguages: Object.keys(supported).join(','),
+          autoDisplay: false,
+        }, 'home-google-translate')
+      } catch {
+        if (status) status.textContent = 'Перевод недоступен. Выберите RU для оригинала.'
+      }
+    }
+    window.googleTranslateHomeInit = callback
+    const widget = document.createElement('div')
+    widget.id = 'home-google-translate'
+    widget.style.display = 'none'
+    selector?.appendChild(widget)
+    const script = document.createElement('script')
+    script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateHomeInit'
+    script.async = true
+    script.onerror = () => {
+      if (status) status.textContent = 'Перевод недоступен. Выберите RU для оригинала.'
+      if (selector) selector.open = true
+    }
+    script.onload = callback
+    document.body.appendChild(script)
+    setTimeout(() => {
+      const ready = widget.querySelector('.goog-te-combo')
+      if (status) status.textContent = ready
+        ? 'Сервис перевода загружен. Перевод может быть неполным.'
+        : 'Перевод недоступен. Выберите RU для оригинала.'
+      if (!ready && selector) selector.open = true
+    }, 12000)
+  }
+}
