@@ -98,3 +98,30 @@ for (const width of [320, 390, 1536]) {
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
   })
 }
+
+for (const slug of ['bronza', 'med', 'alyuminij', 'titan', 'list'] as const) {
+  for (const width of [320, 390, 1536]) {
+    test(`alloy grade note is separated into readable blocks on ${slug} at ${width}px`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 })
+      const category = slug === 'list' ? 'nerzhaveyushchaya-stal' : 'cvetnye-metally'
+      await page.goto(`/produkciya/${category}/${slug}`)
+      const reference = page.locator('.nonferrous-grade-reference')
+      await expect(reference).toBeVisible()
+      const heading = reference.locator('.nonferrous-grade-reference-heading')
+      const grades = reference.locator('.nonferrous-grade-reference-list')
+      const explanation = reference.locator('.nonferrous-grade-reference-explanation')
+      const source = reference.locator('.nonferrous-grade-reference-source')
+      await expect(heading).toContainText('Марки —')
+      await expect(grades).not.toBeEmpty()
+      await expect(explanation).toContainText('Выбранная марка')
+      await expect(source.getByRole('link', { name: /Источник стандарта/ })).toHaveAttribute('href', /^https:\/\//)
+      const blocks = await Promise.all([heading, grades, explanation, source].map(el => el.boundingBox()))
+      for (let i = 1; i < blocks.length; i++) {
+        expect(blocks[i]).not.toBeNull()
+        expect(blocks[i - 1]).not.toBeNull()
+        expect(blocks[i]!.y - (blocks[i - 1]!.y + blocks[i - 1]!.height)).toBeGreaterThanOrEqual(8)
+      }
+      expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
+    })
+  }
+}
