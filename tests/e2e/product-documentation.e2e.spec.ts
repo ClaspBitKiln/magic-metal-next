@@ -129,9 +129,8 @@ test('approved layout retains parameters and a native request path without JavaS
       expect(target.pathname).toBe('/')
       expect(target.hash).toBe('#request')
       expect(target.searchParams.get('product')).toBe(title)
-      const image = summary.locator('.product-document-image img')
-      await expect(image).toBeVisible()
-      await expect.poll(() => image.evaluate((node: HTMLImageElement) => node.complete && node.naturalWidth > 0)).toBe(true)
+      await expect(summary.locator('.product-document-image')).toHaveCount(0)
+      await expect(summary.locator('.product-document-summary-body')).toHaveClass(/product-document-summary-no-image/)
     }
   } finally { await context.close() }
 })
