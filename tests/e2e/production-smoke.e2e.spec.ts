@@ -359,7 +359,7 @@ test('aluminum requests preserve all approved grades and keep standards explicit
     await expect(grade.locator('option')).toHaveText([
       'Выберите марку', 'АД0', 'АД1', 'А5', 'А7', 'АМг2', 'АМг3', 'АМг5', 'АМг6', 'АМц', 'Д16', 'В95', 'АД31', 'Другая марка по спецификации',
     ])
-    await expect(picker.locator('.nonferrous-submit')).toHaveCount(0)
+    await expect(picker.locator('.nonferrous-submit')).toBeVisible()
     const selectedGrade = width === 320 ? 'А7' : 'АД31'
     await grade.selectOption(selectedGrade)
     await picker.getByRole('textbox', { name: 'Диаметр, мм', exact: true }).fill('20.5')

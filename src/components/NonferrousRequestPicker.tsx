@@ -19,7 +19,6 @@ const shapes: Record<string, Shape[]> = {
   truby: ['Труба'],
   'sortovoy-prokat': ['Круг / пруток','Квадрат','Шестигранник','Полоса'],
 }
-const numeric = (value: string) => /^\d+(?:[.,]\d+)?$/.test(value.trim()) && Number(value.replace(',', '.')) > 0
 const f = (value: string) => value.trim().replace('.', ',')
 
 export default function NonferrousRequestPicker({ productSlug, requestHref }: { productSlug: string; requestHref: string }) {
@@ -40,14 +39,12 @@ export default function NonferrousRequestPicker({ productSlug, requestHref }: { 
   const tube = shape === 'Труба'
   const bar = shape === 'Круг / пруток' || shape === 'Квадрат' || shape === 'Шестигранник' || shape === 'Проволока'
   const shaped = shape === 'Втулка / заготовка'
-  const block = shape === 'Чушка / блок'
-  const valid = Boolean(shape) && (flat ? numeric(a) && numeric(b) : tube ? numeric(a) && numeric(b) : bar ? numeric(a) : shaped ? numeric(a) : true) && (!amount || numeric(amount)) && (!length || numeric(length)) && (!block || !a || numeric(a))
   const name = flat ? `${shape} ${f(a)}×${f(b)}${length ? `×${f(length)}` : ''} мм`
     : tube ? `Труба Ø${f(a)}×${f(b)}${length ? `×${f(length)}` : ''} мм`
     : bar ? `${shape} ${shape === 'Квадрат' ? `${f(a)}×${f(a)}` : shape === 'Шестигранник' ? `под ключ ${f(a)}` : `Ø${f(a)}`} мм`
-    : shaped ? `Втулка / заготовка ${a ? `габарит ${f(a)} мм` : 'по чертежу'}` : 'Чушка / блок по спецификации'
+    : shaped ? `Втулка / заготовка ${a ? `габарит ${f(a)} мм` : 'по чертежу'}` : shape === 'Чушка / блок' ? 'Чушка / блок по спецификации' : ''
   const href = useMemo(() => {
-    if (!valid) return null
+    if (!shape) return requestHref
     const url = new URL(requestHref, 'https://magicmet.ru')
     const base = url.searchParams.get('product') || 'Цветной металлопрокат'
     const items = [base, name, tube ? 'наружный диаметр × стенка' : '', bar && length ? `длина ${f(length)} мм` : '',
@@ -59,10 +56,10 @@ export default function NonferrousRequestPicker({ productSlug, requestHref }: { 
     url.searchParams.set('product', items.filter(Boolean).join('; '))
     url.hash = 'request'
     return url.pathname + url.search + url.hash
-  }, [valid, requestHref, name, tube, bar, length, grade, otherGrade, condition, surface, standard, amount, unit])
+  }, [requestHref, shape, name, tube, bar, length, grade, otherGrade, condition, surface, standard, amount, unit])
   return <section className="nonferrous-picker" aria-label="Подбор цветного металла по форме и размерам">
     <h2>Указать форму и размеры для заявки</h2>
-    <p>Сначала выберите форму полуфабриката. Размеры, марка сплава, состояние поставки и ГОСТ уточняются именно для выбранной формы — не для всего металла сразу.</p>
+    <p>Вы можете отправить заявку с любыми параметрами, включая нестандартные размеры и марки. Если данных пока нет, отправьте запрос или приложите спецификацию — менеджер уточнит детали.</p>
     {gradeExamples && <div className="nonferrous-note">
       <strong>Марки — {gradeExamples.title}: {gradeExamples.grades.join(', ')}.</strong>{' '}
       <span>Примеры обозначений по {gradeExamples.standard}. Выбранная марка не означает подтверждённого наличия или совместимости с любой формой изделия.</span>{' '}
@@ -88,9 +85,9 @@ export default function NonferrousRequestPicker({ productSlug, requestHref }: { 
         <label>Единица<select value={unit} onChange={e=>setUnit(e.target.value)}>{['кг','т','шт.','м','м²'].map(x=><option key={x} value={x}>{x}</option>)}</select></label>
       </>}
     </div>
-    <p className="nonferrous-note">Это запрос на расчёт, не подтверждение наличия. ГОСТы и марки не подставляются автоматически: применимость конкретного сплава, состояния и размера проверяется по документации.</p>
+    <p className="nonferrous-note">Заявку можно отправить с любыми параметрами, даже если они не соответствуют справочным диапазонам. Наличие и возможность поставки уточняет менеджер.</p>
     {/* The homepage is an HTML Route Handler; document navigation initializes the request form. */}
     {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-    <div className="nonferrous-actions">{href ? <a className="nonferrous-submit" href={href}>Передать параметры в заявку ↗</a> : <span>Выберите форму и заполните размеры</span>}<a href={href || requestHref}>Есть спецификация? Прикрепить Excel / PDF / чертёж →</a></div>
+    <div className="nonferrous-actions"><a className="nonferrous-submit" href={href}>Передать параметры в заявку ↗</a><a href={href}>Есть спецификация? Прикрепить Excel / PDF / чертёж →</a></div>
   </section>
 }
