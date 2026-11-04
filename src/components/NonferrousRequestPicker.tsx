@@ -44,6 +44,7 @@ export default function NonferrousRequestPicker({ productSlug, requestHref }: { 
     : bar ? `${shape} ${shape === 'Квадрат' ? `${f(a)}×${f(a)}` : shape === 'Шестигранник' ? `под ключ ${f(a)}` : `Ø${f(a)}`} мм`
     : shaped ? `Втулка / заготовка ${a ? `габарит ${f(a)} мм` : 'по чертежу'}` : shape === 'Чушка / блок' ? 'Чушка / блок по спецификации' : ''
   const href = useMemo(() => {
+    if (!shape) return requestHref
     const url = new URL(requestHref, 'https://magicmet.ru')
     const base = url.searchParams.get('product') || 'Цветной металлопрокат'
     const items = [base, name, tube ? 'наружный диаметр × стенка' : '', bar && length ? `длина ${f(length)} мм` : '',
@@ -55,7 +56,7 @@ export default function NonferrousRequestPicker({ productSlug, requestHref }: { 
     url.searchParams.set('product', items.filter(Boolean).join('; '))
     url.hash = 'request'
     return url.pathname + url.search + url.hash
-  }, [requestHref, name, tube, bar, length, grade, otherGrade, condition, surface, standard, amount, unit])
+  }, [requestHref, shape, name, tube, bar, length, grade, otherGrade, condition, surface, standard, amount, unit])
   return <section className="nonferrous-picker" aria-label="Подбор цветного металла по форме и размерам">
     <h2>Указать форму и размеры для заявки</h2>
     <p>Вы можете отправить заявку с любыми параметрами, включая нестандартные размеры и марки. Если данных пока нет, отправьте запрос или приложите спецификацию — менеджер уточнит детали.</p>
