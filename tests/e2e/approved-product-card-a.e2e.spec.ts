@@ -9,7 +9,7 @@ for (const width of [320, 390, 1536]) {
     await expect(summary.locator('.product-document-image')).toHaveCount(0)
     await expect(summary.locator('.product-document-summary-body')).toHaveClass(/product-document-summary-no-image/)
     const columns = await summary.locator('.product-document-summary-body').evaluate(el => getComputedStyle(el).gridTemplateColumns)
-    expect(columns.trim().split(/\\s+/)).toHaveLength(1)
+    expect(columns.trim().split(/\s+/)).toHaveLength(1)
     await expect(page.getByRole('link', { name: 'Отправить заявку ↗' }).first()).toBeVisible()
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
   })
