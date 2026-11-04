@@ -22,6 +22,8 @@ const cases = [
 let root: Root | undefined
 let container: HTMLDivElement | undefined
 function change(label: string, value: string) {
+  if (label === 'Форма изделия') { act(() => [...container!.querySelectorAll<HTMLInputElement>('input[type=radio]')].find(n => n.value === value)!.click()); return }
+
   const field = Array.from(container!.querySelectorAll('label')).find(node => Array.from(node.childNodes)
     .filter(child => child.nodeType === Node.TEXT_NODE).map(child => child.textContent).join('').trim() === label)!.querySelector('select,input')!
   const prototype = field.tagName === 'INPUT' ? HTMLInputElement.prototype : HTMLSelectElement.prototype
@@ -61,7 +63,8 @@ describe('specification file requests preserve product context', () => {
     expect(url.searchParams.get('product')).toContain('длина 1000 мм')
     expect(url.searchParams.get('material')).toBe('БрАМц9-2')
     change('Форма изделия', 'Шестигранник')
-    expect(fileLink().getAttribute('href')).toBe(requestHref)
+    expect(new URL(fileLink().getAttribute('href')!, 'https://magicmet.ru').searchParams.get('product')).toContain('Шестигранник')
     expect(fileLink().getAttribute('href')).not.toContain('1000')
   })
 })
+

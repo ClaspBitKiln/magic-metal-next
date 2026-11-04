@@ -89,7 +89,7 @@ for (const path of ['/produkciya/truby-elektrosvarnye/pryamoshovnye', '/produkci
         expect(selectionBox!.x).toBeGreaterThanOrEqual(summaryBox!.x + summaryBox!.width + 8)
         expect(Math.abs(selectionBox!.y - summaryBox!.y)).toBeLessThanOrEqual(2)
       } else {
-        expect(selectionBox!.y).toBeGreaterThanOrEqual(summaryBox!.y + summaryBox!.height + 8)
+        expect(summaryBox!.y).toBeGreaterThanOrEqual(selectionBox!.y + selectionBox!.height + 8)
         expect(Math.abs(selectionBox!.x - summaryBox!.x)).toBeLessThanOrEqual(2)
       }
       // Approved variant A: category SVGs are not product photos.
@@ -135,7 +135,7 @@ test('approved layout retains parameters and a native request path without JavaS
       expect(left).not.toBeNull()
       expect(right).not.toBeNull()
       if (width >= 900) expect(right!.x).toBeGreaterThanOrEqual(left!.x + left!.width + 8)
-      else expect(right!.y).toBeGreaterThanOrEqual(left!.y + left!.height + 8)
+      else expect(left!.y).toBeGreaterThanOrEqual(right!.y + right!.height + 8)
       const title = await page.locator('h1').innerText()
       const action = summary.locator('.technical-catalog-summary-heading > a')
       await expect(action).toBeVisible()
@@ -148,3 +148,4 @@ test('approved layout retains parameters and a native request path without JavaS
     }
   } finally { await context.close() }
 })
+

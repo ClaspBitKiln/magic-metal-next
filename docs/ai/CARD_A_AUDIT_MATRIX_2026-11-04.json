@@ -1,0 +1,1642 @@
+{
+  "source_base": "28f1bc193dde09d358a6b8884fd2302518a56324",
+  "tested": "local final fixes before PR",
+  "summary": {
+    "base": "http://127.0.0.1:3023",
+    "checkedAt": "2026-11-04T14:55:55.849Z",
+    "routes": 77,
+    "cases": 231,
+    "expectedCases": 231,
+    "widths": [
+      320,
+      390,
+      1536
+    ],
+    "findingCounts": {},
+    "uniqueReferenceLinks": 84,
+    "badReferenceLinks": 0,
+    "sourceRef": "local-final-on-28f1bc19",
+    "visualMatchA": "not_verified",
+    "normativeReview": "not_performed",
+    "realRfqSent": false
+  },
+  "routes": [
+    {
+      "url": "/produkciya/cvetnye-metally/alyuminij",
+      "widths": [
+        390,
+        320,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/cvetnye-metally/babbit",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/cvetnye-metally/bronza",
+      "widths": [
+        390,
+        1536,
+        320
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/cvetnye-metally/cink",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/cvetnye-metally/latun",
+      "widths": [
+        320,
+        1536,
+        390
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/cvetnye-metally/med",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/cvetnye-metally/nihrom",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/cvetnye-metally/olovo",
+      "widths": [
+        320,
+        1536,
+        390
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/cvetnye-metally/svinec",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/cvetnye-metally/titan",
+      "widths": [
+        320,
+        1536,
+        390
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/ferrosplavy/ferrohrom",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/ferrosplavy/ferromarganec",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/ferrosplavy/ferromolibden",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/ferrosplavy/ferroniobij",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/ferrosplavy/ferrosilicij",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/ferrosplavy/ferrosilikomarganec",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/ferrosplavy/ferrotitan",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/ferrosplavy/ferrovanadij",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/listovoy-prokat/goryachekatanyj",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/listovoy-prokat/holodnokatanyj",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/listovoy-prokat/list-pvl",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/listovoy-prokat/list-riflenyj",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/listovoy-prokat/ocinkovannyj",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/listovoy-prokat/profnastil",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/metizy-i-svarochnye-materialy/kanaty",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/metizy-i-svarochnye-materialy/krepezh",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/metizy-i-svarochnye-materialy/lenta-upakovochnaya",
+      "widths": [
+        320,
+        1536,
+        390
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/metizy-i-svarochnye-materialy/setki",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/metizy-i-svarochnye-materialy/svarochnye-materialy",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/nerzhaveyushchaya-stal/list",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/nerzhaveyushchaya-stal/sortovoy-prokat",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/nerzhaveyushchaya-stal/truby",
+      "widths": [
+        320,
+        1536,
+        390
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/pokovki-i-zagotovki/kolca-i-diski",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/pokovki-i-zagotovki/po-chertezhu",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/pokovki-i-zagotovki/valy",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/relsy/kranovye",
+      "widths": [
+        390,
+        320,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/relsy/promyshlennye",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/relsy/shahtnye",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/relsy/specialnye",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/relsy/tramvaynye",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/relsy/zheleznodorozhnye",
+      "widths": [
+        390,
+        1536,
+        320
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/sdt/flantsy",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/sdt/otvody-besshovnye",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/sdt/otvody-svarnye",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/sdt/perekhody-besshovnye",
+      "widths": [
+        390,
+        320,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/sdt/perekhody-svarnye",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/sdt/troyniki-besshovnye",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/sdt/troyniki-svarnye",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/sdt/zaglushki-i-dnishcha",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/sortovoy-i-fasonny-prokat/armatura",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/sortovoy-i-fasonny-prokat/balka-dvutavrovaya",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/sortovoy-i-fasonny-prokat/balka-shveller-ugolok",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/sortovoy-i-fasonny-prokat/katanka",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/sortovoy-i-fasonny-prokat/krug-goryachekatanyj",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/sortovoy-i-fasonny-prokat/krug-i-kvadrat",
+      "widths": [
+        320,
+        1536,
+        390
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/sortovoy-i-fasonny-prokat/kvadrat",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/sortovoy-i-fasonny-prokat/polosa",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/sortovoy-i-fasonny-prokat/shestigrannik",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/sortovoy-i-fasonny-prokat/shveller",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/sortovoy-i-fasonny-prokat/shveller-gnutyj",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/sortovoy-i-fasonny-prokat/ugolok",
+      "widths": [
+        320,
+        1536,
+        390
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/truby-besshovnye/goryachedeformirovannye",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/truby-besshovnye/holodnodeformirovannye",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/truby-besshovnye/kotelnye",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/truby-besshovnye/krekingovye",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/truby-besshovnye/nerzhaveyushchie",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/truby-besshovnye/precizionnye",
+      "widths": [
+        320,
+        1536,
+        390
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/truby-elektrosvarnye/magistralnye",
+      "widths": [
+        320,
+        1536,
+        390
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/truby-elektrosvarnye/profilnye",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/truby-elektrosvarnye/pryamoshovnye",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/truby-elektrosvarnye/spiraleshovnye",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/truby-elektrosvarnye/vodogazoprovodnye",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/truby-i-sdt-v-izolyacii/epoksidnaya",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/truby-i-sdt-v-izolyacii/ppu",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/truby-i-sdt-v-izolyacii/sdt-v-izolyacii",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/truby-i-sdt-v-izolyacii/tum-lenta",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    },
+    {
+      "url": "/produkciya/truby-i-sdt-v-izolyacii/vus",
+      "widths": [
+        320,
+        390,
+        1536
+      ],
+      "http": [
+        200,
+        200,
+        200
+      ],
+      "overflow": [
+        0,
+        0,
+        0
+      ],
+      "findings": [],
+      "visual_A": "unverified",
+      "normative": "not_performed"
+    }
+  ]
+}

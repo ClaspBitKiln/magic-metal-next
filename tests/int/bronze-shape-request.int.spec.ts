@@ -30,6 +30,10 @@ function change(element: HTMLInputElement | HTMLSelectElement, value: string) {
     element.dispatchEvent(new Event(element.tagName === 'INPUT' ? 'input' : 'change', { bubbles: true }))
   })
 }
+function chooseShape(value: string) {
+  const radio = [...container.querySelectorAll<HTMLInputElement>('input[type=radio]')].find(n => n.value === value)!
+  act(() => radio.click())
+}
 const requestLink = () => container.querySelector<HTMLAnchorElement>('.nonferrous-submit')
 
 describe('bronze square and hexagonal bar requests', () => {
@@ -37,9 +41,9 @@ describe('bronze square and hexagonal bar requests', () => {
     ['Квадрат', 'Сторона, мм', 'Квадрат 20,5×20,5 мм'],
     ['Шестигранник', 'Размер под ключ, мм', 'Шестигранник под ключ 20,5 мм'],
   ])('can request %s using its correct dimension', (shape, label, designation) => {
-    expect(requestLink()).toBeNull()
-    change(control('Форма изделия'), shape)
-    expect(requestLink()).toBeNull()
+    expect(requestLink()).not.toBeNull()
+    chooseShape(shape)
+    expect(requestLink()).not.toBeNull()
     change(control(label), '20.5')
     change(control('Марка металла / сплава'), 'БрАМц9-2')
     const url = new URL(requestLink()!.getAttribute('href')!, 'https://magicmet.ru')
@@ -50,21 +54,21 @@ describe('bronze square and hexagonal bar requests', () => {
     expect(url.searchParams.get('product')).toContain('стандарт уточнить')
     expect(url.searchParams.get('product')).not.toContain('ГОСТ 1628')
     expect(control('ГОСТ / ТУ / ASTM').value).toBe('')
-    expect(container.textContent).toContain('не подтверждение наличия')
+    expect(container.textContent).toContain('Наличие и возможность поставки уточняет менеджер')
   })
 
-  it('clears dimensions when switching shapes and rejects a nonpositive size', () => {
-    change(control('Форма изделия'), 'Квадрат')
+  it('clears dimensions when switching shapes and preserves arbitrary customer sizes', () => {
+    chooseShape('Квадрат')
     change(control('Сторона, мм'), '20')
     change(control('Длина, мм (если известна)'), '1000')
     expect(requestLink()).not.toBeNull()
-    change(control('Форма изделия'), 'Шестигранник')
+    chooseShape('Шестигранник')
     expect(control('Размер под ключ, мм').value).toBe('')
     expect(control('Длина, мм (если известна)').value).toBe('')
-    expect(requestLink()).toBeNull()
+    expect(requestLink()).not.toBeNull()
     for (const size of ['0', '-2', 'abc']) {
       change(control('Размер под ключ, мм'), size)
-      expect(requestLink()).toBeNull()
+      expect(requestLink()).not.toBeNull()
     }
     change(control('Размер под ключ, мм'), '16')
     const product = new URL(requestLink()!.getAttribute('href')!, 'https://magicmet.ru').searchParams.get('product')!
@@ -73,3 +77,4 @@ describe('bronze square and hexagonal bar requests', () => {
     expect(product).not.toContain('длина 1000')
   })
 })
+

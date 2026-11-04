@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { Fragment } from 'react'
 import { findCatalogStandard } from '@/data/catalogStandards'
 import { getMaterialPageSlug } from '@/data/materialPageLinks'
 
@@ -38,14 +39,14 @@ export default function TechnicalCatalogSummary({ title, rows, materialLabel, ma
       <img src={imageSrc} alt={imageAlt || title} width={240} height={180} />
     </figure>}
     <dl>
-      <div><dt>{materialLabel}</dt><dd>{materialValues.map(value => {
+      <div><dt>{materialLabel}</dt><dd>{materialValues.map((value, index) => {
         const slug = getMaterialPageSlug(value)
-        return <span key={value}>{slug ? <Link prefetch={false} href={`/spravochnik-materialov/${slug}`}>{value}</Link> : value}</span>
+        return <Fragment key={value}>{index > 0 && ' · '}<span>{slug ? <Link prefetch={false} href={`/spravochnik-materialov/${slug}`}>{value}</Link> : value}</span></Fragment>
       })}</dd></div>
-      {rows.map(row => <div key={row.label}><dt>{row.label}</dt><dd>{row.values.map(value => <span key={value}>{value}</span>)}{row.note && <small>{row.note}</small>}</dd></div>)}
-      {standards.length > 0 && <div><dt>ГОСТ / ТУ</dt><dd>{standards.map(value => {
+      {rows.map(row => <div key={row.label}><dt>{row.label}</dt><dd>{row.values.map((value, index) => <Fragment key={value}>{index > 0 && ' · '}<span>{value}</span></Fragment>)}{row.note && <small>{row.note}</small>}</dd></div>)}
+      {standards.length > 0 && <div><dt>ГОСТ / ТУ</dt><dd>{standards.map((value, index) => {
         const standard = findCatalogStandard(value)
-        return <span key={value}>{standard ? <Link prefetch={false} href={`/spravochnik-gost/${standard.slug}`} title={standard.status}>{value}</Link> : value}</span>
+        return <Fragment key={value}>{index > 0 && ' · '}<span>{standard ? <Link prefetch={false} href={`/spravochnik-gost/${standard.slug}`} title={standard.status}>{value}</Link> : value}</span></Fragment>
       })}</dd></div>}
     </dl>
     </div>
@@ -66,3 +67,4 @@ export function ProductDocumentRequest({ requestHref, fields, hasSizeReference }
     <small>Материал, исполнение и наличие уточняются по заявке.</small>
   </section>
 }
+
