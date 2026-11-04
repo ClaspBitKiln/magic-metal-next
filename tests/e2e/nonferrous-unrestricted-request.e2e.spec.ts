@@ -18,7 +18,7 @@ for (const width of [390, 1440]) {
     expect(params).toContain('количество 0')
     await action.click()
     await expect(page).toHaveURL(/#request$/)
-    await expect(page.locator('#request-form textarea[name="message"]')).toContainText('Труба Ø10×99 мм')
+    await expect(page.locator('#request-form textarea[name="message"]')).toHaveValue(/Труба Ø10×99 мм/)
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
   })
 }
