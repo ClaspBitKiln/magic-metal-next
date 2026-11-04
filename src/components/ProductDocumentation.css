@@ -134,6 +134,9 @@ main.product-document .product-document-conversion h2 { margin: 0; font-size: 22
   align-items: start;
   gap: 20px;
 }
+.product-document .product-document-summary-body.product-document-summary-no-image {
+  grid-template-columns: minmax(0, 1fr);
+}
 .product-document .product-document-image {
   min-width: 0;
   margin: 0;
