@@ -8,7 +8,7 @@ const numericSize = (value: string) => Number(value.trim().replace(/[()]/g, '').
 const sectionKey = (value: string) => value.split(/\s*×\s*/u).map(numericSize).join('x')
 const wallValues = (row: HTMLTableRowElement, columns: number[]) => columns.flatMap(column => sourceDimensionValue(row.cells[column]).split(';').filter(value => /^\s*(?:\d+(?:[.,]\d+)?|\(\d+(?:[.,]\d+)?\))\s*$/.test(value)).map(numericSize))
 
-const seriesKey = (element: HTMLDivElement | null) => element?.closest('details')?.querySelector('.size-series-scope')?.id.replace('sizes-series-', '')
+const seriesKey = (element: HTMLDivElement | null) => element?.closest('details')?.id.replace('sizes-series-', '')
 
 /** Enhances the existing server table; does not duplicate its rows or request data. */
 export default function SizeTableFilter({ column, values, total, wallColumns = [], requestHref, context, standard }: {
