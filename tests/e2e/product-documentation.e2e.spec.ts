@@ -35,6 +35,15 @@ test('all product detail routes keep SSR identity, materials, standards and nati
           request: summary?.querySelector('.technical-catalog-summary-heading > a')?.getAttribute('href'),
           sizeTargets: [...doc.querySelectorAll('a[href="#sizes"]')].length === 0 || doc.querySelectorAll('#sizes').length === 1,
           references: doc.querySelectorAll('details.product-document-reference').length,
+          stageCount: doc.querySelectorAll('.product-document-stage').length,
+          selectionCount: doc.querySelectorAll('.product-document-stage > .product-document-selection').length,
+          summaryInStage: !!doc.querySelector('.product-document-stage > .technical-catalog-summary'),
+          noEmptyImageSlot: [...doc.querySelectorAll('.technical-catalog-summary')].every(node => !!node.querySelector('.product-document-image img[src]') || !!node.querySelector('.product-document-summary-no-image')),
+          sizeTableGradeLast: [...doc.querySelectorAll('.size-series-reference table')].every(table => {
+            const headers = [...table.querySelectorAll('thead th')].map(th => (th.textContent || '').trim())
+            const grades = headers.map((label, index) => index > 0 && /(?:^|\\s)(?:марка|марки|материал)(?:\\s|$|[\\/,:])/iu.test(label) ? index : -1).filter(index => index >= 0)
+            return grades.every(index => index >= headers.length - grades.length)
+          }),
         }
       }, html)
       expect(result.main, route.path).toBe(true)
@@ -49,6 +58,11 @@ test('all product detail routes keep SSR identity, materials, standards and nati
       expect(target.searchParams.get('product')).toBe(route.title)
       expect(result.sizeTargets, route.path).toBe(true)
       expect(result.references, route.path).toBeGreaterThan(0)
+      expect(result.stageCount, route.path).toBe(1)
+      expect(result.selectionCount, route.path).toBe(1)
+      expect(result.summaryInStage, route.path).toBe(true)
+      expect(result.noEmptyImageSlot, route.path).toBe(true)
+      expect(result.sizeTableGradeLast, route.path).toBe(true)
     }
   }
 })
