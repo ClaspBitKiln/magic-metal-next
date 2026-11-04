@@ -17,11 +17,23 @@ export default function TechnicalCatalogSummary({ title, rows, materialLabel, ma
   imageAlt?: string
 }) {
   const hasProductImage = Boolean(imageSrc && /\.(?:avif|webp|png|jpe?g)(?:\?.*)?$/i.test(imageSrc))
+  // Use the same verified catalog facts in the concise first-screen tiles and full technical reference.
+  // Long or uncertain ranges remain textual; this is not a stock/availability selector.
+  const highlights = [
+    ...rows.slice(0, 3).map(row => ({ label: row.label, value: row.values.join(' · ') })),
+    ...(standards.length ? [{ label: 'ГОСТ / ТУ', value: standards[0] }] : []),
+  ].slice(0, 4)
   return <section className="technical-catalog-summary" aria-labelledby="technical-catalog-summary-heading">
     <div className="technical-catalog-summary-heading">
       <div><p className="technical-catalog-eyebrow">Техническая сводка</p><h2 id="technical-catalog-summary-heading">{title}: основные параметры</h2></div>
       <a href={requestHref}>В заявку ↗</a>
     </div>
+    <div className="product-document-highlights" aria-label="Ключевые характеристики товара">
+      {highlights.map(({ label, value }) => <div className="product-document-highlight" key={label}>
+        <span>{label}</span><strong>{value}</strong>
+      </div>)}
+    </div>
+    <h3 className="product-document-properties-title">Основные характеристики</h3>
     <div className={hasProductImage ? "product-document-summary-body" : "product-document-summary-body product-document-summary-no-image"}>
     {hasProductImage && <figure className="product-document-image">
       {/* Show only supplied raster product imagery; category SVG illustrations are not product photos. */}
