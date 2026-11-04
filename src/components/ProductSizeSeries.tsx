@@ -89,10 +89,10 @@ export default function ProductSizeSeries({ series, requestHref, guide, document
       const standardLinks = getCatalogStandardLinks(table.standard)
       const sheetFormats = table.categorySlug === 'listovoy-prokat' && ['goryachekatanyj', 'holodnokatanyj'].includes(table.productSlug) && table.title.startsWith('Форматы') && table.columns[0] === 'Толщина, мм'
       const sheetNominals = sheetFormats ? series.flatMap(seriesTable => seriesTable.title.startsWith('Номинальные размеры') ? seriesTable.rows.filter(row => row[0] === 'Толщина').flatMap(row => row[1].split(';').map(value => value.trim())) : []) : []
-      return <details key={`${table.standard}-${table.title}`} open={index === initiallyOpen}>
+      return <details key={`${table.standard}-${table.title}`} id={`sizes-series-${index + 1}`} open={index === initiallyOpen}>
         <summary><span className="size-series-heading"><span>{table.title}</span><span className="size-series-standard-label">{table.standard}</span></span></summary>
         {standardLinks.length > 0 && <p className="size-series-standard">{standardLinks.map(link => <a key={link.href} href={link.href} title={`Справочник: ${link.code}`}>{link.code}</a>)}</p>}
-        <p className="size-series-scope" id={`sizes-series-${index + 1}`}>{table.scope}</p>
+        <p className="size-series-scope">{table.scope}</p>
         {table.notes[0] && <p className="size-series-note size-series-legend">{table.notes[0]}</p>}
         {sheetFormats ? <SheetFormatPicker rows={table.rows} nominalThicknesses={sheetNominals} requestHref={requestHref} standard={table.standard} sheetKind={table.productSlug === 'holodnokatanyj' ? 'cold' : 'hot'} /> : pipeChoice ? <SizeTableFilter column={table.columns[0]} values={[...new Set(table.rows.map(row => row[0]))]} total={table.rows.length} wallColumns={wallColumns} requestHref={requestHref} context={`${table.title}; ${table.standard}`} standard={table.standard} /> : <CompactSizeRows column={table.columns[0]} values={table.rows.length > 24 ? [...new Set(table.rows.map(row => row[0]))] : []} total={table.rows.length} requestHref={requestHref} context={table.title} standard={table.standard} requirements={table.kind === 'requirements'} />}
         <div className="size-series-reference" id={`size-reference-${index + 1}`} hidden={sheetFormats}>
