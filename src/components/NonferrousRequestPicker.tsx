@@ -39,7 +39,6 @@ export default function NonferrousRequestPicker({ productSlug, requestHref }: { 
   const tube = shape === 'Труба'
   const bar = shape === 'Круг / пруток' || shape === 'Квадрат' || shape === 'Шестигранник' || shape === 'Проволока'
   const shaped = shape === 'Втулка / заготовка'
-  const block = shape === 'Чушка / блок'
   const name = flat ? `${shape} ${f(a)}×${f(b)}${length ? `×${f(length)}` : ''} мм`
     : tube ? `Труба Ø${f(a)}×${f(b)}${length ? `×${f(length)}` : ''} мм`
     : bar ? `${shape} ${shape === 'Квадрат' ? `${f(a)}×${f(a)}` : shape === 'Шестигранник' ? `под ключ ${f(a)}` : `Ø${f(a)}`} мм`
