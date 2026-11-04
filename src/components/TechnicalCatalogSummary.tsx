@@ -1,9 +1,6 @@
 import Link from 'next/link'
 import { findCatalogStandard } from '@/data/catalogStandards'
-import { materials } from '@/data/materials'
-
-const materialKey = (value: string) => value.toLocaleLowerCase('ru').replace(/^сталь\s*/u, '').replace(/\s+/gu, '')
-const materialByName = new Map(materials.map(material => [materialKey(material.designation), material]))
+import { getMaterialPageSlug } from '@/data/materialPageLinks'
 
 export default function TechnicalCatalogSummary({ title, rows, materialLabel, materialValues, standards, requestHref, hasSizeReference, imageSrc, imageAlt }: {
   title: string
@@ -42,8 +39,8 @@ export default function TechnicalCatalogSummary({ title, rows, materialLabel, ma
     </figure>}
     <dl>
       <div><dt>{materialLabel}</dt><dd>{materialValues.map(value => {
-        const material = materialByName.get(materialKey(value))
-        return <span key={value}>{material ? <Link prefetch={false} href={`/spravochnik-materialov/${material.slug}`}>{value}</Link> : value}</span>
+        const slug = getMaterialPageSlug(value)
+        return <span key={value}>{slug ? <Link prefetch={false} href={`/spravochnik-materialov/${slug}`}>{value}</Link> : value}</span>
       })}</dd></div>
       {rows.map(row => <div key={row.label}><dt>{row.label}</dt><dd>{row.values.map(value => <span key={value}>{value}</span>)}{row.note && <small>{row.note}</small>}</dd></div>)}
       {standards.length > 0 && <div><dt>ГОСТ / ТУ</dt><dd>{standards.map(value => {
