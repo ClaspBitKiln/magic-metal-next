@@ -139,7 +139,7 @@ for (const [slug, grade, destination, unlinked] of [
       const examples = page.locator('.nonferrous-grade-reference-list')
       await expect(examples).toBeVisible()
       await expect(examples.getByRole('link', { name: grade, exact: true })).toHaveAttribute('href', `/spravochnik-materialov/${destination}`)
-      await expect(examples.locator('span', { hasText: unlinked })).toHaveCount(1)
+      expect(await examples.locator('span').allTextContents()).toContain(unlinked)
       await expect(examples.getByRole('link', { name: unlinked, exact: true })).toHaveCount(0)
       await expect(page.locator('.technical-catalog-summary dd').first().getByRole('link', { name: grade, exact: true })).toHaveAttribute('href', `/spravochnik-materialov/${destination}`)
       const notes = page.locator('.nonferrous-grade-reference')
