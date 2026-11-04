@@ -387,3 +387,67 @@ main.product-document .product-document-selection :is(h2,h3) {
     padding: 11px 0;
   }
 }
+
+/* Approved A: the first screen reads as a product card, not a bare technical sheet. */
+.product-document .product-document-stage > .technical-catalog-summary {
+  padding: 22px 24px;
+}
+.product-document .technical-catalog-summary-heading {
+  margin-bottom: 20px;
+}
+.product-document .technical-catalog-summary-heading > a {
+  background: #154399;
+}
+.product-document .product-document-highlights {
+  display: grid;
+  grid-template-columns: repeat(4,minmax(0,1fr));
+  gap: 10px;
+  margin: 0 0 20px;
+}
+.product-document .product-document-highlight {
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 105px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 10px;
+  border: 1px solid #e1e8f3;
+  border-radius: 9px;
+  background: #fbfcff;
+  text-align: center;
+}
+.product-document .product-document-highlight > span {
+  color: #64748c;
+  font-size: 12px;
+  font-weight: 600;
+}
+.product-document .product-document-highlight > strong {
+  color: #0c234d;
+  font-size: 14px;
+  line-height: 1.4;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+.product-document .product-document-properties-title {
+  margin: 0 0 9px;
+  font-size: 17px;
+  line-height: 1.4;
+  font-weight: 750;
+  color: #071c62;
+}
+.product-document .product-document-selection {
+  position: relative;
+}
+.product-document .product-document-selection > :first-child {
+  position: relative;
+}
+@media (max-width: 1250px) {
+  .product-document .product-document-highlights { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+@media (max-width: 650px) {
+  .product-document .product-document-highlight { min-height: 82px; }
+  .product-document .product-document-highlight > strong { font-size: 13px; }
+  .product-document .product-document-highlights { gap: 8px; }
+}
