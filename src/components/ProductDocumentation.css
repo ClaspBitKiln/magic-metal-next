@@ -451,3 +451,54 @@ main.product-document .product-document-selection :is(h2,h3) {
   .product-document .product-document-highlight > strong { font-size: 13px; }
   .product-document .product-document-highlights { gap: 8px; }
 }
+
+/* Approved A: compact first-choice dimensional buttons, while preserving full ГОСТ tables. */
+.product-document .product-document-quick-sizes {
+  border: 1px solid #dce5f0;
+  border-radius: 10px;
+  background: #fbfcff;
+  padding: 18px 20px;
+}
+.product-document .product-document-quick-sizes > strong {
+  display: block;
+  margin: 0 0 12px;
+  color: #071c62;
+  font-size: 17px;
+}
+.product-document .product-document-quick-sizes nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.product-document .product-document-quick-sizes nav a {
+  box-sizing: border-box;
+  display: inline-flex;
+  min-width: 52px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border: 1px solid #b9cae7;
+  border-radius: 7px;
+  background: #fff;
+  color: #0d316f;
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+}
+.product-document .product-document-quick-sizes nav a:hover,
+.product-document .product-document-quick-sizes nav a:focus-visible {
+  border-color: #0757e8;
+  background: #eef4ff;
+}
+.product-document .product-document-quick-sizes > p {
+  max-width: 85ch;
+  margin: 12px 0 0;
+  color: var(--document-muted);
+  font-size: 12px;
+  line-height: 1.55;
+}
+@media (max-width: 650px) {
+  .product-document .product-document-quick-sizes { padding: 14px; }
+  .product-document .product-document-quick-sizes nav a { min-width: 48px; }
+}
