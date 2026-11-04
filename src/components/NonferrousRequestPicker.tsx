@@ -39,15 +39,16 @@ export default function NonferrousRequestPicker({ productSlug, requestHref }: { 
   const tube = shape === 'Труба'
   const bar = shape === 'Круг / пруток' || shape === 'Квадрат' || shape === 'Шестигранник' || shape === 'Проволока'
   const shaped = shape === 'Втулка / заготовка'
-  const name = flat ? `${shape} ${f(a)}×${f(b)}${length ? `×${f(length)}` : ''} мм`
-    : tube ? `Труба Ø${f(a)}×${f(b)}${length ? `×${f(length)}` : ''} мм`
-    : bar ? `${shape} ${shape === 'Квадрат' ? `${f(a)}×${f(a)}` : shape === 'Шестигранник' ? `под ключ ${f(a)}` : `Ø${f(a)}`} мм`
-    : shaped ? `Втулка / заготовка ${a ? `габарит ${f(a)} мм` : 'по чертежу'}` : shape === 'Чушка / блок' ? 'Чушка / блок по спецификации' : ''
+  // Request only dimensions that the buyer actually provided; a blank input is not a zero-sized product.
+  const name = flat ? [shape, a ? `толщина ${f(a)} мм` : '', b ? `ширина ${f(b)} мм` : '', length ? `длина ${f(length)} мм` : ''].filter(Boolean).join(', ')
+    : tube ? ['Труба', a ? `наружный диаметр ${f(a)} мм` : '', b ? `стенка ${f(b)} мм` : '', length ? `длина ${f(length)} мм` : ''].filter(Boolean).join(', ')
+    : bar ? [shape, a ? (shape === 'Квадрат' ? `сторона ${f(a)} мм` : shape === 'Шестигранник' ? `под ключ ${f(a)} мм` : `диаметр ${f(a)} мм`) : '', length ? `длина ${f(length)} мм` : ''].filter(Boolean).join(', ')
+    : shaped ? `Втулка / заготовка${a ? `, габарит ${f(a)} мм` : ', по чертежу'}` : shape === 'Чушка / блок' ? 'Чушка / блок по спецификации' : ''
   const href = useMemo(() => {
     if (!shape) return requestHref
     const url = new URL(requestHref, 'https://magicmet.ru')
     const base = url.searchParams.get('product') || 'Цветной металлопрокат'
-    const items = [base, name, tube ? 'наружный диаметр × стенка' : '', bar && length ? `длина ${f(length)} мм` : '',
+    const items = [base, name,
       (grade === '__other__' ? otherGrade : grade).trim() ? `марка сплава ${(grade === '__other__' ? otherGrade : grade).trim()}` : 'марка сплава уточнить',
       condition.trim() ? `состояние/способ изготовления: ${condition.trim()}` : '',
       surface.trim() ? `поверхность/исполнение: ${surface.trim()}` : '',
