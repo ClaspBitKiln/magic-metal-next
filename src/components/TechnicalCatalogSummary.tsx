@@ -16,17 +16,17 @@ export default function TechnicalCatalogSummary({ title, rows, materialLabel, ma
   imageSrc?: string
   imageAlt?: string
 }) {
+  const hasProductImage = Boolean(imageSrc && /\.(?:avif|webp|png|jpe?g)(?:\?.*)?$/i.test(imageSrc))
   return <section className="technical-catalog-summary" aria-labelledby="technical-catalog-summary-heading">
     <div className="technical-catalog-summary-heading">
       <div><p className="technical-catalog-eyebrow">Техническая сводка</p><h2 id="technical-catalog-summary-heading">{title}: основные параметры</h2></div>
       <a href={requestHref}>В заявку ↗</a>
     </div>
-    <div className="product-document-summary-body">
-    {imageSrc && <figure className="product-document-image">
-      {/* Existing catalogue illustrations are served directly, without client code. */}
+    <div className={hasProductImage ? "product-document-summary-body" : "product-document-summary-body product-document-summary-no-image"}>
+    {hasProductImage && <figure className="product-document-image">
+      {/* Show only supplied raster product imagery; category SVG illustrations are not product photos. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={imageSrc} alt={imageAlt || title} width={240} height={180} />
-      <figcaption>Иллюстрация категории</figcaption>
     </figure>}
     <dl>
       <div><dt>{materialLabel}</dt><dd>{materialValues.map(value => {

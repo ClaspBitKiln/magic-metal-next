@@ -78,17 +78,10 @@ for (const path of ['/produkciya/truby-elektrosvarnye/pryamoshovnye', '/produkci
         expect(selectionBox!.y).toBeGreaterThanOrEqual(summaryBox!.y + summaryBox!.height + 8)
         expect(Math.abs(selectionBox!.x - summaryBox!.x)).toBeLessThanOrEqual(2)
       }
-      const illustration = summary.locator('.product-document-image img')
-      if (!path.includes('/sdt/')) await expect(illustration).toHaveCount(1)
-      if (await illustration.count()) {
-        await expect(illustration).toBeVisible()
-        await expect(illustration).toHaveAttribute('alt', /\S+/)
-        await expect.poll(() => illustration.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true)
-        const src = await illustration.getAttribute('src')
-        if (src?.split(/[?#]/, 1)[0].endsWith('.svg')) {
-          await expect(summary.locator('.product-document-image')).toContainText(/Иллюстрация/)
-        }
-      }
+      // Approved variant A: category SVGs are not product photos.
+      // No empty image slot should remain until a verified product photo exists.
+      await expect(summary.locator('.product-document-image')).toHaveCount(0)
+      await expect(summary.locator('.product-document-summary-body')).toHaveClass(/product-document-summary-no-image/)
       for (const control of await selection.locator('input:not([type=radio]):not([type=checkbox]), select, textarea').all()) {
         if (await control.isVisible()) expect(await control.evaluate(node => parseFloat(getComputedStyle(node).fontSize))).toBeGreaterThanOrEqual(16)
       }
@@ -136,9 +129,8 @@ test('approved layout retains parameters and a native request path without JavaS
       expect(target.pathname).toBe('/')
       expect(target.hash).toBe('#request')
       expect(target.searchParams.get('product')).toBe(title)
-      const image = summary.locator('.product-document-image img')
-      await expect(image).toBeVisible()
-      await expect.poll(() => image.evaluate((node: HTMLImageElement) => node.complete && node.naturalWidth > 0)).toBe(true)
+      await expect(summary.locator('.product-document-image')).toHaveCount(0)
+      await expect(summary.locator('.product-document-summary-body')).toHaveClass(/product-document-summary-no-image/)
     }
   } finally { await context.close() }
 })
