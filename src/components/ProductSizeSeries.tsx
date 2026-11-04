@@ -31,6 +31,12 @@ const quickSectionRows = (series: SizeSeries[]) => {
   }))).filter((entry, index, arr) => arr.findIndex(other => other.label === entry.label) === index)
 }
 
+// Keep material grades last without inventing grade data or changing normative values.
+const displayColumnOrder = (columns: string[]) => {
+  const gradeColumns = columns.map((label, index) => index > 0 && /(?:^|\s)(?:марка|марки|марка стали|марка сплава|материал)(?:\s|$|[\/,:])/iu.test(label) ? index : -1).filter(index => index >= 0)
+  return columns.map((_, index) => index).filter(index => !gradeColumns.includes(index)).concat(gradeColumns)
+}
+
 const tableLabel = (table: SizeSeries) => {
   const type = table.title.match(/тип\s+([А-ЯA-Z0-9]+)/iu)?.[1]
   if (type) return `Тип ${type}`
@@ -75,6 +81,7 @@ export default function ProductSizeSeries({ series, requestHref, guide, document
       {series.map((table, index) => <a key={`${table.standard}-${table.title}`} href={`#sizes-series-${index + 1}`}>{tableLabel(table)}</a>)}
     </nav>}
     {series.map((table, index) => {
+      const columnOrder = displayColumnOrder(table.columns)
       const numericColumns = table.columns.map((_, column) => column > 0 && table.rows.every((row) => /^(?:[−-]?\d+(?:[.,]\d+)?|—)$/.test(row[column])))
       const pipeTable = ['truby-elektrosvarnye', 'truby-besshovnye'].includes(table.categorySlug) || (table.categorySlug === 'nerzhaveyushchaya-stal' && table.productSlug === 'truby')
       const wallColumns = pipeTable && /диаметр|сечение/iu.test(table.columns[0]) ? table.columns.flatMap((label, column) => column > 0 && /стенк/iu.test(label) && table.rows.every(row => numericWalls.test(row[column])) ? [column] : []) : []
@@ -92,8 +99,8 @@ export default function ProductSizeSeries({ series, requestHref, guide, document
         <div className="size-series-scroll" role="region" aria-label={table.title} tabIndex={0}>
           <table className={table.kind === 'requirements' ? 'size-series-requirements' : undefined}>
             <caption>{table.title} — {table.standard}</caption>
-            <thead><tr>{table.columns.map((column, columnIndex) => <th scope="col" key={column} className={numericColumns[columnIndex] ? 'size-series-number' : undefined}>{column}</th>)}</tr></thead>
-            <tbody>{table.rows.map((row) => <tr key={row.join('|')}>{row.map((cell, column) => { const display = formatDimensionValue(cell); const source = display !== cell ? cell : undefined; return column === 0 ? <th scope="row" key={column} data-source-value={source}>{display}</th> : <td key={column} data-source-value={source} className={numericColumns[column] ? 'size-series-number' : dimensionList.test(cell) || wallPairList.test(cell) ? 'size-series-list' : undefined}>{display}</td> })}</tr>)}</tbody>
+            <thead><tr>{columnOrder.map(columnIndex => <th scope="col" key={columnIndex} className={numericColumns[columnIndex] ? 'size-series-number' : undefined}>{table.columns[columnIndex]}</th>)}</tr></thead>
+            <tbody>{table.rows.map((row) => <tr key={row.join('|')}>{columnOrder.map(column => { const cell = row[column]; const display = formatDimensionValue(cell); const source = display !== cell ? cell : undefined; return column === 0 ? <th scope="row" key={column} data-source-value={source}>{display}</th> : <td key={column} data-source-value={source} className={numericColumns[column] ? 'size-series-number' : dimensionList.test(cell) || wallPairList.test(cell) ? 'size-series-list' : undefined}>{display}</td> })}</tr>)}</tbody>
           </table>
         </div>
         {table.notes.slice(1).map((note) => <p className="size-series-note" key={note}>{note}</p>)}
