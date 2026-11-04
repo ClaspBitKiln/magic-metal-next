@@ -37,10 +37,17 @@ export const materialPageSlugs: Readonly<Record<string, string>> = {
   'Титан': 'titan',
 }
 
+const normalizedPageSlugs = new Map(
+  Object.entries(materialPageSlugs).map(([designation, slug]) => [
+    designation.toLocaleLowerCase('ru').replace(/\s+/gu, ''),
+    slug,
+  ])
+)
+
 export function getMaterialPageSlug(designation: string): string | undefined {
-  const normalized = designation.trim().replace(/\\s+/gu, ' ')
-  return materialPageSlugs[normalized]
-    ?? (normalized.toLocaleLowerCase('ru').startsWith('сталь ')
-      ? materialPageSlugs[normalized.slice(6)]
-      : materialPageSlugs[`Сталь ${normalized}`])
+  const normalized = designation.trim().toLocaleLowerCase('ru').replace(/\s+/gu, '')
+  return normalizedPageSlugs.get(normalized)
+    ?? (normalized.startsWith('сталь')
+      ? normalizedPageSlugs.get(normalized.slice('сталь'.length))
+      : normalizedPageSlugs.get('сталь' + normalized))
 }
