@@ -1,0 +1,31 @@
+{
+  "status": "CURRENT_SOURCE_LOCAL_PREVIEW_NOT_DEPLOYED",
+  "verifiedOn": "2026-11-05",
+  "sourceSha": "f3236eabd5b3f3113d35729e6db5a6701d47e50c",
+  "nodeVersion": "24.22.1",
+  "sourceStack": {
+    "next": "16.3.0",
+    "payload": "3.88.0",
+    "@payloadcms/next": "3.88.0",
+    "react": "19.2.6"
+  },
+  "probePackages": {
+    "vinext": "1.4.3",
+    "vite": "8.3.0",
+    "@vitejs/plugin-react": "6.2.1",
+    "@vitejs/plugin-rsc": "0.5.37",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "react-server-dom-webpack": "19.3.1",
+    "@cloudflare/vite-plugin": "2.0.0-beta.v.11",
+    "@vinext/cloudflare": "1.3.3",
+    "cf": "1.0.0-beta.27"
+  },
+  "observedWorkerdVersion": "1.20261103.1",
+  "routePath": "src/app/(frontend)/route.ts",
+  "routeSha256Before": "d69246e507bbe87da5004714c4ddb3710264f006078bad09c193832f73c4b730",
+  "routeSha256After": "5358aca59806fe1a513867d9548eeaba020a55da3fd90cd1d7ebf0fc00ddb72e",
+  "approvedHomeSha256": "f119e5a2ac7e56ff990d5fbef704005d9146080f637e468653257f54ebaaaeb0",
+  "credentialsIncluded": false,
+  "publicDeployPerformed": false
+}

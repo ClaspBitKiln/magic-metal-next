@@ -1,0 +1,21 @@
+import { bindings, defineConfig, defineWorker } from 'cf/config'
+
+// Reserve preview only: no account, cache, database, Images or email resource.
+export default defineConfig({
+  worker: defineWorker({
+    name: 'magic-metal-plan-b-preview',
+    entrypoint: './worker-preview.ts',
+    compatibilityDate: '2026-11-05',
+    compatibilityFlags: ['nodejs_compat'],
+    assets: {
+      htmlHandling: 'none',
+      notFoundHandling: 'none',
+      runWorkerFirst: ['/*', '!/_next/static/*', '!/*/_next/static/*'],
+    },
+    env: {
+      ASSETS: bindings.assets(),
+      NEXT_PUBLIC_YANDEX_METRIKA_ID: bindings.text('0'),
+      LOCAL_SMTP_TEST: bindings.text('0'),
+    },
+  }),
+})

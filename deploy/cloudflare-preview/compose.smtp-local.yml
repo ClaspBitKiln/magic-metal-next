@@ -1,0 +1,5 @@
+# Optional override for local Workers SMTP checks; never use for public mail.
+services:
+  mailpit:
+    ports:
+      - '127.0.0.1:1025:1025'

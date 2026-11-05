@@ -1,0 +1,16 @@
+--- a/src/app/(frontend)/route.ts
++++ b/src/app/(frontend)/route.ts
+@@ -1,11 +1,10 @@
+-import { readFile } from 'node:fs/promises'
+-import path from 'node:path'
++import approvedHome from '../../../public/home-static.html?raw'
+ import { getMetrikaCounterId } from '@/lib/analyticsConfig'
+ import { productDetailCatalog } from '@/data/productDetailCatalog'
+ 
+ export const dynamic = 'force-static'
+ 
+-const staticHome = readFile(path.join(process.cwd(), 'public', 'home-static.html'), 'utf8')
++const staticHome = approvedHome
+ 
+ /**
+  * Keep the existing landing page design, but always inject product grades

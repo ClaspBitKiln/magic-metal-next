@@ -1,0 +1,41 @@
+name: Temporary read-only Worker preview
+on:
+  push:
+    branches: [free-ci/sheets-20261105]
+    paths: ['deploy/cloudflare-preview/**', '.github/workflows/temporary-worker-preview.yml']
+permissions:
+  contents: read
+concurrency:
+  group: temporary-worker-preview
+  cancel-in-progress: true
+jobs:
+  preview:
+    if: github.event.repository.private == false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      CF_TELEMETRY: 'false'
+      NEXT_PUBLIC_YANDEX_METRIKA_ID: '0'
+      SIMPLE_PUBLIC_SITE_BUILD: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Verify claim credential redaction
+        run: node --test deploy/cloudflare-preview/deploy-temporary.test.mjs
+      - name: Prepare pinned isolated source
+        run: node deploy/cloudflare-preview/prepare.mjs --name=temporary-current
+      - name: Build Worker
+        working-directory: .plan-b/temporary-current
+        run: node_modules/.bin/vite build
+      - name: Deploy one temporary read-only preview
+        id: deploy
+        working-directory: .plan-b/temporary-current
+        run: node ../../deploy/cloudflare-preview/deploy-temporary.mjs
+      - name: Verify the actual public preview
+        env:
+          PREVIEW_URL: ${{ steps.deploy.outputs.url }}
+        run: node deploy/cloudflare-preview/smoke-public.mjs

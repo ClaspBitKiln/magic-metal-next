@@ -3,7 +3,7 @@ name: Free sheet verification
 on:
   push:
     branches: [free-ci/sheets-20261105]
-    paths-ignore: ['docs/**', 'MEMORY.md', 'AGENTS.md']
+    paths: ['src/**', 'public/**', 'tests/**', 'package.json', 'package-lock.json', 'next.config.ts', 'playwright*.ts']
   workflow_dispatch:
 
 permissions:

@@ -1,0 +1,45 @@
+import vinext from 'vinext/server/fetch-handler'
+import type appRouter from 'vinext/server/app-router-entry'
+
+type VinextHandler = Pick<typeof appRouter, 'fetch'>
+type PreviewEnv = NonNullable<Parameters<VinextHandler['fetch']>[1]> & { LOCAL_SMTP_TEST?: string }
+type PreviewContext = Parameters<VinextHandler['fetch']>[2]
+const disabledMessage = 'Тестовая версия: заявки здесь не отправляются'
+
+function disabled(status: number, message: string): Response {
+  return Response.json({ error: message }, { status, headers: { 'Cache-Control': 'no-store' } })
+}
+
+/** Preview policy applies before any app handler, including server actions. */
+export function createPreviewHandler(app: VinextHandler) {
+  return {
+    async fetch(request: Request, env: PreviewEnv = {}, ctx?: PreviewContext): Promise<Response> {
+      const url = new URL(request.url)
+      let path: string
+      try {
+        path = decodeURIComponent(url.pathname).replaceAll('\\', '/').replace(/\/+/g, '/').replace(/\/$/, '') || '/'
+      } catch {
+        return disabled(400, 'Некорректный путь')
+      }
+      if (/%(?:2f|5c)/i.test(path)) return disabled(400, 'Некорректный путь')
+      if (path === '/admin' || path.startsWith('/admin/')) return disabled(404, 'Недоступно в тестовой версии')
+      const localSmtp = ['localhost', '127.0.0.1', '[::1]'].includes(url.hostname) && env.LOCAL_SMTP_TEST === '1'
+      const isRequest = path === '/api/request'
+      if (isRequest && !localSmtp) return disabled(503, disabledMessage)
+      if ((path === '/api' || path.startsWith('/api/')) && path !== '/api/catalog-search' && !isRequest) {
+        return disabled(404, 'Недоступно в тестовой версии')
+      }
+      const readOnly = request.method === 'GET' || request.method === 'HEAD'
+      if (!readOnly && !(isRequest && localSmtp && request.method === 'POST')) {
+        return disabled(405, 'Тестовая версия доступна только для просмотра')
+      }
+      const response = await app.fetch(request, env, ctx)
+      if (!response.headers.get('Content-Type')?.toLowerCase().includes('text/html')) return response
+      const headers = new Headers(response.headers)
+      headers.set('X-Robots-Tag', 'noindex, nofollow')
+      return new Response(response.body, { status: response.status, statusText: response.statusText, headers })
+    },
+  }
+}
+
+export default createPreviewHandler(vinext)
