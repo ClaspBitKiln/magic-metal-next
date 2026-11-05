@@ -6,5 +6,10 @@
       "path": "/api/cron/ati-logistics",
       "schedule": "30 6 * * *"
     }
-  ]
+  ],
+  "git": {
+    "deploymentEnabled": {
+      "release/sheets-20261105": false
+    }
+  }
 }
