@@ -1,8 +1,6 @@
 name: Temporary read-only Worker preview
 on:
-  push:
-    branches: [free-ci/sheets-20261105]
-    paths: ['deploy/cloudflare-preview/**', '.github/workflows/temporary-worker-preview.yml']
+  workflow_dispatch:
 permissions:
   contents: read
 concurrency:
