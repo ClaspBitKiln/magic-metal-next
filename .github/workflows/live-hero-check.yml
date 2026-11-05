@@ -1,15 +1,8 @@
 name: Verify published homepage and search
 on:
+  # Wide live audits are opt-in; automatic post-deploy browser QA remains.
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - .github/workflows/live-hero-check.yml
-      - public/home-static.html
-      - public/home.js
-      - src/components/SizeTableFilter.tsx
-      - src/components/CatalogSearch.tsx
-      - 'src/app/(frontend)/(catalog)/poisk/**'
+
 permissions:
   contents: write
 concurrency:
