@@ -1,14 +1,15 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-
-type Kind = 'Болт' | 'Гайка' | 'Шпилька' | 'Шайба'
+import { fastenerKinds } from '@/data/catalogProductKinds'
+import { useCatalogKind } from './useCatalogKind'
+import CatalogKindFallback from './CatalogKindFallback'
 
 const normalizedThread = (value: string) => value.trim().replace(/^М/iu, 'M').toUpperCase()
 const positive = (value: string) => /^\d+(?:[.,]\d+)?$/.test(value.trim()) && Number(value.replace(',', '.')) > 0
 
 export default function FastenerRequestPicker({ requestHref, nutThreads }: { requestHref: string; nutThreads: string[] }) {
-  const [kind, setKind] = useState<Kind>('Гайка')
+  const [kind, setKind] = useCatalogKind(fastenerKinds, 'Гайка')
   const [thread, setThread] = useState('')
   const [length, setLength] = useState('')
   const [standard, setStandard] = useState('')
@@ -43,8 +44,9 @@ export default function FastenerRequestPicker({ requestHref, nutThreads }: { req
     <h3>Крепёж — указать размер для заявки</h3>
     <p>Выберите вид изделия. Для гаек доступны номинальные резьбы из таблицы ГОСТ 5915-70; остальные размеры и исполнение уточним по вашему стандарту или чертежу.</p>
     <div className="fastener-types" role="group" aria-label="Вид крепежа">
-      {(['Гайка', 'Болт', 'Шпилька', 'Шайба'] as Kind[]).map(value => <button key={value} type="button" aria-pressed={kind === value} onClick={() => { setKind(value); setThread(''); setLength(''); setStandard('') }}>{value}</button>)}
+      {fastenerKinds.map(({ id, value, label }) => <button key={id} type="button" aria-pressed={kind === value} onClick={() => { setKind(id); setThread(''); setLength(''); setStandard('') }}>{label}</button>)}
     </div>
+    <CatalogKindFallback kinds={fastenerKinds} requestHref={requestHref} />
     <div className="fastener-fields">
       <label>{isThread ? 'Номинальная резьба' : 'Под какой размер крепежа'}
         {kind === 'Гайка' ? <select value={thread} onChange={event => setThread(event.target.value)}><option value="">Выберите M</option>{nutThreads.map(value => <option key={value} value={value}>{value}</option>)}</select>

@@ -631,6 +631,7 @@ main.product-document .technical-catalog-summary-heading h2 {
 /* The mobile buyer reaches the existing selector before the long reference. */
 .product-document .product-document-stage > .technical-catalog-summary { grid-column: 1; grid-row: 1; }
 .product-document .product-document-stage > .product-document-selection { grid-column: 2; grid-row: 1; }
+.product-document-selection#selection { scroll-margin-top: 110px; }
 @media (max-width: 1050px) {
   .product-document .product-document-stage > .product-document-selection { grid-column: 1; grid-row: 1; }
   .product-document .product-document-stage > .technical-catalog-summary { grid-column: 1; grid-row: 2; }

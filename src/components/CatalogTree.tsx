@@ -1,4 +1,6 @@
 import { homeCatalogGroups } from '@/data/homeCatalog'
+import { Fragment } from 'react'
+import CatalogKindLinks from './CatalogKindLinks'
 
 // Restore the existing category → nomenclature → specifications tree.
 // Native disclosure elements work without client JavaScript.
@@ -8,12 +10,12 @@ export default function CatalogTree() {
       <summary><span className="catalog-toggle" aria-hidden="true" /><span><strong>{group.title}</strong><small>{group.note}</small></span></summary>
       <div className="catalog-table" aria-label={group.title}>
         <div className="catalog-row catalog-labels" aria-hidden="true"><span>Номенклатура</span><span>Размеры</span><span>Стандарты</span><span>Марки / исполнение</span></div>
-        {group.items.map((item) => <details className="catalog-item" key={item.title}>
+        {group.items.map((item) => <Fragment key={item.title}><details className="catalog-item">
           <summary className="catalog-row"><strong><span className="catalog-toggle" aria-hidden="true" />{item.title}</strong><span>{item.size}</span><span>{item.standards}</span><span>{item.grades}</span></summary>
           <div className="home-size-series">
             <a href={item.href}>{item.href.startsWith('/produkciya/') ? 'Размеры, описание и ГОСТы' : 'Заявка на комплектацию'} →</a>
           </div>
-        </details>)}
+        </details><CatalogKindLinks href={item.href} title={item.title} home /></Fragment>)}
       </div>
     </details>)}
   </div>

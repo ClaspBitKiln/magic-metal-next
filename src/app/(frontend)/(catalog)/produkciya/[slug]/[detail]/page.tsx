@@ -83,7 +83,7 @@ export default async function PipeDetailPage({ params }: { params: Promise<{ slu
     <section className="pipe-hero"><div><p>{categoryLabel}</p><h1>{item.title}</h1><span>{item.description}</span></div></section>
     <div className="product-document-workspace product-size-series">
       <div className="product-document-stage">
-    <aside className="product-document-selection" aria-label="Подбор и заявка">
+    <aside className="product-document-selection" id="selection" aria-label="Подбор и заявка">
     {item.categorySlug === 'metizy-i-svarochnye-materialy' && item.slug === 'kanaty' && <section className="product-size-series rope-sales" id="rope-sales" aria-labelledby="rope-sales-title">
       <h2 id="rope-sales-title">Выбрать стальной канат</h2>
       <p>Конструкция, диаметр, затем заявка. Диапазон ассортимента — {ropeSalesAssortment.diameterRange}; группы {ropeSalesAssortment.markingGroups.join(' и ')} {ropeSalesAssortment.markingGroupUnit}.</p>

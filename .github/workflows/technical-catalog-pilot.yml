@@ -11,6 +11,18 @@ on:
       - 'src/components/ProductDocumentation.css'
       - 'src/components/NonferrousRequestPicker.tsx'
       - 'src/components/CardPickerReadability.css'
+      - 'src/data/catalogProductKinds.ts'
+      - 'src/components/CatalogKindLinks.tsx'
+      - 'src/components/CatalogKindLinks.css'
+      - 'src/components/CatalogKindFallback.tsx'
+      - 'src/components/useCatalogKind.ts'
+      - 'src/components/FastenerRequestPicker.tsx'
+      - 'src/components/SpecialProcurementPicker.tsx'
+      - 'src/components/CatalogTree.tsx'
+      - 'src/app/(frontend)/(catalog)/produkciya/[slug]/page.tsx'
+      - 'public/home-static.html'
+      - 'playwright.catalog-kind.config.ts'
+      - 'tests/e2e/catalog-kind-navigation.e2e.spec.ts'
       - 'tests/e2e/approved-product-card-a.e2e.spec.ts'
       - 'tests/e2e/nonferrous-unrestricted-request.e2e.spec.ts'
       - 'playwright.card-final.config.ts'
@@ -56,6 +68,10 @@ jobs:
         env:
           BASE_URL: http://127.0.0.1:3000
         run: npx playwright test --config=playwright.card-final.config.ts
+      - name: Verify visible product kinds and selected request context
+        env:
+          BASE_URL: http://127.0.0.1:3000
+        run: npx playwright test --config=playwright.catalog-kind.config.ts
       - name: Check native Chromium browser zoom 200% (Xvfb + X11 input)
         env:
           BASE_URL: http://127.0.0.1:3000
