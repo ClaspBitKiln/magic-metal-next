@@ -14,10 +14,16 @@ export const weldingKinds: CatalogProductKind[] = [
   { id: 'covered-electrode', label: 'Электроды покрытые', value: 'Электрод покрытый' },
   { id: 'filler-rod', label: 'Присадочные прутки', value: 'Присадочный пруток' },
 ]
+export const meshKinds: CatalogProductKind[] = [
+  { id: 'welded', label: 'Сварная', value: 'Сварная' },
+  { id: 'woven', label: 'Тканая', value: 'Тканая' },
+  { id: 'chain-link', label: 'Плетёная (рабица)', value: 'Плетёная' },
+]
 export function getCatalogProductKinds(href: string): CatalogProductKind[] {
   const path = href.split(/[?#]/)[0]
   if (path === '/produkciya/metizy-i-svarochnye-materialy/krepezh') return fastenerKinds
   if (path === '/produkciya/metizy-i-svarochnye-materialy/svarochnye-materialy') return weldingKinds
+  if (path === '/produkciya/metizy-i-svarochnye-materialy/setki') return meshKinds
   return []
 }
 export function getCatalogKindHref(href: string, id: string): string {

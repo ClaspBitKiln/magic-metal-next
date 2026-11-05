@@ -1,6 +1,9 @@
 'use client'
 
 import { useMemo, useState } from 'react'
+import { meshKinds } from '@/data/catalogProductKinds'
+import { useCatalogKind } from './useCatalogKind'
+import CatalogKindFallback from './CatalogKindFallback'
 
 type Product = 'mesh' | 'rope'
 const isPositive = (value: string) => /^\d+(?:[.,]\d+)?$/.test(value.trim()) && Number(value.replace(',', '.')) > 0
@@ -8,7 +11,9 @@ const formatNumber = (value: string) => value.trim().replace('.', ',')
 
 export default function MeshRopeRequestPicker({ type, requestHref }: { type: Product; requestHref: string }) {
   const mesh = type === 'mesh'
-  const [kind, setKind] = useState('')
+  const [ropeKind, setRopeKind] = useState('')
+  const [meshKind, setMeshKind] = useCatalogKind(mesh ? meshKinds : [], '')
+  const kind = mesh ? meshKind : ropeKind
   const [cellX, setCellX] = useState('')
   const [cellY, setCellY] = useState('')
   const [diameter, setDiameter] = useState('')
@@ -50,22 +55,39 @@ export default function MeshRopeRequestPicker({ type, requestHref }: { type: Pro
   return <section className="mesh-rope-picker" data-product={type} aria-label={mesh ? 'Параметры сетки для заявки' : 'Параметры каната для заявки'}>
     <h2>{mesh ? 'Выбрать сетку по параметрам' : 'Выбрать канат по параметрам'}</h2>
     <p>{mesh ? 'Сначала вид сетки и ячейка, затем диаметр проволоки и формат карты или рулона.' : 'Сначала диаметр и длина каната, затем конструкция, сердечник и исполнение.'} Параметры отправим менеджеру; наличие и применимость стандарта проверим перед КП.</p>
+    {mesh && <>
+      <div className="fastener-types mesh-kind-options" role="group" aria-label="Вид сетки">
+        {meshKinds.map(option => <button type="button" key={option.id} aria-pressed={kind === option.value} onClick={() => {
+          if (kind === option.value) return
+          setMeshKind(option.id); setCellX(''); setCellY(''); setDiameter(''); setWidth(''); setLength(''); setMaterial(''); setCoating(''); setStandard('')
+        }}>{option.label}</button>)}
+      </div>
+      <CatalogKindFallback kinds={meshKinds} requestHref={requestHref} />
+      <noscript><style>{'.mesh-kind-options,.mesh-rope-picker[data-product="mesh"] .mesh-rope-fields,.mesh-extra{display:none!important}'}</style></noscript>
+    </>}
     <div className="mesh-rope-fields">
-      <label>{mesh ? 'Вид сетки' : 'Конструкция каната'}
-        {mesh ? <select value={kind} onChange={e => setKind(e.target.value)}><option value="">Выберите вид</option><option value="Сварная">Сварная</option><option value="Тканая">Тканая</option><option value="Плетёная">Плетёная</option></select>
-        : <input value={kind} onChange={e => setKind(e.target.value)} placeholder="Например, 6×19 (по паспорту)" />}</label>
+      {!mesh && <label>Конструкция каната<input value={kind} onChange={e => setRopeKind(e.target.value)} placeholder="Например, 6×19 (по паспорту)" /></label>}
       {mesh && <><label>Ячейка A, мм<input value={cellX} onChange={e => setCellX(e.target.value)} inputMode="decimal" placeholder="Например, 50" /></label><label>Ячейка B, мм<input value={cellY} onChange={e => setCellY(e.target.value)} inputMode="decimal" placeholder="Например, 50" /></label></>}
       <label>{mesh ? 'Диаметр проволоки, мм' : 'Диаметр каната, мм'}<input value={diameter} onChange={e => setDiameter(e.target.value)} inputMode="decimal" placeholder={mesh ? 'Например, 3' : 'Например, 8'} /></label>
-      {mesh && <label>Ширина карты / рулона, мм<input value={width} onChange={e => setWidth(e.target.value)} inputMode="decimal" placeholder="Если известна" /></label>}
-      <label>{mesh ? 'Длина карты / рулона, мм' : 'Длина каната, м'}<input value={length} onChange={e => setLength(e.target.value)} inputMode="decimal" placeholder={mesh ? 'Если известна' : 'Например, 100'} /></label>
+      {!mesh && <label>Длина каната, м<input value={length} onChange={e => setLength(e.target.value)} inputMode="decimal" placeholder="Например, 100" /></label>}
       {!mesh && <><label>Сердечник<input value={core} onChange={e => setCore(e.target.value)} placeholder="Органический / металлический" /></label><label>Направление и вид свивки<input value={lay} onChange={e => setLay(e.target.value)} placeholder="По требованию проекта" /></label></>}
-      <label>{mesh ? 'Материал проволоки' : 'Марка / группа проволоки'}<input value={material} onChange={e => setMaterial(e.target.value)} placeholder="По спецификации" /></label>
-      <label>Покрытие / исполнение<input value={coating} onChange={e => setCoating(e.target.value)} placeholder={mesh ? 'Например, оцинкованная' : 'Например, оцинкованный'} /></label>
-      <label>ГОСТ / ТУ<input value={standard} onChange={e => setStandard(e.target.value)} placeholder="Если известен" /></label>
+      {!mesh && <><label>Марка / группа проволоки<input value={material} onChange={e => setMaterial(e.target.value)} placeholder="По спецификации" /></label>
+      <label>Покрытие / исполнение<input value={coating} onChange={e => setCoating(e.target.value)} placeholder="Например, оцинкованный" /></label>
+      <label>ГОСТ / ТУ<input value={standard} onChange={e => setStandard(e.target.value)} placeholder="Если известен" /></label></>}
       {!mesh && <label>Разрывное усилие, кН (если задано)<input value={breakingForce} onChange={e => setBreakingForce(e.target.value)} inputMode="decimal" placeholder="По проекту или паспорту" /></label>}
       <label>Количество (необязательно)<input value={qty} onChange={e => setQty(e.target.value)} inputMode="decimal" placeholder="По заявке" /></label>
       <label>Единица количества<select value={unit} onChange={e => setUnit(e.target.value)}>{(mesh ? ['м²', 'шт.', 'рулонов'] : ['м', 'шт.', 'бухт']).map(option => <option key={option} value={option}>{option}</option>)}</select></label>
     </div>
+    {mesh && <details className="mesh-extra">
+      <summary>Формат и дополнительные требования</summary>
+      <div className="mesh-rope-fields">
+        <label>Ширина карты / рулона, мм<input value={width} onChange={e => setWidth(e.target.value)} inputMode="decimal" placeholder="Если известна" /></label>
+        <label>Длина карты / рулона, мм<input value={length} onChange={e => setLength(e.target.value)} inputMode="decimal" placeholder="Если известна" /></label>
+        <label>Материал проволоки<input value={material} onChange={e => setMaterial(e.target.value)} placeholder="По спецификации" /></label>
+        <label>Покрытие / исполнение<input value={coating} onChange={e => setCoating(e.target.value)} placeholder="Например, оцинкованная" /></label>
+        <label>ГОСТ / ТУ<input value={standard} onChange={e => setStandard(e.target.value)} placeholder="Если известен" /></label>
+      </div>
+    </details>}
     <p className="mesh-rope-note">{mesh ? 'Для сварных, тканых и плетёных сеток могут действовать разные стандарты. Совпадение ячейки и диаметра не подтверждает одинаковое исполнение.' : 'Нельзя выбирать канат только по диаметру: конструкция, свивка, сердечник, разрывное усилие и назначение влияют на применимость.'} Ни один введённый размер не означает подтверждённый складской остаток.</p>
     {/* The homepage is an HTML Route Handler; document navigation initializes the request form. */}
     {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}

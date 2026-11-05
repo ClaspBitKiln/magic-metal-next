@@ -86,7 +86,7 @@ describe('unified homepage catalog', () => {
     expect(tree.querySelectorAll('.catalog-item')).toHaveLength(homeCatalogItemCount)
     const kinds = (document: Document) => Array.from(document.querySelectorAll('.catalog-kind-links a'), link => ({ label: link.textContent, href: link.getAttribute('href') }))
     expect(kinds(served)).toEqual(kinds(tree))
-    expect(kinds(served).map(link => link.label)).toEqual(['Гайки', 'Болты', 'Шпильки', 'Шайбы', 'Проволока сплошная', 'Проволока порошковая', 'Электроды покрытые', 'Присадочные прутки'])
+    expect(kinds(served).map(link => link.label)).toEqual(['Гайки', 'Болты', 'Шпильки', 'Шайбы', 'Сварная', 'Тканая', 'Плетёная (рабица)', 'Проволока сплошная', 'Проволока порошковая', 'Электроды покрытые', 'Присадочные прутки'])
     for (const navigation of served.querySelectorAll('.catalog-kind-links')) {
       expect(navigation.closest('.catalog-item')).toBeNull()
       expect(navigation.closest('.catalog-group')).not.toBeNull()

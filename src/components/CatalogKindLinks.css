@@ -11,4 +11,6 @@
 .catalog-kind-links a:hover { border-color: #0757e8; text-decoration: underline; }
 .catalog-kind-links a:focus-visible { outline: 2px solid #0757e8; outline-offset: 2px; }
 .catalog-kind-fallback { display: flex; flex-wrap: wrap; gap: 8px; }
+.mesh-extra { margin-top: 16px; }
+.mesh-extra > summary { display: flex; align-items: center; min-height: 44px; color: #0757e8; font-size: 14px; font-weight: 650; cursor: pointer; }
 .product-subcatalog .catalog-kind-links { padding: 12px 20px 18px; background: #f7f9fd; border-bottom: 1px solid #bdc8da; }
