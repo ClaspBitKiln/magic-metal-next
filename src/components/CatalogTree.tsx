@@ -15,7 +15,7 @@ export default function CatalogTree() {
           <div className="home-size-series">
             <a href={item.href}>{item.href.startsWith('/produkciya/') ? 'Размеры, описание и ГОСТы' : 'Заявка на комплектацию'} →</a>
           </div>
-        </details><CatalogKindLinks href={item.href} title={item.title} /></Fragment>)}
+        </details><CatalogKindLinks href={item.href} title={item.title} home /></Fragment>)}
       </div>
     </details>)}
   </div>
