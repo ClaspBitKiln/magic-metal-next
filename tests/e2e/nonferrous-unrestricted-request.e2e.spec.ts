@@ -8,7 +8,7 @@ for (const width of [390, 1440]) {
     const action = picker.getByRole('link', { name: /Передать параметры в заявку/ })
     await expect(action).toBeVisible()
     await expect(action).toHaveAttribute('href', /#request$/)
-    await picker.getByLabel('Форма изделия').selectOption('Труба')
+    await picker.getByRole('radio', { name: 'Труба', exact: true }).check()
     await picker.getByLabel('Наружный диаметр, мм').fill('10')
     await picker.getByLabel('Толщина стенки, мм').fill('99')
     await picker.getByLabel('Количество').fill('0')
@@ -22,3 +22,4 @@ for (const width of [390, 1440]) {
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
   })
 }
+

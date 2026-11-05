@@ -83,18 +83,7 @@ export default async function PipeDetailPage({ params }: { params: Promise<{ slu
     <section className="pipe-hero"><div><p>{categoryLabel}</p><h1>{item.title}</h1><span>{item.description}</span></div></section>
     <div className="product-document-workspace product-size-series">
       <div className="product-document-stage">
-    <TechnicalCatalogSummary
-      title={item.shortTitle}
-      materialLabel={item.slug === 'kanaty' ? 'Группа / исполнение' : item.categorySlug === 'sortovoy-i-fasonny-prokat' && ['shestigrannik', 'shveller-gnutyj'].includes(item.slug) ? 'Материал / исполнение' : 'Марки / материалы'}
-      materialValues={item.grades}
-      rows={item.range.map(row => ({ label: row.label, values: [row.value] }))}
-      standards={item.standards}
-      requestHref={requestHref}
-      hasSizeReference={hasSizeReference || sizeProfiles.length > 0}
-      imageSrc={item.image}
-      imageAlt={item.shortTitle}
-    />
-        <aside className="product-document-selection" aria-label="Подбор и заявка">
+    <aside className="product-document-selection" aria-label="Подбор и заявка">
     {item.categorySlug === 'metizy-i-svarochnye-materialy' && item.slug === 'kanaty' && <section className="product-size-series rope-sales" id="rope-sales" aria-labelledby="rope-sales-title">
       <h2 id="rope-sales-title">Выбрать стальной канат</h2>
       <p>Конструкция, диаметр, затем заявка. Диапазон ассортимента — {ropeSalesAssortment.diameterRange}; группы {ropeSalesAssortment.markingGroups.join(' и ')} {ropeSalesAssortment.markingGroupUnit}.</p>
@@ -124,6 +113,17 @@ export default async function PipeDetailPage({ params }: { params: Promise<{ slu
           {hasSeriesSelection && <ProductSizeSeries series={sizeSeries} guide={dimensionGuide} requestHref={requestHref} documentation selectionOnly />}
           {!hasStandaloneSelection && !hasSeriesSelection && <ProductDocumentRequest requestHref={requestHref} fields={item.requestFields} hasSizeReference={hasSizeReference || sizeProfiles.length > 0} />}
         </aside>
+      <TechnicalCatalogSummary
+      title={item.shortTitle}
+      materialLabel={item.slug === 'kanaty' ? 'Группа / исполнение' : item.categorySlug === 'sortovoy-i-fasonny-prokat' && ['shestigrannik', 'shveller-gnutyj'].includes(item.slug) ? 'Материал / исполнение' : 'Марки / материалы'}
+      materialValues={item.grades}
+      rows={item.range.map(row => ({ label: row.label, values: [row.value] }))}
+      standards={item.standards}
+      requestHref={requestHref}
+      hasSizeReference={hasSizeReference || sizeProfiles.length > 0}
+      imageSrc={item.image}
+      imageAlt={item.shortTitle}
+    />
       </div>
     <nav className="product-document-nav" aria-label="Разделы карточки">
       {(hasSizeReference || sizeProfiles.length > 0) && <a href="#sizes">Размеры и подбор</a>}
@@ -152,3 +152,4 @@ export default async function PipeDetailPage({ params }: { params: Promise<{ slu
     <section className="product-document-conversion"><div><h2>Есть готовая спецификация?</h2><p>Пришлите Excel, PDF, Word, фото маркировки или сертификат.</p></div><a href={requestHref}>Отправить заявку ↗</a></section>
   </main>
 }
+

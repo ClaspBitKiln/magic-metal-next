@@ -9,6 +9,11 @@ on:
       - 'src/app/(frontend)/(catalog)/produkciya/sdt/[detail]/page.tsx'
       - 'src/components/TechnicalCatalogSummary.tsx'
       - 'src/components/ProductDocumentation.css'
+      - 'src/components/NonferrousRequestPicker.tsx'
+      - 'src/components/CardPickerReadability.css'
+      - 'tests/e2e/approved-product-card-a.e2e.spec.ts'
+      - 'tests/e2e/nonferrous-unrestricted-request.e2e.spec.ts'
+      - 'playwright.card-final.config.ts'
       - 'src/components/ProductSizeSeries.tsx'
       - 'src/components/CatalogStockAssortment.tsx'
       - 'tests/e2e/product-documentation.e2e.spec.ts'
@@ -50,7 +55,7 @@ jobs:
       - name: Verify all 77 documentation cards and request flow
         env:
           BASE_URL: http://127.0.0.1:3000
-        run: npx playwright test --config=playwright.documentation.config.ts --grep 'all product detail routes|approved layout'
+        run: npx playwright test --config=playwright.card-final.config.ts
       - name: Check native Chromium browser zoom 200% (Xvfb + X11 input)
         env:
           BASE_URL: http://127.0.0.1:3000
@@ -67,4 +72,5 @@ jobs:
             test-results
             playwright-report-pilot
           if-no-files-found: ignore
+
 

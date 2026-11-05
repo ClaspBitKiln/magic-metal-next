@@ -40,7 +40,7 @@ for (const width of [320, 390, 1536]) {
 test('file request retains a completed bronze selection and clears incompatible dimensions after shape change', async ({ page }) => {
   await page.goto('/produkciya/cvetnye-metally/bronza')
   const picker = page.locator('.nonferrous-picker')
-  await picker.getByLabel('Форма изделия').selectOption('Квадрат')
+  await picker.getByRole('radio', { name: 'Квадрат', exact: true }).check()
   await picker.getByLabel('Сторона, мм').fill('20.5')
   await picker.getByLabel('Длина, мм (если известна)').fill('1000')
   await picker.getByLabel('Марка металла / сплава').selectOption('БрАМц9-2')
@@ -52,7 +52,7 @@ test('file request retains a completed bronze selection and clears incompatible 
   await fileLink.click()
   await expect(page.locator('#request-form textarea[name="message"]')).toHaveValue(`${specification}: `)
   await page.goBack()
-  await picker.getByLabel('Форма изделия').selectOption('Шестигранник')
+  await picker.getByRole('radio', { name: 'Шестигранник', exact: true }).check()
   const fallback = new URL((await fileLink.getAttribute('href'))!, 'https://magicmet.ru').searchParams.get('product')!
   expect(fallback).not.toContain('1000')
   expect(fallback).not.toContain('20,5')
@@ -73,3 +73,4 @@ test('specification file link retains product in its destination without JavaScr
     await expect(page.locator('#request-form input[name="files"]')).toBeVisible()
   } finally { await context.close() }
 })
+

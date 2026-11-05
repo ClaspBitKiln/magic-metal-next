@@ -51,6 +51,9 @@ export default async function SdtDetailPage({ params }: { params: Promise<{ deta
       <section className="sdt-hero"><div><p>Соединительные детали трубопроводов</p><h1>{item.title}</h1><span>{item.description}</span></div></section>
       <div className="product-document-workspace product-size-series">
         <div className="product-document-stage">
+      <aside className="product-document-selection" aria-label="Подбор и заявка">
+            <ProductDocumentRequest requestHref={requestHref} fields={item.requestFields} hasSizeReference={sizeSeries.length > 0 || Boolean(dimensionGuide)} />
+          </aside>
       <TechnicalCatalogSummary
         title={item.shortTitle}
         materialLabel="Материалы"
@@ -65,9 +68,6 @@ export default async function SdtDetailPage({ params }: { params: Promise<{ deta
         imageSrc={`/product/sdt/${item.slug}.svg`}
         imageAlt={item.shortTitle}
       />
-          <aside className="product-document-selection" aria-label="Подбор и заявка">
-            <ProductDocumentRequest requestHref={requestHref} fields={item.requestFields} hasSizeReference={sizeSeries.length > 0 || Boolean(dimensionGuide)} />
-          </aside>
         </div>
       <nav className="product-document-nav" aria-label="Разделы карточки">
         {(sizeSeries.length > 0 || Boolean(dimensionGuide)) && <a href="#sizes">Размеры и подбор</a>}
@@ -87,3 +87,4 @@ export default async function SdtDetailPage({ params }: { params: Promise<{ deta
     </main>
   )
 }
+

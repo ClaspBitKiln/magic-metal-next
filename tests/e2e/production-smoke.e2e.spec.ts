@@ -327,7 +327,7 @@ test('bronze square and hexagonal requests use the correct dimension', async ({ 
   ]) {
     await page.goto('/produkciya/cvetnye-metally/bronza')
     const picker = page.getByRole('region', { name: 'Подбор цветного металла по форме и размерам' })
-    await picker.getByRole('combobox', { name: 'Форма изделия', exact: true }).selectOption(shape)
+    await picker.getByRole('radio', { name: shape, exact: true }).check()
     await picker.getByLabel(label, { exact: true }).fill('20.5')
     await expect(picker.getByRole('combobox', { name: 'Марка металла / сплава', exact: true }).locator('option')).toHaveText([
       'Выберите марку', 'БрОФ6,5-0,15', 'БрБ2', 'БрАМц9-2', 'БрАЖ9-4', 'БрОЦС5-5-5', 'БрО10Ф1', 'Другая марка по спецификации',
@@ -354,7 +354,7 @@ test('aluminum requests preserve all approved grades and keep standards explicit
     await page.setViewportSize({ width, height: 1000 })
     await page.goto('/produkciya/cvetnye-metally/alyuminij')
     const picker = page.getByRole('region', { name: 'Подбор цветного металла по форме и размерам' })
-    await picker.getByRole('combobox', { name: 'Форма изделия', exact: true }).selectOption('Круг / пруток')
+    await picker.getByRole('radio', { name: 'Круг / пруток', exact: true }).check()
     const grade = picker.getByRole('combobox', { name: 'Марка металла / сплава', exact: true })
     await expect(grade.locator('option')).toHaveText([
       'Выберите марку', 'АД0', 'АД1', 'А5', 'А7', 'АМг2', 'АМг3', 'АМг5', 'АМг6', 'АМц', 'Д16', 'В95', 'АД31', 'Другая марка по спецификации',
@@ -430,3 +430,4 @@ test('angle request provides an honest native fallback without JavaScript', asyn
     await context.close()
   }
 })
+

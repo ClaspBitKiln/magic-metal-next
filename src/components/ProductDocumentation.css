@@ -617,3 +617,22 @@ main.product-document .product-document-selection :is(h2,h3) {
 .product-document .nonferrous-grade-reference > .nonferrous-grade-reference-list + p {
   margin-top: 12px;
 }
+
+/* Long product names must fit the summary's flex column on narrow phones. */
+.product-document .technical-catalog-summary-heading > div {
+  min-width: 0;
+  max-width: 100%;
+}
+main.product-document .technical-catalog-summary-heading h2 {
+  overflow-wrap: anywhere;
+}
+
+
+/* The mobile buyer reaches the existing selector before the long reference. */
+.product-document .product-document-stage > .technical-catalog-summary { grid-column: 1; grid-row: 1; }
+.product-document .product-document-stage > .product-document-selection { grid-column: 2; grid-row: 1; }
+@media (max-width: 1050px) {
+  .product-document .product-document-stage > .product-document-selection { grid-column: 1; grid-row: 1; }
+  .product-document .product-document-stage > .technical-catalog-summary { grid-column: 1; grid-row: 2; }
+}
+.product-document .nonferrous-grade-reference > .nonferrous-grade-reference-heading + .nonferrous-grade-reference-list { margin-top: 10px; }

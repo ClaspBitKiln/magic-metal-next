@@ -31,7 +31,7 @@ for (const width of [320, 390, 1536]) {
         titleSize: parseFloat(getComputedStyle(title).fontSize),
         headingSize: parseFloat(getComputedStyle(heading).fontSize),
         buttonHeight: action.getBoundingClientRect().height,
-        firstSummaryTop: title.getBoundingClientRect().top + window.scrollY,
+        firstUsefulTop: (innerWidth <= 1050 ? document.querySelector<HTMLElement>('.product-document-selection')! : title).getBoundingClientRect().top + window.scrollY,
       }
     })
     expect(layout.scrollWidth).toBeLessThanOrEqual(layout.clientWidth)
@@ -39,7 +39,7 @@ for (const width of [320, 390, 1536]) {
     expect(layout.titleSize).toBeLessThanOrEqual(29)
     expect(layout.headingSize).toBeLessThanOrEqual(41)
     expect(layout.buttonHeight).toBeGreaterThanOrEqual(44)
-    expect(layout.firstSummaryTop).toBeLessThan(900)
+    expect(layout.firstUsefulTop).toBeLessThan(900)
     await page.screenshot({ path: `test-results/technical-angle-${width}.png`, fullPage: true })
   })
 }
@@ -120,14 +120,15 @@ for (const product of [
           buttonHeight: button.getBoundingClientRect().height,
           textSize: getComputedStyle(document.querySelector('.technical-catalog-summary dd')!).fontSize,
           actionSize: getComputedStyle(button).fontSize,
-          summaryTop: title.getBoundingClientRect().top + window.scrollY }
+          summaryTop: title.getBoundingClientRect().top + window.scrollY,
+          firstUsefulTop: (innerWidth <= 1050 ? document.querySelector<HTMLElement>('.product-document-selection')! : title).getBoundingClientRect().top + window.scrollY }
       })
       expect(result.scroll).toBeLessThanOrEqual(result.client)
       expect(result.titleSize).toBeLessThanOrEqual(29)
       expect(result.heroSize).toBeLessThanOrEqual(41)
       expect(result.buttonHeight).toBeGreaterThanOrEqual(44)
       if (['krug-goryachekatanyj', 'armatura', 'shveller-gnutyj', 'krug-i-kvadrat', 'balka-shveller-ugolok'].includes(product.slug)) {
-        expect(result.summaryTop).toBeLessThan(900)
+        expect(result.firstUsefulTop).toBeLessThan(900)
         expect(result.textSize).toBe('15px')
         expect(result.actionSize).toBe('15px')
         console.log(JSON.stringify({ product: product.slug, width, typography: result }))
@@ -136,4 +137,5 @@ for (const product of [
     })
   }
 }
+
 
