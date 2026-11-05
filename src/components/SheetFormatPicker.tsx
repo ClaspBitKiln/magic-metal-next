@@ -2,75 +2,66 @@
 
 import { useId, useMemo, useState } from 'react'
 
-type FormatRow = { thickness: string; widths: string; from: string; to: string }
 const number = (value: string) => Number(value.trim().replace(',', '.'))
-const split = (value: string) => value.split(';').map(value => value.trim()).filter(Boolean)
+const positive = (value: string) => /^\d+(?:[.,]\d+)?$/.test(value.trim()) && number(value) > 0
 const normalize = (value: string) => Number.isFinite(number(value)) ? String(number(value)).replace('.', ',') : value
-const thicknessMatches = (range: string, thickness: string) => {
-  const bounds = range.split(/[–—-]/).map(number)
-  const selected = number(thickness)
-  return bounds.length === 1 ? selected === bounds[0] : selected >= bounds[0] && selected <= bounds[1]
-}
 
-export default function SheetFormatPicker({ rows, nominalThicknesses, requestHref, standard, sheetKind = 'hot' }: {
+export default function SheetFormatPicker({ nominalThicknesses, requestHref, standard, sheetKind = 'hot' }: {
   rows: string[][]; nominalThicknesses: string[]; requestHref: string; standard: string; sheetKind?: 'hot' | 'cold'
 }) {
   const uid = useId()
   const isCold = sheetKind === 'cold'
-  const presets = isCold ? [{ width: '1000', length: '2000' }, { width: '1250', length: '2500' }] : [{ width: '1500', length: '6000' }, { width: '2000', length: '6000' }]
-  const [width, setWidth] = useState('')
+  const presets = [{ width: '1500', length: '6000' }, { width: '2000', length: '6000' }]
+  const [width, setWidth] = useState('1500')
   const [thickness, setThickness] = useState('')
-  const [length, setLength] = useState('')
+  const [length, setLength] = useState('6000')
   const [steelGrade, setSteelGrade] = useState('')
   const [quantity, setQuantity] = useState('')
   const [quantityUnit, setQuantityUnit] = useState('листов')
-  const [showReference, setShowReference] = useState(false)
 
-  const formats = useMemo<FormatRow[]>(() => rows.map(([thickness, widths, from, to]) => ({ thickness, widths, from, to })), [rows])
-  const widths = useMemo(() => [...new Set(formats.flatMap(row => split(row.widths).map(normalize)))].sort((a, b) => number(a) - number(b)), [formats])
-  const possible = useMemo(() => formats.filter(row => width && split(row.widths).some(value => number(value) === number(width))), [formats, width])
-  const thicknesses = useMemo(() => {
-    const values = [...new Set(nominalThicknesses.map(normalize))]
-    return values.filter(value => possible.some(row => thicknessMatches(row.thickness, value) && (!length.trim() || (/^\d+(?:[.,]\d+)?$/.test(length.trim()) && number(length) >= number(row.from) && number(length) <= number(row.to))))).sort((a, b) => number(a) - number(b))
-  }, [nominalThicknesses, possible, length])
-  const matching = possible.filter(row => thickness && thicknessMatches(row.thickness, thickness))
-  const lengthRanges = matching.map(row => `${row.from}–${row.to} мм`)
+  const thicknesses = useMemo(() => [...new Set(nominalThicknesses.map(normalize))]
+    .filter(positive).sort((a, b) => number(a) - number(b)), [nominalThicknesses])
   const hasLength = length.trim().length > 0
-  const validLength = !hasLength || (length.trim() !== '' && /^\d+(?:[.,]\d+)?$/.test(length.trim()) && matching.some(row => number(length) >= number(row.from) && number(length) <= number(row.to)))
-  const quantityValid = !quantity.trim() || (/^\d+(?:[.,]\d+)?$/.test(quantity.trim()) && number(quantity) > 0)
+  const validWidth = positive(width)
+  const validLength = !hasLength || positive(length)
+  const quantityValid = !quantity.trim() || (/^\d+(?:[.,]\d+)?$/.test(quantity.trim()) && number(quantity) >= 0)
   const href = (() => {
-    if (!width || !thickness || !matching.length || !validLength || !quantityValid) return ''
+    if (!validWidth || !positive(thickness) || !validLength || !quantityValid) return ''
     const url = new URL(requestHref, 'https://magicmet.ru')
     const existing = url.searchParams.get('product')
-    url.searchParams.set('product', [existing, `${isCold ? 'лист х/к' : 'лист г/к'}, толщина ${thickness} мм, ширина ${width} мм`, hasLength ? `длина ${length} мм` : 'длина уточняется', steelGrade.trim() ? `марка стали ${steelGrade.trim()}` : '', quantity.trim() ? `количество ${quantity.trim()} ${quantityUnit}` : '', standard].filter(Boolean).join('; '))
+    url.searchParams.set('product', [existing, `${isCold ? 'лист х/к' : 'лист г/к'}, толщина ${thickness} мм, ширина ${normalize(width)} мм`, hasLength ? `длина ${normalize(length)} мм` : 'длина уточняется', steelGrade.trim() ? `марка стали ${steelGrade.trim()}` : '', quantity.trim() ? `количество ${quantity.trim()} ${quantityUnit}` : '', `справочный стандарт ${standard}`].filter(Boolean).join('; '))
     return url.pathname + url.search + url.hash
   })()
 
   return <div className="sheet-format-picker">
-    <h3>{isCold ? 'Быстрый подбор холоднокатаного листа' : 'Быстрый подбор горячекатаного листа'}</h3>
-    <p>{isCold ? 'Для тонкого листа начните с форматов 1000 × 2000 или 1250 × 2500 мм. Размеры взяты из справочной таблицы ГОСТ и не гарантируют наличие.' : 'Для средних и больших толщин можно начать с раскроев 1500 × 6000 или 2000 × 6000 мм. Размеры — ориентир ГОСТ, не обещание наличия.'}</p>
-    <div className="sheet-format-picker-presets" aria-label="Популярные форматы для запроса">
-      <span>Часто запрашиваемые раскрои:</span>
-      {presets.map(preset => <button key={preset.width + '-' + preset.length} type="button" aria-pressed={width === preset.width && length === preset.length} onClick={() => { setWidth(preset.width); setThickness(''); setLength(preset.length) }}>{preset.width} × {preset.length} мм</button>)}
-    </div>
-    <p>Выберите раскрой, затем толщину — покажем только сочетания из справочной таблицы. Наличие и возможность резки подтверждаются по заявке.</p>
+    <h3>Толщина и раскрой</h3>
+    <p>Размеры и наличие подтвердит менеджер.</p>
     <div className="sheet-format-picker-fields">
-      <label htmlFor={uid + '-width'}>Ширина, мм
-        <select id={uid + '-width'} value={width} onChange={event => { setWidth(event.target.value); setThickness(''); setLength('') }}>
-          <option value="">Выберите ширину</option>
-          {widths.map(value => <option key={value} value={value}>{value}</option>)}
-        </select>
-      </label>
       <label htmlFor={uid + '-thickness'}>Толщина, мм
-        <select id={uid + '-thickness'} value={thickness} disabled={!width} onChange={event => setThickness(event.target.value)}>
+        <select id={uid + '-thickness'} value={thickness} onChange={event => setThickness(event.target.value)}>
           <option value="">Выберите толщину</option>
           {thicknesses.map(value => <option key={value} value={value}>{value}</option>)}
         </select>
       </label>
-      <label htmlFor={uid + '-length'}>Длина, мм (необязательно)
-        <input id={uid + '-length'} inputMode="decimal" value={length} disabled={!width} placeholder="Указать при необходимости" onChange={event => setLength(event.target.value)} />
-      </label>
     </div>
+    <div className="sheet-format-picker-presets" role="group" aria-label="Раскрой для запроса">
+      <span>Раскрой:</span>
+      {presets.map(preset => <button key={preset.width + '-' + preset.length} type="button" aria-pressed={width === preset.width && length === preset.length} onClick={() => { setWidth(preset.width); setLength(preset.length) }}>{preset.width} × {preset.length} мм</button>)}
+    </div>
+    <details className="sheet-format-picker-custom">
+      <summary>Другой раскрой</summary>
+      <div className="sheet-format-picker-fields">
+        <label htmlFor={uid + '-width'}>Ширина, мм
+          <input id={uid + '-width'} inputMode="decimal" value={width} onChange={event => setWidth(event.target.value)} />
+        </label>
+        <label htmlFor={uid + '-length'}>Длина, мм (необязательно)
+          <input id={uid + '-length'} inputMode="decimal" value={length} placeholder="Указать при необходимости" onChange={event => setLength(event.target.value)} />
+        </label>
+      </div>
+      <p>Другие размеры можно запросить независимо от справочного ряда. Раскрой и наличие подтвердит менеджер.</p>
+    </details>
+    <details className="sheet-format-picker-extra">
+      <summary>Марка и количество (необязательно)</summary>
     <div className="sheet-format-picker-fields sheet-format-picker-order">
       <label htmlFor={uid + '-grade'}>Марка стали (если известна)
         <input id={uid + '-grade'} value={steelGrade} placeholder="Например, Ст3 или 09Г2С" maxLength={80} onChange={event => setSteelGrade(event.target.value)} />
@@ -85,21 +76,17 @@ export default function SheetFormatPicker({ rows, nominalThicknesses, requestHre
         </select>
       </label>
     </div>
-    {!quantityValid && <p className="sheet-format-picker-error" role="alert">Укажите положительное количество или оставьте поле пустым.</p>}
-    {width && length && thicknesses.length === 0 && <p role="status">Для этих ширины и длины подходящих номинальных толщин в справочной таблице нет. Измените раскрой или отправьте спецификацию на проверку.</p>}
-    {matching.length > 0 && <p className="sheet-format-picker-result" role="status">Выбрано: лист {thickness} × {width} мм. Длина в нормативном диапазоне: {[...new Set(lengthRanges)].join(' или ')}.</p>}
-    {!validLength && <p className="sheet-format-picker-error" role="alert">Эта длина не входит в выбранный нормативный диапазон. Проверьте значение или оставьте поле пустым.</p>}
+    </details>
+    {!quantityValid && <p className="sheet-format-picker-error" role="alert">Укажите количество от 0 или оставьте поле пустым.</p>}
+    {thickness && validWidth && validLength && <p className="sheet-format-picker-result" role="status">Выбрано: лист {thickness} × {normalize(width)}{hasLength ? ` × ${normalize(length)}` : ''} мм.</p>}
+    {!validWidth && <p className="sheet-format-picker-error" role="alert">Укажите положительную ширину.</p>}
+    {!validLength && <p className="sheet-format-picker-error" role="alert">Укажите положительную длину или оставьте поле пустым.</p>}
     <div className="sheet-format-picker-actions">
-      {href ? <a href={href}>Отправить выбранный размер в заявку ↗</a> : <span>Выберите ширину и толщину, чтобы отправить параметры</span>}
+      {href ? <a href={href}>Отправить выбранный размер в заявку ↗</a> : <span>Выберите толщину, чтобы отправить параметры</span>}
       {/* The homepage is an HTML Route Handler; document navigation initializes the request form. */}
       {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
       <a href={href || requestHref}>Есть Excel или чертёж? Отправить файл →</a>
     </div>
-    <button type="button" className="size-series-reference-toggle" aria-expanded={showReference} onClick={() => {
-      const parent = document.getElementById(uid + '-reference-anchor')
-      const reference = parent?.closest('details')?.querySelector<HTMLElement>('.size-series-reference')
-      if (reference) { reference.hidden = showReference; setShowReference(!showReference) }
-    }}>{showReference ? 'Скрыть полную таблицу ГОСТ' : 'Открыть полную таблицу ГОСТ'}</button>
-    <span id={uid + '-reference-anchor'} hidden />
+    <a className="size-series-reference-toggle" href="#sizes">Таблицы ГОСТ ↓</a>
   </div>
 }

@@ -11,12 +11,12 @@ import GalvanizedRequestPicker from '@/components/GalvanizedRequestPicker'
 
 const requestHref = '/?product=Бронза&material=БрАМц9-2&region=uzbekistan#request'
 const cases = [
-  ['nonferrous', createElement(NonferrousRequestPicker, { productSlug: 'bronza', requestHref })],
-  ['fastener', createElement(FastenerRequestPicker, { nutThreads: ['M12'], requestHref })],
-  ['mesh', createElement(MeshRopeRequestPicker, { type: 'mesh', requestHref })],
-  ['special procurement', createElement(SpecialProcurementPicker, { mode: 'forging', requestHref })],
-  ['sheet', createElement(SheetFormatPicker, { rows: [], nominalThicknesses: [], standard: 'ГОСТ 19903-2015', requestHref })],
-  ['galvanized', createElement(GalvanizedRequestPicker, { requestHref })],
+  ['nonferrous', createElement(NonferrousRequestPicker, { productSlug: 'bronza', requestHref }), 'Бронза'],
+  ['fastener', createElement(FastenerRequestPicker, { nutThreads: ['M12'], requestHref }), 'Бронза'],
+  ['mesh', createElement(MeshRopeRequestPicker, { type: 'mesh', requestHref }), 'Бронза'],
+  ['special procurement', createElement(SpecialProcurementPicker, { mode: 'forging', requestHref }), 'Бронза'],
+  ['sheet', createElement(SheetFormatPicker, { rows: [], nominalThicknesses: [], standard: 'ГОСТ 19903-2015', requestHref }), 'Бронза'],
+  ['galvanized', createElement(GalvanizedRequestPicker, { requestHref }), 'Бронза; лист; применимость ГОСТ 14918-2020 и возможность поставки уточнить'],
 ] as const
 
 let root: Root | undefined
@@ -35,12 +35,13 @@ function change(label: string, value: string) {
 afterEach(() => { if (root) act(() => root!.unmount()); root = undefined; container?.remove(); container = undefined; vi.unstubAllGlobals() })
 
 describe('specification file requests preserve product context', () => {
-  it.each(cases)('keeps the base request available before hydration for %s', (_, component) => {
+  it.each(cases)('preserves the exact initial product selection and external context before hydration for %s', (_, component, expectedProduct) => {
     const container = document.createElement('div')
     container.innerHTML = renderToStaticMarkup(component)
     const link = Array.from(container.querySelectorAll('a')).find(a => /Excel/.test(a.textContent || ''))!
     const url = new URL(link.getAttribute('href')!, 'https://magicmet.ru')
-    expect(url.searchParams.get('product')).toBe('Бронза')
+    expect(url.searchParams.getAll('product')).toEqual([expectedProduct])
+    expect(url.pathname).toBe('/')
     expect(url.searchParams.get('material')).toBe('БрАМц9-2')
     expect(url.searchParams.get('region')).toBe('uzbekistan')
     expect(url.hash).toBe('#request')

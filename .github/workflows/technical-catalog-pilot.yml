@@ -10,6 +10,14 @@ on:
       - 'src/components/TechnicalCatalogSummary.tsx'
       - 'src/components/ProductDocumentation.css'
       - 'src/components/NonferrousRequestPicker.tsx'
+      - 'src/components/SheetFormatPicker.tsx'
+      - 'src/components/GalvanizedRequestPicker.tsx'
+      - 'src/components/SpecialSheetRequestPicker.tsx'
+      - 'tests/e2e/sheet-selection.e2e.spec.ts'
+      - 'tests/int/sheet-format-picker.int.spec.ts'
+      - 'tests/int/galvanized-selection.int.spec.ts'
+      - 'tests/int/nonferrous-sheet-request.int.spec.ts'
+      - 'tests/int/special-sheet-request.int.spec.ts'
       - 'src/components/CardPickerReadability.css'
       - 'src/data/catalogProductKinds.ts'
       - 'src/data/nonferrousShapes.ts'
@@ -52,6 +60,8 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Verify simplified sheet requests
+        run: npm run test:int -- tests/int/sheet-format-picker.int.spec.ts tests/int/galvanized-selection.int.spec.ts tests/int/nonferrous-sheet-request.int.spec.ts tests/int/special-sheet-request.int.spec.ts
       - run: npx playwright install --with-deps chromium firefox
       - name: Build exactly this PR (no remote preview auth required)
         run: npm run build

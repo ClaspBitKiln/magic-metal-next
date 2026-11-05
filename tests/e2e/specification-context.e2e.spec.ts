@@ -1,12 +1,12 @@
 import { expect, test } from '@playwright/test'
 
 const cases = [
-  ['/produkciya/cvetnye-metally/bronza', '.nonferrous-picker'],
-  ['/produkciya/metizy-i-svarochnye-materialy/krepezh', '.fastener-picker'],
-  ['/produkciya/metizy-i-svarochnye-materialy/setki', '.mesh-rope-picker'],
-  ['/produkciya/pokovki-i-zagotovki/po-chertezhu', '.special-procurement-picker'],
-  ['/produkciya/listovoy-prokat/goryachekatanyj', '.sheet-format-picker'],
-  ['/produkciya/listovoy-prokat/ocinkovannyj', '.galv-picker'],
+  ['/produkciya/cvetnye-metally/bronza', '.nonferrous-picker', ''],
+  ['/produkciya/metizy-i-svarochnye-materialy/krepezh', '.fastener-picker', ''],
+  ['/produkciya/metizy-i-svarochnye-materialy/setki', '.mesh-rope-picker', ''],
+  ['/produkciya/pokovki-i-zagotovki/po-chertezhu', '.special-procurement-picker', ''],
+  ['/produkciya/listovoy-prokat/goryachekatanyj', '.sheet-format-picker', ''],
+  ['/produkciya/listovoy-prokat/ocinkovannyj', '.galv-picker', '; лист; применимость ГОСТ 14918-2020 и возможность поставки уточнить'],
 ] as const
 
 test.beforeEach(async ({ page }) => {
@@ -18,19 +18,20 @@ for (const width of [320, 390, 1536]) {
   test(`specification links retain the product through document navigation at ${width}px`, async ({ page }) => {
     test.setTimeout(90_000)
     await page.setViewportSize({ width, height: 900 })
-    for (const [path, picker] of cases) {
+    for (const [path, picker, initialSelection] of cases) {
       await page.goto(path)
       const title = await page.locator('h1').innerText()
+      const expectedSpecification = title + initialSelection
       const containingTable = page.locator('#sizes details').filter({ has: page.locator(picker) })
       if (await containingTable.count() && await containingTable.getAttribute('open') === null) {
         await containingTable.locator('summary').first().click()
       }
       const fileLink = page.locator(picker).getByRole('link', { name: /Excel/ })
       const url = new URL((await fileLink.getAttribute('href'))!, 'https://magicmet.ru')
-      expect(url.searchParams.get('product')).toBe(title)
+      expect(url.searchParams.get('product')).toBe(expectedSpecification)
       expect(url.hash).toBe('#request')
       await fileLink.click()
-      await expect(page.locator('#request-form textarea[name="message"]')).toHaveValue(`${title}: `)
+      await expect(page.locator('#request-form textarea[name="message"]')).toHaveValue(`${expectedSpecification}: `)
       await expect(page.locator('#request-form input[name="files"]')).toBeVisible()
       expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1)
     }

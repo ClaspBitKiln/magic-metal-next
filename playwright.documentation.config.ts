@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test'
 export default defineConfig({
   testDir: './tests/e2e',
-  testMatch: ['product-documentation.e2e.spec.ts', 'technical-catalog-pilot.e2e.spec.ts', 'nonferrous-shape-reset.e2e.spec.ts', 'specification-context.e2e.spec.ts'],
+  testMatch: ['product-documentation.e2e.spec.ts', 'technical-catalog-pilot.e2e.spec.ts', 'nonferrous-shape-reset.e2e.spec.ts', 'specification-context.e2e.spec.ts', 'sheet-selection.e2e.spec.ts'],
   timeout: 45_000,
   expect: { timeout: 10_000 },
   retries: 0,

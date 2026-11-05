@@ -53,7 +53,7 @@ test('deep-linked copper tube, bronze hexagon, aluminum plate and lead ingot ret
   const cases = [
     { slug: 'med', id: 'tube', name: 'Труба', fields: [['Наружный диаметр, мм', '20'], ['Толщина стенки, мм', '2'], ['Длина, мм (если известна)', '1000']], designation: 'Труба Ø20×2×1000 мм' },
     { slug: 'bronza', id: 'hexagon', name: 'Шестигранник', fields: [['Размер под ключ, мм', '20'], ['Длина, мм (если известна)', '1000']], designation: 'Шестигранник под ключ 20 мм' },
-    { slug: 'alyuminij', id: 'plate', name: 'Плита', fields: [['Толщина, мм', '2'], ['Ширина, мм', '1000'], ['Длина, мм (если известна)', '2000']], designation: 'Плита 2×1000×2000 мм' },
+    { slug: 'alyuminij', id: 'plate', name: 'Плита', fields: [['Толщина, мм', '2'], ['Раскрой, мм', '1000 × 2000']], designation: 'Плита; толщина 2 мм; раскрой 1000 × 2000 мм' },
     { slug: 'svinec', id: 'ingot', name: 'Чушка / блок', fields: [], designation: 'Чушка / блок по спецификации' },
   ] as const
   for (const item of cases) {
@@ -61,6 +61,7 @@ test('deep-linked copper tube, bronze hexagon, aluminum plate and lead ingot ret
     const picker = page.locator('.nonferrous-picker')
     await expect(picker.getByRole('radio', { name: item.name, exact: true })).toBeChecked()
     for (const [label, value] of item.fields) await picker.getByLabel(label, { exact: true }).fill(value)
+    if (item.id === 'plate') await picker.locator('.nonferrous-sheet-extra > summary').click()
     await picker.getByLabel('Количество', { exact: true }).fill('12')
     const action = picker.locator('.nonferrous-submit')
     const destination = new URL((await action.getAttribute('href'))!, 'https://magicmet.ru')
@@ -91,7 +92,7 @@ test('foreign or unsupported kinds are ignored and changing a selected form clea
   await picker.getByLabel('Состояние / способ изготовления', { exact: true }).fill('по чертежу')
   await picker.getByLabel('ГОСТ / ТУ / ASTM', { exact: true }).fill('норматив заказчика')
   await picker.getByRole('radio', { name: 'Лист', exact: true }).check()
-  for (const label of ['Толщина, мм', 'Ширина, мм', 'Длина, мм (если известна)', 'Состояние / способ изготовления', 'ГОСТ / ТУ / ASTM']) {
+  for (const label of ['Толщина, мм', 'Раскрой, мм', 'Состояние / способ изготовления', 'ГОСТ / ТУ / ASTM']) {
     await expect(picker.getByLabel(label, { exact: true })).toHaveValue('')
   }
   await expect(picker.getByLabel('Марка металла / сплава')).toHaveValue('')

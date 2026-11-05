@@ -130,6 +130,16 @@
 
 /* Procurement-first hot-rolled sheet selector; the original normative data remains below. */
 .sheet-format-picker { padding: 18px 0 12px; }
+.product-document-selection .sheet-format-picker { min-width: 0; padding: 0; border: 0; background: transparent; }
+.product-document-selection .sheet-format-picker-fields { grid-template-columns: minmax(0, 1fr); }
+.product-document-selection .sheet-format-picker-fields input,
+.product-document-selection .sheet-format-picker-fields select { box-sizing: border-box; font-size: 16px; }
+.sheet-format-picker > details > summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; color: #071c62; font-size: 14px; font-weight: 650; }
+.sheet-format-picker-actions a { min-height: 44px; display: inline-flex; align-items: center; }
+.sheet-format-picker > .size-series-reference-toggle { min-height: 44px; display: inline-flex; align-items: center; }
+.product-document-selection .nonferrous-sheet-extra > summary,
+.product-document-selection .galv-additional > summary,
+.product-document-selection .galv-reference > summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; color: #071c62; font-size: 14px; font-weight: 650; }
 .sheet-format-picker h3 { margin: 0 0 10px; font-size: clamp(20px, 2vw, 26px); color: #071c62; }
 .product-size-series .sheet-format-picker > p { margin: 8px 0 16px; color: #536481; }
 .sheet-format-picker-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 15px 0; }
