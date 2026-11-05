@@ -1,5 +1,6 @@
 // Navigation to kinds already supported by the existing product pickers.
 // These links do not create catalog positions or imply availability.
+import { colorProductSlugs, getProductShapeKinds } from './nonferrousShapes'
 export type CatalogProductKind = { id: string; label: string; value: string }
 
 export const fastenerKinds: CatalogProductKind[] = [
@@ -24,6 +25,8 @@ export function getCatalogProductKinds(href: string): CatalogProductKind[] {
   if (path === '/produkciya/metizy-i-svarochnye-materialy/krepezh') return fastenerKinds
   if (path === '/produkciya/metizy-i-svarochnye-materialy/svarochnye-materialy') return weldingKinds
   if (path === '/produkciya/metizy-i-svarochnye-materialy/setki') return meshKinds
+  const colorSlug = path.match(/^\/produkciya\/cvetnye-metally\/([^/]+)$/)?.[1]
+  if (colorSlug && colorProductSlugs.has(colorSlug)) return getProductShapeKinds(colorSlug)
   return []
 }
 export function getCatalogKindHref(href: string, id: string): string {

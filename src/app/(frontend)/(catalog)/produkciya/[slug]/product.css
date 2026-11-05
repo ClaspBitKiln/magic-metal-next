@@ -318,6 +318,9 @@
 .product-facts .fact-link b {
   flex: none;
 }
+.product-facts .has-material-link { padding: 0; }
+.product-facts .has-material-link > a { display: flex; align-items: center; min-height: 44px; padding: 10px 0; color: #0757e8; text-decoration: underline; text-underline-offset: 3px; }
+.product-facts .has-material-link > a:focus-visible { outline: 2px solid #0757e8; outline-offset: 2px; }
 .product-subcatalog {
   padding: 80px 7vw 95px;
   background: #eaf0f9;

@@ -1,5 +1,6 @@
 import type { SeoCategory } from '@/data/seoCatalog'
 import type { Material } from '@/data/materials'
+import { getMaterialPageSlug } from '@/data/materialPageLinks'
 import { getProductDetailsByCategory } from '@/data/productDetailCatalog'
 import { getProductSizeSeries } from '@/data/productSizeSeries'
 import LanguageSwitcher from './LanguageSwitcher'
@@ -41,7 +42,7 @@ export default function SectionCatalog({ category, relatedMaterials }: { categor
         {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
         <aside className="sc-aside"><h2 className="sc-heading">Есть готовая заявка?</h2><p>Не нужно искать каждую позицию. Прикрепите Excel, PDF или чертёж — подберём продукцию сами.</p><ul><li>Размер или номер профиля</li><li>Марка стали и ГОСТ</li><li>Длина и количество</li></ul><a className="sc-button" href="/#request">Отправить готовую заявку →</a><small>Достаточно файла и телефона или email</small></aside>
       </div>
-      <section className="sc-info"><div><h2 className="sc-heading">Комплектуем поставку</h2><p>{category.intro}</p></div><div><h2 className="sc-heading">Марки и материалы</h2><div className="sc-grades">{category.grades.map((grade) => <span key={grade}>{grade}</span>)}</div></div></section>
+      <section className="sc-info"><div><h2 className="sc-heading">Комплектуем поставку</h2><p>{category.intro}</p></div><div><h2 className="sc-heading">Марки и материалы</h2><div className="sc-grades">{category.grades.map((grade) => { const slug = getMaterialPageSlug(grade); return <span className={slug ? 'has-material-link' : undefined} key={grade}>{slug ? <Link prefetch={false} href={`/spravochnik-materialov/${slug}`}>{grade}</Link> : grade}</span> })}</div></div></section>
       {relatedMaterials.length > 0 && <section className="sc-materials"><h2 className="sc-heading">Справочник материалов</h2><div>{relatedMaterials.map((material) => <a href={`/spravochnik-materialov/${material.slug}`} key={material.slug}><b>{material.designation}</b><span>{material.name}</span><i aria-hidden="true">→</i></a>)}</div></section>}
     </div>
     <section className="sc-conversion"><div className="sc-wrap"><div><h2 className="sc-heading">Проверим требования и подготовим предложение</h2><p>Пришлите Excel, PDF, Word, фото или чертёж.</p></div><a className="sc-button" href={requestHref}>Отправить заявку →</a></div></section>
