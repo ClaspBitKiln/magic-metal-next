@@ -1,0 +1,30 @@
+import originalWorker from './worker.js'
+export * from './worker.js'
+
+const blocked = (status, message) => Response.json({ error: message }, {
+  status, headers: { 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex, nofollow' },
+})
+
+export default {
+  ...originalWorker,
+  async fetch(request, env, ctx) {
+    let pathname
+    try {
+      pathname = decodeURIComponent(new URL(request.url).pathname)
+        .replaceAll('\\', '/').replace(/\/+/g, '/').replace(/\/$/, '') || '/'
+    } catch {
+      return blocked(400, 'Некорректный путь')
+    }
+    if (/%(?:2f|5c)/i.test(pathname)) return blocked(400, 'Некорректный путь')
+    if (pathname === '/admin' || pathname.startsWith('/admin/')) return blocked(404, 'Недоступно в тестовой версии')
+    if (pathname === '/api/request') return blocked(503, 'Тестовая версия: заявки здесь не отправляются')
+    if ((pathname === '/api' || pathname.startsWith('/api/')) && pathname !== '/api/catalog-search') {
+      return blocked(404, 'Недоступно в тестовой версии')
+    }
+    if (!['GET', 'HEAD'].includes(request.method)) return blocked(405, 'Тестовая версия доступна только для просмотра')
+    const response = await originalWorker.fetch(request, env, ctx)
+    const headers = new Headers(response.headers)
+    headers.set('X-Robots-Tag', 'noindex, nofollow')
+    return new Response(response.body, { status: response.status, statusText: response.statusText, headers })
+  },
+}

@@ -1,0 +1,4 @@
+import { defineCloudflareConfig } from '@opennextjs/cloudflare'
+
+// Preview only: default dummy cache/tag/queue adapters; no paid resources.
+export default defineCloudflareConfig({})

@@ -1,0 +1,17 @@
+{
+  "status": "PREVIEW_KIT_NOT_PRODUCTION",
+  "sourceSha": "f3236eabd5b3f3113d35729e6db5a6701d47e50c",
+  "nodeVersion": "24.22.1",
+  "packages": {
+    "next": "16.4.5",
+    "eslint-config-next": "16.4.5",
+    "@opennextjs/cloudflare": "1.20.16",
+    "wrangler": "4.158.0"
+  },
+  "routePath": "src/app/(frontend)/route.ts",
+  "routeSha256Before": "d69246e507bbe87da5004714c4ddb3710264f006078bad09c193832f73c4b730",
+  "approvedHomeSha256": "f119e5a2ac7e56ff990d5fbef704005d9146080f637e468653257f54ebaaaeb0",
+  "excludedRoutes": ["src/app/(payload)", "src/app/api/cron"],
+  "mailDisabled": true,
+  "productionCompatibilityVerified": false
+}
