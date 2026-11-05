@@ -1,0 +1,25 @@
+name: Check existing temporary preview
+on:
+  push:
+    branches: [free-ci/sheets-20261105]
+    paths: ['.github/workflows/check-existing-worker-preview.yml']
+permissions:
+  contents: read
+jobs:
+  browser:
+    if: github.event.repository.private == false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    env:
+      BASE_URL: https://magic-metal-plan-b-preview.peach-tuna.workers.dev
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - name: Verify public sheet interactions and file navigation
+        run: npx playwright test --config=playwright.documentation.config.ts tests/e2e/sheet-selection.e2e.spec.ts tests/e2e/specification-context.e2e.spec.ts --reporter=github,line
+      - name: Verify public form deep links and no-JS requests
+        run: npx playwright test --config=playwright.catalog-kind.config.ts tests/e2e/nonferrous-kind-navigation.e2e.spec.ts --reporter=github,line
