@@ -1,6 +1,6 @@
 {
-  "checkedAt": "2026-11-04T11:57:01.738Z",
-  "sourceCommit": "508ac5c3ed96fe5149fc6e28fe7c01a787811e67",
+  "checkedAt": "2026-11-05T09:14:59.831Z",
+  "sourceCommit": "b8fbb17a142d2875e891ef8ff8a31129826fb21f",
   "results": [
     {
       "width": 390,
@@ -47,7 +47,7 @@
       ],
       "overlayDisplay": "none",
       "activePreloads": 0,
-      "htmlGzip": 15995,
+      "htmlGzip": 15910,
       "passed": false
     },
     {
@@ -95,7 +95,7 @@
       ],
       "overlayDisplay": "none",
       "activePreloads": 0,
-      "htmlGzip": 15995,
+      "htmlGzip": 15910,
       "passed": false
     },
     {
@@ -143,7 +143,7 @@
       ],
       "overlayDisplay": "none",
       "activePreloads": 0,
-      "htmlGzip": 15995,
+      "htmlGzip": 15910,
       "passed": false
     },
     {
@@ -191,7 +191,7 @@
       ],
       "overlayDisplay": "none",
       "activePreloads": 0,
-      "htmlGzip": 15995,
+      "htmlGzip": 15910,
       "passed": false
     },
     {
@@ -239,7 +239,7 @@
       ],
       "overlayDisplay": "none",
       "activePreloads": 0,
-      "htmlGzip": 15995,
+      "htmlGzip": 15910,
       "passed": false
     },
     {
@@ -287,7 +287,7 @@
       ],
       "overlayDisplay": "none",
       "activePreloads": 0,
-      "htmlGzip": 15995,
+      "htmlGzip": 15910,
       "passed": false
     },
     {
@@ -335,7 +335,7 @@
       ],
       "overlayDisplay": "none",
       "activePreloads": 0,
-      "htmlGzip": 15995,
+      "htmlGzip": 15910,
       "passed": false
     },
     {
@@ -383,7 +383,7 @@
       ],
       "overlayDisplay": "none",
       "activePreloads": 0,
-      "htmlGzip": 15995,
+      "htmlGzip": 15910,
       "passed": false
     },
     {
@@ -434,7 +434,7 @@
       ],
       "overlayDisplay": "block",
       "activePreloads": 1,
-      "htmlGzip": 15995,
+      "htmlGzip": 15910,
       "passed": false
     },
     {
@@ -482,7 +482,7 @@
       ],
       "overlayDisplay": "block",
       "activePreloads": 1,
-      "htmlGzip": 15995,
+      "htmlGzip": 15910,
       "passed": false
     },
     {
@@ -533,7 +533,7 @@
       ],
       "overlayDisplay": "block",
       "activePreloads": 1,
-      "htmlGzip": 15995,
+      "htmlGzip": 15910,
       "passed": false
     },
     {
@@ -581,7 +581,7 @@
       ],
       "overlayDisplay": "block",
       "activePreloads": 1,
-      "htmlGzip": 15995,
+      "htmlGzip": 15910,
       "passed": false
     }
   ],
