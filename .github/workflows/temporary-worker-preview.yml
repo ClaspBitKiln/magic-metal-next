@@ -11,6 +11,9 @@ concurrency:
 jobs:
   preview:
     if: github.event.repository.private == false
+    outputs:
+      url: ${{ steps.deploy.outputs.url }}
+      smoke: ${{ steps.smoke.outputs.status }}
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     env:
@@ -36,6 +39,13 @@ jobs:
         working-directory: .plan-b/temporary-current
         run: node ../../deploy/cloudflare-preview/deploy-temporary.mjs
       - name: Verify the actual public preview
-        env:
-          PREVIEW_URL: ${{ steps.deploy.outputs.url }}
+        id: smoke
         run: node deploy/cloudflare-preview/smoke-public.mjs
+  public-result:
+    needs: preview
+    if: always() && github.event.repository.private == false && needs.preview.outputs.url != ''
+    name: '${{ needs.preview.outputs.url }} (${{ needs.preview.outputs.smoke }})'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 1
+    steps:
+      - run: echo 'The job name contains only the public preview URL and bounded HTTP status diagnostics.'
