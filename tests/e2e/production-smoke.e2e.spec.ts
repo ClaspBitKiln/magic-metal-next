@@ -272,8 +272,10 @@ test('the restored catalog exposes details and preserves request prefill', async
   await expect(page.locator('.catalog-group')).toHaveCount(12)
   await expect(page.locator('.catalog-group[open]')).toHaveCount(0)
   await expect(page.locator('.catalog-item')).toHaveCount(70)
-  const links = page.locator('.home-size-series > a')
+  // Count actual product rows; the eight sibling kind links reuse their CSS.
+  const links = page.locator('.catalog-item .home-size-series > a')
   await expect(links).toHaveCount(70)
+  await expect(page.locator('.catalog-kind-links > a')).toHaveCount(8)
   const ferroLinks = page.locator('.home-size-series > a[href^="/produkciya/ferrosplavy/"]')
   await expect(ferroLinks).toHaveCount(8)
   await expect(page.locator('.catalog-group').filter({ hasText: 'Ферросплавы' }).locator('.catalog-item')).toHaveCount(8)
