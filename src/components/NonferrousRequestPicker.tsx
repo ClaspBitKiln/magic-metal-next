@@ -4,31 +4,19 @@ import { Fragment, useId, useMemo, useState } from 'react'
 import { alloyGradeExamples } from '@/data/alloyGradeExamples'
 import { getMaterialPageSlug } from '@/data/materialPageLinks'
 import './CardPickerReadability.css'
+import { getProductShapeKinds } from '@/data/nonferrousShapes'
+import { useCatalogKind } from './useCatalogKind'
+import CatalogKindFallback from './CatalogKindFallback'
 
-type Shape = 'Лист' | 'Лента' | 'Плита' | 'Полоса' | 'Труба' | 'Круг / пруток' | 'Квадрат' | 'Шестигранник' | 'Проволока' | 'Чушка / блок' | 'Втулка / заготовка'
-const shapes: Record<string, Shape[]> = {
-  med: ['Лист','Лента','Труба','Круг / пруток','Проволока'],
-  latun: ['Лист','Лента','Труба','Круг / пруток','Проволока'],
-  bronza: ['Круг / пруток','Квадрат','Шестигранник','Втулка / заготовка','Лента','Лист'],
-  alyuminij: ['Лист','Плита','Труба','Круг / пруток','Проволока'],
-  titan: ['Лист','Труба','Круг / пруток','Втулка / заготовка'],
-  olovo: ['Чушка / блок','Круг / пруток'],
-  svinec: ['Чушка / блок','Лист','Втулка / заготовка'],
-  cink: ['Чушка / блок','Лист'],
-  nihrom: ['Проволока','Лента','Круг / пруток'],
-  babbit: ['Чушка / блок','Втулка / заготовка'],
-  list: ['Лист','Лента'],
-  truby: ['Труба'],
-  'sortovoy-prokat': ['Круг / пруток','Квадрат','Шестигранник','Полоса'],
-}
 const f = (value: string) => value.trim().replace('.', ',')
 
 export default function NonferrousRequestPicker({ productSlug, requestHref }: { productSlug: string; requestHref: string }) {
-  const options = shapes[productSlug] || ['Круг / пруток']
+  const shapeKinds = getProductShapeKinds(productSlug)
+  const options = shapeKinds.map(option => option.value)
   const gradeExamples = alloyGradeExamples[productSlug]
   const shapeName = useId()
   const [otherGrade, setOtherGrade] = useState('')
-  const [shape, setShape] = useState<Shape | ''>('')
+  const [shape, setShapeId] = useCatalogKind(shapeKinds, '')
   const [a, setA] = useState('')
   const [b, setB] = useState('')
   const [length, setLength] = useState('')
@@ -68,10 +56,11 @@ export default function NonferrousRequestPicker({ productSlug, requestHref }: { 
   return <section className="nonferrous-picker nonferrous-readability" aria-label="Подбор цветного металла по форме и размерам">
     <h2>Форма и размеры</h2>
     <noscript><style>{'.nonferrous-readability .nonferrous-shapes,.nonferrous-readability .nonferrous-fields,.nonferrous-readability .nonferrous-advanced{display:none!important}'}</style><p>Параметры можно указать в форме заявки или приложить спецификацию.</p></noscript>
+    <CatalogKindFallback kinds={shapeKinds} requestHref={requestHref} />
     <fieldset className="nonferrous-shapes">
       <legend>Форма изделия</legend>
       <div className="nonferrous-shape-options">{options.map(value => <label key={value} className="nonferrous-shape-option">
-        <input type="radio" name={shapeName} value={value} checked={shape === value} onChange={() => {if (shape === value) return; setShape(value as Shape);setA('');setB('');setLength('');setGrade('');setOtherGrade('');setCondition('');setSurface('');setStandard('')}} />
+        <input type="radio" name={shapeName} value={value} checked={shape === value} onChange={() => {if (shape === value) return; setShapeId(shapeKinds.find(option => option.value === value)?.id || '');setA('');setB('');setLength('');setGrade('');setOtherGrade('');setCondition('');setSurface('');setStandard('')}} />
         <span>{value}</span>
       </label>)}</div>
     </fieldset>

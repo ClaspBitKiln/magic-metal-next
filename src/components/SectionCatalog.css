@@ -46,6 +46,9 @@
 .sc-info p { margin: 0; color: #5b6880; font-size: 15px; line-height: 23px; }
 .sc-grades { display: flex; flex-wrap: wrap; gap: 8px; }
 .sc-grades span { padding: 6px 11px; border: 1px solid #dce3ef; border-radius: 4px; background: #f7f9fc; color: #4e5e7a; font-size: 14px; }
+.sc-grades .has-material-link { padding: 0; }
+.sc-grades .has-material-link > a { display: inline-flex; align-items: center; min-height: 44px; padding: 6px 11px; color: #0757e8; text-decoration: underline; text-underline-offset: 3px; }
+.sc-grades .has-material-link > a:focus-visible { outline: 2px solid #0757e8; outline-offset: 2px; }
 .sc-materials { padding-block: 0 30px; }
 .sc-materials > div { margin-top: 14px; border-top: 1px solid #dfe6ef; }
 .sc-materials a { display: grid; grid-template-columns: 120px 1fr 20px; gap: 20px; padding-block: 14px; border-bottom: 1px solid #dfe6ef; color: #59677e; font-size: 14px; }
