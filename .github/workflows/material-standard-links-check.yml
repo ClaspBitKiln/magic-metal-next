@@ -2,6 +2,11 @@ name: Material standard reference checks
 on:
   pull_request:
     paths:
+      - 'package.json'
+      - 'package-lock.json'
+      - 'vitest.config.mts'
+      - 'vitest.setup.ts'
+      - 'tsconfig.json'
       - 'src/data/standards.ts'
       - 'src/data/materials.ts'
       - 'src/data/materialStandardLinks.ts'

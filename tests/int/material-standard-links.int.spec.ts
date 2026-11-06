@@ -29,7 +29,7 @@ describe('material references link each known standard independently', () => {
     expect(render(reference).body.textContent).toBe(reference)
   })
 
-  it.each(['ГОСТ 9940-9999', 'ГОСТ 99400', 'ГОСТ 9940-81234', 'ГОСТ 9940.1', 'ГОСТ 9940-8', 'ASTM A240/A240M для листа'])('keeps unsupported references as plain text: %s', reference => {
+  it.each(['ГОСТ 9940-9999', 'ГОСТ 99400', 'ГОСТ 9940-81234', 'ГОСТ 9940.1', 'ГОСТ 9940-8', 'ГОСТ 9940 - 8', 'ГОСТ 9940‑9999', 'ГОСТ 9940 - 812', 'ГОСТ 9940 -', 'ASTM A240/A240M для листа'])('keeps unsupported references as plain text: %s', reference => {
     const document = render(reference)
     expect(document.querySelectorAll('a')).toHaveLength(0)
     expect(document.body.textContent).toBe(reference)

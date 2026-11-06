@@ -15,7 +15,9 @@ export function getMaterialStandardParts(reference: string): MaterialStandardPar
     const text = match[0]
     const code = normalize(text).replace(/\s*-\s*/gu, '-')
     const hasEdition = /-\d{2,4}$/u.test(code)
-    const matches = standards.filter(standard => normalize(hasEdition ? standard.code : standard.code.replace(/-\d{2,4}$/u, '')) === code)
+    // An unparsed edition suffix must not turn a malformed reference into a bare-code link.
+    const hasUnparsedEdition = /^\s*[\p{Dash_Punctuation}\u2212](?:\s*\d|\s*$)/u.test(reference.slice(index + text.length))
+    const matches = hasUnparsedEdition ? [] : standards.filter(standard => normalize(hasEdition ? standard.code : standard.code.replace(/-\d{2,4}$/u, '')) === code)
     // An explicit unknown edition must never silently fall back to another year.
     parts.push({ text, ...(matches.length === 1 ? { standard: matches[0] } : {}) })
     cursor = index + text.length
