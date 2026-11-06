@@ -1,0 +1,406 @@
+{
+  "production": "dpl_J9TLZMB3zyHjEKwbcJA1zgaFZ81q",
+  "production_sha": "a4878b9045e5db8e9a6b4c26a3f8d86220af766b",
+  "count": 35,
+  "aliases": 126,
+  "preserve_sha_prefixes": [
+    "a4878b9",
+    "2f526c5",
+    "ac643b5"
+  ],
+  "remaining": [
+    {
+      "id": "dpl_BCCzHbN7v39kSZ4PxqNyQkTta9KV",
+      "sha": "f8086a7e2d4a",
+      "state": "CANCELED",
+      "target": null,
+      "age_days": 0.9,
+      "aliases": [],
+      "included_in_published_history": null
+    },
+    {
+      "id": "dpl_BMTpJ8Dy2TkjZt2RbMZdPBWm3GmE",
+      "sha": "803848a2f965",
+      "state": "READY",
+      "target": null,
+      "age_days": 0.9,
+      "aliases": [
+        "magic-metal-next-git-fix-mesh-kind-selectio-a671ee-claspbitkiln.vercel.app"
+      ],
+      "included_in_published_history": true
+    },
+    {
+      "id": "dpl_5owrXJo9fHiMrymF36VAnrFAXQVW",
+      "sha": "b192f09027db",
+      "state": "CANCELED",
+      "target": null,
+      "age_days": 1.0,
+      "aliases": [],
+      "included_in_published_history": null
+    },
+    {
+      "id": "dpl_JA4ayvN1qudsGzMsx5sdXxeT2QC9",
+      "sha": "b8fbb17a142d",
+      "state": "READY",
+      "target": "production",
+      "age_days": 1.0,
+      "aliases": [],
+      "included_in_published_history": true
+    },
+    {
+      "id": "dpl_131eGSusNCkVhNG3Qh4pC4ASkHgR",
+      "sha": "d1abb7367ae3",
+      "state": "CANCELED",
+      "target": null,
+      "age_days": 1.0,
+      "aliases": [],
+      "included_in_published_history": true
+    },
+    {
+      "id": "dpl_BXmVAqt9Sbhywaa8Y9ihf4r1L2qq",
+      "sha": "d1abb7367ae3",
+      "state": "CANCELED",
+      "target": null,
+      "age_days": 1.0,
+      "aliases": [],
+      "included_in_published_history": true
+    },
+    {
+      "id": "dpl_YfpzEwTiC3V2aTXzKynsZcbKG2Ss",
+      "sha": "6a520269bdc5",
+      "state": "READY",
+      "target": null,
+      "age_days": 1.0,
+      "aliases": [
+        "magic-metal-next-git-fix-visible-catalog-ki-5e07a2-claspbitkiln.vercel.app"
+      ],
+      "included_in_published_history": true
+    },
+    {
+      "id": "dpl_Cy9oMxqmGx65B1KaLoQ7bG1LcsD3",
+      "sha": "837cd25f3c90",
+      "state": "READY",
+      "target": null,
+      "age_days": 1.0,
+      "aliases": [],
+      "included_in_published_history": true
+    },
+    {
+      "id": "dpl_8NoTxGKVUhyEAgpFmM7HaVWYMJbf",
+      "sha": "3bec35b17365",
+      "state": "READY",
+      "target": null,
+      "age_days": 1.8,
+      "aliases": [
+        "magic-metal-next-git-fix-card-a-audit-and-r-659d34-claspbitkiln.vercel.app"
+      ],
+      "included_in_published_history": true
+    },
+    {
+      "id": "dpl_DKaGJ7JQXfXDnp5MQW3DX9Duv2VE",
+      "sha": "b900cad1eac1",
+      "state": "READY",
+      "target": null,
+      "age_days": 1.8,
+      "aliases": [
+        "magic-metal-next-git-docs-master-site-execu-f2b929-claspbitkiln.vercel.app"
+      ],
+      "included_in_published_history": null
+    },
+    {
+      "id": "dpl_3W15HiHc69TwRabhiLcmob6QTehG",
+      "sha": "81eb22dede31",
+      "state": "READY",
+      "target": null,
+      "age_days": 1.8,
+      "aliases": [
+        "magic-metal-next-git-docs-obsidian-plan-and-1c702b-claspbitkiln.vercel.app"
+      ],
+      "included_in_published_history": null
+    },
+    {
+      "id": "dpl_4T3oirgWXiHqp4UPU1bAgsLcAN8b",
+      "sha": "2edcf7036b11",
+      "state": "READY",
+      "target": null,
+      "age_days": 1.9,
+      "aliases": [
+        "magic-metal-next-git-design-approved-a-next-d76d14-claspbitkiln.vercel.app"
+      ],
+      "included_in_published_history": null
+    },
+    {
+      "id": "dpl_86AfKVQdbAzxM9iDEpgtHSD9YqCF",
+      "sha": "50537cef72ec",
+      "state": "READY",
+      "target": null,
+      "age_days": 1.9,
+      "aliases": [
+        "magic-metal-next-git-design-approved-a-fait-335c8a-claspbitkiln.vercel.app"
+      ],
+      "included_in_published_history": null
+    },
+    {
+      "id": "dpl_9Qbc8AstHFibrSWpwKdcYwA5hbTx",
+      "sha": "1a4ed05fa17c",
+      "state": "READY",
+      "target": null,
+      "age_days": 1.9,
+      "aliases": [
+        "magic-metal-next-git-design-approved-card-a-f5c9b6-claspbitkiln.vercel.app"
+      ],
+      "included_in_published_history": null
+    },
+    {
+      "id": "dpl_5YXwqY5669NBJSYAW2vTvfDHPc5E",
+      "sha": "887c6f402b80",
+      "state": "READY",
+      "target": null,
+      "age_days": 1.9,
+      "aliases": [
+        "magic-metal-next-git-fix-nonferrous-rfq-par-a9b7e4-claspbitkiln.vercel.app"
+      ],
+      "included_in_published_history": null
+    },
+    {
+      "id": "dpl_4B8H6cFZHSGpvjAHkvy1mB4gahJ6",
+      "sha": "638358034bd8",
+      "state": "READY",
+      "target": null,
+      "age_days": 2.6,
+      "aliases": [
+        "magic-metal-next-git-design-approved-docume-ea367a-claspbitkiln.vercel.app"
+      ],
+      "included_in_published_history": true
+    },
+    {
+      "id": "dpl_Fwt5SHr6oxZoT9tJxqa8ZrLugK6B",
+      "sha": "0faa46d62b24",
+      "state": "READY",
+      "target": null,
+      "age_days": 2.9,
+      "aliases": [
+        "magic-metal-next-git-growth-metrika-additiv-0233e6-claspbitkiln.vercel.app"
+      ],
+      "included_in_published_history": null
+    },
+    {
+      "id": "dpl_GFKMSutLY2ymL6c5sc9QnGz9gTNJ",
+      "sha": "52cfcf3efeac",
+      "state": "READY",
+      "target": null,
+      "age_days": 3.6,
+      "aliases": [
+        "magic-metal-next-git-infra-persistent-resea-a8c32c-claspbitkiln.vercel.app"
+      ],
+      "included_in_published_history": null
+    },
+    {
+      "id": "dpl_BJKLztfbwfhff9WQ5vzSLMmYVjBi",
+      "sha": "a9d2237b6d4e",
+      "state": "READY",
+      "target": null,
+      "age_days": 3.6,
+      "aliases": [
+        "magic-metal-next-git-infra-crawl4ai-researc-f187ce-claspbitkiln.vercel.app"
+      ],
+      "included_in_published_history": null
+    },
+    {
+      "id": "dpl_HLeMA3KjXv5VE9d9kxSpH9WeiCu3",
+      "sha": "51b8f013e58a",
+      "state": "READY",
+      "target": null,
+      "age_days": 7.9,
+      "aliases": [
+        "magic-metal-next-git-content-concrete-mater-191889-claspbitkiln.vercel.app"
+      ],
+      "included_in_published_history": null
+    },
+    {
+      "id": "dpl_6m1bQbSDzjVGTLy2DxcGfKy88cgQ",
+      "sha": "56cf0c3e682d",
+      "state": "READY",
+      "target": null,
+      "age_days": 8.2,
+      "aliases": [
+        "magic-metal-next-git-content-replace-placeh-a5dcab-claspbitkiln.vercel.app"
+      ],
+      "included_in_published_history": null
+    },
+    {
+      "id": "dpl_8mkhS4SVrJ4qZpXWvNtBTmrpGxJx",
+      "sha": "c3ad537c3484",
+      "state": "READY",
+      "target": null,
+      "age_days": 9.0,
+      "aliases": [
+        "magic-metal-next-git-fix-footer-policy-high-2529ec-claspbitkiln.vercel.app"
+      ],
+      "included_in_published_history": null
+    },
+    {
+      "id": "dpl_9NE5eSSrqXL82GMWCuA4gUxVcjXB",
+      "sha": "cb0e78ed4ac6",
+      "state": "READY",
+      "target": null,
+      "age_days": 9.0,
+      "aliases": [
+        "magic-metal-next-git-ux-mobile-search-categ-f6b997-claspbitkiln.vercel.app"
+      ],
+      "included_in_published_history": null
+    },
+    {
+      "id": "dpl_Gs3aVSbNYxGsMmEtLef6FXBvob1A",
+      "sha": "82eeac98365a",
+      "state": "READY",
+      "target": null,
+      "age_days": 9.1,
+      "aliases": [
+        "magic-metal-next-git-fix-mobile-hero-lite-t-772a47-claspbitkiln.vercel.app"
+      ],
+      "included_in_published_history": null
+    },
+    {
+      "id": "dpl_Eedq2J8rAmPa4WTAqVG542vTwmgS",
+      "sha": "d4c3049a8166",
+      "state": "READY",
+      "target": null,
+      "age_days": 24.7,
+      "aliases": [
+        "magic-metal-next-git-fix-request-form-validation-claspbitkiln.vercel.app"
+      ],
+      "included_in_published_history": null
+    },
+    {
+      "id": "dpl_GzcARtkKZWq9cfEeiMRzQE8qSdXS",
+      "sha": "091fec59b614",
+      "state": "READY",
+      "target": null,
+      "age_days": 24.7,
+      "aliases": [
+        "magic-metal-next-git-restore-full-home-claspbitkiln.vercel.app"
+      ],
+      "included_in_published_history": null
+    },
+    {
+      "id": "dpl_55a7jJgZW9TdqNpjZTyaUKE1rdZq",
+      "sha": "789e472e3c75",
+      "state": "READY",
+      "target": null,
+      "age_days": 43.8,
+      "aliases": [
+        "magic-metal-next-git-codex-supplier-search-64c90f-claspbitkiln.vercel.app"
+      ],
+      "included_in_published_history": null
+    },
+    {
+      "id": "dpl_Cmqqg6B1atADK3bMEY14YwGtDgF1",
+      "sha": "c668e8238194",
+      "state": "READY",
+      "target": null,
+      "age_days": 45.2,
+      "aliases": [
+        "magic-metal-next-git-codex-obsidian-account-2b8cdd-claspbitkiln.vercel.app"
+      ],
+      "included_in_published_history": null
+    },
+    {
+      "id": "dpl_BEzgqUnyqPYX5MGpkmtESC184S6q",
+      "sha": "3c76fd65b48a",
+      "state": "READY",
+      "target": null,
+      "age_days": 50.9,
+      "aliases": [
+        "magic-metal-next-git-codex-rfq-best-supplie-cb68fc-claspbitkiln.vercel.app"
+      ],
+      "included_in_published_history": null
+    },
+    {
+      "id": "dpl_E6tRJ4JhBfLenuzPGBMA5oTtbop4",
+      "sha": "9076da450939",
+      "state": "READY",
+      "target": null,
+      "age_days": 51.1,
+      "aliases": [
+        "magic-metal-next-git-rfq-workbench-mvp-claspbitkiln.vercel.app"
+      ],
+      "included_in_published_history": null
+    },
+    {
+      "id": "dpl_SmrraR5SFT5hgc4tfsZxqVFaa3uJ",
+      "sha": "caf79aeaa857",
+      "state": "READY",
+      "target": null,
+      "age_days": 57.7,
+      "aliases": [
+        "magic-metal-next-git-feat-tube-master-mvp-claspbitkiln.vercel.app"
+      ],
+      "included_in_published_history": null
+    }
+  ],
+  "merged_ready_candidates": [
+    {
+      "id": "dpl_BMTpJ8Dy2TkjZt2RbMZdPBWm3GmE",
+      "sha": "803848a2f965",
+      "state": "READY",
+      "target": null,
+      "age_days": 0.9,
+      "aliases": [
+        "magic-metal-next-git-fix-mesh-kind-selectio-a671ee-claspbitkiln.vercel.app"
+      ],
+      "included_in_published_history": true
+    },
+    {
+      "id": "dpl_JA4ayvN1qudsGzMsx5sdXxeT2QC9",
+      "sha": "b8fbb17a142d",
+      "state": "READY",
+      "target": "production",
+      "age_days": 1.0,
+      "aliases": [],
+      "included_in_published_history": true
+    },
+    {
+      "id": "dpl_YfpzEwTiC3V2aTXzKynsZcbKG2Ss",
+      "sha": "6a520269bdc5",
+      "state": "READY",
+      "target": null,
+      "age_days": 1.0,
+      "aliases": [
+        "magic-metal-next-git-fix-visible-catalog-ki-5e07a2-claspbitkiln.vercel.app"
+      ],
+      "included_in_published_history": true
+    },
+    {
+      "id": "dpl_Cy9oMxqmGx65B1KaLoQ7bG1LcsD3",
+      "sha": "837cd25f3c90",
+      "state": "READY",
+      "target": null,
+      "age_days": 1.0,
+      "aliases": [],
+      "included_in_published_history": true
+    },
+    {
+      "id": "dpl_8NoTxGKVUhyEAgpFmM7HaVWYMJbf",
+      "sha": "3bec35b17365",
+      "state": "READY",
+      "target": null,
+      "age_days": 1.8,
+      "aliases": [
+        "magic-metal-next-git-fix-card-a-audit-and-r-659d34-claspbitkiln.vercel.app"
+      ],
+      "included_in_published_history": true
+    },
+    {
+      "id": "dpl_4B8H6cFZHSGpvjAHkvy1mB4gahJ6",
+      "sha": "638358034bd8",
+      "state": "READY",
+      "target": null,
+      "age_days": 2.6,
+      "aliases": [
+        "magic-metal-next-git-design-approved-docume-ea367a-claspbitkiln.vercel.app"
+      ],
+      "included_in_published_history": true
+    }
+  ]
+}

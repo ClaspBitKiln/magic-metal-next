@@ -1,0 +1,25 @@
+{
+  "source_sha": "a4878b9045e5db8e9a6b4c26a3f8d86220af766b",
+  "source_branch": "release/sheets-and-budget-20261106",
+  "previous_production": "dpl_H9eA2aqtCBrRYXNvwArdJukpsj5a",
+  "rollback": "dpl_5w4P9zfqaCnw72KX4rNnNAnwi539",
+  "deployment_id": "dpl_J9TLZMB3zyHjEKwbcJA1zgaFZ81q",
+  "state": "READY",
+  "url": "magic-metal-next-ae14cftfd-claspbitkiln.vercel.app",
+  "observed_sha": "a4878b9045e5db8e9a6b4c26a3f8d86220af766b",
+  "errorCode": null,
+  "errorMessage": null,
+  "alias": [
+    "magicmet.ru",
+    "www.magicmet.ru",
+    "magic-metal-next.vercel.app",
+    "magic-metal-next-claspbitkiln.vercel.app",
+    "magic-metal-next-git-release-sheets-and-bud-88670a-claspbitkiln.vercel.app"
+  ],
+  "production_target_confirmed": true,
+  "protected_versions": {
+    "dpl_H9eA2aqtCBrRYXNvwArdJukpsj5a": "READY",
+    "dpl_5w4P9zfqaCnw72KX4rNnNAnwi539": "READY"
+  },
+  "live_check_error": "<urlopen error Tunnel connection failed: 403 Forbidden>"
+}
