@@ -9,6 +9,9 @@ on:
       - scripts/vercel-ignore-build.mjs
       - scripts/vercel-cleanup.py
       - scripts/vercel-capacity.py
+      - scripts/audit-product-cards.mjs
+      - scripts/product-card-audit-report.mjs
+      - scripts/audit-product-cards.test.mjs
       - tests/test_vercel_capacity.py
       - .github/workflows/vercel-capacity-report.yml
       - tests/test_vercel_cleanup.py
@@ -34,3 +37,6 @@ jobs:
 
       - name: Verify read-only capacity safeguards
         run: python3 -m unittest discover -s tests -p test_vercel_capacity.py
+
+      - name: Verify audit verdict without visiting any site
+        run: node scripts/audit-product-cards.test.mjs

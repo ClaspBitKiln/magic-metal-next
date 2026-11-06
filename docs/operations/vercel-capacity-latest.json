@@ -1,5 +1,5 @@
 {
-  "queried_at": "2026-11-06T10:28:25.293Z",
+  "queried_at": "2026-11-06T10:48:37.185Z",
   "read_only": true,
   "deployment_count": 23,
   "metrics_not_before": "2026-11-06T09:49:41.583000+00:00",
@@ -20,11 +20,11 @@
       "state": "unknown"
     },
     "deployment_lambda_storage_size": {
-      "status": "stale",
-      "value_bytes": 10640775745,
-      "latest_sample": "2026-11-05T13:00:00Z",
-      "ratio": null,
-      "state": "unknown"
+      "status": "fresh",
+      "value_bytes": 792709182,
+      "latest_sample": "2026-11-06T10:00:00Z",
+      "ratio": 0.0792709182,
+      "state": "normal"
     }
   },
   "decision": "metrics_pending",

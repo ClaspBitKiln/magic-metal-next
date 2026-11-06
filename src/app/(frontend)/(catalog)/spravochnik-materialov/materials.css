@@ -1190,3 +1190,13 @@
     grid-row: 2 / 4;
   }
 }
+
+/* Keep individual codes intact while a compound material reference can wrap. */
+.material-facts .material-standard-link {
+  color: #0757e8;
+  white-space: nowrap;
+}
+
+.material-facts .material-standard-reference {
+  white-space: normal;
+}

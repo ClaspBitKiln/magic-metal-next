@@ -1,0 +1,266 @@
+{
+  "before": [
+    {
+      "width": 320,
+      "http": 200,
+      "gzip": 19507,
+      "scripts": 12,
+      "links": [
+        {
+          "text": "ГОСТ 9940 и ГОСТ 9941 для соответствующих труб →",
+          "href": "/spravochnik-gost/gost-9940-81"
+        }
+      ],
+      "styles": {
+        "h1": {
+          "font": "32px",
+          "line": "35.2px",
+          "weight": "600",
+          "height": 35.1875
+        },
+        "h2": {
+          "font": "25px",
+          "line": "28.75px",
+          "weight": "600",
+          "height": 57.5
+        },
+        "p": {
+          "font": "12px",
+          "line": "16.8px",
+          "weight": "600",
+          "height": 0
+        },
+        ".materials-cta": {
+          "font": "13px",
+          "line": "16.9px",
+          "weight": "600",
+          "height": 44.890625
+        }
+      },
+      "overflow": 78
+    },
+    {
+      "width": 390,
+      "http": 200,
+      "gzip": 19507,
+      "scripts": 12,
+      "links": [
+        {
+          "text": "ГОСТ 9940 и ГОСТ 9941 для соответствующих труб →",
+          "href": "/spravochnik-gost/gost-9940-81"
+        }
+      ],
+      "styles": {
+        "h1": {
+          "font": "33.15px",
+          "line": "36.465px",
+          "weight": "600",
+          "height": 36.46875
+        },
+        "h2": {
+          "font": "27.3px",
+          "line": "31.395px",
+          "weight": "600",
+          "height": 62.78125
+        },
+        "p": {
+          "font": "12px",
+          "line": "16.8px",
+          "weight": "600",
+          "height": 0
+        },
+        ".materials-cta": {
+          "font": "13px",
+          "line": "16.9px",
+          "weight": "600",
+          "height": 44.890625
+        }
+      },
+      "overflow": 8
+    },
+    {
+      "width": 1536,
+      "http": 200,
+      "gzip": 19507,
+      "scripts": 12,
+      "links": [
+        {
+          "text": "ГОСТ 9940 и ГОСТ 9941 для соответствующих труб →",
+          "href": "/spravochnik-gost/gost-9940-81"
+        }
+      ],
+      "styles": {
+        "h1": {
+          "font": "48px",
+          "line": "51.84px",
+          "weight": "600",
+          "height": 51.828125
+        },
+        "h2": {
+          "font": "38px",
+          "line": "42.56px",
+          "weight": "600",
+          "height": 42.546875
+        },
+        "p": {
+          "font": "12px",
+          "line": "16.8px",
+          "weight": "600",
+          "height": 83.984375
+        },
+        ".materials-cta": {
+          "font": "13px",
+          "line": "16.9px",
+          "weight": "600",
+          "height": 44.890625
+        }
+      },
+      "overflow": 0
+    }
+  ],
+  "after": [
+    {
+      "width": 320,
+      "http": 200,
+      "gzip": 19643,
+      "scripts": 12,
+      "links": [
+        {
+          "text": "ГОСТ 9940",
+          "href": "/spravochnik-gost/gost-9940-81"
+        },
+        {
+          "text": "ГОСТ 9941",
+          "href": "/spravochnik-gost/gost-9941-2022"
+        }
+      ],
+      "styles": {
+        "h1": {
+          "font": "32px",
+          "line": "35.2px",
+          "weight": "600",
+          "height": 35.1875
+        },
+        "h2": {
+          "font": "25px",
+          "line": "28.75px",
+          "weight": "600",
+          "height": 57.5
+        },
+        "p": {
+          "font": "12px",
+          "line": "16.8px",
+          "weight": "600",
+          "height": 0
+        },
+        ".materials-cta": {
+          "font": "13px",
+          "line": "16.9px",
+          "weight": "600",
+          "height": 44.890625
+        }
+      },
+      "overflow": 0
+    },
+    {
+      "width": 390,
+      "http": 200,
+      "gzip": 19643,
+      "scripts": 12,
+      "links": [
+        {
+          "text": "ГОСТ 9940",
+          "href": "/spravochnik-gost/gost-9940-81"
+        },
+        {
+          "text": "ГОСТ 9941",
+          "href": "/spravochnik-gost/gost-9941-2022"
+        }
+      ],
+      "styles": {
+        "h1": {
+          "font": "33.15px",
+          "line": "36.465px",
+          "weight": "600",
+          "height": 36.46875
+        },
+        "h2": {
+          "font": "27.3px",
+          "line": "31.395px",
+          "weight": "600",
+          "height": 62.78125
+        },
+        "p": {
+          "font": "12px",
+          "line": "16.8px",
+          "weight": "600",
+          "height": 0
+        },
+        ".materials-cta": {
+          "font": "13px",
+          "line": "16.9px",
+          "weight": "600",
+          "height": 44.890625
+        }
+      },
+      "overflow": 0
+    },
+    {
+      "width": 1536,
+      "http": 200,
+      "gzip": 19643,
+      "scripts": 12,
+      "links": [
+        {
+          "text": "ГОСТ 9940",
+          "href": "/spravochnik-gost/gost-9940-81"
+        },
+        {
+          "text": "ГОСТ 9941",
+          "href": "/spravochnik-gost/gost-9941-2022"
+        }
+      ],
+      "styles": {
+        "h1": {
+          "font": "48px",
+          "line": "51.84px",
+          "weight": "600",
+          "height": 51.828125
+        },
+        "h2": {
+          "font": "38px",
+          "line": "42.56px",
+          "weight": "600",
+          "height": 42.546875
+        },
+        "p": {
+          "font": "12px",
+          "line": "16.8px",
+          "weight": "600",
+          "height": 83.984375
+        },
+        ".materials-cta": {
+          "font": "13px",
+          "line": "16.9px",
+          "weight": "600",
+          "height": 44.890625
+        }
+      },
+      "overflow": 0
+    }
+  ],
+  "reference_targets": [
+    {
+      "slug": "gost-9940-81",
+      "status": 200,
+      "h1": "ГОСТ 9940-81"
+    },
+    {
+      "slug": "gost-9941-2022",
+      "status": 200,
+      "h1": "ГОСТ 9941-2022"
+    }
+  ],
+  "native_zoom_200": "not_verified",
+  "live_site": "blocked_by_network_policy"
+}
