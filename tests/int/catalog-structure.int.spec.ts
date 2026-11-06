@@ -240,22 +240,34 @@ describe('normative product size tables', () => {
     expect(Object.keys(review).sort()).toEqual(['notes', 'product', 'rows', 'scope', 'standard'])
   })
 
-  it('opens sheet combinations first and offers width before exact thickness without removing the full table', () => {
-    const tables = getProductSizeSeries('listovoy-prokat', 'goryachekatanyj')
-    const tree = document.createElement('div')
-    tree.innerHTML = renderToStaticMarkup(createElement(ProductSizeSeries, { series: tables, requestHref: '/#request' }))
-    const details = tree.querySelectorAll('details')
-    const formatIndex = tables.findIndex(table => table.title.startsWith('Форматы'))
-    expect(details[formatIndex].hasAttribute('open')).toBe(true)
-    expect(details[0].hasAttribute('open')).toBe(false)
-    const formats = tables[formatIndex]
-    const [width, thickness] = details[formatIndex].querySelectorAll('select')
-    const widths = [...new Set(formats.rows.flatMap(row => row[1].split(';').map(value => value.trim().replace('.', ','))))].sort((a, b) => Number(a.replace(',', '.')) - Number(b.replace(',', '.')))
-    expect(Array.from(width.options).slice(1).map(option => option.value)).toEqual(widths)
-    expect(thickness.disabled).toBe(true)
-    expect(thickness.options).toHaveLength(1)
-    expect(details[formatIndex].querySelector('.size-series-reference')?.hasAttribute('hidden')).toBe(true)
-    expect(details[formatIndex].querySelectorAll('tbody tr')).toHaveLength(formats.rows.length)
+  it('offers sheet thickness and cut before collapsed, complete normative tables', () => {
+    for (const slug of ['goryachekatanyj', 'holodnokatanyj']) {
+      const tables = getProductSizeSeries('listovoy-prokat', slug)
+      const tree = document.createElement('div')
+      tree.innerHTML = renderToStaticMarkup(createElement(ProductSizeSeries, { series: tables, requestHref: '/#request' }))
+      const picker = tree.querySelector('.sheet-format-picker')!
+      expect(picker).not.toBeNull()
+      const thickness = picker.querySelector<HTMLSelectElement>('.sheet-format-picker-fields > label select')!
+      const nominals = tables.filter(table => table.title.startsWith('Номинальные размеры'))
+        .flatMap(table => table.rows.filter(row => row[0] === 'Толщина').flatMap(row => row[1].split(';').map(value => Number(value.trim().replace(',', '.')))))
+      const expectedThicknesses = [...new Set(nominals)].sort((a, b) => a - b)
+      expect(thickness.disabled).toBe(false)
+      expect(Array.from(thickness.options).slice(1).map(option => Number(option.value.replace(',', '.')))).toEqual(expectedThicknesses)
+      expect(Array.from(picker.querySelectorAll('.sheet-format-picker-presets button'), button => button.textContent)).toEqual(['1500 × 6000 мм', '2000 × 6000 мм'])
+      expect(picker.querySelector('.size-series-reference-toggle')?.getAttribute('href')).toBe('#sizes')
+      const details = tree.querySelectorAll<HTMLDetailsElement>('details[id^="sizes-series-"]')
+      expect(details).toHaveLength(tables.length)
+      tables.forEach((table, index) => {
+        const reference = details[index]
+        expect(picker.compareDocumentPosition(reference) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+        expect(reference.open).toBe(false)
+        expect(reference.querySelector('summary')?.textContent).toBe(table.title + table.standard)
+        expect(reference.querySelector('.size-series-reference')?.hasAttribute('hidden')).toBe(false)
+        reference.open = true
+        expect(reference.hasAttribute('open')).toBe(true)
+        expect(Array.from(reference.querySelectorAll('tbody tr'), row => Array.from(row.children, sourceDimensionValue))).toEqual(table.rows)
+      })
+    }
   })
 
   it('keeps short tables directly readable without a redundant size selector', () => {
@@ -486,7 +498,21 @@ describe('normative product size tables', () => {
     ])
     const markup = renderToStaticMarkup(createElement(ProductSizeSeries, { series: tables, requestHref: '/?product=galvanized#request' }))
     const tree = new DOMParser().parseFromString(markup, 'text/html')
-    expect(tree.querySelectorAll('details[open]')).toHaveLength(1)
+    const picker = tree.querySelector('.galv-picker')!
+    expect(picker).not.toBeNull()
+    expect(picker.querySelector('.galv-fields > label')?.textContent).toBe('Толщина, мм')
+    const references = tree.querySelectorAll<HTMLDetailsElement>('details[id^="sizes-series-"]')
+    expect(references).toHaveLength(tables.length)
+    tables.forEach((table, index) => {
+      const reference = references[index]
+      expect(picker.compareDocumentPosition(reference) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+      expect(reference.open).toBe(false)
+      expect(reference.querySelector('summary')?.textContent).toBe(table.title + table.standard)
+      expect(reference.querySelector('.size-series-reference')?.hasAttribute('hidden')).toBe(false)
+      reference.open = true
+      expect(reference.hasAttribute('open')).toBe(true)
+      expect(Array.from(reference.querySelectorAll('tbody tr'), row => Array.from(row.children, sourceDimensionValue))).toEqual(table.rows)
+    })
     expect(tree.querySelectorAll('.size-series-nav a')).toHaveLength(2)
     expect(tree.querySelectorAll('tbody tr')).toHaveLength(6)
     expect(markup).not.toContain(sizes.source.url)
