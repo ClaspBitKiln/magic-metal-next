@@ -54,3 +54,8 @@ node_modules/
 # Supplier source snapshots are for one-time private SaaS imports only.
 # Never publish them with the public website repository.
 /private/data/
+
+# Private local maintenance inventory and logs
+/vercel-cleanup-plan*.json
+/vercel-cleanup-journal*.jsonl
+__pycache__/

@@ -7,6 +7,8 @@ on:
   pull_request:
     paths:
       - scripts/vercel-ignore-build.mjs
+      - scripts/vercel_cleanup.py
+      - tests/test_vercel_cleanup.py
       - tests/vercel-ignore-build.test.mjs
       - .github/workflows/vercel-budget-check.yml
 
@@ -24,3 +26,5 @@ jobs:
         with:
           node-version: 22
       - run: node --test tests/vercel-ignore-build.test.mjs
+      - name: Verify deployment cleanup protections without API or credentials
+        run: python3 -m unittest discover -s tests -p test_vercel_cleanup.py -v
