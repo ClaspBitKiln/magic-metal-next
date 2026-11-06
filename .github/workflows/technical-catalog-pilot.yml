@@ -10,6 +10,17 @@ on:
       - 'src/components/TechnicalCatalogSummary.tsx'
       - 'src/components/ProductDocumentation.css'
       - 'src/components/NonferrousRequestPicker.tsx'
+      - 'src/components/SheetFormatPicker.tsx'
+      - 'src/components/GalvanizedRequestPicker.tsx'
+      - 'src/components/SpecialSheetRequestPicker.tsx'
+      - 'tests/e2e/sheet-selection.e2e.spec.ts'
+      - 'tests/e2e/specification-context.e2e.spec.ts'
+      - 'playwright.sheets-current.config.ts'
+      - 'scripts/verify-sheet-native-zoom.mjs'
+      - 'tests/int/sheet-format-picker.int.spec.ts'
+      - 'tests/int/galvanized-selection.int.spec.ts'
+      - 'tests/int/nonferrous-sheet-request.int.spec.ts'
+      - 'tests/int/special-sheet-request.int.spec.ts'
       - 'src/components/CardPickerReadability.css'
       - 'src/data/catalogProductKinds.ts'
       - 'src/data/nonferrousShapes.ts'
@@ -31,6 +42,7 @@ on:
       - 'tests/e2e/nonferrous-unrestricted-request.e2e.spec.ts'
       - 'playwright.card-final.config.ts'
       - 'src/components/ProductSizeSeries.tsx'
+      - 'src/components/ProductSizeSeries.css'
       - 'src/components/CatalogStockAssortment.tsx'
       - 'tests/e2e/product-documentation.e2e.spec.ts'
       - 'tests/e2e/technical-catalog-pilot.e2e.spec.ts'
@@ -52,9 +64,11 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Verify simplified sheet requests
+        run: npm run test:int -- tests/int/sheet-format-picker.int.spec.ts tests/int/galvanized-selection.int.spec.ts tests/int/nonferrous-sheet-request.int.spec.ts tests/int/special-sheet-request.int.spec.ts
       - run: npx playwright install --with-deps chromium firefox
       - name: Build exactly this PR (no remote preview auth required)
-        run: npm run build
+        run: npm run build -- --webpack
       - name: Start built application
         run: |
           npm run start -- --hostname 127.0.0.1 --port 3000 > /tmp/technical-catalog.log 2>&1 &
@@ -76,6 +90,10 @@ jobs:
         env:
           BASE_URL: http://127.0.0.1:3000
         run: npx playwright test --config=playwright.catalog-kind.config.ts
+      - name: Verify simplified sheet selection and specification context
+        env:
+          BASE_URL: http://127.0.0.1:3000
+        run: npx playwright test --config=playwright.sheets-current.config.ts sheet-selection.e2e.spec.ts specification-context.e2e.spec.ts
       - name: Check native Chromium browser zoom 200% (Xvfb + X11 input)
         env:
           BASE_URL: http://127.0.0.1:3000
@@ -83,6 +101,9 @@ jobs:
           sudo apt-get install -y xdotool xvfb
           for product in ugolok shveller balka-dvutavrovaya kvadrat shestigrannik katanka polosa krug-goryachekatanyj armatura shveller-gnutyj krug-i-kvadrat balka-shveller-ugolok; do
             xvfb-run -a -s '-screen 0 1920x1080x24' node scripts/verify-angle-native-zoom.mjs "$product"
+          done
+          for zoom_case in hot cold galvanized copper stainless material; do
+            xvfb-run -a -s '-screen 0 1920x1080x24' node scripts/verify-sheet-native-zoom.mjs "$zoom_case"
           done
       - uses: actions/upload-artifact@v4
         if: always()

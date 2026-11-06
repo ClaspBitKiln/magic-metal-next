@@ -1,8 +1,8 @@
 name: Site QA
 
 on:
+  # Wide live audits are opt-in; automatic post-deploy browser QA remains.
   workflow_dispatch:
-  deployment_status:
 
 concurrency:
   group: site-qa-production-${{ github.event.deployment.environment || 'manual' }}
@@ -10,7 +10,6 @@ concurrency:
 
 jobs:
   audit:
-    if: github.event_name == 'workflow_dispatch' || (github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Production')
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     permissions:

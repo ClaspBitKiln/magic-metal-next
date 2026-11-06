@@ -1,4 +1,5 @@
 import { chromium } from '@playwright/test'
+import { auditVerdict } from './product-card-audit-report.mjs'
 import { productDetailCatalog } from '../src/data/productDetailCatalog.ts'
 import { pipeCatalog } from '../src/data/pipeCatalog.ts'
 import { sdtCatalog } from '../src/data/sdtCatalog.ts'
@@ -98,6 +99,9 @@ try {
  }
  const summary = { base, checkedAt: new Date().toISOString(), routes: routes.length, cases: cases.length, expectedCases: jobs.length, widths, findingCounts: {}, uniqueReferenceLinks: links.size, badReferenceLinks: linkChecks.filter(x => x.status !== 200 || (x.canonical && new URL(x.canonical, base).pathname !== x.href)).length, sourceRef: process.env.QA_SOURCE_REF || 'unrecorded', visualMatchA: 'not_verified', normativeReview: 'not_performed', realRfqSent: false }
  for (const c of cases) for (const finding of c.findings) summary.findingCounts[finding] = (summary.findingCounts[finding] || 0) + 1
+ const verdict = auditVerdict(summary)
+ Object.assign(summary, { verdict: verdict.status, exitCode: verdict.exitCode, blockingReasons: verdict.reasons })
  await fs.writeFile(path.join(output, 'audit.json'), JSON.stringify({ summary, cases, linkChecks }, null, 2))
  console.log(JSON.stringify(summary))
+ process.exitCode = verdict.exitCode
 } finally { await browser.close() }

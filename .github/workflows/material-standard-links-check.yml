@@ -1,0 +1,31 @@
+name: Material standard reference checks
+on:
+  pull_request:
+    paths:
+      - 'package.json'
+      - 'package-lock.json'
+      - 'vitest.config.mts'
+      - 'vitest.setup.ts'
+      - 'tsconfig.json'
+      - 'src/data/standards.ts'
+      - 'src/data/materials.ts'
+      - 'src/data/materialStandardLinks.ts'
+      - 'src/components/MaterialStandardReference.tsx'
+      - 'src/app/(frontend)/(catalog)/spravochnik-materialov/**'
+      - 'tests/int/material-standard-links.int.spec.ts'
+      - 'tests/int/material-page-links.int.spec.ts'
+      - '.github/workflows/material-standard-links-check.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  material-references:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --no-audit --no-fund
+      - run: npm run test:int -- tests/int/material-standard-links.int.spec.ts tests/int/material-page-links.int.spec.ts

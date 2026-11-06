@@ -1,0 +1,33 @@
+{
+  "queried_at": "2026-11-06T10:48:37.185Z",
+  "read_only": true,
+  "deployment_count": 23,
+  "metrics_not_before": "2026-11-06T09:49:41.583000+00:00",
+  "production_id": "dpl_J9TLZMB3zyHjEKwbcJA1zgaFZ81q",
+  "production_sha": "a4878b9045e5db8e9a6b4c26a3f8d86220af766b",
+  "protected": {
+    "dpl_J9TLZMB3zyHjEKwbcJA1zgaFZ81q": "current-production",
+    "dpl_9TTH8hGzu2ZREk4hrNUgvrTYWYDD": "ready-production-rollback-sha",
+    "dpl_H9eA2aqtCBrRYXNvwArdJukpsj5a": "ready-production-rollback-sha",
+    "dpl_5w4P9zfqaCnw72KX4rNnNAnwi539": "ready-production-rollback-sha"
+  },
+  "metrics": {
+    "deployment_storage_size": {
+      "status": "stale",
+      "value_bytes": 968404645,
+      "latest_sample": "2026-11-06T09:00:00Z",
+      "ratio": null,
+      "state": "unknown"
+    },
+    "deployment_lambda_storage_size": {
+      "status": "fresh",
+      "value_bytes": 792709182,
+      "latest_sample": "2026-11-06T10:00:00Z",
+      "ratio": 0.0792709182,
+      "state": "normal"
+    }
+  },
+  "decision": "metrics_pending",
+  "potential_unaliased_merged_versions": [],
+  "automatic_deletion_enabled": false
+}

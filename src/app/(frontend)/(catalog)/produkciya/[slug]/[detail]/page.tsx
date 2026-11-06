@@ -15,6 +15,7 @@ import MeshRopeRequestPicker from '@/components/MeshRopeRequestPicker'
 import RopeSalesPicker from '@/components/RopeSalesPicker'
 import SpecialProcurementPicker from '@/components/SpecialProcurementPicker'
 import NonferrousRequestPicker from '@/components/NonferrousRequestPicker'
+import SpecialSheetRequestPicker from '@/components/SpecialSheetRequestPicker'
 import { getProductSizeSeries } from '@/data/productSizeSeries'
 import { getDimensionGuide } from '@/data/dimensionGuides'
 import { ropeSalesAssortment, ropeSalesConstructions, ropeSalesDiameterGroups, ropeSalesRequestHref } from '@/data/ropeSalesAssortment'
@@ -59,7 +60,8 @@ export default async function PipeDetailPage({ params }: { params: Promise<{ slu
   const sizeSeries = getProductSizeSeries(item.categorySlug, item.slug)
   const dimensionGuide = getDimensionGuide(item.categorySlug, item.slug)
   const hasSizeReference = sizeSeries.length > 0 || Boolean(dimensionGuide)
-  const hasSeriesSelection = (item.categorySlug === 'sortovoy-i-fasonny-prokat' && item.slug === 'ugolok') || (item.categorySlug === 'metizy-i-svarochnye-materialy' && item.slug === 'krepezh') || (item.categorySlug === 'listovoy-prokat' && item.slug === 'ocinkovannyj')
+  const specialSheet = item.categorySlug === 'listovoy-prokat' && (item.slug === 'list-riflenyj' || item.slug === 'list-pvl' || item.slug === 'profnastil') ? item.slug : null
+  const hasSeriesSelection = (item.categorySlug === 'sortovoy-i-fasonny-prokat' && item.slug === 'ugolok') || (item.categorySlug === 'metizy-i-svarochnye-materialy' && item.slug === 'krepezh') || (item.categorySlug === 'listovoy-prokat' && ['ocinkovannyj', 'goryachekatanyj', 'holodnokatanyj'].includes(item.slug))
   const hasStandaloneSelection = ['cvetnye-metally', 'nerzhaveyushchaya-stal'].includes(item.categorySlug) || (item.categorySlug === 'metizy-i-svarochnye-materialy' && ['kanaty', 'lenta-upakovochnaya', 'svarochnye-materialy', 'setki'].includes(item.slug)) || (item.categorySlug === 'pokovki-i-zagotovki' && item.slug === 'po-chertezhu')
   const sizeProfiles = item.categorySlug === 'sortovoy-i-fasonny-prokat'
     ? (profileSizePages[item.slug] || []).flatMap((profileSlug) => {
@@ -111,7 +113,8 @@ export default async function PipeDetailPage({ params }: { params: Promise<{ slu
     {((item.categorySlug === 'metizy-i-svarochnye-materialy' && ['lenta-upakovochnaya', 'svarochnye-materialy'].includes(item.slug)) || (item.categorySlug === 'pokovki-i-zagotovki' && item.slug === 'po-chertezhu')) && <SpecialProcurementPicker mode={item.slug === 'lenta-upakovochnaya' ? 'tape' : item.slug === 'svarochnye-materialy' ? 'welding' : 'forging'} requestHref={requestHref} />}
     {item.categorySlug === 'metizy-i-svarochnye-materialy' && item.slug === 'setki' && <MeshRopeRequestPicker type="mesh" requestHref={requestHref} />}
           {hasSeriesSelection && <ProductSizeSeries series={sizeSeries} guide={dimensionGuide} requestHref={requestHref} documentation selectionOnly />}
-          {!hasStandaloneSelection && !hasSeriesSelection && <ProductDocumentRequest requestHref={requestHref} fields={item.requestFields} hasSizeReference={hasSizeReference || sizeProfiles.length > 0} />}
+          {specialSheet && <SpecialSheetRequestPicker key={item.slug} slug={specialSheet} requestHref={requestHref} />}
+          {!hasStandaloneSelection && !hasSeriesSelection && !specialSheet && <ProductDocumentRequest requestHref={requestHref} fields={item.requestFields} hasSizeReference={hasSizeReference || sizeProfiles.length > 0} />}
         </aside>
       <TechnicalCatalogSummary
       title={item.shortTitle}

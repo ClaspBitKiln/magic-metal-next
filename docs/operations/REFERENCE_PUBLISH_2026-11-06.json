@@ -1,0 +1,31 @@
+{
+  "source_sha": "5ae036fee0e0d105a6defd6644208d48e404ba47",
+  "branch": "release/sheets-and-budget-20261106",
+  "previous_production": "dpl_J9TLZMB3zyHjEKwbcJA1zgaFZ81q",
+  "preserved_deployments": [
+    "dpl_J9TLZMB3zyHjEKwbcJA1zgaFZ81q",
+    "dpl_H9eA2aqtCBrRYXNvwArdJukpsj5a",
+    "dpl_5w4P9zfqaCnw72KX4rNnNAnwi539"
+  ],
+  "attempts": 1,
+  "deployment_id": "dpl_HXFUFuvGiFsjRQBdmi4UASYb6Exe",
+  "state": "READY",
+  "observed_sha": "5ae036fee0e0d105a6defd6644208d48e404ba47",
+  "url": "magic-metal-next-r8ctxft9t-claspbitkiln.vercel.app",
+  "alias": [
+    "magicmet.ru",
+    "www.magicmet.ru",
+    "magic-metal-next.vercel.app",
+    "magic-metal-next-claspbitkiln.vercel.app",
+    "magic-metal-next-git-release-sheets-and-bud-88670a-claspbitkiln.vercel.app"
+  ],
+  "errorCode": null,
+  "errorMessage": null,
+  "production_target_confirmed": true,
+  "protected_ready": {
+    "dpl_J9TLZMB3zyHjEKwbcJA1zgaFZ81q": "READY",
+    "dpl_H9eA2aqtCBrRYXNvwArdJukpsj5a": "READY",
+    "dpl_5w4P9zfqaCnw72KX4rNnNAnwi539": "READY"
+  },
+  "live_browser_check": "not_verified_network_policy"
+}

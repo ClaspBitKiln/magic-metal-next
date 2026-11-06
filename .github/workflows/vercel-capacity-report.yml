@@ -1,0 +1,39 @@
+name: Vercel capacity report (read only)
+on:
+  schedule:
+    - cron: '17 5 * * *'
+  workflow_dispatch:
+  deployment_status:
+permissions:
+  contents: read
+concurrency:
+  group: vercel-capacity-report
+  cancel-in-progress: false
+jobs:
+  report:
+    if: github.event_name != 'deployment_status' || (github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Production')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          fetch-depth: 0
+      - name: Check configured access
+        id: access
+        shell: bash
+        run: |
+          if [ -n "$VERCEL_TOKEN" ]; then
+            echo 'ready=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'ready=false' >> "$GITHUB_OUTPUT"
+            echo 'Vercel report unavailable: repository secret VERCEL_TOKEN is not configured. No deletions.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Verify report policy without credentials or network
+        run: python3 -m unittest discover -s tests -p test_vercel_capacity.py
+      - name: Read storage metrics and protected deployments
+        if: steps.access.outputs.ready == 'true'
+        run: python3 scripts/vercel-capacity.py --report /tmp/vercel-capacity.json
