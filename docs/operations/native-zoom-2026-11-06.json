@@ -1,0 +1,199 @@
+{
+  "method": "Headed Chromium, independent Xvfb displays, X11 ctrl+0 followed by five ctrl+plus; viewport:null",
+  "local_only": true,
+  "real_requests_sent": false,
+  "results": [
+    {
+      "caseKey": "hot",
+      "path": "/produkciya/listovoy-prokat/goryachekatanyj",
+      "before": {
+        "width": 1536,
+        "dpr": 1,
+        "overflow": 0,
+        "sectionVisible": true,
+        "actionVisible": true,
+        "actionHeight": 68,
+        "h1FontSize": 40
+      },
+      "after": {
+        "width": 768,
+        "dpr": 2,
+        "overflow": 0,
+        "sectionVisible": true,
+        "actionVisible": true,
+        "actionHeight": 44,
+        "h1FontSize": 32
+      },
+      "browserZoomRatio": 2,
+      "checks": {
+        "desktopBeforeZoom": true,
+        "nativeZoomNear200": true,
+        "nativeDpr": true,
+        "noOverflow": true,
+        "sectionVisible": true,
+        "actionAccessible": true
+      },
+      "status": "PASS"
+    },
+    {
+      "caseKey": "cold",
+      "path": "/produkciya/listovoy-prokat/holodnokatanyj",
+      "before": {
+        "width": 1536,
+        "dpr": 1,
+        "overflow": 0,
+        "sectionVisible": true,
+        "actionVisible": true,
+        "actionHeight": 68,
+        "h1FontSize": 40
+      },
+      "after": {
+        "width": 768,
+        "dpr": 2,
+        "overflow": 0,
+        "sectionVisible": true,
+        "actionVisible": true,
+        "actionHeight": 44,
+        "h1FontSize": 32
+      },
+      "browserZoomRatio": 2,
+      "checks": {
+        "desktopBeforeZoom": true,
+        "nativeZoomNear200": true,
+        "nativeDpr": true,
+        "noOverflow": true,
+        "sectionVisible": true,
+        "actionAccessible": true
+      },
+      "status": "PASS"
+    },
+    {
+      "caseKey": "galvanized",
+      "path": "/produkciya/listovoy-prokat/ocinkovannyj",
+      "before": {
+        "width": 1536,
+        "dpr": 1,
+        "overflow": 0,
+        "sectionVisible": true,
+        "actionVisible": true,
+        "actionHeight": 44,
+        "h1FontSize": 40
+      },
+      "after": {
+        "width": 768,
+        "dpr": 2,
+        "overflow": 0,
+        "sectionVisible": true,
+        "actionVisible": true,
+        "actionHeight": 44,
+        "h1FontSize": 32
+      },
+      "browserZoomRatio": 2,
+      "checks": {
+        "desktopBeforeZoom": true,
+        "nativeZoomNear200": true,
+        "nativeDpr": true,
+        "noOverflow": true,
+        "sectionVisible": true,
+        "actionAccessible": true
+      },
+      "status": "PASS"
+    },
+    {
+      "caseKey": "copper",
+      "path": "/produkciya/cvetnye-metally/med",
+      "before": {
+        "width": 1536,
+        "dpr": 1,
+        "overflow": 0,
+        "sectionVisible": true,
+        "actionVisible": true,
+        "actionHeight": 44,
+        "h1FontSize": 40
+      },
+      "after": {
+        "width": 768,
+        "dpr": 2,
+        "overflow": 0,
+        "sectionVisible": true,
+        "actionVisible": true,
+        "actionHeight": 44,
+        "h1FontSize": 32
+      },
+      "browserZoomRatio": 2,
+      "checks": {
+        "desktopBeforeZoom": true,
+        "nativeZoomNear200": true,
+        "nativeDpr": true,
+        "noOverflow": true,
+        "sectionVisible": true,
+        "actionAccessible": true
+      },
+      "status": "PASS"
+    },
+    {
+      "caseKey": "stainless",
+      "path": "/produkciya/nerzhaveyushchaya-stal/list",
+      "before": {
+        "width": 1536,
+        "dpr": 1,
+        "overflow": 0,
+        "sectionVisible": true,
+        "actionVisible": true,
+        "actionHeight": 44,
+        "h1FontSize": 40
+      },
+      "after": {
+        "width": 768,
+        "dpr": 2,
+        "overflow": 0,
+        "sectionVisible": true,
+        "actionVisible": true,
+        "actionHeight": 44,
+        "h1FontSize": 32
+      },
+      "browserZoomRatio": 2,
+      "checks": {
+        "desktopBeforeZoom": true,
+        "nativeZoomNear200": true,
+        "nativeDpr": true,
+        "noOverflow": true,
+        "sectionVisible": true,
+        "actionAccessible": true
+      },
+      "status": "PASS"
+    },
+    {
+      "caseKey": "material",
+      "path": "/spravochnik-materialov/12x18n10t",
+      "before": {
+        "width": 1536,
+        "dpr": 1,
+        "overflow": 0,
+        "sectionVisible": true,
+        "actionVisible": true,
+        "actionHeight": 49.046875,
+        "h1FontSize": 48
+      },
+      "after": {
+        "width": 768,
+        "dpr": 2,
+        "overflow": 0,
+        "sectionVisible": true,
+        "actionVisible": true,
+        "actionHeight": 49.046875,
+        "h1FontSize": 36
+      },
+      "browserZoomRatio": 2,
+      "checks": {
+        "desktopBeforeZoom": true,
+        "nativeZoomNear200": true,
+        "nativeDpr": true,
+        "noOverflow": true,
+        "sectionVisible": true,
+        "actionAccessible": true
+      },
+      "status": "PASS"
+    }
+  ]
+}

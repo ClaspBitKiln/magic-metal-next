@@ -16,6 +16,7 @@ on:
       - 'tests/e2e/sheet-selection.e2e.spec.ts'
       - 'tests/e2e/specification-context.e2e.spec.ts'
       - 'playwright.sheets-current.config.ts'
+      - 'scripts/verify-sheet-native-zoom.mjs'
       - 'tests/int/sheet-format-picker.int.spec.ts'
       - 'tests/int/galvanized-selection.int.spec.ts'
       - 'tests/int/nonferrous-sheet-request.int.spec.ts'
@@ -100,6 +101,9 @@ jobs:
           sudo apt-get install -y xdotool xvfb
           for product in ugolok shveller balka-dvutavrovaya kvadrat shestigrannik katanka polosa krug-goryachekatanyj armatura shveller-gnutyj krug-i-kvadrat balka-shveller-ugolok; do
             xvfb-run -a -s '-screen 0 1920x1080x24' node scripts/verify-angle-native-zoom.mjs "$product"
+          done
+          for zoom_case in hot cold galvanized copper stainless material; do
+            xvfb-run -a -s '-screen 0 1920x1080x24' node scripts/verify-sheet-native-zoom.mjs "$zoom_case"
           done
       - uses: actions/upload-artifact@v4
         if: always()
