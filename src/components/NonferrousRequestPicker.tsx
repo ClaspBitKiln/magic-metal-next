@@ -16,10 +16,11 @@ export default function NonferrousRequestPicker({ productSlug, requestHref }: { 
   const gradeExamples = alloyGradeExamples[productSlug]
   const shapeName = useId()
   const [otherGrade, setOtherGrade] = useState('')
-  const [shape, setShapeId] = useCatalogKind(shapeKinds, '')
+  const [shape, setShapeId] = useCatalogKind(shapeKinds, productSlug === 'list' ? 'Лист' : '')
   const [a, setA] = useState('')
   const [b, setB] = useState('')
   const [length, setLength] = useState('')
+  const [sheetCut, setSheetCut] = useState('')
   const [grade, setGrade] = useState('')
   const [condition, setCondition] = useState('')
   const [surface, setSurface] = useState('')
@@ -27,6 +28,7 @@ export default function NonferrousRequestPicker({ productSlug, requestHref }: { 
   const [amount, setAmount] = useState('')
   const [unit, setUnit] = useState('кг')
   const flat = shape === 'Лист' || shape === 'Лента' || shape === 'Плита' || shape === 'Полоса'
+  const sheet = shape === 'Лист' || shape === 'Плита'
   const tube = shape === 'Труба'
   const bar = shape === 'Круг / пруток' || shape === 'Квадрат' || shape === 'Шестигранник' || shape === 'Проволока'
   const shaped = shape === 'Втулка / заготовка'
@@ -34,7 +36,9 @@ export default function NonferrousRequestPicker({ productSlug, requestHref }: { 
     : tube ? `Труба Ø${f(a)}×${f(b)}${length ? `×${f(length)}` : ''} мм`
     : bar ? `${shape} ${shape === 'Квадрат' ? `${f(a)}×${f(a)}` : shape === 'Шестигранник' ? `под ключ ${f(a)}` : `Ø${f(a)}`} мм`
     : shaped ? `Втулка / заготовка ${a ? `габарит ${f(a)} мм` : 'по чертежу'}` : shape === 'Чушка / блок' ? 'Чушка / блок по спецификации' : ''
-  const name = flat && !(a.trim() && b.trim())
+  const name = sheet
+    ? [shape, a.trim() ? `толщина ${f(a)} мм` : '', sheetCut.trim() ? `раскрой ${f(sheetCut)} мм` : '', !(a.trim() && sheetCut.trim()) ? 'остальные размеры уточнить' : ''].filter(Boolean).join('; ')
+    : flat && !(a.trim() && b.trim())
     ? [shape, a.trim() ? `толщина ${f(a)} мм` : '', b.trim() ? `ширина ${f(b)} мм` : '', length.trim() ? `длина ${f(length)} мм` : '', 'остальные размеры уточнить'].filter(Boolean).join('; ')
     : tube && !(a.trim() && b.trim())
       ? [shape, a.trim() ? `наружный диаметр ${f(a)} мм` : '', b.trim() ? `толщина стенки ${f(b)} мм` : '', length.trim() ? `длина ${f(length)} мм` : '', 'остальные размеры уточнить'].filter(Boolean).join('; ')
@@ -53,6 +57,14 @@ export default function NonferrousRequestPicker({ productSlug, requestHref }: { 
     url.hash = 'request'
     return url.pathname + url.search + url.hash
   }, [requestHref, shape, name, tube, bar, a, b, length, grade, otherGrade, condition, surface, standard, amount, unit])
+  const optionalFields = <>
+    {gradeExamples ? <label>Марка {productSlug === 'list' || productSlug === 'truby' || productSlug === 'sortovoy-prokat' ? 'стали' : 'металла / сплава'}
+      <select value={grade} onChange={e => {setGrade(e.target.value);setOtherGrade('')}}><option value="">Выберите марку</option>{gradeExamples.grades.map(value=><option key={value} value={value}>{value}</option>)}<option value="__other__">Другая марка по спецификации</option></select>
+    </label> : <label>Марка сплава<input value={grade} onChange={e=>setGrade(e.target.value)} placeholder="Укажите из чертежа / спецификации" /></label>}
+    {grade === '__other__' && <label>Укажите другую марку<input value={otherGrade} onChange={e=>setOtherGrade(e.target.value)} placeholder="Точное обозначение из заявки" /></label>}
+    <label>Количество<input value={amount} onChange={e=>setAmount(e.target.value)} inputMode="decimal" placeholder="Можно позже" /></label>
+    <label>Единица<select value={unit} onChange={e=>setUnit(e.target.value)}>{['кг','т','шт.','м','м²'].map(x=><option key={x} value={x}>{x}</option>)}</select></label>
+  </>
   return <section className="nonferrous-picker nonferrous-readability" aria-label="Подбор цветного металла по форме и размерам">
     <h2>Форма и размеры</h2>
     <noscript><style>{'.nonferrous-readability .nonferrous-shapes,.nonferrous-readability .nonferrous-fields,.nonferrous-readability .nonferrous-advanced{display:none!important}'}</style><p>Параметры можно указать в форме заявки или приложить спецификацию.</p></noscript>
@@ -60,24 +72,24 @@ export default function NonferrousRequestPicker({ productSlug, requestHref }: { 
     <fieldset className="nonferrous-shapes">
       <legend>Форма изделия</legend>
       <div className="nonferrous-shape-options">{options.map(value => <label key={value} className="nonferrous-shape-option">
-        <input type="radio" name={shapeName} value={value} checked={shape === value} onChange={() => {if (shape === value) return; setShapeId(shapeKinds.find(option => option.value === value)?.id || '');setA('');setB('');setLength('');setGrade('');setOtherGrade('');setCondition('');setSurface('');setStandard('')}} />
+        <input type="radio" name={shapeName} value={value} checked={shape === value} onChange={() => {if (shape === value) return; setShapeId(shapeKinds.find(option => option.value === value)?.id || '');setA('');setB('');setLength('');setSheetCut('');setGrade('');setOtherGrade('');setCondition('');setSurface('');setStandard('')}} />
         <span>{value}</span>
       </label>)}</div>
     </fieldset>
     <div className="nonferrous-fields">
 
       {shape !== '' && <>
-        {(flat || tube || bar || shaped) && <label>{flat ? 'Толщина, мм' : tube ? 'Наружный диаметр, мм' : shape === 'Шестигранник' ? 'Размер под ключ, мм' : shape === 'Квадрат' ? 'Сторона, мм' : shaped ? 'Основной габарит, мм (если известен)' : 'Диаметр, мм'}<input value={a} onChange={e=>setA(e.target.value)} inputMode="decimal" placeholder="Например, 20" /></label>}
-        {(flat || tube) && <label>{flat ? 'Ширина, мм' : 'Толщина стенки, мм'}<input value={b} onChange={e=>setB(e.target.value)} inputMode="decimal" placeholder={tube ? 'Например, 2' : 'Например, 1000'} /></label>}
-        {(flat || tube || bar) && <label>Длина, мм (если известна)<input value={length} onChange={e=>setLength(e.target.value)} inputMode="decimal" placeholder="По спецификации" /></label>}
-        {gradeExamples ? <label>Марка {productSlug === 'list' || productSlug === 'truby' || productSlug === 'sortovoy-prokat' ? 'стали' : 'металла / сплава'}
-          <select value={grade} onChange={e => {setGrade(e.target.value);setOtherGrade('')}}><option value="">Выберите марку</option>{gradeExamples.grades.map(value=><option key={value} value={value}>{value}</option>)}<option value="__other__">Другая марка по спецификации</option></select>
-        </label> : <label>Марка сплава<input value={grade} onChange={e=>setGrade(e.target.value)} placeholder="Укажите из чертежа / спецификации" /></label>}
-        {grade === '__other__' && <label>Укажите другую марку<input value={otherGrade} onChange={e=>setOtherGrade(e.target.value)} placeholder="Точное обозначение из заявки" /></label>}
-        <label>Количество<input value={amount} onChange={e=>setAmount(e.target.value)} inputMode="decimal" placeholder="Можно позже" /></label>
-        <label>Единица<select value={unit} onChange={e=>setUnit(e.target.value)}>{['кг','т','шт.','м','м²'].map(x=><option key={x} value={x}>{x}</option>)}</select></label>
+        {(flat || tube || bar || shaped) && <label>{flat ? 'Толщина, мм' : tube ? 'Наружный диаметр, мм' : shape === 'Шестигранник' ? 'Размер под ключ, мм' : shape === 'Квадрат' ? 'Сторона, мм' : shaped ? 'Основной габарит, мм (если известен)' : 'Диаметр, мм'}<input value={a} onChange={e=>setA(e.target.value)} inputMode="decimal" placeholder={sheet ? 'Укажите толщину' : 'Например, 20'} /></label>}
+        {sheet && <label>Раскрой, мм<input value={sheetCut} onChange={e=>setSheetCut(e.target.value)} placeholder="Ширина × длина" /></label>}
+        {((flat && !sheet) || tube) && <label>{flat ? 'Ширина, мм' : 'Толщина стенки, мм'}<input value={b} onChange={e=>setB(e.target.value)} inputMode="decimal" placeholder={tube ? 'Например, 2' : 'Например, 1000'} /></label>}
+        {((flat && !sheet) || tube || bar) && <label>Длина, мм (если известна)<input value={length} onChange={e=>setLength(e.target.value)} inputMode="decimal" placeholder="По спецификации" /></label>}
+        {!sheet && optionalFields}
       </>}
     </div>
+    {sheet && <details className="nonferrous-advanced nonferrous-sheet-extra">
+      <summary>Марка и количество (необязательно)</summary>
+      <div className="nonferrous-fields">{optionalFields}</div>
+    </details>}
     {shape !== '' && <details className="nonferrous-advanced">
       <summary>Дополнительные параметры</summary>
       <div className="nonferrous-fields">
@@ -86,7 +98,7 @@ export default function NonferrousRequestPicker({ productSlug, requestHref }: { 
         <label>ГОСТ / ТУ / ASTM<input value={standard} onChange={e=>setStandard(e.target.value)} placeholder="Стандарт именно этого изделия" /></label>
       </div>
     </details>}
-    <p className="nonferrous-note">Заявку можно отправить с любыми параметрами, даже если они не соответствуют справочным диапазонам. Наличие и возможность поставки уточняет менеджер.</p>
+    <p className="nonferrous-note">{sheet ? '' : 'Заявку можно отправить с любыми параметрами, даже если они не соответствуют справочным диапазонам. '}Наличие и возможность поставки уточняет менеджер.</p>
     {/* The homepage is an HTML Route Handler; document navigation initializes the request form. */}
     {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
     <div className="nonferrous-actions"><a className="nonferrous-submit" href={href}>Передать параметры в заявку ↗</a><a href={href}>Есть спецификация? Прикрепить Excel / PDF / чертёж →</a></div>

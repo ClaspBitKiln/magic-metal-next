@@ -1,0 +1,30 @@
+name: Vercel build decision checks
+
+on:
+  push:
+    branches: [fix/vercel-budget-20261105]
+    paths-ignore: ['docs/**', 'MEMORY.md']
+  pull_request:
+    paths:
+      - scripts/vercel-ignore-build.mjs
+      - scripts/vercel-cleanup.py
+      - tests/test_vercel_cleanup.py
+      - tests/vercel-ignore-build.test.mjs
+      - .github/workflows/vercel-budget-check.yml
+
+permissions:
+  contents: read
+
+jobs:
+  build-decisions:
+    if: github.event.repository.private == false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node --test tests/vercel-ignore-build.test.mjs
+      - name: Verify deployment cleanup protections without API or credentials
+        run: python3 -m unittest discover -s tests -p test_vercel_cleanup.py -v

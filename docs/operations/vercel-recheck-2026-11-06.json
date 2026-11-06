@@ -1,0 +1,14 @@
+{
+  "deployments": 75,
+  "alias_records": 125,
+  "production_id": "dpl_H9eA2aqtCBrRYXNvwArdJukpsj5a",
+  "production_sha": "2f526c58357597836143938ae712a439cda98d68",
+  "production_state": "READY",
+  "rollback_state": "READY",
+  "missing_since_cleanup": [
+    "dpl_2ieNSdJFjxeWet1czGSfupms4UwG"
+  ],
+  "missing_detail_status": 404,
+  "alias_mappings_changed": false,
+  "note": "A formerly retained documentation Preview 6487bae is absent; an alias record still points to it. This ID is not in the273 approved/deleted IDs. Cause is unknown. Do not claim every alias currently resolves. No additional deletes or deployments executed."
+}

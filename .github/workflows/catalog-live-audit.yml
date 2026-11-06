@@ -1,17 +1,14 @@
 name: Catalog live link audit
 
 on:
-  schedule:
-    - cron: '37 3 * * *'
+  # Wide live audits are opt-in; automatic post-deploy browser QA remains.
   workflow_dispatch:
-  deployment_status:
 
 permissions:
   contents: read
 
 jobs:
   audit:
-    if: github.event_name != 'deployment_status' || (github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Production')
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
