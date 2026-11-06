@@ -38,7 +38,7 @@ python3 scripts/vercel_cleanup.py plan --include-old-production --min-days 7 --l
 
 Команда: `python3 -m unittest discover -s tests -p test_vercel_cleanup.py -v`.
 
-Короткий GitHub workflow `.github/workflows/vercel-budget-check.yml` проверяет решения сборки и программу без внешнего API/учётных данных. Результат удалённого CI фиксируется отдельно после завершения.
+Короткий GitHub workflow `.github/workflows/vercel-budget-check.yml` проверяет решения сборки и программу без внешнего API/учётных данных. CI для source `18009ae` завершился успешно: https://github.com/ClaspBitKiln/magic-metal-next/actions/runs/42163040563, job 127712988149. Все шаги, включая 28 Python-проверок и Complete job, success. Проверки решения сборки также success. Последующий коммит меняет только документацию.
 
 ## Продолжение
 
