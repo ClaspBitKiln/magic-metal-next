@@ -8,6 +8,9 @@ on:
     paths:
       - scripts/vercel-ignore-build.mjs
       - scripts/vercel-cleanup.py
+      - scripts/vercel-capacity.py
+      - tests/test_vercel_capacity.py
+      - .github/workflows/vercel-capacity-report.yml
       - tests/test_vercel_cleanup.py
       - tests/vercel-ignore-build.test.mjs
       - .github/workflows/vercel-budget-check.yml
@@ -28,3 +31,6 @@ jobs:
       - run: node --test tests/vercel-ignore-build.test.mjs
       - name: Verify deployment cleanup protections without API or credentials
         run: python3 -m unittest discover -s tests -p test_vercel_cleanup.py -v
+
+      - name: Verify read-only capacity safeguards
+        run: python3 -m unittest discover -s tests -p test_vercel_capacity.py

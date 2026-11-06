@@ -1,0 +1,61 @@
+{
+  "approved_ids": [
+    "dpl_BMTpJ8Dy2TkjZt2RbMZdPBWm3GmE",
+    "dpl_JA4ayvN1qudsGzMsx5sdXxeT2QC9",
+    "dpl_YfpzEwTiC3V2aTXzKynsZcbKG2Ss",
+    "dpl_Cy9oMxqmGx65B1KaLoQ7bG1LcsD3",
+    "dpl_8NoTxGKVUhyEAgpFmM7HaVWYMJbf",
+    "dpl_4B8H6cFZHSGpvjAHkvy1mB4gahJ6"
+  ],
+  "production": "a4878b9",
+  "protected": {
+    "dpl_J9TLZMB3zyHjEKwbcJA1zgaFZ81q": "a4878b9",
+    "dpl_H9eA2aqtCBrRYXNvwArdJukpsj5a": "2f526c5",
+    "dpl_5w4P9zfqaCnw72KX4rNnNAnwi539": "ac643b5"
+  },
+  "events": [
+    {
+      "id": "dpl_BMTpJ8Dy2TkjZt2RbMZdPBWm3GmE",
+      "sha": "803848a2f965b3cce136d73f2f7e9ed80616e0c3",
+      "removed_test_aliases": [
+        "magic-metal-next-git-fix-mesh-kind-selectio-a671ee-claspbitkiln.vercel.app"
+      ],
+      "status": "deleted_confirmed_404"
+    },
+    {
+      "id": "dpl_JA4ayvN1qudsGzMsx5sdXxeT2QC9",
+      "sha": "b8fbb17a142d2875e891ef8ff8a31129826fb21f",
+      "removed_test_aliases": [],
+      "status": "deleted_confirmed_404"
+    },
+    {
+      "id": "dpl_YfpzEwTiC3V2aTXzKynsZcbKG2Ss",
+      "sha": "6a520269bdc5d0f3d2ff3f297c7a19842cec66a9",
+      "removed_test_aliases": [
+        "magic-metal-next-git-fix-visible-catalog-ki-5e07a2-claspbitkiln.vercel.app"
+      ],
+      "status": "deleted_confirmed_404"
+    },
+    {
+      "id": "dpl_Cy9oMxqmGx65B1KaLoQ7bG1LcsD3",
+      "sha": "837cd25f3c9083123e4bd29acff3b3cb1aa742e1",
+      "removed_test_aliases": [],
+      "status": "deleted_confirmed_404"
+    },
+    {
+      "id": "dpl_8NoTxGKVUhyEAgpFmM7HaVWYMJbf",
+      "status": "already_absent"
+    },
+    {
+      "id": "dpl_4B8H6cFZHSGpvjAHkvy1mB4gahJ6",
+      "sha": "638358034bd8abb9a0cf517bcb9ac5c8846cb869",
+      "removed_test_aliases": [
+        "magic-metal-next-git-design-approved-docume-ea367a-claspbitkiln.vercel.app"
+      ],
+      "status": "deleted_confirmed_404"
+    }
+  ],
+  "complete": true,
+  "protected_ready": true,
+  "production_domains_preserved": true
+}
