@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "project": "Сайт",
+  "brand": "Magic Metal",
+  "site": "https://magicmet.ru",
+  "repository": "ClaspBitKiln/magic-metal-next",
+  "defaultBranch": "main",
+  "evidenceDate": "2026-11-07",
+  "snapshotOnly": true,
+  "readOrder": [
+    "AGENTS.md",
+    "MEMORY.md",
+    "docs/ai/FIRST_RUN_ACCOUNT_SETUP.md",
+    "docs/ai/START_NEXT_ACCOUNT.md",
+    "docs/ai/PROJECT_SYSTEM_ARCHITECTURE.md",
+    "docs/ai/CROSS_ACCOUNT_BOOTSTRAP.md"
+  ],
+  "paths": {
+    "canonicalStart": "docs/ai/START_NEXT_ACCOUNT.md",
+    "rulesIndex": "docs/ai/RULES_APPLICATION_2026-11-06.md",
+    "productionEvidence": "docs/operations/PR164_MERGED_2026-11-06.json",
+    "localObsidianDiagnosis": "scripts/obsidian-recovery.mjs",
+    "windowsRecoveryWrapper": "scripts/diagnose_remote_desktop_commander.ps1"
+  },
+  "priority": "Восстановить чтение настоящего Obsidian через существующее подключение; сохранить ручные заметки.",
+  "lastConfirmedRelease": {
+    "pr": 164,
+    "prState": "MERGED",
+    "mainAndProductionSha": "3efff82a5fbf96fecfee0503681c1f41d9e606b4",
+    "deployment": "dpl_2QCZAvNMYqhCE3nPX6zmaknzCbW3",
+    "state": "READY"
+  },
+  "integrations": {
+    "obsidian": {
+      "vaultReadByCurrentCloudSession": false,
+      "remoteDeviceId": "5a436677-3504-4ffe-844c-05211febdc66",
+      "ownerLog": "2026-11-07 09:56:47: Connected / Session restored; timezone not independently confirmed",
+      "chatgptRemoteToolsAvailableAtLastCheck": false,
+      "gatewayHostnameVerified": false
+    },
+    "githubCapacity": "Workflow in main; run 42238529583 succeeded, metrics step skipped because job lacked VERCEL_TOKEN. Operational metrics collection not verified.",
+    "githubApi": "Previously blocked by runtime network policy; recheck after configuration changes.",
+    "vercelApi": "Existing environment binding previously worked; not inherited automatically by another account.",
+    "firecrawl": "Plugin/MCP not available at last check; configured remote access not verified."
+  },
+  "paused": [
+    "CMS",
+    "MATBOOK",
+    "new CRM",
+    "P3"
+  ],
+  "notes": [
+    "Сайт3 is a historical conversation branch, not the current project name.",
+    "Read current Git status before actions: local unpublished changes are separate from this release snapshot.",
+    "Credentials are not stored in this manifest or inherited through documentation."
+  ],
+  "startupDeliveryBranch": "fix/obsidian-start-20261107",
+  "ownerWindows": {
+    "host": "DESKTOP-BNPIVK2",
+    "vault": "C:/Users/asus/Documents/inn-bot",
+    "projectCheckout": "C:/Users/asus/Documents/magic-metal-clean",
+    "sharedKnowledge": "C:/Users/asus/Documents/AI-Project-Hub",
+    "protectUncommittedChanges": true,
+    "source": "Owner supplied handoff snapshot, actual files not read by current chat"
+  }
+}

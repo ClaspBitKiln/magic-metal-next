@@ -1,0 +1,58 @@
+{
+  "pr": 164,
+  "pr_state": "MERGED",
+  "main_sha": "3efff82a5fbf96fecfee0503681c1f41d9e606b4",
+  "head_sha": "045092dc468819465f4513fdadb92e9e845f89cb",
+  "checks": [
+    {
+      "name": "Vercel Preview Comments",
+      "href": "/ClaspBitKiln/magic-metal-next/pull/164/checks?check_run_id=127957762000",
+      "status": "This check passed"
+    },
+    {
+      "name": "pilot-local",
+      "href": "/ClaspBitKiln/magic-metal-next/actions/runs/42237179178/job/127957727460?pr=164",
+      "status": "This job succeeded"
+    },
+    {
+      "name": "Playwright (chromium)",
+      "href": "/ClaspBitKiln/magic-metal-next/actions/runs/42237179200/job/127957728267?pr=164",
+      "status": "This job succeeded"
+    },
+    {
+      "name": "Playwright (firefox)",
+      "href": "/ClaspBitKiln/magic-metal-next/actions/runs/42237179200/job/127957728562?pr=164",
+      "status": "This job succeeded"
+    },
+    {
+      "name": "Lighthouse CI",
+      "href": "/ClaspBitKiln/magic-metal-next/actions/runs/42237179200/job/127957730871?pr=164",
+      "status": "This job was skipped"
+    },
+    {
+      "name": "build-decisions",
+      "href": "/ClaspBitKiln/magic-metal-next/actions/runs/42237179199/job/127957727485?pr=164",
+      "status": "This job succeeded"
+    },
+    {
+      "name": "catalog",
+      "href": "/ClaspBitKiln/magic-metal-next/actions/runs/42237179210/job/127957728048?pr=164",
+      "status": "This job succeeded"
+    },
+    {
+      "name": "material-references",
+      "href": "/ClaspBitKiln/magic-metal-next/actions/runs/42237179282/job/127957728160?pr=164",
+      "status": "This job succeeded"
+    }
+  ],
+  "production": {
+    "id": "dpl_2QCZAvNMYqhCE3nPX6zmaknzCbW3",
+    "sha": "3efff82a5fbf96fecfee0503681c1f41d9e606b4",
+    "state": "READY"
+  },
+  "merge_method": "standard Git fast-forward to GitHub-generated tested merge commit; no force push",
+  "gefest_catalog_read": false,
+  "gefest_failure": "proxy CONNECT403",
+  "gefest_network_draft_saved": true,
+  "gefest_network_applied": false
+}

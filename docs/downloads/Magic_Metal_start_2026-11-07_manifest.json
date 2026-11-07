@@ -1,0 +1,43 @@
+{
+  "project": "Сайт",
+  "version": 7,
+  "date": "2026-11-07",
+  "tests": {
+    "core_pass": 13,
+    "wrapper_scenarios_pass": 8,
+    "real_windows_verified": false,
+    "real_vault_readback": false
+  },
+  "files": [
+    {
+      "path": "/workspace/artifacts/Инструкция_старт_Magic_Metal_2026-11-07.docx",
+      "sha256": "c9c6035f28b23003839ef91a9230a85f596d41fa077a3025b98f3dfa11a64f7e",
+      "bytes": 54115
+    },
+    {
+      "path": "/workspace/artifacts/Инструкция_старт_Magic_Metal_2026-11-07.pdf",
+      "sha256": "ee834473e331252668d0cafa7b819ca93824322050541a57039e1e397ae7e2ae",
+      "bytes": 258644
+    },
+    {
+      "path": "/workspace/artifacts/Obsidian-Recovery-2026-11-07.zip",
+      "sha256": "557155eb839ab3b407c5e96aab66f13ccbf917230124a8532abe707356afed24",
+      "bytes": 12772
+    },
+    {
+      "path": "/workspace/magic-metal-next/docs/ai/START_NEXT_ACCOUNT.md",
+      "sha256": "7fb3708ef48f37f7914471b93c1611b185764290fd825801e436b3b48af8bdff",
+      "bytes": 44581
+    },
+    {
+      "path": "/workspace/magic-metal-next/site1.bootstrap.json",
+      "sha256": "05ba90d123e0fe3f3eef678a7a67c521425c779a770fbcf9a3750eee2deeb7ec",
+      "bytes": 2867
+    },
+    {
+      "path": "/workspace/magic-metal-next/docs/operations/OBSIDIAN_RECOVERY_VERIFICATION_2026-11-07.md",
+      "sha256": "d406eef1bd096675edbfef04aa42b9e9d0c03bbb09f5b439ac11e8732128c05b",
+      "bytes": 3937
+    }
+  ]
+}

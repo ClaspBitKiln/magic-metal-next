@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param(
-    [ValidateSet('Diagnose', 'Start')]
+    [ValidateSet('Diagnose', 'Start', 'Recover')]
     [string]$Action = 'Diagnose'
 )
 
@@ -31,16 +31,68 @@ Write-Host "Node: $(& $Node.Source --version) ($($Node.Source))"
 Write-Host "npm:  $(& $Npm.Source --version)"
 Write-Host "npx:  $($Npx.Source)"
 
+$DiagnosticExit = 0
+if ($Action -eq 'Recover') {
+    Write-Section 'Existing Obsidian and local API'
+    $Obsidian = Get-Process -Name 'Obsidian' -ErrorAction SilentlyContinue
+    if (-not $Obsidian) {
+        $Candidates = @(
+            (Join-Path $env:LOCALAPPDATA 'Obsidian\Obsidian.exe'),
+            (Join-Path $env:LOCALAPPDATA 'Programs\Obsidian\Obsidian.exe'),
+            (Join-Path $env:ProgramFiles 'Obsidian\Obsidian.exe')
+        )
+        $Executable = $Candidates | Where-Object { Test-Path -LiteralPath $_ -PathType Leaf } | Select-Object -First 1
+        if ($Executable) {
+            Start-Process -FilePath $Executable
+            Write-Host 'Started the existing Obsidian installation. No vault files or settings changed.'
+            Start-Sleep -Seconds 3
+        } else {
+            Write-Host 'Obsidian is not running and its executable was not found in standard locations.' -ForegroundColor Yellow
+        }
+    } else {
+        Write-Host 'Obsidian is already running; it will not be restarted.'
+    }
+    Write-Section 'Existing synchronization tasks (read only)'
+    foreach ($TaskName in @('MagicMetal Catalog Sync', 'MagicMetal Remote Connection')) {
+        try {
+            $Task = Get-ScheduledTask -TaskName $TaskName -ErrorAction Stop
+            $TaskInfo = $Task | Get-ScheduledTaskInfo -ErrorAction Stop
+            Write-Host ("Task {0}: state={1}; lastResult={2}; lastRun={3}" -f $TaskName, $Task.State, $TaskInfo.LastTaskResult, $TaskInfo.LastRunTime)
+        } catch {
+            Write-Host ("Task {0}: unavailable; no replacement was created." -f $TaskName) -ForegroundColor Yellow
+        }
+    }
+    Write-Host 'Task result 0 does not prove that notes were synchronized; content/hash readback is still required.'
+
+    $Diagnostic = Join-Path $PSScriptRoot 'obsidian-recovery.mjs'
+    if (Test-Path -LiteralPath $Diagnostic -PathType Leaf) {
+        & $Node.Source $Diagnostic
+        $DiagnosticExit = $LASTEXITCODE
+        if ($DiagnosticExit -ne 0) {
+            Write-Host "Local Obsidian diagnostics reported a remaining issue (code $DiagnosticExit). Continuing Remote process check." -ForegroundColor Yellow
+        }
+    } else {
+        $DiagnosticExit = 4
+        Write-Host 'The bundled obsidian-recovery.mjs file is missing; local API check was not run.' -ForegroundColor Yellow
+    }
+}
+
 Write-Section 'Existing process'
-$Existing = Get-CimInstance Win32_Process -ErrorAction SilentlyContinue |
-    Where-Object { $_.CommandLine -match 'desktop-commander.+remote' }
+try {
+    $Existing = Get-CimInstance Win32_Process -ErrorAction Stop |
+        Where-Object { $_.CommandLine -match 'desktop-commander.+remote' }
+} catch {
+    Write-Host 'Cannot inspect existing Remote processes. No new Remote process was started.' -ForegroundColor Yellow
+    exit 5
+}
 
 if ($Existing) {
     $Existing | ForEach-Object {
         Write-Host "Remote Device already appears to be running (PID $($_.ProcessId))." -ForegroundColor Yellow
     }
     Write-Host 'The script will not start a duplicate process.'
-    exit 0
+    Write-Host 'A running process alone does not prove ChatGPT tool availability. Keep the current Remote window open.'
+    exit $DiagnosticExit
 }
 
 Write-Host 'No active Remote Device process was found.'
@@ -68,4 +120,6 @@ Write-Host 'Keep this window open. On first run, complete the browser authorizat
 Write-Host 'Press Ctrl+C to stop the Remote Device.'
 
 & $Npx.Source --yes $Package remote
-exit $LASTEXITCODE
+$RemoteExit = $LASTEXITCODE
+if ($RemoteExit -ne 0) { exit $RemoteExit }
+exit $DiagnosticExit

@@ -1,0 +1,21 @@
+✔ vault discovery reads registry and does not change existing plugin config (10.254448ms)
+✔ registry paths reject remote locations and traversal without exposing input (0.338891ms)
+✔ authentication destination cannot be remote, plaintext or a normalized traversal (0.350579ms)
+✔ known project vault wins over other vaults; ambiguous unknown vaults never choose the first (0.257468ms)
+✔ authorized vault listing uses GET, validates TLS and returns only a count (1.560471ms)
+✔ redirect never forwards credentials to a second destination (0.27232ms)
+✔ invalid key and untrusted certificate are reported without remote error text (0.470809ms)
+✔ missing credential performs no request and global TLS bypass is refused (0.218729ms)
+✔ a generic HTTP 200 does not prove authenticated vault access (0.587465ms)
+✔ hung local API times out without revealing secrets (5.540567ms)
+✔ redaction removes credential properties and embedded known credential values (0.478281ms)
+✔ local report never asserts ChatGPT connection or writes vault notes (6.456827ms)
+✔ unhealthy diagnosis returns nonzero and persists the failure instead of claiming recovery (6.275103ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 38.565037

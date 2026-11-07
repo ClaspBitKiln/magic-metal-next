@@ -1,0 +1,36 @@
+{
+  "queried_at": "2026-11-06T15:24:52.050Z",
+  "read_only": true,
+  "deployment_count": 31,
+  "metrics_not_before": "2026-11-06T14:56:42.152000+00:00",
+  "production_id": "dpl_2QCZAvNMYqhCE3nPX6zmaknzCbW3",
+  "production_sha": "3efff82a5fbf96fecfee0503681c1f41d9e606b4",
+  "protected": {
+    "dpl_2QCZAvNMYqhCE3nPX6zmaknzCbW3": "current-production",
+    "dpl_HXFUFuvGiFsjRQBdmi4UASYb6Exe": "ready-production-rollback-sha",
+    "dpl_2sw9ToCppG3NpvkRyWMgELrS3yct": "ready-production-rollback-sha",
+    "dpl_J9TLZMB3zyHjEKwbcJA1zgaFZ81q": "ready-production-rollback-sha",
+    "dpl_9TTH8hGzu2ZREk4hrNUgvrTYWYDD": "ready-production-rollback-sha",
+    "dpl_H9eA2aqtCBrRYXNvwArdJukpsj5a": "explicitly-pinned-sha",
+    "dpl_5w4P9zfqaCnw72KX4rNnNAnwi539": "explicitly-pinned-sha"
+  },
+  "metrics": {
+    "deployment_storage_size": {
+      "status": "stale",
+      "value_bytes": 1060275595,
+      "latest_sample": "2026-11-06T14:00:00Z",
+      "ratio": null,
+      "state": "unknown"
+    },
+    "deployment_lambda_storage_size": {
+      "status": "stale",
+      "value_bytes": 842105534,
+      "latest_sample": "2026-11-06T14:00:00Z",
+      "ratio": null,
+      "state": "unknown"
+    }
+  },
+  "decision": "metrics_pending",
+  "potential_unaliased_merged_versions": [],
+  "automatic_deletion_enabled": false
+}
