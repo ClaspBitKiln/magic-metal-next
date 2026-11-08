@@ -1,5 +1,7 @@
 # Magic Metal — Windows Obsidian MCP Bootstrap
 
+> Update 2026-11-08: current operational entrypoint is [START_NEXT_ACCOUNT.md](START_NEXT_ACCOUNT.md). Windows vault access through Remote Desktop Commander and authenticated local Obsidian REST GET are verified. The gateway/tunnel instructions below are an alternative architecture, not a required installation step or proof that an external gateway exists. Local Codex MCP configuration was found; its handshake was not tested in this check.
+
 This is the machine-side bootstrap checklist. It does not contain secrets.
 
 ## 1. Preconditions
