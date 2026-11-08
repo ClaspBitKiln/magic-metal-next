@@ -1,5 +1,7 @@
 # Magic Metal — Obsidian ↔ AI Sync Architecture
 
+> 2026-11-08: see [START_NEXT_ACCOUNT.md](START_NEXT_ACCOUNT.md) for the verified current connections. AI file access uses Remote Desktop Commander; the local Obsidian REST endpoint responds to authorized GET. External Cloudflare gateway/MCP transport described below remains unverified. Do not install another tunnel merely to reconnect a new AI account. Selected GitHub documents are separately mirrored to Windows; this is not a bidirectional backup of the whole vault.
+
 ## Status
 
 DESIGN BASELINE — implementation-ready, local execution required for the final machine-side tunnel setup.

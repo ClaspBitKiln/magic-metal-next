@@ -1,5 +1,11 @@
 # Рабочая память «Мэджик Металл»
 
+> **08.11.2026 — новый вход с нуля:** актуальная полная инструкция [START_NEXT_ACCOUNT.md](docs/ai/START_NEXT_ACCOUNT.md) описывает подключение нового аккаунта ИИ, Remote Desktop Commander/Windows, Obsidian/MCP, GitHub/Vercel/Gmail, Метрику, программы и секреты без значений. Не продолжать по старым подсказкам CMS/PR160. Основной Obsidian: `02 Projects/Magic Metal/00 - Инструкция старт - все подключения.md`; указатель `Memory/START_NEXT_ACCOUNT.md`. Локальные конфиги и OAuth не переносятся Git-коммитами; никогда не публиковать весь vault.
+
+> **08.11.2026 — восстановление сайта подтверждено:** после сообщения владельца об оплате Vercel сайт HTTP200; www308→apex200; Windows также получил200 главной/меди. 150/150GET:89продукции/категорий,32материалов,29ГОСТ. Браузер390/1536: медь→круг20мм→предзаполненная заявка PASS; пустой контакт блокируется; JSerrors0. VercelAPI читает проект; APIформы без согласия даёт400. Реальный POST/SMTP не отправляли, доставка после оплаты не проверена. Beget/inn-bot недоступен по SSH/health, сохранность данных неизвестна; атака Beget подтверждена официальной страницей, не доказана потеря нашего VPS. MATBOOK/CMS отложены.
+
+> **08.11.2026 — Windows/Obsidian:** vault `C:\Users\asus\Documents\inn-bot`, device DESKTOP-BNPIVK2 Online. RDC version0.3.1; Node remote поддерживает `MagicMetal Remote Connection` каждые5мин, зеркало шести файловGitHub→vault — `MagicMetal Catalog Sync` каждые10мин. Последние задачи result0, сегодняшний logUNCHANGED; после reboot отдельно не проверено. RESTObsidian авторизованныйGET200; plugins LocalRESTAPIwithMCP4.1.3/PromptChatGPT1.0.8; Codex MCPконфиг найден, handshake не проверен. После согласованной очистки свободно2,01ГБ; DriverHub/кнопкиЯндекса удалены, кэши308+196МБ очищены, Flashнеудалён; фото/архивы не трогали.
+
 > **6 ноября — текущая Production:** `5ae036f`, deployment `dpl_HXFUFuvGiFsjRQBdmi4UASYb6Exe` READY. API подтвердил magicmet.ru/www на этом SHA. Опубликованы листовые формы и исправленные составные ГОСТ-ссылки. Предыдущие a4878b9,2f526c5,ac643b5 сохранены READY. Main GitHub пока2f526c5; не выпускать старую main без включения release-ветки. [Итог](docs/ai/STANDARDS_AND_AUDIT_VERDICT_2026-11-06.md).
 
 
