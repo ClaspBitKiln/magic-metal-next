@@ -31,6 +31,12 @@ function run(scenario, localStatus = 0) {
 }
 
 test('PowerShell recovery flow guards', { skip: !existsSync(engine) ? 'Set POWERSHELL_TEST_PATH to an available PowerShell 7 executable' : false }, async t => {
+  await t.test('Node below the official minimum blocks a missing Remote launch', () => {
+    const result = run('old-node')
+    assert.equal(result.code, 6, result.output)
+    assert.equal(result.events.includes('npx-start'), false)
+    assert.match(result.output, /requires Node >=22\.12\.0/)
+  })
   await t.test('existing Remote and Obsidian remain running; healthy local check exits 0', () => {
     const result = run('existing-healthy')
     assert.equal(result.code, 0, result.output)

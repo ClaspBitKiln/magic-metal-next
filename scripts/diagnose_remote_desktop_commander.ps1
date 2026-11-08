@@ -5,7 +5,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-$Package = '@wonderwhy-er/desktop-commander@0.2.51'
+$Package = '@wonderwhy-er/desktop-commander@0.3.1'
 $RemoteHostName = 'mcp.desktopcommander.app'
 
 function Write-Section {
@@ -115,6 +115,16 @@ if ($Action -eq 'Diagnose') {
 }
 
 Write-Section 'Starting official Remote Device'
+$NodeVersionText = [string](& $Node.Source --version)
+if ($NodeVersionText -notmatch '^v?(\d+)\.(\d+)\.(\d+)') {
+    Write-Host 'Cannot verify Node version. No Remote process was started.' -ForegroundColor Red
+    exit 6
+}
+$NodeVersion = [version]("{0}.{1}.{2}" -f $Matches[1], $Matches[2], $Matches[3])
+if ($NodeVersion -lt [version]'22.12.0') {
+    Write-Host 'Desktop Commander 0.3.1 requires Node >=22.12.0. No downgrade or runtime upgrade was performed.' -ForegroundColor Red
+    exit 6
+}
 Write-Host "Command: npx --yes $Package remote"
 Write-Host 'Keep this window open. On first run, complete the browser authorization shown by the official client.'
 Write-Host 'Press Ctrl+C to stop the Remote Device.'

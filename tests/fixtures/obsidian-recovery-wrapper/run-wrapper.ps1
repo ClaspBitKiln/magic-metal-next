@@ -26,8 +26,8 @@ function global:Get-CimInstance {
     param([string]$ClassName)
     Add-Content -LiteralPath $env:MM_WRAPPER_EVENTS -Value 'remote-process-check' -Encoding utf8
     if ($env:MM_SCENARIO -eq 'cim-unavailable') { throw 'Mocked CIM access failure' }
-    if ($env:MM_SCENARIO -notin @('broker-unavailable', 'start-missing-remote')) {
-        return [pscustomobject]@{ProcessId = 222; CommandLine = 'npx @wonderwhy-er/desktop-commander@0.2.51 remote'}
+    if ($env:MM_SCENARIO -notin @('broker-unavailable', 'start-missing-remote', 'old-node')) {
+        return [pscustomobject]@{ProcessId = 222; CommandLine = 'npx @wonderwhy-er/desktop-commander@0.3.1 remote'}
     }
 }
 
