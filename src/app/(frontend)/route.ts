@@ -26,7 +26,7 @@ function renderApprovedCatalogGrades(html: string): string {
 export async function GET() {
   const id = getMetrikaCounterId()
   const base = renderApprovedCatalogGrades(await staticHome)
-  const html = id ? base.replace('</head>', `<script id="magicmet-analytics" src="/analytics.js?v=20261021-1&id=${id}" defer></script></head>`) : base
+  const html = id ? base.replace('</head>', `<script id="magicmet-analytics" src="/analytics.js?v=20261108-owner-picker1&id=${id}" defer></script></head>`) : base
   return new Response(html, {
     headers: {
       'content-type': 'text/html; charset=utf-8',

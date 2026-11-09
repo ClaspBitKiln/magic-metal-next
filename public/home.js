@@ -11,7 +11,7 @@ const requestText = form?.querySelector('textarea[name="message"]')
 if (selectedProduct && requestText && !requestText.value) requestText.value = `${selectedProduct}: `
 const region = params.get('region')
 const delivery = form?.querySelector('input[name="delivery"]')
-if (region && delivery && !delivery.value) delivery.value = region === 'uzbekistan' ? 'Узбекистан' : region
+if (region && delivery && !delivery.value) delivery.value = region === 'uzbekistan' ? 'Узбекистан' : region === 'kazakhstan' ? 'Казахстан' : region
 
 const track = (goal) => document.dispatchEvent(new CustomEvent('magicmet:goal', { detail: goal }))
 let formStarted = false
@@ -55,20 +55,24 @@ form?.addEventListener('submit', async (event) => {
   const phone = String(data.get('phone') || '').trim()
   const email = String(data.get('email') || '').trim()
   if (!phone && !email) {
+    track('request_validation_error')
     status.textContent = 'Укажите телефон или email.'
     return
   }
   const digits = phone.replace(/\D/g, '').length
   if ((phone && (!/^\+?[\d\s().-]+$/.test(phone) || digits < 7 || digits > 15)) || (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))) {
+    track('request_validation_error')
     status.textContent = 'Проверьте телефон или email: укажите действительный способ связи.'
     return
   }
   if (data.getAll('files').reduce((sum, file) => sum + (file instanceof File ? file.size : 0), 0) > 4 * 1024 * 1024) {
+    track('request_validation_error')
     status.textContent = 'Файлы — суммарно до 4 МБ. Большие файлы отправьте на m1@magicmet.ru.'
     return
   }
   const hasFiles = data.getAll('files').some((file) => file instanceof File && file.size > 0)
   if (!String(data.get('message') || '').trim() && !hasFiles) {
+    track('request_validation_error')
     status.textContent = 'Прикрепите файл или опишите, что требуется.'
     requestText?.focus()
     return

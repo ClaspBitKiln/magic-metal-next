@@ -1,0 +1,308 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-11-08",
+  "platforms": [
+    {
+      "id": "metaprom",
+      "name": "Метапром",
+      "markets": [
+        "RF"
+      ],
+      "rank": 1,
+      "entryUrl": "https://metaprom.ru/companies/",
+      "free": "needs_recheck",
+      "automationAllowed": "unknown",
+      "required": [
+        "company",
+        "contact",
+        "region",
+        "free_plan_confirmation"
+      ],
+      "notes": "Бесплатность найдена в официальном индексе; форма и лимиты не подтверждены.",
+      "sources": [
+        "https://metaprom.ru/companies/",
+        "https://metaprom.ru/about/"
+      ]
+    },
+    {
+      "id": "pulscen",
+      "name": "Пульс цен",
+      "markets": [
+        "RF"
+      ],
+      "rank": 3,
+      "entryUrl": "https://www.pulscen.ru/",
+      "free": "needs_recheck",
+      "automationAllowed": "unknown",
+      "required": [
+        "company",
+        "contact",
+        "region",
+        "free_plan_confirmation"
+      ],
+      "notes": "Базовый пакет найден в официальном индексе; текущие условия и подтверждения проверить.",
+      "sources": [
+        "https://www.pulscen.ru/about/packets"
+      ]
+    },
+    {
+      "id": "promportal",
+      "name": "PromPortal",
+      "markets": [
+        "RF"
+      ],
+      "rank": 4,
+      "entryUrl": "https://promportal.su/reg/firm/",
+      "free": "needs_recheck",
+      "automationAllowed": "unknown",
+      "required": [
+        "company",
+        "contact",
+        "security_challenge",
+        "free_plan_confirmation"
+      ],
+      "notes": "Постоянное бесплатное размещение не путать с пробным платным тарифом.",
+      "sources": [
+        "https://promportal.su/faqs/83/kakie-uslugi-na-portale-ya-mogu-poluchit-besplatno.htm"
+      ]
+    },
+    {
+      "id": "flagma-ru",
+      "name": "Flagma Россия",
+      "markets": [
+        "RF"
+      ],
+      "rank": 2,
+      "entryUrl": "https://flagma.ru/",
+      "free": "needs_recheck",
+      "automationAllowed": false,
+      "required": [
+        "company",
+        "contact",
+        "captcha",
+        "written_automation_permission"
+      ],
+      "notes": "Не обходить CAPTCHA; автоматический доступ требует согласования.",
+      "sources": [
+        "https://flagma.ru/"
+      ]
+    },
+    {
+      "id": "glotr-uz",
+      "name": "Glotr.uz",
+      "markets": [
+        "UZ"
+      ],
+      "rank": 1,
+      "entryUrl": "https://glotr.uz/registration/as-company/",
+      "free": "confirmed_limited",
+      "automationAllowed": false,
+      "required": [
+        "company",
+        "phone_sms",
+        "email_code",
+        "foreign_company_confirmation"
+      ],
+      "notes": "Бесплатный магазин подтверждён; приём российского юрлица отдельно проверить. Программный доступ ограничен правилами.",
+      "sources": [
+        "https://glotr.uz/for-seller/",
+        "https://glotr.uz/registration/as-company/"
+      ]
+    },
+    {
+      "id": "prom-uz",
+      "name": "Prom.uz",
+      "markets": [
+        "UZ"
+      ],
+      "rank": 2,
+      "entryUrl": "https://my.prom.uz/auth/signup/seller",
+      "free": "confirmed_limited",
+      "automationAllowed": "unknown",
+      "required": [
+        "company",
+        "contact",
+        "foreign_documents"
+      ],
+      "notes": "До 5 товаров бесплатно. Для полного сервиса требуется подтверждение документов; не выдумывать местное юрлицо.",
+      "sources": [
+        "https://www.prom.uz/ad-placement/"
+      ]
+    },
+    {
+      "id": "flagma-kz",
+      "name": "Flagma.kz",
+      "markets": [
+        "KZ"
+      ],
+      "rank": 1,
+      "entryUrl": "https://flagma.kz/podat-obyavlenie.html",
+      "free": "confirmed_limited",
+      "automationAllowed": false,
+      "required": [
+        "company",
+        "contact",
+        "captcha",
+        "written_automation_permission"
+      ],
+      "notes": "Официальные бесплатные объявления; количественный лимит не подтверждён. Автоматизация требует письменного разрешения.",
+      "sources": [
+        "https://flagma.kz/podat-obyavlenie.html"
+      ]
+    },
+    {
+      "id": "flagma-uz",
+      "name": "Flagma.uz",
+      "markets": [
+        "UZ"
+      ],
+      "rank": 3,
+      "entryUrl": "https://flagma.uz/ru/podat-obyavlenie.html",
+      "free": "confirmed_limited",
+      "automationAllowed": false,
+      "required": [
+        "company",
+        "contact",
+        "captcha",
+        "written_automation_permission"
+      ],
+      "notes": "Не использовать программный доступ без разрешения площадки.",
+      "sources": [
+        "https://flagma.uz/ru/podat-obyavlenie.html"
+      ]
+    },
+    {
+      "id": "allbiz",
+      "name": "Allbiz",
+      "markets": [
+        "RF",
+        "KZ",
+        "UZ"
+      ],
+      "rank": 5,
+      "entryUrl": "https://welcome.all.biz/one_step?country=RU",
+      "free": "confirmed_limited",
+      "automationAllowed": false,
+      "required": [
+        "company",
+        "contact",
+        "country_confirmation",
+        "manual_registration"
+      ],
+      "notes": "Российскую компанию регистрировать как РФ. Бесплатный ограниченный каталог; автоматический доступ ограничен.",
+      "sources": [
+        "https://all.biz/user_agreement_ru",
+        "https://kz.all.biz/comparetable"
+      ]
+    },
+    {
+      "id": "yandex-business",
+      "name": "Яндекс Бизнес",
+      "markets": [
+        "RF"
+      ],
+      "rank": 6,
+      "entryUrl": "https://yandex.ru/sprav/add",
+      "free": "confirmed_limited",
+      "automationAllowed": "unknown",
+      "required": [
+        "real_customer_office",
+        "owner_login",
+        "phone_verification"
+      ],
+      "notes": "Онлайн-профиль без офиса не отображается в Поиске и Картах. Не обещать бесплатный поисковый канал без подходящей точки.",
+      "sources": [
+        "https://yandex.ru/support/business-priority/ru/online-company"
+      ]
+    },
+    {
+      "id": "2gis",
+      "name": "2ГИС",
+      "markets": [
+        "RF",
+        "KZ",
+        "UZ"
+      ],
+      "rank": 7,
+      "entryUrl": "https://account.2gis.com/add-company",
+      "free": "confirmed_limited",
+      "automationAllowed": "unknown",
+      "required": [
+        "real_customer_office",
+        "company",
+        "phone_verification",
+        "moderation"
+      ],
+      "notes": "Нужна действующая доступная организация; не создавать фиктивные офисы по городам.",
+      "sources": [
+        "https://help.2gis.ru/question/datafeedback-rules",
+        "https://help.2gis.ru/question/kak-dobavit-kompaniyu-v-2gis"
+      ],
+      "evidenceHosts": [
+        "2gis.ru",
+        "2gis.kz",
+        "2gis.uz",
+        "2gis.com"
+      ]
+    },
+    {
+      "id": "goldenpages-uz",
+      "name": "Golden Pages Uzbekistan",
+      "markets": [
+        "UZ"
+      ],
+      "rank": 90,
+      "entryUrl": "https://www.goldenpages.uz/add/",
+      "free": "ineligible_without_local_entity",
+      "automationAllowed": "unknown",
+      "required": [
+        "uz_legal_entity",
+        "local_tax_id",
+        "real_address"
+      ],
+      "notes": "Только зарегистрированные в Узбекистане компании; без подтверждённого юрлица исключить.",
+      "sources": [
+        "https://www.goldenpages.uz/add/",
+        "https://www.goldenpages.uz/faq/"
+      ]
+    },
+    {
+      "id": "satu-kz",
+      "name": "Satu.kz",
+      "markets": [
+        "KZ"
+      ],
+      "rank": 99,
+      "entryUrl": "https://satu.kz/join-now?source_id=taryfy",
+      "free": "excluded_paid_catalog",
+      "automationAllowed": "unknown",
+      "required": [
+        "paid_subscription"
+      ],
+      "notes": "Бесплатный отдельный сайт и trial не публикуют товары в маркетплейсе. Не включать в бесплатное привлечение.",
+      "sources": [
+        "https://satu.kz/join-now?source_id=taryfy"
+      ]
+    },
+    {
+      "id": "metalinfo",
+      "name": "Metalinfo",
+      "markets": [
+        "RF"
+      ],
+      "rank": 95,
+      "entryUrl": "https://www.metalinfo.ru/ru/login/register/",
+      "free": "unverified",
+      "automationAllowed": "unknown",
+      "required": [
+        "free_plan_confirmation",
+        "company",
+        "contact"
+      ],
+      "notes": "Бесплатность долгосрочного размещения не подтверждена; резерв.",
+      "sources": [
+        "https://www.metalinfo.ru/ru/directory/add"
+      ]
+    }
+  ]
+}

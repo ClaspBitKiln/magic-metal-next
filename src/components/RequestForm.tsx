@@ -28,6 +28,7 @@ export default function RequestForm() {
     const message = String(data.get('message') || '').trim()
     const hasFiles = data.getAll('files').some((value) => value instanceof File && value.size > 0)
     if (!message && !hasFiles) {
+      trackAnalyticsGoal('request_validation_error')
       setFormStep(1)
       setStatus('error')
       setFormError('Прикрепите заявку или кратко опишите, что требуется.')
@@ -54,26 +55,31 @@ export default function RequestForm() {
     const hasFiles = data.getAll('files').some((value) => value instanceof File && value.size > 0)
     setFormError('')
     if (!hasRequestConsent(data.get('consent'))) {
+      trackAnalyticsGoal('request_validation_error')
       setStatus('error')
       setFormError(REQUEST_CONSENT_ERROR)
       return
     }
     if (!phone && !email) {
+      trackAnalyticsGoal('request_validation_error')
       setStatus('error')
       setFormError('Укажите телефон или email, чтобы мы могли отправить расчёт.')
       return
     }
     if (!hasValidRequestContact(phone, email)) {
+      trackAnalyticsGoal('request_validation_error')
       setStatus('error')
       setFormError(REQUEST_CONTACT_ERROR)
       return
     }
     if (data.getAll('files').reduce((sum, value) => sum + (value instanceof File ? value.size : 0), 0) > 4 * 1024 * 1024) {
+      trackAnalyticsGoal('request_validation_error')
       setStatus('error')
       setFormError('Файлы — суммарно до 4 МБ. Большие файлы отправьте на m1@magicmet.ru.')
       return
     }
     if (!message && !hasFiles) {
+      trackAnalyticsGoal('request_validation_error')
       setStatus('error')
       setFormError('Прикрепите заявку или кратко опишите, что требуется.')
       return
