@@ -1,17 +1,43 @@
 /* One optional, deferred counter. No form values or product query strings are sent. */
 (() => {
+  const preferenceKey = 'magicmet.analytics.disabled'
+  let disabled = window.magicmetAnalyticsDisabled === true
+  if (typeof window.magicmetAnalyticsDisabled !== 'boolean') {
+    try { disabled = window.localStorage.getItem(preferenceKey) === '1' } catch { /* Storage can be unavailable. */ }
+  }
+  const controlUrl = new URL(location.href)
+  const preference = controlUrl.searchParams.get('analytics')
+  if (preference === 'off' || preference === 'on') {
+    disabled = preference === 'off'
+    try {
+      if (disabled) window.localStorage.setItem(preferenceKey, '1')
+      else window.localStorage.removeItem(preferenceKey)
+    } catch { /* The explicit URL preference still applies to this document. */ }
+    controlUrl.searchParams.delete('analytics')
+    try { window.history.replaceState(window.history.state, '', controlUrl.pathname + controlUrl.search + controlUrl.hash) } catch { /* Never break the public page. */ }
+  }
+  window.magicmetAnalyticsDisabled = disabled
+  if (disabled) return
   const script = document.getElementById('magicmet-analytics')
   const id = Number(new URL(script?.src || location.href).searchParams.get('id'))
   if (!Number.isSafeInteger(id) || id <= 0 || window.magicmetAnalyticsReady) return
   window.magicmetAnalyticsReady = true
   const goals = new Set(['phone_click', 'email_click', 'request_click', 'catalog_product_opened', 'standard_opened', 'size_filter_used', 'size_selected', 'request_started', 'specification_attached', 'request_sent', 'request_error'])
+  const visitFlags = new Set(['product_kind_selected', 'product_parameters_changed', 'request_validation_error'])
   const ym = window.ym = window.ym || function () { (ym.a = ym.a || []).push(arguments) }
   ym.l = Date.now()
   let lastPath = ''
   let started = false
+  let scheduled = false
   const pending = []
+  const send = name => {
+    if (window.magicmetAnalyticsDisabled) return
+    if (visitFlags.has(name)) window.ym(id, 'params', { magicmet: { [name]: 1 } })
+    else if (goals.has(name)) window.ym(id, 'reachGoal', name)
+  }
   const goal = name => {
-    if (started) window.ym(id, 'reachGoal', name)
+    if (window.magicmetAnalyticsDisabled || (!goals.has(name) && !visitFlags.has(name))) return
+    if (started) send(name)
     else if (pending.length < 100) pending.push(name)
   }
   const safeUrl = (value, campaign = false) => {
@@ -27,14 +53,42 @@
     } catch { return '' }
   }
   const pageView = () => {
-    if (!started || lastPath === location.pathname) return
+    resetPickerControls()
+    if (window.magicmetAnalyticsDisabled || !started || lastPath === location.pathname) return
     lastPath = location.pathname
     window.ym(id, 'hit', safeUrl(location.href, true), { referer: safeUrl(document.referrer) })
   }
   document.addEventListener('magicmet:goal', event => {
-    if (goals.has(event.detail)) goal(event.detail)
+    if (goals.has(event.detail) || visitFlags.has(event.detail)) goal(event.detail)
   })
   document.addEventListener('magicmet:page', pageView)
+  const pickerScope = '.product-document-selection,.rope-sales-picker,.sheet-format-picker,.catalog-standard-request'
+  let pickerPath = location.pathname
+  let kindControls = new WeakSet()
+  let parameterControls = new WeakSet()
+  const resetPickerControls = () => {
+    if (pickerPath === location.pathname) return
+    pickerPath = location.pathname
+    kindControls = new WeakSet()
+    parameterControls = new WeakSet()
+  }
+  const eligibleControl = control => control?.closest(pickerScope)
+    && !control.matches(':disabled,[readonly]')
+    && !control.closest('summary,[inert],[aria-disabled="true"]')
+  const pickerGoal = (control, name) => {
+    if (window.magicmetAnalyticsDisabled) return
+    resetPickerControls()
+    const seen = name === 'product_kind_selected' ? kindControls : parameterControls
+    if (seen.has(control)) return
+    seen.add(control)
+    goal(name)
+  }
+  // Capture the old pressed state before React updates it in its click handler.
+  document.addEventListener('click', event => {
+    const control = event.target instanceof Element ? event.target.closest('button[aria-pressed="false"]') : null
+    if (!eligibleControl(control) || control.closest('details')) return
+    pickerGoal(control, control.closest('.sheet-format-picker') ? 'product_parameters_changed' : 'product_kind_selected')
+  }, true)
   document.addEventListener('click', event => {
     const target = event.target instanceof Element ? event.target : null
     const link = target?.closest('a')
@@ -47,18 +101,27 @@
   })
   document.addEventListener('change', event => {
     if (event.target instanceof Element && event.target.closest('.size-series-filter')) goal('size_filter_used')
+    const control = event.target
+    if (!(control instanceof HTMLInputElement || control instanceof HTMLSelectElement) || !eligibleControl(control)) return
+    if (control instanceof HTMLInputElement && ['hidden', 'file', 'button', 'submit', 'reset'].includes(control.type)) return
+    if (control instanceof HTMLInputElement && control.type === 'radio') {
+      if (control.checked) pickerGoal(control, 'product_kind_selected')
+    } else pickerGoal(control, 'product_parameters_changed')
   })
   const load = () => {
+    if (started || window.magicmetAnalyticsDisabled) return
     window.ym(id, 'init', { defer: true, clickmap: false, webvisor: false, trackLinks: false, accurateTrackBounce: true, trackHash: false })
     started = true
     pageView()
-    pending.splice(0).forEach(goal)
+    pending.splice(0).forEach(send)
     const tag = document.createElement('script')
     tag.async = true
     tag.src = 'https://mc.yandex.ru/metrika/tag.js'
     document.head.append(tag)
   }
   const schedule = () => {
+    if (scheduled || started || window.magicmetAnalyticsDisabled) return
+    scheduled = true
     if (window.requestIdleCallback) window.requestIdleCallback(load, { timeout: 2000 })
     else setTimeout(load, 0)
   }

@@ -1,0 +1,41 @@
+name: Site HTTP availability
+
+on:
+  schedule:
+    - cron: '7 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site-http-availability
+  cancel-in-progress: false
+
+jobs:
+  availability:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Check production HTTPS response
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo '## Production HTTP availability' >> "$GITHUB_STEP_SUMMARY"
+          echo 'HEAD https://magicmet.ru; TLS verification enabled; final HTTP 200 required.' >> "$GITHUB_STEP_SUMMARY"
+          for attempt in 1 2; do
+            curl_status=0
+            http_status=$(curl --head --location --max-redirs 3 \
+              --proto '=https' --proto-redir '=https' \
+              --connect-timeout 10 --max-time 15 \
+              --silent --show-error --output /dev/null \
+              --write-out '%{http_code}' https://magicmet.ru) || curl_status=$?
+            echo "Attempt ${attempt}: HTTP ${http_status}; curl exit ${curl_status}." >> "$GITHUB_STEP_SUMMARY"
+            if [[ "$curl_status" -eq 0 && "$http_status" == '200' ]]; then
+              echo 'Result: available.' >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+            if [[ "$attempt" -eq 1 ]]; then sleep 2; fi
+          done
+          echo 'Result: unavailable from this runner after one retry.' >> "$GITHUB_STEP_SUMMARY"
+          exit 1

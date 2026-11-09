@@ -16,6 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/spravochnik-gost`, changeFrequency: 'weekly', priority: .9 },
     { url: `${base}/politika-konfidencialnosti`, changeFrequency: 'monthly', priority: .3 },
     { url: `${base}/postavki/uzbekistan`, changeFrequency: 'monthly', priority: .85 },
+    { url: `${base}/postavki/kazakhstan`, changeFrequency: 'monthly', priority: .85 },
     ...seoCatalog.map(({ slug }) => ({ url: `${base}/produkciya/${slug}`, changeFrequency: 'monthly' as const, priority: .8 })),
     ...sdtCatalog.map(({ slug }) => ({ url: `${base}/produkciya/sdt/${slug}`, changeFrequency: 'monthly' as const, priority: .82 })),
     ...pipeCatalog.map(({ categorySlug, slug }) => ({ url: `${base}/produkciya/${categorySlug}/${slug}`, changeFrequency: 'monthly' as const, priority: .84 })),

@@ -17,7 +17,7 @@ describe('optional lightweight analytics', () => {
     vi.stubEnv('NEXT_PUBLIC_YANDEX_METRIKA_ID', '123456789')
     const response = await GET()
     const html = await response.text()
-    expect(html).toContain('src="/analytics.js?v=20261021-1&id=123456789" defer')
+    expect(html).toContain('src="/analytics.js?v=20261108-owner-picker1&id=123456789" defer')
     expect(html).toContain('id="request-form"')
     expect(html).toMatch(/src="\/home\.js\?v=[a-z0-9-]+" defer/)
     expect(html).not.toContain('mc.yandex.ru')

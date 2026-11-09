@@ -27,9 +27,11 @@ function mount(element: ReactNode) {
 }
 
 function mountTable() {
-  mount(h('details', null,
+  // Real ProductSizeSeries keeps the URL-state key on the outer disclosure.
+  // SizeTableFilter reads closest('details').id, not an inner scope anchor.
+  mount(h('details', { id: 'sizes-series-test' },
     h('summary', null, 'Размеры'),
-    h('div', { className: 'size-series-scope', id: 'sizes-series-test' }),
+    h('div', { className: 'size-series-scope' }),
     h(SizeTableFilter, { column: 'Диаметр', values: ['57', '89'], total: 2, wallColumns: [1], requestHref: '/?product=Труба#request', context: 'Трубы', standard: 'ГОСТ тест' }),
     h('div', { className: 'size-series-reference', dangerouslySetInnerHTML: { __html: '<table><thead><tr><th>Диаметр</th><th>Стенка</th></tr></thead><tbody><tr><td>57</td><td>3; 4</td></tr><tr><td>89</td><td>4</td></tr></tbody></table>' } }),
   ))
@@ -89,8 +91,13 @@ describe('actual buyer size selections', () => {
       window.history.replaceState(null, '', '/?size_test=57&wall_test=9')
       window.dispatchEvent(new PopStateEvent('popstate'))
     })
-    const fallback = container.querySelector<HTMLAnchorElement>('a.size-series-selection-request:not([hidden])')!
+    const fallback = container.querySelector<HTMLAnchorElement>('.size-series-filter > a.size-series-selection-request:not([hidden])')!
+    expect(fallback).not.toBeNull()
     expect(fallback.textContent).toContain('спецификацию')
+    const fallbackUrl = new URL(fallback.href)
+    expect(fallbackUrl.searchParams.get('product')).toContain('проверить размер 57 × 9 мм')
+    expect(fallbackUrl.hash).toBe('#request')
+    expect(container.querySelector<HTMLElement>('.size-series-selection-result')!.hidden).toBe(true)
     click(fallback)
     expect(goals).toEqual(['size_selected'])
   })
