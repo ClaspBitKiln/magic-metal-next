@@ -24,8 +24,10 @@ function transform(html,job,uz){
   if(!old[0].includes('Иллюстрация')&&!old[0].includes('иллюстрация'))throw Error('Expected saved description not present');
   const ru=transform(old[0],job,false),uz=transform(old[1],job,true);
   const already=+(await priceInput().inputValue()).replace(/\D/g,'')===job.price_uzs_t&&await p.getByLabel('В наличии',{exact:true}).isChecked()&&old[0]===ru&&old[1]===uz;
-  if(!already){await priceInput().fill(String(job.price_uzs_t));await p.getByLabel('В наличии',{exact:true}).check({force:true});}
-  if(!already){await p.locator('[contenteditable="true"]').nth(0).evaluate((e,d)=>e.ckeditorInstance.setData(d),ru);await p.locator('[contenteditable="true"]').nth(1).evaluate((e,d)=>e.ckeditorInstance.setData(d),uz);}
+  if(!already){await priceInput().focus();await priceInput().press('ControlOrMeta+A');await priceInput().press('Backspace');await priceInput().pressSequentially(String(job.price_uzs_t),{delay:25});await priceInput().press('Tab');await p.waitForTimeout(300);await p.getByLabel('В наличии',{exact:true}).check({force:true});}
+  if(!already){for(const [idx,html] of [[0,ru],[1,uz]]){const ed=p.locator('[contenteditable="true"]').nth(idx);await ed.click();await ed.press('ControlOrMeta+A');const plain=await ed.evaluate((e,h)=>{const d=document.createElement('div');d.innerHTML=h;return [...d.children].map(x=>x.textContent).join('\n\n')},html);await p.keyboard.insertText(plain);await ed.press('Tab');await p.waitForTimeout(150);}}
+  if(+(await priceInput().inputValue()).replace(/\D/g,'')!==job.price_uzs_t)throw Error('Pre-save masked price mismatch '+job.id);
+  const ready=await p.locator('[contenteditable="true"]').allTextContents();if(!ready[0].includes(job.delivery_ru)||!ready[1].includes(job.delivery_uz))throw Error('Pre-save description mismatch '+job.id);
   const proof={id:job.id,name:job.name,editUrl:'https://my.prom.uz/app/products/'+job.id,price_uzs_t:job.price_uzs_t,stock:'В наличии',delivery_ru:job.delivery_ru,delivery_uz:job.delivery_uz,at:new Date().toISOString(),status:'save_started'};
   results=results.filter(x=>x.id!==job.id);results.push(proof);persist();
   if(!already){await p.getByRole('button',{name:'Сохранить',exact:true}).click();await p.getByText('Успешно сохранено',{exact:true}).filter({visible:true}).first().waitFor({state:'visible',timeout:45000});}
