@@ -1,6 +1,6 @@
 // Authorized company611809 only. Idempotent updates by existing product IDs, never creates duplicates.
 const fs=require('node:fs'),path=require('node:path'),{chromium}=require('playwright-core');
-const base=__dirname,jobs=JSON.parse(fs.readFileSync(path.join(base,'prom-updates.json'),'utf8'));
+const base=__dirname,jobs=JSON.parse(fs.readFileSync(process.env.MAGIC_METAL_PROM_JOBS||path.join(base,'prom-updates.json'),'utf8'));
 const approvedIds=new Set([1402458,1402459,1402460,1402461,1402462]);
 if(jobs.length!==approvedIds.size||new Set(jobs.map(j=>j.id)).size!==approvedIds.size||jobs.some(j=>!approvedIds.has(j.id)))throw Error('Only the five approved existing IDs are allowed');
 if(!process.argv.includes('--apply')){console.log(JSON.stringify(jobs.map(x=>({id:x.id,name:x.name,price:x.price_uzs_t,stock:'В наличии',delivery:x.delivery_ru,income_pct_net_purchase:x.income_pct_net_purchase})),null,2));process.exit(0)}
