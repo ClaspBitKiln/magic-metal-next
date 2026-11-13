@@ -1,0 +1,90 @@
+[
+  {
+    "sku": "Лист 20x1500x6000 Ст3 / 3сп-5",
+    "mc_gross_rub_t": 65490,
+    "competitor_uzs_t": 12350000.0,
+    "mc_url": "https://mc.ru/region/chelyabinsk/metalloprokat/list_goryachekatanyy_20x1500x6000_razmer_20_marka_st3",
+    "competitor_url": "https://metall-invest.uz/list-goryachekatanyj-150-h-600-h-20/",
+    "comparison_quality": "same_geometry; mc St3 broad, UZ 3sp-5; UZ VAT/date unknown"
+  },
+  {
+    "sku": "Лист 30x1500x6000 Ст3 / 3сп-5",
+    "mc_gross_rub_t": 66490,
+    "competitor_uzs_t": 12350000.0,
+    "mc_url": "https://mc.ru/region/chelyabinsk/metalloprokat/list_goryachekatanyy_30x1500x6000_razmer_30_marka_st3",
+    "competitor_url": "https://metall-invest.uz/list-goryachekatanyj-150-h-600-h-30/",
+    "comparison_quality": "same_geometry; mc St3 broad, UZ 3sp-5; UZ VAT/date unknown"
+  },
+  {
+    "sku": "Лист 40x1500x6000 Ст3 / 3сп-5",
+    "mc_gross_rub_t": 66490,
+    "competitor_uzs_t": 12350000.0,
+    "mc_url": "https://mc.ru/region/chelyabinsk/metalloprokat/list_goryachekatanyy_40x1500x6000_razmer_40_marka_st3",
+    "competitor_url": "https://metall-invest.uz/list-goryachekatanyj-150-h-600-h-40/",
+    "comparison_quality": "same_geometry; mc St3 broad, UZ 3sp-5; UZ VAT/date unknown"
+  },
+  {
+    "sku": "Лист 50x1500x6000 Ст3 / 3сп-5",
+    "mc_gross_rub_t": 68990,
+    "competitor_uzs_t": 12350000.0,
+    "mc_url": "https://mc.ru/region/chelyabinsk/metalloprokat/list_goryachekatanyy_50x1500x6000_razmer_50_marka_st3",
+    "competitor_url": "https://metall-invest.uz/list-goryachekatanyj-150-h-600-h-50/",
+    "comparison_quality": "same_geometry; mc St3 broad, UZ 3sp-5; UZ VAT/date unknown"
+  },
+  {
+    "sku": "Лист 60x1500x6000 Ст3 / 3сп-5",
+    "mc_gross_rub_t": 76990,
+    "competitor_uzs_t": 12350000.0,
+    "mc_url": "https://mc.ru/region/chelyabinsk/metalloprokat/list_goryachekatanyy_60x1500x6000_razmer_60_marka_st3",
+    "competitor_url": "https://metall-invest.uz/list-goryachekatanyj-150-h-600-h-60/",
+    "comparison_quality": "same_geometry; mc St3 broad, UZ 3sp-5; UZ VAT/date unknown"
+  },
+  {
+    "sku": "Лист 20x1500x6000 Ст3 / Stal Trade Asia",
+    "mc_gross_rub_t": 65490,
+    "competitor_uzs_t": 14500000.0,
+    "mc_url": "https://mc.ru/region/chelyabinsk/metalloprokat/list_goryachekatanyy_20x1500x6000_razmer_20_marka_st3",
+    "competitor_url": "https://staltrade.uz/product/list-prokat/list-gk/list-g-k-20-0x1500x6000-st-3/",
+    "comparison_quality": "close grade; UZ from-price incl VAT, not best market price"
+  },
+  {
+    "sku": "Балка 40Б1 С255 / 3пс 12м",
+    "mc_gross_rub_t": 83000,
+    "competitor_uzs_t": 13200000.0,
+    "mc_url": "https://mc.ru/region/chelyabinsk/metalloprokat/balka_40_b1_gost_35087_r_57837(aschm_20-93)_razmer_40_marka_s255_dlina_12000",
+    "competitor_url": "https://metall-invest.uz/balka-dvutavrovaya-40-b1/",
+    "comparison_quality": "grade/standard/rolling comparability NOT confirmed; UZ VAT/date unknown"
+  },
+  {
+    "sku": "Балка 40К2 С255 / 3пс 12м",
+    "mc_gross_rub_t": 93200,
+    "competitor_uzs_t": 14200000.0,
+    "mc_url": "https://mc.ru/region/chelyabinsk/metalloprokat/balka_40_k2_gost_35087_r_57837(aschm_20-93)_razmer_40_marka_s255_dlina_12000",
+    "competitor_url": "https://metall-invest.uz/balka-dvutavrovaya-40-k2/",
+    "comparison_quality": "grade/standard comparability NOT confirmed; UZ VAT/date unknown"
+  },
+  {
+    "sku": "Швеллер 30У Ст3 / 3пс-6 12м",
+    "mc_gross_rub_t": 139000,
+    "competitor_uzs_t": 17750000.0,
+    "mc_url": "https://mc.ru/region/chelyabinsk/metalloprokat/shveller_30_u_razmer_30_marka_st3_dlina_12000",
+    "competitor_url": "https://metall-invest.uz/shveller-30-u-p/",
+    "comparison_quality": "UZ combines U/P; execution/grade not exact; VAT/date unknown"
+  },
+  {
+    "sku": "Уголок 160x160x10 С255 / 3сп-5",
+    "mc_gross_rub_t": 132750,
+    "competitor_uzs_t": 19350000.0,
+    "mc_url": "https://mc.ru/region/chelyabinsk/metalloprokat/ugolok_160x10_razmer_160_marka_s255_dlina_12000",
+    "competitor_url": "https://metall-invest.uz/ugolok-stalnoj-160-h-160-x-10/",
+    "comparison_quality": "grade not exact; UZ unit-price conflict 19.35 vs17.835m"
+  },
+  {
+    "sku": "Уголок160 — нижний конфликтующий ориентир",
+    "mc_gross_rub_t": 132750,
+    "competitor_uzs_t": 17835000,
+    "mc_url": "https://mc.ru/region/chelyabinsk/metalloprokat/ugolok_160x10_razmer_160_marka_s255_dlina_12000",
+    "competitor_url": "https://metall-invest.uz/ugolok-stalnoj-160-h-160-x-10/",
+    "comparison_quality": "CONFLICT cross-check from unit arithmetic and 2025 PDF; NOT current quote"
+  }
+]

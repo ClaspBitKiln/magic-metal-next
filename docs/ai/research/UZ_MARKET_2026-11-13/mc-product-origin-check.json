@@ -1,0 +1,31 @@
+{
+  "checked_at": "2026-11-13T05:15:00Z",
+  "method": "Official MC.ru HTML via owner Windows Invoke-WebRequest, HTTP 200; text and raw markup inspection",
+  "products": [
+    {
+      "name": "Балка 50 Б1 ГОСТ 35087/Р 57837(АСЧМ 20-93), длина 12 м, марка С255",
+      "url": "https://mc.ru/region/chelyabinsk/metalloprokat/balka_50_b1_gost_35087_r_57837(aschm_20-93)_razmer_50_marka_s255_dlina_12000",
+      "warehouse": "Челябинск Производственная",
+      "price_rub_t": 83000,
+      "manufacturer": null,
+      "country_of_manufacture": null,
+      "export_permission_or_conditions": null,
+      "published_price_date": null,
+      "html_saved_utc": "2026-11-13T05:11:33.7984332Z",
+      "html_sha256": "041D53525DC834304087C466684EEBB50DE59587415E0AF7514F8DF835C9CA6F"
+    },
+    {
+      "name": "Балка 60 Б2 ГОСТ 35087/Р 57837(АСЧМ 20-93), длина 12 м, марка С255",
+      "url": "https://mc.ru/region/chelyabinsk/metalloprokat/balka_60_b2_gost_35087_r_57837(aschm_20-93)_razmer_60_marka_s255_dlina_12000",
+      "warehouse": "Челябинск Производственная",
+      "price_rub_t": 83700,
+      "manufacturer": null,
+      "country_of_manufacture": null,
+      "export_permission_or_conditions": null,
+      "published_price_date": null,
+      "html_saved_utc": "2026-11-13T05:14:35.6509398Z",
+      "html_sha256": "1069A7594FB7868B946037545E3E3EBAB197C2913837BEBC13FE9AB6AB325492"
+    }
+  ],
+  "conclusion": "Country is unverified. Russian warehouse and Russian GOST do not establish Russian manufacture or eligibility for CT-1. No publication performed."
+}
