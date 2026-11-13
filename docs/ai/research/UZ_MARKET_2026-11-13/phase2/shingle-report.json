@@ -1,0 +1,181 @@
+{
+  "method": "Unique 5-word shingles; overlap divided by smaller shingle set. Internal heuristic, not official Prom algorithm.",
+  "word_counts": [
+    {
+      "id": 1402458,
+      "ru_whitespace": 182,
+      "uz_whitespace": 175
+    },
+    {
+      "id": 1402459,
+      "ru_whitespace": 189,
+      "uz_whitespace": 185
+    },
+    {
+      "id": 1402460,
+      "ru_whitespace": 189,
+      "uz_whitespace": 195
+    },
+    {
+      "id": 1402461,
+      "ru_whitespace": 196,
+      "uz_whitespace": 185
+    },
+    {
+      "id": 1402462,
+      "ru_whitespace": 199,
+      "uz_whitespace": 193
+    }
+  ],
+  "pairs": [
+    {
+      "ids": [
+        1402458,
+        1402459
+      ],
+      "ru_overlap_pct": 3.31,
+      "uz_overlap_pct": 4.0
+    },
+    {
+      "ids": [
+        1402458,
+        1402460
+      ],
+      "ru_overlap_pct": 2.76,
+      "uz_overlap_pct": 2.86
+    },
+    {
+      "ids": [
+        1402458,
+        1402461
+      ],
+      "ru_overlap_pct": 4.97,
+      "uz_overlap_pct": 4.0
+    },
+    {
+      "ids": [
+        1402458,
+        1402462
+      ],
+      "ru_overlap_pct": 6.08,
+      "uz_overlap_pct": 5.14
+    },
+    {
+      "ids": [
+        1402459,
+        1402460
+      ],
+      "ru_overlap_pct": 2.66,
+      "uz_overlap_pct": 3.78
+    },
+    {
+      "ids": [
+        1402459,
+        1402461
+      ],
+      "ru_overlap_pct": 2.65,
+      "uz_overlap_pct": 2.72
+    },
+    {
+      "ids": [
+        1402459,
+        1402462
+      ],
+      "ru_overlap_pct": 4.23,
+      "uz_overlap_pct": 4.32
+    },
+    {
+      "ids": [
+        1402460,
+        1402461
+      ],
+      "ru_overlap_pct": 3.19,
+      "uz_overlap_pct": 4.89
+    },
+    {
+      "ids": [
+        1402460,
+        1402462
+      ],
+      "ru_overlap_pct": 3.19,
+      "uz_overlap_pct": 8.33
+    },
+    {
+      "ids": [
+        1402461,
+        1402462
+      ],
+      "ru_overlap_pct": 2.58,
+      "uz_overlap_pct": 2.72
+    }
+  ],
+  "max_overlap_pct": 8.33,
+  "required_checks": [
+    {
+      "id": 1402458,
+      "ru_words_150_200": true,
+      "ru_stock_phrase": true,
+      "uz_stock_phrase": true,
+      "ru_delivery_exact": true,
+      "uz_delivery_exact": true,
+      "ru_location_exact": true,
+      "illustration_guard": true,
+      "no_prohibited_terms": true,
+      "no_contacts": true,
+      "uz_no_cyrillic": true
+    },
+    {
+      "id": 1402459,
+      "ru_words_150_200": true,
+      "ru_stock_phrase": true,
+      "uz_stock_phrase": true,
+      "ru_delivery_exact": true,
+      "uz_delivery_exact": true,
+      "ru_location_exact": true,
+      "illustration_guard": true,
+      "no_prohibited_terms": true,
+      "no_contacts": true,
+      "uz_no_cyrillic": true
+    },
+    {
+      "id": 1402460,
+      "ru_words_150_200": true,
+      "ru_stock_phrase": true,
+      "uz_stock_phrase": true,
+      "ru_delivery_exact": true,
+      "uz_delivery_exact": true,
+      "ru_location_exact": true,
+      "illustration_guard": true,
+      "no_prohibited_terms": true,
+      "no_contacts": true,
+      "uz_no_cyrillic": true
+    },
+    {
+      "id": 1402461,
+      "ru_words_150_200": true,
+      "ru_stock_phrase": true,
+      "uz_stock_phrase": true,
+      "ru_delivery_exact": true,
+      "uz_delivery_exact": true,
+      "ru_location_exact": true,
+      "illustration_guard": true,
+      "no_prohibited_terms": true,
+      "no_contacts": true,
+      "uz_no_cyrillic": true
+    },
+    {
+      "id": 1402462,
+      "ru_words_150_200": true,
+      "ru_stock_phrase": true,
+      "uz_stock_phrase": true,
+      "ru_delivery_exact": true,
+      "uz_delivery_exact": true,
+      "ru_location_exact": true,
+      "illustration_guard": true,
+      "no_prohibited_terms": true,
+      "no_contacts": true,
+      "uz_no_cyrillic": true
+    }
+  ],
+  "all_checks_passed": true
+}

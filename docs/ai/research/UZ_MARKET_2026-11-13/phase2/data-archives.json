@@ -1,0 +1,20 @@
+[
+  {
+    "file": "mc-normalized.json.gz",
+    "uncompressed_bytes": 4325099,
+    "sha256_uncompressed": "c62c4efbf7f58cc9110bd06c6a1f245cab195fbdeeb9fd458d43fc56cf56e90f",
+    "sha256_gzip": "7033f0fbfa93ef3f7cfcaa382c3958824fdab92a19e69bfaa7f0cfad5ca5f4de"
+  },
+  {
+    "file": "metallotorg-normalized.json.gz",
+    "uncompressed_bytes": 8063099,
+    "sha256_uncompressed": "f91e370ce214654fbdda10f28640370a4912002e96eb28ea973397ef64c6c41c",
+    "sha256_gzip": "771ffc0862583675c919e047e802cfcae8d108f7c3cbc9828b6a9288a9166f02"
+  },
+  {
+    "file": "staltrade-pipes-normalized.json.gz",
+    "uncompressed_bytes": 100372,
+    "sha256_uncompressed": "21c503ea69a4fbf049bbb9e301c1401b223099a07162170ed8a660f5aba7f031",
+    "sha256_gzip": "9fcb925275807eeb2042fcb3997c6724258dd45c3eac35fb3aa2718e5a12f359"
+  }
+]
