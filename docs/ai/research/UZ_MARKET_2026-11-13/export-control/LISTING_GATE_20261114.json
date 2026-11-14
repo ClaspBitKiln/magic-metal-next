@@ -1,0 +1,107 @@
+{
+  "review_date": "2026-11-14",
+  "origin_country_of_export": "RU",
+  "destination_country": "UZ",
+  "owner_instruction": "Only advertise goods whose lawful export from Russia is established; do not infer approval from name or HS code alone.",
+  "sixth_listing": "saved_readback_and_moderation_confirmed",
+  "items": [
+    {
+      "id": "1402458",
+      "name": "Круг Ст45 Ø180",
+      "listing_release": true,
+      "status": "eligible_standard_civilian_form_only",
+      "not_a_finding_of_illegality": true,
+      "unknowns": [
+        "exact customs classification",
+        "technical specification/certificate sufficient for control-list identification",
+        "applicable current restrictions and exceptions",
+        "transaction recipient/end-use screening before shipment"
+      ],
+      "shipment_release": false,
+      "legal_basis": "ФСТЭК20.01.2025№17; standard civilian goods only; transaction screening required before shipment",
+      "review_report": "STEEL_RF_UZ_20261114.md"
+    },
+    {
+      "id": "1402459",
+      "name": "Круг Ст45 Ø100",
+      "listing_release": true,
+      "status": "eligible_standard_civilian_form_only",
+      "not_a_finding_of_illegality": true,
+      "unknowns": [
+        "exact customs classification",
+        "technical specification/certificate sufficient for control-list identification",
+        "applicable current restrictions and exceptions",
+        "transaction recipient/end-use screening before shipment"
+      ],
+      "shipment_release": false,
+      "legal_basis": "ФСТЭК20.01.2025№17; standard civilian goods only; transaction screening required before shipment",
+      "review_report": "STEEL_RF_UZ_20261114.md"
+    },
+    {
+      "id": "1402460",
+      "name": "Лист Ст45 20x1500x6000",
+      "listing_release": true,
+      "status": "eligible_standard_civilian_form_only",
+      "not_a_finding_of_illegality": true,
+      "unknowns": [
+        "exact customs classification",
+        "technical specification/certificate sufficient for control-list identification",
+        "applicable current restrictions and exceptions",
+        "transaction recipient/end-use screening before shipment"
+      ],
+      "shipment_release": false,
+      "legal_basis": "ФСТЭК20.01.2025№17; standard civilian goods only; transaction screening required before shipment",
+      "review_report": "STEEL_RF_UZ_20261114.md"
+    },
+    {
+      "id": "1402461",
+      "name": "Лист40Х 30x1500x6000",
+      "listing_release": true,
+      "status": "eligible_standard_civilian_form_only",
+      "not_a_finding_of_illegality": true,
+      "unknowns": [
+        "exact customs classification",
+        "technical specification/certificate sufficient for control-list identification",
+        "applicable current restrictions and exceptions",
+        "transaction recipient/end-use screening before shipment"
+      ],
+      "shipment_release": false,
+      "legal_basis": "ФСТЭК20.01.2025№17; standard civilian goods only; transaction screening required before shipment",
+      "review_report": "STEEL_RF_UZ_20261114.md"
+    },
+    {
+      "id": "1402462",
+      "name": "Труба Ст20 159x6 ГОСТ8732",
+      "listing_release": true,
+      "status": "eligible_standard_civilian_form_only",
+      "not_a_finding_of_illegality": true,
+      "unknowns": [
+        "exact customs classification",
+        "technical specification/certificate sufficient for control-list identification",
+        "applicable current restrictions and exceptions",
+        "transaction recipient/end-use screening before shipment"
+      ],
+      "shipment_release": false,
+      "legal_basis": "ФСТЭК20.01.2025№17; standard civilian goods only; transaction screening required before shipment",
+      "review_report": "STEEL_RF_UZ_20261114.md"
+    },
+    {
+      "id": "1402466",
+      "name": "Плита АМг2 30x1200x3000 ГОСТ17232",
+      "listing_release": true,
+      "status": "eligible_standard_civilian_form_only",
+      "not_a_finding_of_illegality": true,
+      "unknowns": [
+        "exact customs classification",
+        "technical specification/certificate sufficient for control-list identification",
+        "applicable current restrictions and exceptions",
+        "transaction recipient/end-use screening before shipment"
+      ],
+      "shipment_release": false,
+      "legal_basis": "ФСТЭК20.01.2025№17; standard civilian goods only; transaction screening required before shipment",
+      "review_report": "ALUMINUM_RF_UZ_20261114.md"
+    }
+  ],
+  "instruction_scope": "Do not infer release for other grades, forms, controlled properties or destinations.",
+  "sixth_product_id": 1402466
+}
