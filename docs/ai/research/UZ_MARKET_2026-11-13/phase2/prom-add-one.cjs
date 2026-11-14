@@ -1,0 +1,31 @@
+// One explicit extra-product attempt; never replay final submission automatically.
+const fs=require('fs'),path=require('path'),{chromium}=require('playwright-core');
+const base=__dirname,job=JSON.parse(fs.readFileSync(path.join(base,'prom-sixth-job.json'),'utf8')),resultPath=path.join(base,'prom-sixth-result-20261114.json');
+if(!process.argv.includes('--apply')){console.log(JSON.stringify({name:job.name,price:job.price_uzs_t,export_listing_release:job.export_listing_release}));process.exit(0)}
+if(job.company_id!==611809||job.name!=='Плита алюминиевая АМг2 30х1200х3000 мм')throw Error('Only the one authorized candidate is allowed');
+if(job.export_listing_release!==true||!job.export_review_source)throw Error('Export identification release missing');
+if(job.price_uzs_t/job.cbu_rate_rub_uzs<job.owner_floor_rub_t)throw Error('Price below owner minimum');
+if(fs.existsSync(resultPath))throw Error('Attempt receipt already exists: inspect before any new attempt');
+let proof={name:job.name,at:new Date().toISOString(),price_uzs_t:job.price_uzs_t,stock:'В наличии',export_review_source:job.export_review_source,status:'preparing'};
+const persist=()=>fs.writeFileSync(resultPath,JSON.stringify(proof,null,2)),html=s=>s.split('\n\n').map(t=>'<p>'+t.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;')+'</p>').join('');
+(async()=>{const b=await chromium.connectOverCDP('http://127.0.0.1:9223');try{const p=b.contexts()[0].pages().find(p=>new URL(p.url()).pathname==='/app/products'&&p.url().startsWith('https://my.prom.uz'));if(!p)throw Error('Explicit new-product task page absent');p.setDefaultTimeout(20000);
+ if(!await p.locator('a[href*="/statistics/611809"]').count())throw Error('Wrong company');
+ const field=async label=>{const id=await p.locator('label').filter({hasText:new RegExp('^'+label+'$')}).getAttribute('for');if(!id)throw Error('Missing field '+label);return p.locator('[id="'+id+'"]')};
+ const choose=async(root,label)=>{await root.focus();if(!((await root.getAttribute('class'))||'').includes('is-open'))await root.press('ArrowDown');const opt=root.getByText(label,{exact:true}).filter({visible:true}).last();await opt.waitFor();for(let i=0;i<2;i++){await opt.hover();await root.press('Enter');await p.waitForTimeout(150);if((await root.innerText()).trim()===label)return}throw Error('Option not selected '+label)};
+ const save=()=>p.getByRole('button',{name:'Сохранить',exact:true}).click();
+ await p.getByPlaceholder('Введите название',{exact:true}).fill(job.name);await p.getByPlaceholder('Введите название',{exact:true}).press('Tab');await p.getByText(job.category,{exact:true}).filter({visible:true}).first().click();await save();
+ const price=p.locator('label').filter({hasText:/^Цена$/}).locator('..').locator('input');await price.waitFor();await price.focus();await price.press('ControlOrMeta+A');await price.press('Backspace');await price.pressSequentially(String(job.price_uzs_t),{delay:20});await price.press('Tab');
+ await choose(await field('Валюта'),'сум');await p.getByLabel('В наличии',{exact:true}).check({force:true});await p.getByLabel('Оптом',{exact:true}).check({force:true});await choose(await field('Единица измерения'),'тонна');
+ if(+(await price.inputValue()).replace(/\D/g,'')!==job.price_uzs_t)throw Error('Masked price mismatch');await save();
+ const ru=p.locator('[contenteditable="true"]').first();await ru.waitFor();await ru.evaluate((e,t)=>e.ckeditorInstance.setData(t),html(job.description_ru));await p.waitForTimeout(1000);await p.locator('input[type=file]').first().setInputFiles(path.join(base,job.image));await p.waitForTimeout(700);await save();
+ await p.getByPlaceholder('Название на узбекском языке',{exact:true}).fill(job.name_uz);await p.locator('[contenteditable="true"]').nth(1).evaluate((e,t)=>e.ckeditorInstance.setData(t),html(job.description_uz));await p.waitForTimeout(1000);
+ const texts=await p.locator('[contenteditable="true"]').allTextContents();if(texts.length!==2||!texts[0].includes('85 000 000')||!texts[1].includes('85 000 000')||!texts.every(x=>x.includes('5–7')))throw Error('Description pre-save failed');
+ if(!await p.getByLabel('В наличии',{exact:true}).isChecked()||+(await price.inputValue()).replace(/\D/g,'')!==job.price_uzs_t)throw Error('Status/price pre-save failed');
+ proof.status='submit_started';persist();await save(); // Final request once; failed verification requires reconciliation.
+ await p.waitForURL(u=>u.pathname==='/app/products-all',{timeout:45000});await p.getByText('На модерации',{exact:true}).click();const link=p.getByRole('link',{name:job.name,exact:true});await link.waitFor({timeout:45000});const href=await link.getAttribute('href'),row=await link.locator('xpath=ancestor::tr').innerText();
+ if(!row.replace(/\s/g,'').includes(String(job.price_uzs_t))||!row.includes('сум/тонна')||!row.includes('В наличии'))throw Error('Inventory readback mismatch');
+ const url=new URL(href,'https://my.prom.uz').href;Object.assign(proof,{status:'moderation_confirmed',url,row,verified_at:new Date().toISOString()});persist();
+ await p.goto(url,{waitUntil:'domcontentloaded'});await p.waitForFunction(name=>document.querySelector('input[name=name]')?.value===name,job.name);await p.waitForFunction(()=>document.querySelectorAll('[contenteditable=true]').length===2&&[...document.querySelectorAll('[contenteditable=true]')].every(e=>e.ckeditorInstance?.getData().length>300));await p.waitForTimeout(1000);
+ const read=await p.locator('[contenteditable=true]').allTextContents();if(+(await price.inputValue()).replace(/\D/g,'')!==job.price_uzs_t||!await p.getByLabel('В наличии',{exact:true}).isChecked()||!read.every(t=>t.includes('5–7')&&t.includes('85 000 000')))throw Error('Edit-page saved readback mismatch');
+ Object.assign(proof,{status:'saved_readback_and_moderation_confirmed',publicly_published:false});persist();try{await p.screenshot({path:path.join(base,'results','sixth-aluminum-20261114.jpg'),type:'jpeg',quality:65,fullPage:false,timeout:10000});proof.screenshot='results/sixth-aluminum-20261114.jpg';persist()}catch(e){console.log('SCREENSHOT_UNAVAILABLE '+e.message.split('\n')[0])}console.log('SUCCESS '+JSON.stringify(proof));
+}finally{await b.close()}})().catch(e=>{proof.error=e.message;persist();console.error('STOP '+JSON.stringify(proof));process.exitCode=1});
