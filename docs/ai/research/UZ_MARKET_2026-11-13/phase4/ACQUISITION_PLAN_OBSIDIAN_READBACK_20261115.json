@@ -1,0 +1,20 @@
+{
+  "source_commit": "25b5550",
+  "stage_note": {
+    "name": "2026-11-15 - Cataloxy - четыре товара и план.md",
+    "sha256": "bfbf23533ff4012f059956998e0bbece3384a978cac27f3080125ef36a164c03",
+    "pid": 20836,
+    "verified": true
+  },
+  "full_start": {
+    "name": "00 - Инструкция старт - все подключения.md",
+    "sha256": "11270137edcbff2615bedec3af2132cd1603a79290d6f29b6198a2475173743e",
+    "pid": 18352,
+    "verified": true
+  },
+  "two_text_updates": {
+    "event_id": 4109800,
+    "status": "scan_submitted_not_yet_confirmed",
+    "must_not_reupload": true
+  }
+}
