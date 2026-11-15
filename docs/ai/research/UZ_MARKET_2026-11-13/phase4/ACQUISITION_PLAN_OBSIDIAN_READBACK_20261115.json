@@ -14,7 +14,12 @@
   },
   "two_text_updates": {
     "event_id": 4109800,
-    "status": "scan_submitted_not_yet_confirmed",
-    "must_not_reupload": true
+    "import_id": 1413838,
+    "status": "confirmed_once_public_readback_pass",
+    "existing_ids": [
+      407929054,
+      407929057
+    ],
+    "readback_pid": 15728
   }
 }
