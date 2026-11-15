@@ -6,4 +6,4 @@
 
 Внешние интеграции в рамках редакции не перенастраивались. Прежние факты15.11 явно датированы; RDC и PR проверены для доступа к записи иGit. Публикаций товаров/изменений сайта эта редакция не выполняла.
 
-Подробные документы: https://github.com/ClaspBitKiln/magic-metal-next/blob/feat/free-directory-registration-20261112/docs/ai/START_HERE.md ; https://github.com/ClaspBitKiln/magic-metal-next/blob/feat/free-directory-registration-20261112/docs/ai/CONNECTIONS_RUNBOOK.md ; https://github.com/ClaspBitKiln/magic-metal-next/blob/feat/free-directory-registration-20261112/docs/ai/CURRENT_HANDOFF.md .
+Короткий старт: https://github.com/ClaspBitKiln/magic-metal-next/blob/feat/free-directory-registration-20261112/docs/ai/START_HERE.md .
