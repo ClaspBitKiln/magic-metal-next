@@ -1,0 +1,1945 @@
+{
+  "review_date": "2026-11-14",
+  "source_snapshot_date": "2026-11-13; selected individual rows rechecked by root 2026-11-14, not all ranges",
+  "sheet_method_note": "Construction sheet family; verify hot/cold/other processing for each row/lot; range does not establish a uniform method.",
+  "stock_warning": "Snapshot with positive price and InStock/stock>0. Not reservation, not confirmed full20t in every SKU. Numeric endpoints do not promise continuous range or every grade-size combination.",
+  "excluded_mc_missing_grade": {
+    "hot_seamless_pipe": 83
+  },
+  "groups": {
+    "construction_round": {
+      "35": {
+        "grade": "35",
+        "min_mm": 6.0,
+        "max_mm": 350.0,
+        "observed_values_mm": [
+          6.0,
+          8.0,
+          10.0,
+          12.0,
+          14.0,
+          16.0,
+          18.0,
+          20.0,
+          21.0,
+          22.0,
+          24.0,
+          25.0,
+          26.0,
+          27.0,
+          28.0,
+          30.0,
+          32.0,
+          34.0,
+          36.0,
+          38.0,
+          40.0,
+          42.0,
+          45.0,
+          46.0,
+          48.0,
+          50.0,
+          52.0,
+          54.0,
+          55.0,
+          56.0,
+          60.0,
+          65.0,
+          70.0,
+          75.0,
+          80.0,
+          85.0,
+          90.0,
+          95.0,
+          100.0,
+          105.0,
+          110.0,
+          115.0,
+          120.0,
+          125.0,
+          130.0,
+          140.0,
+          150.0,
+          160.0,
+          170.0,
+          180.0,
+          190.0,
+          200.0,
+          210.0,
+          220.0,
+          230.0,
+          240.0,
+          250.0,
+          260.0,
+          270.0,
+          280.0,
+          290.0,
+          300.0,
+          310.0,
+          320.0,
+          330.0,
+          340.0,
+          350.0
+        ],
+        "rows_including_warehouse_duplicates": 318,
+        "sources": [
+          "mc.ru",
+          "Металлоторг"
+        ],
+        "endpoint_evidence": {
+          "min": {
+            "value_mm": 6.0,
+            "source": "Металлоторг",
+            "source_url": "https://www.metallotorg.ru/import/prise_last.csv",
+            "row_id": 1642,
+            "captured": "13.11.2026 08:12",
+            "region": "Электроугли (МО)",
+            "stock_t": 1.86,
+            "availability": "public_stock_not_reserved",
+            "grade": "35",
+            "name": "Круг Ст35 калиброванный",
+            "standard": "ГОСТ 7417-75;1050-2013",
+            "description": "НД",
+            "size_raw": "06мм"
+          },
+          "max": {
+            "value_mm": 350.0,
+            "source": "Металлоторг",
+            "source_url": "https://www.metallotorg.ru/import/prise_last.csv",
+            "row_id": 598,
+            "captured": "13.11.2026 08:12",
+            "region": "Электроугли (МО)",
+            "stock_t": 3.56,
+            "availability": "public_stock_not_reserved",
+            "grade": "35",
+            "name": "Круг Ст35",
+            "standard": "ТУ14-1-2118-98 ГОСТ1050-88 3ГП",
+            "description": "",
+            "size_raw": "350мм."
+          }
+        },
+        "stock_20t_observed_values_mm": [
+          16.0,
+          26.0,
+          30.0,
+          36.0,
+          40.0,
+          42.0,
+          45.0,
+          50.0,
+          56.0,
+          60.0,
+          90.0
+        ]
+      },
+      "45": {
+        "grade": "45",
+        "min_mm": 6.0,
+        "max_mm": 350.0,
+        "observed_values_mm": [
+          6.0,
+          8.0,
+          10.0,
+          12.0,
+          14.0,
+          16.0,
+          18.0,
+          20.0,
+          22.0,
+          24.0,
+          25.0,
+          26.0,
+          27.0,
+          28.0,
+          30.0,
+          32.0,
+          34.0,
+          35.0,
+          36.0,
+          38.0,
+          40.0,
+          42.0,
+          45.0,
+          46.0,
+          48.0,
+          50.0,
+          52.0,
+          54.0,
+          56.0,
+          58.0,
+          60.0,
+          65.0,
+          70.0,
+          75.0,
+          80.0,
+          85.0,
+          90.0,
+          95.0,
+          100.0,
+          105.0,
+          110.0,
+          115.0,
+          120.0,
+          125.0,
+          130.0,
+          140.0,
+          150.0,
+          160.0,
+          170.0,
+          180.0,
+          190.0,
+          200.0,
+          210.0,
+          220.0,
+          230.0,
+          240.0,
+          250.0,
+          260.0,
+          270.0,
+          280.0,
+          290.0,
+          300.0,
+          310.0,
+          320.0,
+          330.0,
+          340.0,
+          350.0
+        ],
+        "rows_including_warehouse_duplicates": 361,
+        "sources": [
+          "mc.ru",
+          "Металлоторг"
+        ],
+        "endpoint_evidence": {
+          "min": {
+            "value_mm": 6.0,
+            "source": "Металлоторг",
+            "source_url": "https://www.metallotorg.ru/import/prise_last.csv",
+            "row_id": 1641,
+            "captured": "13.11.2026 08:12",
+            "region": "Электроугли (МО)",
+            "stock_t": 3.12,
+            "availability": "public_stock_not_reserved",
+            "grade": "45",
+            "name": "Круг Ст45 калиброванный",
+            "standard": "ГОСТ 7417-75;1050-2013",
+            "description": "НД",
+            "size_raw": "06мм"
+          },
+          "max": {
+            "value_mm": 350.0,
+            "source": "Металлоторг",
+            "source_url": "https://www.metallotorg.ru/import/prise_last.csv",
+            "row_id": 613,
+            "captured": "13.11.2026 08:12",
+            "region": "Лобня (МО)",
+            "stock_t": 6.27,
+            "availability": "public_stock_not_reserved",
+            "grade": "45",
+            "name": "Круг Ст45",
+            "standard": "ТУ14-1-2118-98 ГОСТ1050-88 3ГП",
+            "description": "3ГП",
+            "size_raw": "350мм."
+          }
+        },
+        "stock_20t_observed_values_mm": [
+          22.0,
+          25.0,
+          36.0,
+          38.0,
+          42.0,
+          45.0,
+          50.0,
+          54.0,
+          56.0,
+          60.0,
+          70.0,
+          80.0,
+          100.0,
+          110.0,
+          130.0,
+          140.0,
+          150.0,
+          160.0,
+          180.0,
+          220.0,
+          250.0,
+          290.0
+        ]
+      },
+      "40Х": {
+        "grade": "40Х",
+        "min_mm": 8.0,
+        "max_mm": 350.0,
+        "observed_values_mm": [
+          8.0,
+          10.0,
+          12.0,
+          14.0,
+          16.0,
+          17.0,
+          18.0,
+          19.0,
+          20.0,
+          21.0,
+          22.0,
+          23.0,
+          24.0,
+          25.0,
+          26.0,
+          27.0,
+          28.0,
+          30.0,
+          32.0,
+          34.0,
+          35.0,
+          36.0,
+          38.0,
+          40.0,
+          42.0,
+          45.0,
+          46.0,
+          48.0,
+          50.0,
+          52.0,
+          54.0,
+          56.0,
+          60.0,
+          65.0,
+          70.0,
+          75.0,
+          80.0,
+          85.0,
+          90.0,
+          95.0,
+          100.0,
+          105.0,
+          110.0,
+          115.0,
+          120.0,
+          130.0,
+          140.0,
+          150.0,
+          160.0,
+          170.0,
+          180.0,
+          190.0,
+          200.0,
+          210.0,
+          220.0,
+          230.0,
+          240.0,
+          250.0,
+          260.0,
+          270.0,
+          280.0,
+          290.0,
+          300.0,
+          310.0,
+          320.0,
+          330.0,
+          340.0,
+          350.0
+        ],
+        "rows_including_warehouse_duplicates": 331,
+        "sources": [
+          "mc.ru",
+          "Металлоторг"
+        ],
+        "endpoint_evidence": {
+          "min": {
+            "value_mm": 8.0,
+            "source": "Металлоторг",
+            "source_url": "https://www.metallotorg.ru/import/prise_last.csv",
+            "row_id": 1637,
+            "captured": "13.11.2026 08:12",
+            "region": "Челябинск",
+            "stock_t": 4.53,
+            "availability": "public_stock_not_reserved",
+            "grade": "40Х",
+            "name": "Круг Ст40х калиброванный",
+            "standard": "ГОСТ 7417-75;4543-2016",
+            "description": "НД",
+            "size_raw": "08мм"
+          },
+          "max": {
+            "value_mm": 350.0,
+            "source": "Металлоторг",
+            "source_url": "https://www.metallotorg.ru/import/prise_last.csv",
+            "row_id": 611,
+            "captured": "13.11.2026 08:12",
+            "region": "Лобня (МО)",
+            "stock_t": 9.47,
+            "availability": "public_stock_not_reserved",
+            "grade": "40Х",
+            "name": "Круг Ст40Х",
+            "standard": "ГОСТ4543-2016, ТУ14-1-2118-98",
+            "description": "3гп",
+            "size_raw": "350мм"
+          }
+        },
+        "stock_20t_observed_values_mm": [
+          28.0,
+          30.0,
+          40.0,
+          42.0,
+          45.0,
+          56.0,
+          60.0,
+          70.0,
+          80.0,
+          90.0,
+          95.0,
+          120.0,
+          130.0,
+          140.0,
+          150.0,
+          170.0,
+          180.0,
+          190.0,
+          210.0,
+          250.0
+        ]
+      },
+      "20": {
+        "grade": "20",
+        "min_mm": 8.0,
+        "max_mm": 350.0,
+        "observed_values_mm": [
+          8.0,
+          10.0,
+          12.0,
+          14.0,
+          16.0,
+          18.0,
+          20.0,
+          22.0,
+          24.0,
+          25.0,
+          26.0,
+          27.0,
+          28.0,
+          30.0,
+          32.0,
+          34.0,
+          35.0,
+          36.0,
+          38.0,
+          40.0,
+          42.0,
+          45.0,
+          46.0,
+          48.0,
+          50.0,
+          52.0,
+          54.0,
+          56.0,
+          58.0,
+          60.0,
+          65.0,
+          70.0,
+          75.0,
+          80.0,
+          85.0,
+          90.0,
+          95.0,
+          100.0,
+          105.0,
+          110.0,
+          115.0,
+          120.0,
+          125.0,
+          130.0,
+          140.0,
+          145.0,
+          150.0,
+          160.0,
+          170.0,
+          180.0,
+          190.0,
+          200.0,
+          210.0,
+          220.0,
+          230.0,
+          240.0,
+          250.0,
+          260.0,
+          270.0,
+          280.0,
+          290.0,
+          300.0,
+          310.0,
+          320.0,
+          330.0,
+          340.0,
+          350.0
+        ],
+        "rows_including_warehouse_duplicates": 323,
+        "sources": [
+          "mc.ru",
+          "Металлоторг"
+        ],
+        "endpoint_evidence": {
+          "min": {
+            "value_mm": 8.0,
+            "source": "Металлоторг",
+            "source_url": "https://www.metallotorg.ru/import/prise_last.csv",
+            "row_id": 1066,
+            "captured": "13.11.2026 08:12",
+            "region": "Электроугли (МО)",
+            "stock_t": 0.04,
+            "availability": "public_stock_not_reserved",
+            "grade": "20",
+            "name": "Круг Ст20 калиброванный",
+            "standard": "ГОСТ 7417-75;1050-2013",
+            "description": "НД",
+            "size_raw": "08мм"
+          },
+          "max": {
+            "value_mm": 350.0,
+            "source": "Металлоторг",
+            "source_url": "https://www.metallotorg.ru/import/prise_last.csv",
+            "row_id": 601,
+            "captured": "13.11.2026 08:12",
+            "region": "Электроугли (МО)",
+            "stock_t": 0.95,
+            "availability": "public_stock_not_reserved",
+            "grade": "20",
+            "name": "Круг Ст20",
+            "standard": "ТУ14-1-2118-98 ГОСТ1050-88 ЗГП",
+            "description": "",
+            "size_raw": "350мм"
+          }
+        },
+        "stock_20t_observed_values_mm": [
+          14.0,
+          25.0,
+          28.0,
+          30.0,
+          36.0,
+          38.0,
+          40.0,
+          42.0,
+          45.0,
+          50.0,
+          70.0,
+          80.0,
+          100.0,
+          110.0,
+          130.0,
+          150.0
+        ]
+      }
+    },
+    "aluminum_plate": {
+      "АМГ2": {
+        "grade": "АМГ2",
+        "min_mm": 12.0,
+        "max_mm": 50.0,
+        "observed_values_mm": [
+          12.0,
+          14.0,
+          16.0,
+          18.0,
+          20.0,
+          25.0,
+          30.0,
+          35.0,
+          40.0,
+          45.0,
+          50.0
+        ],
+        "rows_including_warehouse_duplicates": 14,
+        "sources": [
+          "mc.ru"
+        ],
+        "endpoint_evidence": {
+          "min": {
+            "value_mm": 12.0,
+            "source": "mc.ru",
+            "source_url": "https://mc.ru/metalloprokat/plita_alyuminievaya_12x1200x3000_razmer_12_marka_amg2",
+            "source_page": "https://mc.ru/metalloprokat/plita_alyuminievaya",
+            "captured": "2026-11-13T05:31:05.4344011Z",
+            "region": "moscow",
+            "stock_t": null,
+            "availability": "InStock_not_reserved",
+            "grade": "АМГ2",
+            "name": "плита алюминиевая 12x1200x3000"
+          },
+          "max": {
+            "value_mm": 50.0,
+            "source": "mc.ru",
+            "source_url": "https://mc.ru/metalloprokat/plita_alyuminievaya_50x1200x3000_razmer_50_marka_amg2",
+            "source_page": "https://mc.ru/metalloprokat/plita_alyuminievaya",
+            "captured": "2026-11-13T05:31:05.4344011Z",
+            "region": "moscow",
+            "stock_t": null,
+            "availability": "InStock_not_reserved",
+            "grade": "АМГ2",
+            "name": "плита алюминиевая 50x1200x3000"
+          }
+        },
+        "stock_20t_observed_values_mm": []
+      },
+      "АМГ3": {
+        "grade": "АМГ3",
+        "min_mm": 12.0,
+        "max_mm": 30.0,
+        "observed_values_mm": [
+          12.0,
+          14.0,
+          15.0,
+          16.0,
+          18.0,
+          20.0,
+          22.0,
+          25.0,
+          28.0,
+          30.0
+        ],
+        "rows_including_warehouse_duplicates": 27,
+        "sources": [
+          "mc.ru"
+        ],
+        "endpoint_evidence": {
+          "min": {
+            "value_mm": 12.0,
+            "source": "mc.ru",
+            "source_url": "https://mc.ru/metalloprokat/plita_alyuminievaya_12x1200x2000_razmer_12_marka_amg3",
+            "source_page": "https://mc.ru/metalloprokat/plita_alyuminievaya",
+            "captured": "2026-11-13T05:31:05.4344011Z",
+            "region": "moscow",
+            "stock_t": null,
+            "availability": "InStock_not_reserved",
+            "grade": "АМГ3",
+            "name": "плита алюминиевая 12x1200x2000"
+          },
+          "max": {
+            "value_mm": 30.0,
+            "source": "mc.ru",
+            "source_url": "https://mc.ru/metalloprokat/plita_alyuminievaya_30x1200x3000_razmer_30_marka_amg3",
+            "source_page": "https://mc.ru/metalloprokat/plita_alyuminievaya",
+            "captured": "2026-11-13T05:31:05.4344011Z",
+            "region": "moscow",
+            "stock_t": null,
+            "availability": "InStock_not_reserved",
+            "grade": "АМГ3",
+            "name": "плита алюминиевая 30x1200x3000"
+          }
+        },
+        "stock_20t_observed_values_mm": []
+      }
+    },
+    "construction_sheet": {
+      "20": {
+        "grade": "20",
+        "min_mm": 2.0,
+        "max_mm": 160.0,
+        "observed_values_mm": [
+          2.0,
+          3.0,
+          4.0,
+          5.0,
+          6.0,
+          8.0,
+          10.0,
+          12.0,
+          14.0,
+          16.0,
+          18.0,
+          20.0,
+          25.0,
+          30.0,
+          32.0,
+          36.0,
+          40.0,
+          45.0,
+          50.0,
+          60.0,
+          70.0,
+          80.0,
+          90.0,
+          100.0,
+          110.0,
+          120.0,
+          130.0,
+          140.0,
+          150.0,
+          160.0
+        ],
+        "rows_including_warehouse_duplicates": 152,
+        "sources": [
+          "mc.ru",
+          "Металлоторг"
+        ],
+        "endpoint_evidence": {
+          "min": {
+            "value_mm": 2.0,
+            "source": "mc.ru",
+            "source_url": "https://mc.ru/region/chelyabinsk/metalloprokat/stal_listovaya_konstrukcionnaya_g_k_2x1250x2500_razmer_2_marka_st20",
+            "source_page": "https://mc.ru/region/chelyabinsk/metalloprokat/stal_listovaya_konstrukcionnaya_g_k",
+            "captured": "2026-11-13T10:08:11.2173529Z",
+            "region": "chelyabinsk",
+            "stock_t": null,
+            "availability": "InStock_not_reserved",
+            "grade": "20",
+            "name": "сталь листовая конструкционная г/к 2х1250х2500"
+          },
+          "max": {
+            "value_mm": 160.0,
+            "source": "Металлоторг",
+            "source_url": "https://www.metallotorg.ru/import/prise_last.csv",
+            "row_id": 4148,
+            "captured": "13.11.2026 08:12",
+            "region": "Электроугли (МО)",
+            "stock_t": 4.29,
+            "availability": "public_stock_not_reserved",
+            "grade": "20",
+            "name": "Лист Ст20",
+            "standard": "г/к ЧАСТЬ",
+            "description": "",
+            "size_raw": "160"
+          }
+        },
+        "stock_20t_observed_values_mm": [
+          3.0,
+          5.0,
+          6.0,
+          8.0,
+          10.0,
+          12.0,
+          18.0,
+          20.0,
+          30.0,
+          70.0,
+          80.0,
+          90.0
+        ],
+        "commercial_band_30_160": {
+          "min_mm": 30.0,
+          "max_mm": 160.0,
+          "observed_values_mm": [
+            30.0,
+            32.0,
+            36.0,
+            40.0,
+            45.0,
+            50.0,
+            60.0,
+            70.0,
+            80.0,
+            90.0,
+            100.0,
+            110.0,
+            120.0,
+            130.0,
+            140.0,
+            150.0,
+            160.0
+          ]
+        }
+      },
+      "45": {
+        "grade": "45",
+        "min_mm": 2.0,
+        "max_mm": 160.0,
+        "observed_values_mm": [
+          2.0,
+          3.0,
+          4.0,
+          5.0,
+          6.0,
+          8.0,
+          10.0,
+          12.0,
+          14.0,
+          16.0,
+          18.0,
+          20.0,
+          25.0,
+          30.0,
+          36.0,
+          40.0,
+          45.0,
+          50.0,
+          60.0,
+          70.0,
+          80.0,
+          90.0,
+          100.0,
+          110.0,
+          120.0,
+          130.0,
+          140.0,
+          150.0,
+          160.0
+        ],
+        "rows_including_warehouse_duplicates": 146,
+        "sources": [
+          "mc.ru",
+          "Металлоторг"
+        ],
+        "endpoint_evidence": {
+          "min": {
+            "value_mm": 2.0,
+            "source": "mc.ru",
+            "source_url": "https://mc.ru/metalloprokat/stal_listovaya_konstrukcionnaya_g_k_2x1250x2500_razmer_2_marka_st45",
+            "source_page": "https://mc.ru/metalloprokat/stal_listovaya_konstrukcionnaya_g_k",
+            "captured": "2026-11-13T10:11:11.2281191Z",
+            "region": "moscow",
+            "stock_t": null,
+            "availability": "InStock_not_reserved",
+            "grade": "45",
+            "name": "сталь листовая конструкционная г/к 2х1250х2500"
+          },
+          "max": {
+            "value_mm": 160.0,
+            "source": "Металлоторг",
+            "source_url": "https://www.metallotorg.ru/import/prise_last.csv",
+            "row_id": 4147,
+            "captured": "13.11.2026 08:12",
+            "region": "Электроугли (МО)",
+            "stock_t": 5.61,
+            "availability": "public_stock_not_reserved",
+            "grade": "45",
+            "name": "Лист Ст45",
+            "standard": "г/к ЧАСТЬ",
+            "description": "",
+            "size_raw": "160"
+          }
+        },
+        "stock_20t_observed_values_mm": [
+          3.0,
+          4.0,
+          5.0,
+          8.0,
+          12.0,
+          16.0,
+          20.0,
+          30.0,
+          36.0,
+          50.0,
+          60.0,
+          70.0,
+          80.0,
+          100.0,
+          140.0,
+          150.0
+        ],
+        "commercial_band_30_160": {
+          "min_mm": 30.0,
+          "max_mm": 160.0,
+          "observed_values_mm": [
+            30.0,
+            36.0,
+            40.0,
+            45.0,
+            50.0,
+            60.0,
+            70.0,
+            80.0,
+            90.0,
+            100.0,
+            110.0,
+            120.0,
+            130.0,
+            140.0,
+            150.0,
+            160.0
+          ]
+        }
+      },
+      "40Х": {
+        "grade": "40Х",
+        "min_mm": 2.0,
+        "max_mm": 110.0,
+        "observed_values_mm": [
+          2.0,
+          3.0,
+          4.0,
+          6.0,
+          8.0,
+          10.0,
+          12.0,
+          14.0,
+          16.0,
+          18.0,
+          25.0,
+          30.0,
+          36.0,
+          45.0,
+          50.0,
+          60.0,
+          70.0,
+          80.0,
+          90.0,
+          100.0,
+          110.0
+        ],
+        "rows_including_warehouse_duplicates": 79,
+        "sources": [
+          "mc.ru",
+          "Металлоторг"
+        ],
+        "endpoint_evidence": {
+          "min": {
+            "value_mm": 2.0,
+            "source": "mc.ru",
+            "source_url": "https://mc.ru/metalloprokat/stal_listovaya_konstrukcionnaya_g_k_2x1250x2500_razmer_2_marka_40h",
+            "source_page": "https://mc.ru/metalloprokat/stal_listovaya_konstrukcionnaya_g_k",
+            "captured": "2026-11-13T10:11:11.2281191Z",
+            "region": "moscow",
+            "stock_t": null,
+            "availability": "InStock_not_reserved",
+            "grade": "40Х",
+            "name": "сталь листовая конструкционная г/к 2х1250х2500"
+          },
+          "max": {
+            "value_mm": 110.0,
+            "source": "Металлоторг",
+            "source_url": "https://www.metallotorg.ru/import/prise_last.csv",
+            "row_id": 4205,
+            "captured": "13.11.2026 08:12",
+            "region": "Электроугли (МО)",
+            "stock_t": 8.78,
+            "availability": "public_stock_not_reserved",
+            "grade": "40Х",
+            "name": "Лист Ст40х",
+            "standard": "г/к ЧАСТЬ Китай",
+            "description": "",
+            "size_raw": "110"
+          }
+        },
+        "stock_20t_observed_values_mm": [
+          8.0,
+          10.0,
+          12.0,
+          80.0,
+          90.0
+        ],
+        "commercial_band_30_160": {
+          "min_mm": 30.0,
+          "max_mm": 110.0,
+          "observed_values_mm": [
+            30.0,
+            36.0,
+            45.0,
+            50.0,
+            60.0,
+            70.0,
+            80.0,
+            90.0,
+            100.0,
+            110.0
+          ]
+        }
+      },
+      "35": {
+        "grade": "35",
+        "min_mm": 4.0,
+        "max_mm": 100.0,
+        "observed_values_mm": [
+          4.0,
+          5.0,
+          6.0,
+          8.0,
+          10.0,
+          12.0,
+          14.0,
+          16.0,
+          20.0,
+          25.0,
+          30.0,
+          36.0,
+          40.0,
+          45.0,
+          50.0,
+          60.0,
+          70.0,
+          80.0,
+          90.0,
+          100.0
+        ],
+        "rows_including_warehouse_duplicates": 59,
+        "sources": [
+          "mc.ru",
+          "Металлоторг"
+        ],
+        "endpoint_evidence": {
+          "min": {
+            "value_mm": 4.0,
+            "source": "Металлоторг",
+            "source_url": "https://www.metallotorg.ru/import/prise_last.csv",
+            "row_id": 3675,
+            "captured": "13.11.2026 08:12",
+            "region": "Электроугли (МО)",
+            "stock_t": 0.15,
+            "availability": "public_stock_not_reserved",
+            "grade": "35",
+            "name": "Лист Ст35",
+            "standard": "г/к ЧАСТЬ",
+            "description": "",
+            "size_raw": "4"
+          },
+          "max": {
+            "value_mm": 100.0,
+            "source": "Металлоторг",
+            "source_url": "https://www.metallotorg.ru/import/prise_last.csv",
+            "row_id": 4242,
+            "captured": "13.11.2026 08:12",
+            "region": "Электроугли (МО)",
+            "stock_t": 4.78,
+            "availability": "public_stock_not_reserved",
+            "grade": "35",
+            "name": "Лист Ст35",
+            "standard": "г/к ЧАСТЬ",
+            "description": "",
+            "size_raw": "100"
+          }
+        },
+        "stock_20t_observed_values_mm": [
+          5.0,
+          8.0,
+          10.0,
+          60.0
+        ],
+        "commercial_band_30_160": {
+          "min_mm": 30.0,
+          "max_mm": 100.0,
+          "observed_values_mm": [
+            30.0,
+            36.0,
+            40.0,
+            45.0,
+            50.0,
+            60.0,
+            70.0,
+            80.0,
+            90.0,
+            100.0
+          ]
+        }
+      }
+    },
+    "hot_seamless_pipe": {
+      "20": {
+        "grade": "20",
+        "min_mm": 38.0,
+        "max_mm": 426.0,
+        "observed_values_mm": [
+          38.0,
+          42.0,
+          45.0,
+          48.0,
+          51.0,
+          57.0,
+          60.0,
+          63.5,
+          68.0,
+          70.0,
+          73.0,
+          76.0,
+          83.0,
+          89.0,
+          95.0,
+          102.0,
+          108.0,
+          114.0,
+          121.0,
+          127.0,
+          133.0,
+          140.0,
+          146.0,
+          152.0,
+          159.0,
+          168.0,
+          194.0,
+          219.0,
+          245.0,
+          273.0,
+          325.0,
+          377.0,
+          426.0
+        ],
+        "rows_including_warehouse_duplicates": 256,
+        "sources": [
+          "Металлоторг"
+        ],
+        "endpoint_evidence": {
+          "min": {
+            "value_mm": 38.0,
+            "source": "Металлоторг",
+            "source_url": "https://www.metallotorg.ru/import/prise_last.csv",
+            "row_id": 6046,
+            "captured": "13.11.2026 08:12",
+            "region": "Лобня (МО)",
+            "stock_t": 8.4,
+            "availability": "public_stock_not_reserved",
+            "grade": "20",
+            "name": "Труба БШ ст20",
+            "standard": "ГОСТ 8732",
+            "description": "НД",
+            "size_raw": "38 *3,5",
+            "wall_mm": 3.5
+          },
+          "max": {
+            "value_mm": 426.0,
+            "source": "Металлоторг",
+            "source_url": "https://www.metallotorg.ru/import/prise_last.csv",
+            "row_id": 5698,
+            "captured": "13.11.2026 08:12",
+            "region": "Лобня (МО)",
+            "stock_t": 37.51,
+            "availability": "public_stock_not_reserved",
+            "grade": "20",
+            "name": "Труба БШ ст20",
+            "standard": "ГОСТ 8732",
+            "description": "НД",
+            "size_raw": "426 *10,0",
+            "wall_mm": 10.0
+          }
+        },
+        "stock_20t_observed_values_mm": [
+          57.0,
+          76.0,
+          89.0,
+          102.0,
+          108.0,
+          133.0,
+          159.0,
+          194.0,
+          219.0,
+          273.0,
+          325.0,
+          377.0,
+          426.0
+        ],
+        "commercial_band_57_273": {
+          "min_mm": 57.0,
+          "max_mm": 273.0,
+          "observed_diameters_mm": [
+            57.0,
+            60.0,
+            63.5,
+            68.0,
+            70.0,
+            73.0,
+            76.0,
+            83.0,
+            89.0,
+            95.0,
+            102.0,
+            108.0,
+            114.0,
+            121.0,
+            127.0,
+            133.0,
+            140.0,
+            146.0,
+            152.0,
+            159.0,
+            168.0,
+            194.0,
+            219.0,
+            245.0,
+            273.0
+          ],
+          "wall_min_mm": 3.5,
+          "wall_max_mm": 25.0,
+          "diameter_wall_pairs": [
+            [
+              57.0,
+              3.5
+            ],
+            [
+              57.0,
+              4.0
+            ],
+            [
+              57.0,
+              6.0
+            ],
+            [
+              57.0,
+              10.0
+            ],
+            [
+              60.0,
+              3.5
+            ],
+            [
+              60.0,
+              4.0
+            ],
+            [
+              60.0,
+              6.0
+            ],
+            [
+              60.0,
+              12.0
+            ],
+            [
+              63.5,
+              10.0
+            ],
+            [
+              68.0,
+              4.0
+            ],
+            [
+              70.0,
+              6.0
+            ],
+            [
+              70.0,
+              8.0
+            ],
+            [
+              70.0,
+              10.0
+            ],
+            [
+              73.0,
+              8.0
+            ],
+            [
+              73.0,
+              10.0
+            ],
+            [
+              76.0,
+              3.5
+            ],
+            [
+              76.0,
+              4.0
+            ],
+            [
+              76.0,
+              5.0
+            ],
+            [
+              76.0,
+              6.0
+            ],
+            [
+              76.0,
+              8.0
+            ],
+            [
+              76.0,
+              10.0
+            ],
+            [
+              76.0,
+              12.0
+            ],
+            [
+              76.0,
+              15.0
+            ],
+            [
+              76.0,
+              16.0
+            ],
+            [
+              83.0,
+              4.0
+            ],
+            [
+              83.0,
+              6.0
+            ],
+            [
+              83.0,
+              8.0
+            ],
+            [
+              83.0,
+              12.0
+            ],
+            [
+              83.0,
+              14.0
+            ],
+            [
+              83.0,
+              16.0
+            ],
+            [
+              83.0,
+              18.0
+            ],
+            [
+              89.0,
+              3.5
+            ],
+            [
+              89.0,
+              4.0
+            ],
+            [
+              89.0,
+              4.5
+            ],
+            [
+              89.0,
+              5.0
+            ],
+            [
+              89.0,
+              6.0
+            ],
+            [
+              89.0,
+              8.0
+            ],
+            [
+              89.0,
+              10.0
+            ],
+            [
+              89.0,
+              12.0
+            ],
+            [
+              89.0,
+              14.0
+            ],
+            [
+              89.0,
+              16.0
+            ],
+            [
+              89.0,
+              18.0
+            ],
+            [
+              89.0,
+              20.0
+            ],
+            [
+              95.0,
+              5.0
+            ],
+            [
+              102.0,
+              4.0
+            ],
+            [
+              102.0,
+              5.0
+            ],
+            [
+              102.0,
+              6.0
+            ],
+            [
+              102.0,
+              8.0
+            ],
+            [
+              102.0,
+              10.0
+            ],
+            [
+              102.0,
+              12.0
+            ],
+            [
+              102.0,
+              16.0
+            ],
+            [
+              108.0,
+              4.0
+            ],
+            [
+              108.0,
+              4.5
+            ],
+            [
+              108.0,
+              5.0
+            ],
+            [
+              108.0,
+              6.0
+            ],
+            [
+              108.0,
+              8.0
+            ],
+            [
+              108.0,
+              9.0
+            ],
+            [
+              108.0,
+              10.0
+            ],
+            [
+              108.0,
+              12.0
+            ],
+            [
+              108.0,
+              14.0
+            ],
+            [
+              108.0,
+              16.0
+            ],
+            [
+              108.0,
+              18.0
+            ],
+            [
+              108.0,
+              20.0
+            ],
+            [
+              114.0,
+              4.0
+            ],
+            [
+              114.0,
+              4.5
+            ],
+            [
+              114.0,
+              5.0
+            ],
+            [
+              114.0,
+              6.0
+            ],
+            [
+              114.0,
+              7.0
+            ],
+            [
+              114.0,
+              8.0
+            ],
+            [
+              114.0,
+              9.0
+            ],
+            [
+              114.0,
+              10.0
+            ],
+            [
+              121.0,
+              5.0
+            ],
+            [
+              127.0,
+              4.0
+            ],
+            [
+              127.0,
+              5.0
+            ],
+            [
+              127.0,
+              6.0
+            ],
+            [
+              127.0,
+              8.0
+            ],
+            [
+              127.0,
+              9.0
+            ],
+            [
+              133.0,
+              4.0
+            ],
+            [
+              133.0,
+              5.0
+            ],
+            [
+              133.0,
+              6.0
+            ],
+            [
+              133.0,
+              8.0
+            ],
+            [
+              133.0,
+              10.0
+            ],
+            [
+              133.0,
+              12.0
+            ],
+            [
+              133.0,
+              14.0
+            ],
+            [
+              133.0,
+              20.0
+            ],
+            [
+              140.0,
+              5.0
+            ],
+            [
+              140.0,
+              6.0
+            ],
+            [
+              140.0,
+              8.0
+            ],
+            [
+              140.0,
+              10.0
+            ],
+            [
+              140.0,
+              12.0
+            ],
+            [
+              146.0,
+              6.0
+            ],
+            [
+              146.0,
+              7.0
+            ],
+            [
+              146.0,
+              8.0
+            ],
+            [
+              146.0,
+              10.0
+            ],
+            [
+              152.0,
+              5.0
+            ],
+            [
+              152.0,
+              6.0
+            ],
+            [
+              152.0,
+              8.0
+            ],
+            [
+              152.0,
+              14.0
+            ],
+            [
+              152.0,
+              25.0
+            ],
+            [
+              159.0,
+              4.5
+            ],
+            [
+              159.0,
+              5.0
+            ],
+            [
+              159.0,
+              6.0
+            ],
+            [
+              159.0,
+              7.0
+            ],
+            [
+              159.0,
+              8.0
+            ],
+            [
+              159.0,
+              10.0
+            ],
+            [
+              159.0,
+              12.0
+            ],
+            [
+              159.0,
+              14.0
+            ],
+            [
+              159.0,
+              16.0
+            ],
+            [
+              159.0,
+              18.0
+            ],
+            [
+              168.0,
+              6.0
+            ],
+            [
+              168.0,
+              7.0
+            ],
+            [
+              168.0,
+              8.0
+            ],
+            [
+              168.0,
+              10.0
+            ],
+            [
+              168.0,
+              12.0
+            ],
+            [
+              168.0,
+              16.0
+            ],
+            [
+              168.0,
+              18.0
+            ],
+            [
+              194.0,
+              6.0
+            ],
+            [
+              194.0,
+              8.0
+            ],
+            [
+              194.0,
+              10.0
+            ],
+            [
+              194.0,
+              12.0
+            ],
+            [
+              194.0,
+              14.0
+            ],
+            [
+              219.0,
+              6.0
+            ],
+            [
+              219.0,
+              7.0
+            ],
+            [
+              219.0,
+              8.0
+            ],
+            [
+              219.0,
+              9.0
+            ],
+            [
+              219.0,
+              10.0
+            ],
+            [
+              219.0,
+              12.0
+            ],
+            [
+              219.0,
+              14.0
+            ],
+            [
+              219.0,
+              16.0
+            ],
+            [
+              219.0,
+              18.0
+            ],
+            [
+              219.0,
+              20.0
+            ],
+            [
+              245.0,
+              8.0
+            ],
+            [
+              245.0,
+              10.0
+            ],
+            [
+              273.0,
+              7.0
+            ],
+            [
+              273.0,
+              8.0
+            ],
+            [
+              273.0,
+              10.0
+            ],
+            [
+              273.0,
+              12.0
+            ],
+            [
+              273.0,
+              14.0
+            ],
+            [
+              273.0,
+              16.0
+            ]
+          ]
+        }
+      },
+      "09Г2С": {
+        "grade": "09Г2С",
+        "min_mm": 57.0,
+        "max_mm": 273.0,
+        "observed_values_mm": [
+          57.0,
+          60.0,
+          76.0,
+          89.0,
+          108.0,
+          114.0,
+          133.0,
+          159.0,
+          219.0,
+          273.0
+        ],
+        "rows_including_warehouse_duplicates": 53,
+        "sources": [
+          "Металлоторг"
+        ],
+        "endpoint_evidence": {
+          "min": {
+            "value_mm": 57.0,
+            "source": "Металлоторг",
+            "source_url": "https://www.metallotorg.ru/import/prise_last.csv",
+            "row_id": 5795,
+            "captured": "13.11.2026 08:12",
+            "region": "Челябинск",
+            "stock_t": 0.9,
+            "availability": "public_stock_not_reserved",
+            "grade": "09Г2С",
+            "name": "Труба БШ ст09Г2С",
+            "standard": "ГОСТ 8732-78",
+            "description": "НД",
+            "size_raw": "57*8,0",
+            "wall_mm": 8.0
+          },
+          "max": {
+            "value_mm": 273.0,
+            "source": "Металлоторг",
+            "source_url": "https://www.metallotorg.ru/import/prise_last.csv",
+            "row_id": 5664,
+            "captured": "13.11.2026 08:12",
+            "region": "Лобня (МО)",
+            "stock_t": 21.45,
+            "availability": "public_stock_not_reserved",
+            "grade": "09Г2С",
+            "name": "Труба БШ ст09г2с",
+            "standard": "ГОСТ 8732-78",
+            "description": "НД",
+            "size_raw": "273*8,0",
+            "wall_mm": 8.0
+          }
+        },
+        "stock_20t_observed_values_mm": [
+          108.0,
+          273.0
+        ],
+        "commercial_band_57_273": {
+          "min_mm": 57.0,
+          "max_mm": 273.0,
+          "observed_diameters_mm": [
+            57.0,
+            60.0,
+            76.0,
+            89.0,
+            108.0,
+            114.0,
+            133.0,
+            159.0,
+            219.0,
+            273.0
+          ],
+          "wall_min_mm": 3.5,
+          "wall_max_mm": 16.0,
+          "diameter_wall_pairs": [
+            [
+              57.0,
+              3.5
+            ],
+            [
+              57.0,
+              5.0
+            ],
+            [
+              57.0,
+              8.0
+            ],
+            [
+              60.0,
+              4.0
+            ],
+            [
+              76.0,
+              4.0
+            ],
+            [
+              76.0,
+              5.0
+            ],
+            [
+              76.0,
+              6.0
+            ],
+            [
+              76.0,
+              8.0
+            ],
+            [
+              76.0,
+              10.0
+            ],
+            [
+              89.0,
+              4.0
+            ],
+            [
+              89.0,
+              5.0
+            ],
+            [
+              89.0,
+              6.0
+            ],
+            [
+              89.0,
+              8.0
+            ],
+            [
+              89.0,
+              10.0
+            ],
+            [
+              89.0,
+              12.0
+            ],
+            [
+              108.0,
+              4.0
+            ],
+            [
+              108.0,
+              5.0
+            ],
+            [
+              108.0,
+              6.0
+            ],
+            [
+              108.0,
+              8.0
+            ],
+            [
+              108.0,
+              10.0
+            ],
+            [
+              108.0,
+              14.0
+            ],
+            [
+              108.0,
+              16.0
+            ],
+            [
+              114.0,
+              4.0
+            ],
+            [
+              133.0,
+              4.0
+            ],
+            [
+              133.0,
+              5.0
+            ],
+            [
+              133.0,
+              8.0
+            ],
+            [
+              159.0,
+              4.5
+            ],
+            [
+              159.0,
+              5.0
+            ],
+            [
+              159.0,
+              6.0
+            ],
+            [
+              159.0,
+              8.0
+            ],
+            [
+              159.0,
+              10.0
+            ],
+            [
+              159.0,
+              12.0
+            ],
+            [
+              219.0,
+              6.0
+            ],
+            [
+              219.0,
+              8.0
+            ],
+            [
+              219.0,
+              10.0
+            ],
+            [
+              273.0,
+              8.0
+            ],
+            [
+              273.0,
+              10.0
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "safe_assortment_copy_ru": {
+    "pipes": "Бесшовные горячедеформированные трубы: наружный диаметр 57–273 мм; сталь 20 и 09Г2С. Толщину стенки и исполнение подбираем по спецификации. Наличие конкретного сочетания диаметра, стенки и марки, объём и цену подтверждаем перед заказом. Для 09Г2С предварительно проверить экспортный допуск отдельно от обычной Ст20.",
+    "sheets": "Конструкционные листы: сталь 20 и 45 — толщины 30–160 мм; сталь 35 — 30–100 мм; 40Х — 30–110 мм. Это границы наблюдавшихся отдельных позиций, а не непрерывный ряд. Ширину, длину, состояние и доступность нужного сочетания уточняем по спецификации.",
+    "rounds": "Конструкционные круги: сталь 35 и 45 — диаметры 6–350 мм; сталь 20 и 40Х — 8–350 мм. Длину, состояние поставки, документы, количество и цену каждого типоразмера подтверждаем отдельно. Прокат и поковки не смешиваются.",
+    "aluminum": "Алюминиевые плиты: АМг2 — толщины 12–50 мм; АМг3 — 12–30 мм. Формат, состояние и фактическое наличие подтверждаем по выбранной позиции. Это не обещание любой промежуточной толщины или партии 20 т.",
+    "price_scope": "Цена в этой карточке относится к указанному типоразмеру и расчётным условиям партии 20 т. Остальные размеры и марки рассчитываются отдельно. Поставка из наличия — после подтверждения конкретной позиции, количества и даты."
+  }
+}

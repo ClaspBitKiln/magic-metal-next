@@ -1,0 +1,24 @@
+{
+  "date": "2026-11-15",
+  "company": "Magic Metal",
+  "prom_company_id": 611809,
+  "stock": "in_stock",
+  "publicly_published_confirmed": false,
+  "rub_conversion_status": "saved_readback_verified",
+  "rub_conversion_count": 7,
+  "sdt_created": {
+    "id": 1402550,
+    "name": "Отвод стальной бесшовный 530х10 мм ГОСТ 17375-2001",
+    "price_rub": 37700,
+    "unit": "piece",
+    "usd_reference": 458.73,
+    "status": "saved_readback_and_moderation_confirmed"
+  },
+  "exchange_rate_reference": {
+    "date": "2026-11-14",
+    "request_date": "2026-11-15",
+    "uzs_per_rub": 146.19,
+    "uzs_per_usd": 12014.37
+  },
+  "owner_currency_rule": "Native RUB always; description RUB (reference USD) with rate date"
+}

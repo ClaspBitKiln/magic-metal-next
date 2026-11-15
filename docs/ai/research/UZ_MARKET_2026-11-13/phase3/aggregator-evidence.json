@@ -1,0 +1,117 @@
+{
+  "checked_date": "2026-11-14",
+  "retrieval_calls": 8,
+  "scope": "Public web only; no registrations, paid accounts, paywall or CAPTCHA bypass; no live UN API calls by this agent",
+  "source_independence_note": "WITS is a presentation of UN Comtrade for this module; do not count as independent customs observations alongside the parent's UN Comtrade dataset.",
+  "sources": [
+    {
+      "provider": "WITS / World Bank",
+      "source_family": "UN Comtrade",
+      "url": "https://wits.worldbank.org/trade/comtrade/en/country/UZB/year/2024/tradeflow/Imports/partner/ALL/product/722540",
+      "retrieval_status": "HTTP200 full public table read",
+      "reporter": "Uzbekistan",
+      "period": "2024",
+      "classification": "HS1988/92 (H0), page label",
+      "hs6": "722540",
+      "scope_note": "Broad HS6 commodity; not evidence for grade40Х, thickness30mm or any particular dimensional shortage.",
+      "unit": "Quantity Kg; page does not expressly label net weight",
+      "rows": [
+        {
+          "partner": "World",
+          "trade_value_1000usd": 38118.73,
+          "quantity_kg": 37449900,
+          "quantity_t": 37449.9,
+          "derived_usd_per_t": 1017.8593267271741
+        },
+        {
+          "partner": "Russian Federation",
+          "trade_value_1000usd": 25804.76,
+          "quantity_kg": 25519500,
+          "quantity_t": 25519.5,
+          "derived_mass_share_pct": 68.14303910023793
+        },
+        {
+          "partner": "China",
+          "trade_value_1000usd": 7172.03,
+          "quantity_kg": 6606610,
+          "quantity_t": 6606.61,
+          "derived_mass_share_pct": 17.641195303592266
+        },
+        {
+          "partner": "Kazakhstan",
+          "trade_value_1000usd": 3572.45,
+          "quantity_kg": 4510940,
+          "quantity_t": 4510.94
+        }
+      ],
+      "retail_price": false,
+      "trend_released": false,
+      "trend_caution": "Parent2025UNdatauseH6; check HS-scope concordance and quantity/net-weight alignment before asserting exact growth."
+    },
+    {
+      "provider": "Volza",
+      "source_family": "Publisher claims shipment/customs/bill-of-lading records; independent validation not performed",
+      "url": "https://www.volza.com/global-trade-data/uzbekistan-import-trade-data/",
+      "retrieval_status": "HTTP200 public page read",
+      "publisher_title": "Uzbekistan Import Trade Data Nov-26",
+      "public_sample": {
+        "product": "STEEL BRAND ST3SP, GOST16523-97, GOST380-2005, GOST19903-2015",
+        "importer": "JV LLC Invest Zone",
+        "exporter": "Joint Stock Company Arselormittal Temirtau",
+        "exporter_country": "Kazakhstan",
+        "displayed_date": "30-Jun-2025",
+        "hs6": null,
+        "quantity_kg": null,
+        "value_usd": null,
+        "buyer_is_end_user": null,
+        "detail_url": "https://www.volza.com/global-trade-data/uzbekistan-import-trade-data/uzbekistan-import-bill-of-lading-55083-0-2112287/",
+        "detail_retrieval": "SCRAPE_ALL_ENGINES_FAILED; not retried"
+      },
+      "quality_flags": [
+        "Uzbekistan page includes several paragraphs explicitly about Uruguay, China/Brazil/Argentina partner narrative and US$12.52bn2024 headline.",
+        "Page lists Quetta as an Uzbekistan import port.",
+        "Page totals mix marketing current title, last shipment30Sep2026, cumulative record totals and sample30Jun2025; not one consistent annual measure."
+      ],
+      "do_not_use_for_market_size": [
+        "21,996,291 shipment records",
+        "240,878 buyers",
+        "HS7208 6% / $0.75B from mixed-country context"
+      ],
+      "access_boundary": "Full records/buyer directories directed to signup/pricing; no paid access or registration initiated."
+    },
+    {
+      "provider": "ImportGenius",
+      "source_family": "Publisher claims Uzbekistan customs declarations",
+      "url": "https://www.importgenius.com/how-it-works/our-datasets/uzbekistan",
+      "retrieval_status": "HTTP200 public dataset-description read",
+      "actual_uzbek_metal_rows_retrieved": 0,
+      "declared_fields": [
+        "HS code/product description",
+        "importer/exporter company",
+        "quantity and unit",
+        "gross/net weight kg",
+        "shipment value/currency",
+        "Incoterms",
+        "customs regime"
+      ],
+      "quality_flags": [
+        "Download sample data link points to November2019LosAngelesShipments.xlsx, not Uzbekistan; it was not downloaded.",
+        "Uzbekistan landing page includes Indonesian port-development text (Partimban,Jakarta), indicating template contamination.",
+        "Promotional record counts have no clear common period and are not tonnage."
+      ],
+      "access_boundary": "Actual account/search records not retrieved; signup/pricing/demo links only; no action taken."
+    }
+  ],
+  "decision": {
+    "most_usable_free_data": "WITS public commodity-country table, reconciled with parentUNComtrade raw data",
+    "buyer_leads": "Volza provides one unverified public company shipment lead; neither present activity nor end-user role established",
+    "deficit_proven": false,
+    "do_not_publish_claims": [
+      "exact grade/size demand from HS6",
+      "monthly2026volume from historical/cumulative shipment counts",
+      "retail price from customs unit value",
+      "20t buyer need from an unquantified public sample"
+    ],
+    "recommended_next_step": "Rank commodities with quantitative publicUN/WITS plus current official buyer plans and exact full-landed-price comparisons; do not buy access merely to complete the report."
+  }
+}
