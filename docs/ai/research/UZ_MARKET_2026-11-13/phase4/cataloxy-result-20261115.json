@@ -1,0 +1,125 @@
+{
+  "observedAt": "2026-11-15",
+  "timezone": "Asia/Yekaterinburg",
+  "platform": "cataloxy",
+  "market": "RF",
+  "companyId": 4770865,
+  "publicUrl": "https://chelyabinsk.cataloxy.ru/firms/magicmet.ru.htm",
+  "status": "public_page_readback_verified",
+  "httpStatus": 200,
+  "evidenceType": "agent_observed",
+  "companySavedBy": "owner_parallel_to_agent_preparation",
+  "agentFinalSubmitExecuted": false,
+  "duplicateCreated": false,
+  "accountActivation": "owner_confirmed",
+  "liveBannerAfterActivationChecked": false,
+  "productsCount": 0,
+  "verified": {
+    "name": "Мэджик Металл",
+    "legalName": "Общество с ограниченной ответственностью «Мэджик Металл»",
+    "website": "https://magicmet.ru",
+    "primaryEmail": "m1@magicmet.ru",
+    "primaryPhone": "+79227117363",
+    "primaryPhoneContact": "Юртаев Илья, отдел продаж",
+    "inn": "7453362080",
+    "ogrn": "1247400030921",
+    "city": "Челябинск",
+    "regionId": 71,
+    "cityId": 2417,
+    "customerAddress": "ул.Гостевая, д.3, оф.306",
+    "editableCompanySize": null,
+    "editableFoundationYear": null,
+    "keywordsCount": 10,
+    "rubricIds": [
+      61,
+      62,
+      63,
+      1168,
+      1239,
+      1983
+    ],
+    "workingHours": {
+      "monFri": "09:00–18:00",
+      "satSun": "closed",
+      "break": null,
+      "source": "explicit owner instruction and live public readback"
+    }
+  },
+  "ownerEnteredPendingConfirmation": {
+    "hours": "Superseded: owner instructed MonFri09-18; SatSunoff; public verified",
+    "addressContact": "Илья",
+    "additionalPhones": [
+      "+73517512335",
+      "+73517512454",
+      "+79222307751",
+      "+79220199063"
+    ],
+    "additionalEmail": "medzhik.metall@mail.ru",
+    "removedByAgent": false
+  },
+  "additionalContactCrosscheck": {
+    "primaryHomepage": "matches primaryEmail/primaryPhone",
+    "phone73517512335": "matches archived2GIS observation2026-11-09",
+    "otherContacts": "not disproven; owner confirmation needed"
+  },
+  "logo": {
+    "sourceAssetViewed": "public/images/logo.png",
+    "originalWrongFileCleared": true,
+    "verifiedSourceUploaded": true,
+    "publicImageUrl": "https://img.cataloxy.ru/fl/e9/d3/889161.gif",
+    "publicImageIndependentlyViewed": false
+  },
+  "nextAction": "No pending hours/category correction; avoid stale editor tabs; future product pilot is separate task",
+  "categoryCoverageFollowup": {
+    "needed": [
+      {
+        "id": 61,
+        "name": "Листовой прокат",
+        "businessForm": "опт"
+      },
+      {
+        "id": 62,
+        "name": "Сортовой и фасонный прокат",
+        "businessForm": "опт"
+      }
+    ],
+    "saved": true,
+    "attemptStatus": "preparing_stopped_before_submit",
+    "finalSaveExecuted": false,
+    "reason": "Non-category field preflight mismatch; no uncertain fields saved; parent directed stop after limited attempts",
+    "actualSavedRubricIds": [
+      61,
+      62,
+      63,
+      1168,
+      1239,
+      1983
+    ],
+    "resolution": "Fresh public page includes61and62 plus previous4; save performed outside stopped agent script"
+  },
+  "hoursUpdate": {
+    "status": "public_readback_verified",
+    "agentPreparedStructuredModel": true,
+    "agentFinalSubmitExecuted": false,
+    "parallelOwnerSaveObserved": true,
+    "preservedAdditionalPhones": true,
+    "preservedAdditionalEmail": true,
+    "addressContactFilledByAgent": "Юртаев Илья",
+    "addressContactFinalPublicValueIndependentlyVerified": false
+  },
+  "latestPublicEvidence": {
+    "date": "2026-11-15",
+    "url": "https://chelyabinsk.cataloxy.ru/firms/magicmet.ru.htm",
+    "httpStatus": 200,
+    "scrapeId": "01a1ddb8-bb14-744f-9577-c6818c2ad44e",
+    "workingHoursQuote": "Пн—Пт: с9:00до18:00, безперерыва; Сб—Вс: выходной",
+    "sixCategoryNames": [
+      "Листовой прокат",
+      "Сортовой и фасонный прокат",
+      "Трубы металлические",
+      "Трубопроводная арматура",
+      "Метизы, крепежные изделия, пружины",
+      "Цветные металлы, сплавы: прокат и изделия"
+    ]
+  }
+}

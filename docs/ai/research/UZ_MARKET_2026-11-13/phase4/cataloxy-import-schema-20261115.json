@@ -1,0 +1,49 @@
+{
+  "checkedAt": "2026-11-15",
+  "timezone": "Asia/Yekaterinburg",
+  "platform": "cataloxy",
+  "companyId": 4770865,
+  "observedImportUrl": "https://www.cataloxy.ru/cabinet/products_multiload.htm?firm_id=4770865",
+  "httpStatus": 200,
+  "bodyTextLength": 0,
+  "formCount": 0,
+  "visibleFieldCount": 0,
+  "downloadLinkCount": 0,
+  "templateDownloaded": false,
+  "schemaVerified": false,
+  "uploadExecuted": false,
+  "publicationExecuted": false,
+  "rootDraftTouched": false,
+  "officialRulesUrl": "https://www.cataloxy.ru/rules/products.htm",
+  "officialFacts": {
+    "excelImportMentioned": true,
+    "unlimitedProductCount": true,
+    "indefiniteListings": true,
+    "descriptionMaxChars": 1500,
+    "nativeImagesMax": 4,
+    "nativeImageFormats": [
+      "gif",
+      "png",
+      "jpeg"
+    ],
+    "nativePriceWithoutSpaces": true
+  },
+  "unknownSchema": [
+    "fileFormat",
+    "columns",
+    "categoryFormat",
+    "currencyCode",
+    "units",
+    "imageImportFormat",
+    "rowLimit",
+    "fileSizeLimit",
+    "previewWorkflow",
+    "finalSave",
+    "deduplication"
+  ],
+  "ownerRule": {
+    "nativeCurrency": "RUB",
+    "description": "RUB(referenceUSD),withFXdate"
+  },
+  "nextAction": "Continue observed native product form; do not upload invented spreadsheet schema; inspect real official template if working import entry appears"
+}
