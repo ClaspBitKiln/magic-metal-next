@@ -1,0 +1,21 @@
+{
+  "source_commit": "47b4c7d",
+  "windows_pid": 16936,
+  "exit_code": 0,
+  "verified": true,
+  "method": "download pinned source, compare SHA256, backup, copy, readback SHA256",
+  "files": [
+    {
+      "source": "START_FULL.md",
+      "sha256": "8e6e51133bb65697603e6e7bb9d6d0ece3ebb8ba11339143125621897e96e732"
+    },
+    {
+      "source": "CATALOXY_ROPE_SHEETS_20261116.md",
+      "sha256": "fff6782c30c99922ce0dde09f58233198055776776090972fd4c73468d73b3ac"
+    },
+    {
+      "source": "research/RF_SHORTAGE_2026-11-15.md",
+      "sha256": "36af326132ec8fb9b7b70b36cbccbfd808a76d97c17071901ac8914af7a3e86a"
+    }
+  ]
+}
