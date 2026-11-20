@@ -1,0 +1,162 @@
+{
+  "date": "2026-11-20T12:46:50.035Z",
+  "account": "m1@magicmet.ru",
+  "activationWarningPresent": false,
+  "productCount": 9,
+  "thumbs": [
+    {
+      "url": "https://www.cataloxy.ru/board/b407929575-pokovki-kruglye-20-45-40h-350-1000-mm-tsena-za-tonnu.htm",
+      "image": "https://img.cataloxy.ru/upload/board/909/14893/pokovki-kruglye-20-45-40h-350-1000-mm-tsena-za-tonnu_148929753s.webp"
+    },
+    {
+      "url": "https://www.cataloxy.ru/board/b407929576-plity-alyuminievye-amg2-amg3-12-50-mm-tsena-za-tonnu.htm",
+      "image": "https://img.cataloxy.ru/upload/board/716/14893/plity-alyuminievye-amg2-amg3-12-50-mm-tsena-za-tonnu_148929754s.webp"
+    },
+    {
+      "url": "https://www.cataloxy.ru/board/b407929572-list-otsinkovannyy-0-35-3-mm-st08ps-st02-tsena-za-tonnu.htm",
+      "image": "https://img.cataloxy.ru/upload/board/796/14894/list-otsinkovannyy-035-3-mm-st08ps-st02-tsena-za-tonnu_148934486s.webp"
+    },
+    {
+      "url": "https://www.cataloxy.ru/board/b407929573-list-holodnokatanyy-st08-tsena-za-tonnu.htm",
+      "image": "https://img.cataloxy.ru/upload/board/369/14894/list-holodnokatanyy-st08-tsena-za-tonnu_148934487s.webp"
+    },
+    {
+      "url": "https://www.cataloxy.ru/board/b407929571-kanaty-stalnye-1-56-mm-proizvodstvo-kitay-postavka-po-rossii.htm",
+      "image": "https://img.cataloxy.ru/upload/board/104/14893/kanaty-stalnye-1-56-mm-proizvodstvo-kitay-postavka-po-rossii_148929752s.webp"
+    },
+    {
+      "url": "https://www.cataloxy.ru/board/b407929055-krugi-stalnye-20-35-45-40h-do-350-mm-tsena-za-tonnu.htm",
+      "image": "https://img.cataloxy.ru/upload/board/656/14894/krugi-stalnye-20-35-45-40h-do-350-mm-tsena-za-tonnu_148934484s.webp"
+    },
+    {
+      "url": "https://www.cataloxy.ru/board/b407929056-listy-staley-20-35-45-40h-tsena-za-tonnu.htm",
+      "image": "https://img.cataloxy.ru/new_noimage.webp"
+    },
+    {
+      "url": "https://www.cataloxy.ru/board/b407929057-truby-besshovnye-57-273-mm-20-09g2s-tsena-za-tonnu.htm",
+      "image": "https://img.cataloxy.ru/upload/board/225/14894/truby-besshovnye-57-273-mm-20-09g2s-tsena-za-tonnu_148934485s.webp"
+    },
+    {
+      "url": "https://www.cataloxy.ru/board/b407929054-list-st309g2s-4200-mm-tsena-za-tonnu.htm",
+      "image": "https://img.cataloxy.ru/upload/board/89/14894/list-st309g2s-4200-mm-tsena-za-tonnu_148934483s.webp"
+    }
+  ],
+  "records": [
+    {
+      "id": "407929572",
+      "url": "https://chelyabinsk.cataloxy.ru/board/b407929572-list-otsinkovannyy-035-3-mm-st08ps-st02-tsena-za-tonnu.htm",
+      "http": 200,
+      "website": true,
+      "aiLabel": true,
+      "images": [
+        {
+          "src": "https://img.cataloxy.ru/upload/board/796/14894/list-otsinkovannyy-035-3-mm-st08ps-st02-tsena-za-tonnu_148934486.webp",
+          "width": 500
+        }
+      ],
+      "prices": [
+        "90 890,00 руб.",
+        "62 490,00 руб.",
+        "65 690,00 руб.",
+        "90 890,00 руб."
+      ]
+    },
+    {
+      "id": "407929573",
+      "url": "https://chelyabinsk.cataloxy.ru/board/b407929573-list-holodnokatanyy-st08-tsena-za-tonnu.htm",
+      "http": 200,
+      "website": true,
+      "aiLabel": true,
+      "images": [
+        {
+          "src": "https://img.cataloxy.ru/upload/board/369/14894/list-holodnokatanyy-st08-tsena-za-tonnu_148934487.webp",
+          "width": 500
+        }
+      ],
+      "prices": [
+        "68 990,00 руб.",
+        "62 490,00 руб.",
+        "65 690,00 руб.",
+        "90 890,00 руб."
+      ]
+    },
+    {
+      "id": "407929055",
+      "url": "https://chelyabinsk.cataloxy.ru/board/b407929055-krugi-stalnye-20-35-45-40h-do-350-mm-tsena-za-tonnu.htm",
+      "http": 200,
+      "website": true,
+      "aiLabel": true,
+      "images": [
+        {
+          "src": "https://img.cataloxy.ru/upload/board/656/14894/krugi-stalnye-20-35-45-40h-do-350-mm-tsena-za-tonnu_148934484.webp",
+          "width": 500
+        }
+      ],
+      "prices": [
+        "65 690,00 руб.",
+        "62 490,00 руб.",
+        "90 890,00 руб.",
+        "114 890,00 руб."
+      ]
+    },
+    {
+      "id": "407929056",
+      "url": "https://chelyabinsk.cataloxy.ru/board/b407929056-listy-staley-20-35-45-40h-tsena-za-tonnu.htm",
+      "http": 200,
+      "website": true,
+      "aiLabel": true,
+      "images": [],
+      "prices": [
+        "90 890,00 руб.",
+        "62 490,00 руб.",
+        "65 690,00 руб.",
+        "114 890,00 руб."
+      ]
+    },
+    {
+      "id": "407929057",
+      "url": "https://chelyabinsk.cataloxy.ru/board/b407929057-truby-besshovnye-57-273-mm-20-09g2s-tsena-za-tonnu.htm",
+      "http": 200,
+      "website": true,
+      "aiLabel": true,
+      "images": [
+        {
+          "src": "https://img.cataloxy.ru/upload/board/225/14894/truby-besshovnye-57-273-mm-20-09g2s-tsena-za-tonnu_148934485.webp",
+          "width": 500
+        }
+      ],
+      "prices": [
+        "114 890,00 руб.",
+        "62 490,00 руб.",
+        "65 690,00 руб.",
+        "90 890,00 руб."
+      ]
+    },
+    {
+      "id": "407929054",
+      "url": "https://chelyabinsk.cataloxy.ru/board/b407929054-list-st309g2s-4200-mm-tsena-za-tonnu.htm",
+      "http": 200,
+      "website": true,
+      "aiLabel": true,
+      "images": [
+        {
+          "src": "https://img.cataloxy.ru/upload/board/89/14894/list-st309g2s-4200-mm-tsena-za-tonnu_148934483.webp",
+          "width": 500
+        }
+      ],
+      "prices": [
+        "62 490,00 руб.",
+        "65 690,00 руб.",
+        "90 890,00 руб.",
+        "114 890,00 руб."
+      ]
+    }
+  ],
+  "correction407929056": {
+    "url": "https://chelyabinsk.cataloxy.ru/board/b407929056-listy-staley-20-35-45-40h-tsena-za-tonnu.htm",
+    "http": 200,
+    "image": "https://img.cataloxy.ru/upload/board/89/14894/listy-staley-20-35-45-40h-tsena-za-tonnu_148934483.webp",
+    "width": 500,
+    "readbackPid": 3728
+  }
+}
