@@ -1,0 +1,131 @@
+{
+  "checked_date": "2026-11-14",
+  "market": "Uzbekistan industrial endbuyers, directRFcontract",
+  "items": [
+    {
+      "id": "ngmk-q4-2026-metal",
+      "buyer": "АО НГМК",
+      "source_url": "https://www.ngmk.uz/wp-content/uploads/2026/09/2026-xaridlar-rejasi-4kv.pdf",
+      "source_parent": "https://www.ngmk.uz/ru/our-business/procurement/",
+      "period": "IV квартал2026",
+      "source_type": "official_purchase_plan",
+      "observed_at": "2026-11-14",
+      "evidence": "Металл маҳсулотлари: план702759101664UZS; pipelineproducts6060189732UZS. Колонка количества604232 смешанныхединиц, не тонны.",
+      "value_uzs_ex_vat": 702759101664,
+      "mixed_quantity": 604232,
+      "mixed_units": [
+        "шт",
+        "т",
+        "м",
+        "кг",
+        "пог.м"
+      ],
+      "method": "Parent visually verified page2 image; page3 note excludesVAT; OCR available.",
+      "supports": "Current family-level industrial demand, repair/maintenance channel",
+      "does_not_prove": [
+        "open RFQ",
+        "unfilled2026balance",
+        "particular40Х410or60С2А6SKU",
+        "domestic shortage",
+        "20tcontract"
+      ],
+      "direct_foreign_contract_status": "Procurementpolicyandqualificationmustbechecked;91%localsourcepageisdescriptive,notstatutoryban"
+    },
+    {
+      "id": "ngmk-import-substitution-2025",
+      "buyer": "АО НГМК",
+      "source_url": "https://www.ngmk.uz/wp-content/uploads/2025/04/Import-dlya-osvoyeniya-2025.pdf",
+      "source_type": "historical_import_substitution_catalog",
+      "period": "2025 document; average annual demand, not2026openorder",
+      "products": [
+        {
+          "row": 58,
+          "product": "Горячекатаные листы и круги обычных/легированных сталей",
+          "qty": 6500,
+          "unit": "t/year",
+          "dimensions": "sheet0.6–100mm,rounddiameter10–250mm"
+        },
+        {
+          "row": 61,
+          "product": "Прутки инструментальных сталей",
+          "qty": 970,
+          "unit": "t/year",
+          "dimensions": "rounddiameter10–250mm,drillhexS25mm"
+        },
+        {
+          "row": 62,
+          "product": "Бесшовные трубы Ст20/35/45",
+          "qty": 1104,
+          "unit": "t/year",
+          "dimensions": "diameter10–426mm",
+          "note": "Separatefromdrill588piecesandstainless126t"
+        }
+      ],
+      "supports": "Structural imported product families and industrialenduserapplication",
+      "does_not_prove": [
+        "currentdeficit",
+        "openlot",
+        "specificnewgrade/diameterquantity",
+        "futureforeignsupplierwin"
+      ]
+    },
+    {
+      "id": "uzkor-CS1622026-consumables",
+      "buyer": "СП ООО Uz-Kor GasChemical",
+      "source_url": "http://uz-kor.com/images/sampledata/tenders/2026/attachment_CS-162-26.pdf",
+      "source_type": "official_tender_technical_attachment",
+      "period": "2026 path andCS1622026searchnotices;noexactPDFpublicationdate/deadline",
+      "pdf_pages_read": 3,
+      "products": [
+        {
+          "row": 79,
+          "name": "ESAB-СВЭЛ УОНИ13/55Ø3мм ГОСТ9467-75",
+          "qty": 1000,
+          "unit": "kg"
+        },
+        {
+          "row": 80,
+          "name": "RodTIG4043/AWSA5.10ER4043Ø2.4mm,length1000mm",
+          "qty": 50,
+          "unit": "kg"
+        },
+        {
+          "row": 81,
+          "name": "RodTIG4043/AWSA5.10ER4043Ø3.2mm,length1000mm",
+          "qty": 50,
+          "unit": "kg"
+        }
+      ],
+      "foreign_terms": "Explicitforeignbidders:DAPUGCCKyrkKyzKungraidorTashkent;deliverywithin90daysaftercontract;100%postpaymentwithin30days.",
+      "current_open_status": "unverified:bothknownEN5895andRU5896noticeURLs404;PDFhasnodeadline",
+      "technical_warning": "Row82B83hascompositioninconsistency;do not copywithouttechnicalclarification",
+      "supports": "IndependentindustrialbuyeruseofRussianGOSTelectrodesandforeignDAProute",
+      "does_not_prove": [
+        "currentopenRFQ",
+        "20tsingleSKUdemand",
+        "unfulfilledshortage",
+        "competitiveRUprice"
+      ]
+    },
+    {
+      "id": "agmk-2026-plan-partial",
+      "buyer": "АО АлмалыкскийГМК",
+      "source_url": "https://agmk.uz/storage/uploads/docs/bc3307288c2b351e63376a56d7c31a62.pdf",
+      "source_parent": "https://agmk.uz/ru/opendata/4-019-0007?page=29720",
+      "source_type": "official_annual_purchase_plan",
+      "period": "2026, published25.12.2025, datasetupdated22.01.2026",
+      "pages_read": 10,
+      "total_pages": 1584,
+      "coverage": "First10pagesonly,mostlyvehicleparts;noverifiedmetalSKUfromthispartialread",
+      "dataset_row_count": 36411,
+      "limits": "Publicdownloadcloud409;egovAPI503;renderedtableempty. Searchsnippetmentionsgearblank/forging4pcsbutfreshfullrownotretrieved:do notusethatquantityasverified.",
+      "supports": "Buyerexistenceandactual2026procurementprogram",
+      "does_not_prove": [
+        "exactsteelgradeqty",
+        "20tdemand",
+        "openlot",
+        "completeplananalysis"
+      ]
+    }
+  ]
+}

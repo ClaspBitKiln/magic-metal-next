@@ -1,0 +1,210 @@
+{
+  "checked_date": "2026-11-14",
+  "scope": "Standard civilian metal imports RU->UZ; duty depends on final goods classification, special regimes, origin and date of declaration. This is not a binding customs decision.",
+  "official_ui": {
+    "url": "https://notarif.customs.uz/",
+    "page_home_read": true,
+    "calculator_ui_read": true,
+    "search_endpoint": "https://notarif.customs.uz/notarif/hscodeSearch",
+    "endpoint_status": 401,
+    "no_auth_bypass": true,
+    "fallback": "Read statutory tariff directly on LexUz, Russian translation and official Uzbek original"
+  },
+  "mfn_source": {
+    "url": "https://lex.uz/docs/3802363",
+    "ru_translation": "https://lex.uz/docs/3802366",
+    "annex": "Annex1, rates of import customs duties",
+    "version_evidence": "Official original tail records 16.02.2026,07/26/58/0143; RU text labels Annex1 in version of PP58 dated11.02.2026",
+    "explicit_ondate_url_failed": "https://lex.uz/docs/3802363?ONDATE=14.11.2026 returned404 invalidrequest; no-date original retrieved200",
+    "official_rows": [
+      "| 7208 | Темирдан ёки легирланмаган пўлатдан ясси прокат, эни 600 мм ёки кўп, иссиқ прокатка қилинган, плакировкаланмаган, гальваник ёки бошқача қопламасиз | 0 |",
+      "| 7214 | Темирдан ёки легирланмаган пўлатдан бошқа прутоклар, кейинчалик ишлов берилмаган, болғалашдан, иссиқ прокаткадан, иссиқ чўзишдан ёки иссиқ экструдирлашдан ташқари, лекин прокаткадан сўнг буралганлари ҳам | 0 |",
+      "| 7224 | Ёмбилар ёки бошқа бирламчи шакллардаги легирланган пўлатларнинг бошқа турлари; легирланган пўлатларнинг бошқа турларидан яримфабрикатлар | 0 |",
+      "| 7225 | Легирланмаган пўлатнинг бошқа турларидан ясси прокат, эни 600 мм ёки кўп | 0 |",
+      "| 7228 | Легирланган пўлатнинг бошқа турларидан прутоклар; легирланган пўлатнинг бошқа турларидан уголоклар, фасонли ва махсус профиллар; легирланган ёки легирланмаган пўлатдан бурғилаш ишлари учун кавак прутоклар | 0 |",
+      "| 7229 | Легирланган пўлатнинг бошқа турларидан сим | 0 |",
+      "| 7302 | Темир йўл ёки трамвай йўллари учун ишлатиладиган қора металл буюмлар рельслар, қарама-қарши рельслар ва тишли рельслар, узатиш рельслари, ёпиқ кесишиш крестовиналари, узатиш штангаси ва бошқа кўндаланг уланишлар, шпаллар, боғловчи накладка ва тагликлар, клинлар, таглик плиталари, рельсли илгакли болтлар, ёстиқлар ва растяжкалар, станиналар, кўндаланг тўсинлар ва рельсларни улаш ёки маҳкамлаш учун мўлжалланган бошқа қисмлар | 0 |",
+      "| 7304 | Қувурлар, трубкалар ва профиллар ичи бўш, чоксиз, қора металлардан (қуйма чўяндан ташқари) | 0 |",
+      "| 7307 | Қора металлардан қувурлар ёки трубкалар учун фитинглар (масалан, бирлашмалар, тирсаклар, шпаллар) | 0 |",
+      "| 7604 | Алюминий профиль ва прутоклар, қуйидагилар бундан мустасно: | 0 |",
+      "| 7606 | Қалинлиги 0,2 мм дан ортиқ бўлган алюминий плита, лист, тасма ёки ленталар, қуйидагилар бундан мустасно: | 5 |",
+      "| 8311 | Ноқимматбаҳо металлардан карбидларидан сим, майда сим, труба, пластиналар, электродлар ва ўхшаш буюмлар, қоплама ёки паст ҳароратда, юқори ҳароратда кавшарлаш (пайка қилиш), металларни пайвандлаш ёки металлар ёхуд металлар карбидларини чўктириш учун ишлатиладиган флюс материалларидан ўзак ёки қоплама билан; ноқимматбаҳо металларнинг тошга айланган кукунидан пуркаш билан металлаштириш учун ишлатиладиган сим ва майда сим | 5 |"
+    ]
+  },
+  "mfn_rates": [
+    {
+      "hs_heading": "7208",
+      "description": "uncoated hotrolled nonalloy flat products",
+      "ad_valorem_percent": 0
+    },
+    {
+      "hs_heading": "7214",
+      "description": "nonalloy bars without further working except forging/hotrolling/drawing/extrusion",
+      "ad_valorem_percent": 0
+    },
+    {
+      "hs_heading": "7224",
+      "description": "other alloy steel in primary/semifinished forms",
+      "ad_valorem_percent": 0
+    },
+    {
+      "hs_heading": "7225",
+      "description": "other alloy steel flat products width>=600mm",
+      "ad_valorem_percent": 0
+    },
+    {
+      "hs_heading": "7228",
+      "description": "other alloy steel bars and related shapes",
+      "ad_valorem_percent": 0
+    },
+    {
+      "hs_heading": "7229",
+      "description": "other alloy steel wire",
+      "ad_valorem_percent": 0
+    },
+    {
+      "hs_heading": "7302",
+      "description": "railway track goods",
+      "ad_valorem_percent": 0
+    },
+    {
+      "hs_heading": "7304",
+      "description": "seamless iron/steel tubes excluding castiron",
+      "ad_valorem_percent": 0
+    },
+    {
+      "hs_heading": "7307",
+      "description": "iron/steel tube fittings",
+      "ad_valorem_percent": 0
+    },
+    {
+      "hs_heading": "7604",
+      "description": "aluminium bars/profiles",
+      "ad_valorem_percent": 0,
+      "exceptions": [
+        "7604109000",
+        "7604210000",
+        "7604299000"
+      ],
+      "exception_rate": "10%,butnotlessthanUSD0.5/kg; profiles, not automatically solid AD1 round bar"
+    },
+    {
+      "hs_heading": "7606",
+      "description": "plain aluminiumplates/flatproducts thickness>0.2mm",
+      "ad_valorem_percent": 5,
+      "exceptions": [
+        "7606122001",
+        "7606122002",
+        "7606122003",
+        "7606122008"
+      ],
+      "exception_rate": "10% for painted/varnished/plasticscoated alloyrectangularproducts"
+    },
+    {
+      "hs_heading": "8311",
+      "description": "fluxcoated/cored welding materials/electrodes",
+      "ad_valorem_percent": 5
+    }
+  ],
+  "vat": {
+    "rate_percent": 12,
+    "rate_source": "https://lex.uz/mact/4674893#4696124",
+    "article_rate": "NK258",
+    "base_source": "https://lex.uz/docs/2876352",
+    "base_articles": [
+      "TK322",
+      "NK254"
+    ],
+    "tax_base_formula": "customs_value + payable_import_duty + payable_excise",
+    "credit_source": "https://lex.uz/mact/4674893#4696210",
+    "credit_articles": [
+      "NK266",
+      "NK267"
+    ],
+    "credit_requires": "Eligible taxpayer, taxable use, documents, importVATpaidtobudget, no applicable exclusion; cashVATmustnotbeomitted"
+  },
+  "valuation": {
+    "source": "https://lex.uz/docs/2876352",
+    "article": "TK305",
+    "rule": "Postimporttransportcosts canbeexcludedfromtransactionvaluewhenseparatelyidentifiedanddocumented. DAPnotautomaticallycustomsvalue."
+  },
+  "preference": {
+    "source": "https://lex.uz/docs/2876352",
+    "article": "TK300",
+    "zero_conditional": "Goods originate in FTAstate, exportedbyresidentofparticipatingstate and importedbyresidentfromterritoryofparticipatingstate, applicableagreement and dulyprovenorigin. RFwarehousealone doesnotestablishorigin.",
+    "important": "SteelheadingswithMFN0neednotrelyonST1forzerobaseduty;ST1doesnotremoveimportVATorcustomsfees."
+  },
+  "fees": {
+    "source": "https://lex.uz/docs/7357270",
+    "act": "PP55dated31.01.2025,Annex1 item1(a)",
+    "applies": "Ordinarycargo declaration;specialmodes/exemptions/extrachargescheckedseparately",
+    "brv_uzs": 440000,
+    "brv_source": "https://lex.uz/docs/8283680",
+    "brv_effective": "2026-09-01",
+    "brv_act": "UP115dated23.06.2026",
+    "usd_uzs": 12014.37,
+    "fx_date": "2026-11-14",
+    "fx_source": "https://cbu.uz/ru/arkhiv-kursov-valyut/json/USD/2026-11-14/",
+    "bands_usd_brv": [
+      [
+        0,
+        10000,
+        1
+      ],
+      [
+        10000,
+        20000,
+        1.5
+      ],
+      [
+        20000,
+        40000,
+        2.5
+      ],
+      [
+        40000,
+        60000,
+        4
+      ],
+      [
+        60000,
+        100000,
+        7
+      ],
+      [
+        100000,
+        200000,
+        10
+      ],
+      [
+        200000,
+        500000,
+        15
+      ],
+      [
+        500000,
+        1000000,
+        20
+      ],
+      [
+        1000000,
+        null,
+        25
+      ]
+    ],
+    "boundary_note": "Legalwording uses upto/from;exactboundary and date/valuation mustbeconfirmed. Modelpointsnotonboundary. One20t mixeddeclarationmustnotbechargedseparatefullfeeoncepereachSKU."
+  },
+  "conformity": {
+    "source": "https://lex.uz/docs/5249376",
+    "act": "PCM43dated30.01.2021,currentoriginalaspreviouslyreviewed",
+    "status": "Specificapplicableprocedure/recognition/exemptionsandfeesnotconfirmedperfinalSKU;do notassumezero",
+    "unknown_costs": [
+      "customsbroker/declarant",
+      "mandatory conformity/testing/recognition ifapplicable",
+      "storage/demurrage",
+      "unloading/localtransportnotalreadyinDAP",
+      "bankandFXcosts",
+      "customsvaluationadjustments"
+    ]
+  }
+}

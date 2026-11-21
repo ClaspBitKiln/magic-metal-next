@@ -1,0 +1,48 @@
+{
+  "checked_date": "2026-11-14",
+  "analysis_not_application_or_contract": true,
+  "buyers": [
+    {
+      "buyer": "АО НГМК",
+      "foreign_eligibility": "conditional confirmed",
+      "basis": {
+        "document": "Положение по предварительной квалификации потенциальных поставщиков АО НГМК",
+        "url": "https://www.ngmk.uz/wp-content/uploads/2024/08/prikaz-ao-ngmk-46-predvaritelnaya-kvalifikaciya.pdf",
+        "pdf_page": 7,
+        "clause": "5.2.1"
+      },
+      "trader_gate": {
+        "status": "requires manufacturer-confirmed official representative unless procurement docs provide otherwise",
+        "clause": "5.6.3",
+        "pdf_page": 9
+      },
+      "magic_metal_qualified": false,
+      "minimum_20t_confirmed": false,
+      "generic_payment_terms_confirmed": false,
+      "actual_counterparties_disclosed": true,
+      "actual_metal_mill_contract_confirmed": false
+    },
+    {
+      "buyer": "JV Uz-Kor Gas Chemical LLC",
+      "foreign_eligibility": "explicit foreign DAP route in particular2026spec",
+      "source": "http://uz-kor.com/images/sampledata/tenders/2026/attachment_CS-162-26.pdf",
+      "manufacturer_only_clause_seen_in_read_spec": false,
+      "absence_of_clause_not_guarantee": true,
+      "delivery_days_after_signing": 90,
+      "payment": "100%afterdeliverywithin30days",
+      "open_procedure_status": "unknown;notice404",
+      "minimum_20t_confirmed": false,
+      "magic_metal_contract_confirmed": false
+    },
+    {
+      "buyer": "АО АГМК",
+      "annual_procurement_plan_confirmed": true,
+      "foreign_trader_eligibility": "not established",
+      "magic_metal_qualified": false,
+      "minimum_20t_confirmed": false,
+      "specific_metal_contract_confirmed": false
+    }
+  ],
+  "trade_positioning": "RFtrader can remove extraUZreseller only where it exists; cannot promise cheapest versus directmill; measure actualtotalcost/service/leadtime, discloseowntraderstatus",
+  "new_primary_readings": 2
+}

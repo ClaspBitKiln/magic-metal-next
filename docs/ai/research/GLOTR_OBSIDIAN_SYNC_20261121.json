@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-21",
+  "timezone": "Asia/Yekaterinburg",
+  "sourceCommit": "2ec4d1e0c6fa28b0c631b5d71a4a3ec36c787dd5",
+  "windowsProcessId": 12528,
+  "exitCode": 0,
+  "method": "Pinned raw Git download; SHA256 verified before copying and after readback; backup suffix .backup-2ec4d1e",
+  "files": [
+    {
+      "source": "docs/ai/START_FULL.md",
+      "target": "00 - Инструкция старт - все подключения.md",
+      "sha256": "0ff59af236a6288dc30b266388f1cc97d42e9780808ba4e80cb5845a5c19a5a0"
+    },
+    {
+      "source": "docs/ai/STAGE_20261121_GLOTR_SCOPE_AND_CREATION.md",
+      "target": "2026-11-21 - Glotr - бесплатный профиль и условия.md",
+      "sha256": "42a2ed5a8983ab0043a3f3095b0d62d45e7e4fd1fb419865102e7668a9c49f29"
+    }
+  ]
+}

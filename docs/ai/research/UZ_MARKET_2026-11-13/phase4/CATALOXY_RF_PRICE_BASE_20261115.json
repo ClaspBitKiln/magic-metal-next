@@ -1,0 +1,46 @@
+[
+  {
+    "id": "407929054",
+    "price_rub_t": 62490,
+    "mc_price_rub_t": 61490,
+    "markup_rub_t": 1000,
+    "warehouse": "Челябинск",
+    "source": "https://mc.ru/region/chelyabinsk/metalloprokat/list_goryachekatanyy_4x1500x6000_razmer_4_marka_st3",
+    "checked_date": "2026-11-15",
+    "volume_tier": "от 10 т для круга/конструкционного листа/трубы; листСт3 цена за тонну",
+    "export_comments_preserved": true
+  },
+  {
+    "id": "407929055",
+    "price_rub_t": 65690,
+    "mc_price_rub_t": 64690,
+    "markup_rub_t": 1000,
+    "warehouse": "Москва",
+    "source": "https://mc.ru/region/chelyabinsk/metalloprokat/stal_sortovaya_konstrukcionnaya_krug_180_razmer_180_marka_st45",
+    "checked_date": "2026-11-15",
+    "volume_tier": "от 10 т для круга/конструкционного листа/трубы; листСт3 цена за тонну",
+    "export_comments_preserved": true
+  },
+  {
+    "id": "407929056",
+    "price_rub_t": 90890,
+    "mc_price_rub_t": 89890,
+    "markup_rub_t": 1000,
+    "warehouse": "Челябинск",
+    "source": "https://mc.ru/region/chelyabinsk/metalloprokat/stal_listovaya_konstrukcionnaya_g_k_20x1500x6000_razmer_20_marka_st45",
+    "checked_date": "2026-11-15",
+    "volume_tier": "от 10 т для круга/конструкционного листа/трубы; листСт3 цена за тонну",
+    "export_comments_preserved": true
+  },
+  {
+    "id": "407929057",
+    "price_rub_t": 114890,
+    "mc_price_rub_t": 113890,
+    "markup_rub_t": 1000,
+    "warehouse": "Челябинск",
+    "source": "https://mc.ru/region/chelyabinsk/metalloprokat/truby_goryachedeformirovannye_159x6_razmer_159_marka_6",
+    "checked_date": "2026-11-15",
+    "volume_tier": "от 10 т для круга/конструкционного листа/трубы; листСт3 цена за тонну",
+    "export_comments_preserved": true
+  }
+]

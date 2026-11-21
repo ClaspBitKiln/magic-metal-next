@@ -1,0 +1,140 @@
+{
+  "checked_date": "2026-11-14",
+  "scope": "Exactly2search+3page retrievals; no further calls after5. No Prom mutations/emails/registrations/purchases.159x6 not listed.",
+  "owner_loading_instruction": "Main calculations use20t accepted by owner; do not block generalcargo with hypotheticalpacking problems. Actual outsize items/packaging are separately checked when shipping.",
+  "candidates": [
+    {
+      "candidate_key": "large-elbow-90-2-530x10-09g2s",
+      "name": "Отвод 90-2-530х10-09Г2С ГОСТ17375-2001",
+      "supplier": "ООО АЛЬФАВОДОСТРОЙ / awstroy.ru",
+      "supplier_relation_to_baseline": "Alternative RF supplier, NOT mc.ru/Metallotorg",
+      "supplier_location_in_page_metadata": "Санкт-Петербург, Проспект Обуховской обороны86К; warehouse/dispatch location not separately confirmed",
+      "source_url": "https://awstroy.ru/product/otvod-stalnoj-90-2-530h10-09g2s-gost-17375-2001-besshovnyj-krutoizognutyj/",
+      "page_status": 200,
+      "checked_date": "2026-11-14",
+      "source_last_price_update_date": null,
+      "form": "бесшовный крутоизогнутый приварной отвод90°",
+      "execution": 2,
+      "grade": "09Г2С",
+      "outer_diameter_mm": 530,
+      "wall_mm": 10,
+      "standard": "ГОСТ17375-2001",
+      "displayed_price_rub_piece": 61000,
+      "displayed_price_unit": "шт",
+      "vat_included_displayed": true,
+      "vat_rate_displayed_percent": 20,
+      "vat_current_2026_rate_confirmed": null,
+      "vat_warning": "Page says all invoices includeVAT20%, a stale/contradictory2026 signal. Do not assume VAT22% or silently recalculate quote; obtain current invoice.",
+      "weight_kg_piece": 153,
+      "availability_displayed": "В наличии",
+      "stock_pieces_confirmed": null,
+      "stock_mass_t_confirmed": null,
+      "stock_20t_confirmed": false,
+      "origin_country": null,
+      "published_dimensions_mm": [
+        1060,
+        530,
+        1060
+      ],
+      "published_transport_volume_m3": 0.595,
+      "twenty_t_model": {
+        "mass_basis_t": 20,
+        "fractional_equivalent_pieces": 130.718954248366,
+        "whole_pieces_not_over20t": 130,
+        "mass_whole_pieces_t": 19.89,
+        "one_more_piece_mass_t": 20.043,
+        "sum_published_piece_volume_m3": 77.35,
+        "gross_price_per_t_by_nominal_weight": 398692.81045751635,
+        "packing_note": "20t model accepted per owner. These are sums of published piece volumes, not a conclusion that loading is impossible; actual vehicle/packing agreed at dispatch. No shipment-level layout or transport quotation was obtained."
+      },
+      "publication_ready": false,
+      "hold_reasons": [
+        "No numeric stock/reservation for~20t",
+        "Current VAT22%/invoice basis not established",
+        "Supplier isSPb;450000RUBfreight fromMoscow/Chelyabinsk cannot be called an actualSPb quote",
+        "Origin/СТ-1 unknown",
+        "Webpage mentions nuclear-station use underПравилаАЭУ; ordinarycivilian variant/passport and export identification must be confirmed, not copied as a nuclear-use claim"
+      ],
+      "source_evidence": {
+        "price": "61 000 ₽ / шт.",
+        "weight": "153 кг",
+        "availability": "В наличии",
+        "payment_vat": "Все счета включают НДС20%.",
+        "nuclear_use_text": "Для трубопроводов группB иC и трубопроводов атомных станций по «ПравиламАЭУ»"
+      }
+    },
+    {
+      "candidate_key": "large-elbow-90-2-630x10-09g2s",
+      "name": "Отвод 90-2-630х10-09Г2С ГОСТ17375-2001",
+      "supplier": "ООО АЛЬФАВОДОСТРОЙ / awstroy.ru",
+      "supplier_relation_to_baseline": "Alternative RF supplier, NOT mc.ru/Metallotorg",
+      "supplier_location_in_page_metadata": "Санкт-Петербург, Проспект Обуховской обороны86К; warehouse/dispatch location not separately confirmed",
+      "source_url": "https://awstroy.ru/product/otvod-stalnoj-90-2-630h10-09g2s-gost-17375-2001-besshovnyj-krutoizognutyj/",
+      "page_status": 200,
+      "checked_date": "2026-11-14",
+      "source_last_price_update_date": null,
+      "form": "бесшовный крутоизогнутый приварной отвод90°",
+      "execution": 2,
+      "grade": "09Г2С",
+      "outer_diameter_mm": 630,
+      "wall_mm": 10,
+      "standard": "ГОСТ17375-2001",
+      "displayed_price_rub_piece": 75350,
+      "displayed_price_unit": "шт",
+      "vat_included_displayed": true,
+      "vat_rate_displayed_percent": 20,
+      "vat_current_2026_rate_confirmed": null,
+      "vat_warning": "Page says all invoices includeVAT20%, a stale/contradictory2026 signal. Do not assume VAT22% or silently recalculate quote; obtain current invoice.",
+      "weight_kg_piece": 219,
+      "availability_displayed": "В наличии",
+      "stock_pieces_confirmed": null,
+      "stock_mass_t_confirmed": null,
+      "stock_20t_confirmed": false,
+      "origin_country": null,
+      "published_dimensions_mm": [
+        1260,
+        630,
+        1260
+      ],
+      "published_transport_volume_m3": 1,
+      "twenty_t_model": {
+        "mass_basis_t": 20,
+        "fractional_equivalent_pieces": 91.32420091324201,
+        "whole_pieces_not_over20t": 91,
+        "mass_whole_pieces_t": 19.929,
+        "one_more_piece_mass_t": 20.148,
+        "sum_published_piece_volume_m3": 91,
+        "gross_price_per_t_by_nominal_weight": 344063.92694063927,
+        "packing_note": "20t model accepted per owner. These are sums of published piece volumes, not a conclusion that loading is impossible; actual vehicle/packing agreed at dispatch. No shipment-level layout or transport quotation was obtained."
+      },
+      "publication_ready": false,
+      "hold_reasons": [
+        "No numeric stock/reservation for~20t",
+        "Current VAT22%/invoice basis not established",
+        "Supplier isSPb;450000RUBfreight fromMoscow/Chelyabinsk cannot be called an actualSPb quote",
+        "Origin/СТ-1 unknown",
+        "Webpage mentions nuclear-station use underПравилаАЭУ; ordinarycivilian variant/passport and export identification must be confirmed, not copied as a nuclear-use claim"
+      ],
+      "source_evidence": {
+        "price": "75 350 ₽ / шт.",
+        "weight": "219 кг",
+        "availability": "В наличии",
+        "payment_vat": "Все счета включают НДС20%.",
+        "nuclear_use_text": "Для трубопроводов группB иC и трубопроводов атомных станций по «ПравиламАЭУ»"
+      }
+    }
+  ],
+  "rejected_inconsistent_530x8": {
+    "source_url": "https://armat96.ru/catalog/2-otvody/1-st20/90-gradusov/otvod-90-530h8-st20-gost-17375-2001-4510beff.html",
+    "title": "Отвод90 530х8 ст.20 ГОСТ17375-2001",
+    "price_rub_piece": 30030,
+    "vat_included": true,
+    "vat_rate_confirmed": null,
+    "location": "Екатеринбург",
+    "weight_displayed": "132 without explicit unit",
+    "displayed_term": "5–7дней",
+    "rejected_for_ready_quote": true,
+    "reason": "Title/URL530×8 but specification wall10mm; no numeric stock. Do not select unit weight or current availability from this inconsistent page."
+  },
+  "key_limitation": "Two concrete large SKUs with public prices/weights were found; numerical~20tstock and currentVAT22% were NOT established, so neither is ready for truthful in-stock20t publication."
+}

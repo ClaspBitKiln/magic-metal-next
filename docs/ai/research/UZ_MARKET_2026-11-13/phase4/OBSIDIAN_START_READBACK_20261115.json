@@ -1,0 +1,18 @@
+{
+  "date": "2026-11-15",
+  "status": "saved_and_readback_verified",
+  "source_commit": "d2b4d6a",
+  "windows_pid": 19732,
+  "vault": "C:/Users/asus/Documents/inn-bot",
+  "backups_created": true,
+  "files": [
+    {
+      "name": "02 Projects/Magic Metal/00 - Инструкция старт - все подключения.md",
+      "sha256": "ccf55f9d928baa146a27d9257cda6f30d6c5b956becd8d600da39528c2e615d0"
+    },
+    {
+      "name": "02 Projects/Magic Metal/2026-11-15 - Cataloxy - компания и очередь товаров.md",
+      "sha256": "e1863f24ac28319f4839547871b437099a06922e0087746e61f470a643b42fd6"
+    }
+  ]
+}
