@@ -1,0 +1,21 @@
+{
+  "date": "2026-11-21",
+  "source_commit": "b9cf910",
+  "windows_device": "DESKTOP-BNPIVK2",
+  "windows_pid": 14860,
+  "process_exit": 0,
+  "verification": "Downloaded pinned GitHub raw source, SHA256 checked before copy and after destination readback; existing notes backed up with .backup-b9cf910",
+  "notes": [
+    {
+      "source": "docs/ai/START_FULL.md",
+      "destination": "C:\\Users\\asus\\Documents\\inn-bot\\02 Projects\\Magic Metal\\00 - Инструкция старт - все подключения.md",
+      "sha256": "3675260c8aa08c884db3a47a41dca2cc2ac7bd6be061488d68e0f56b9e245c9c"
+    },
+    {
+      "source": "docs/ai/STAGE_20261121_CATALOXY_PROM.md",
+      "destination": "C:\\Users\\asus\\Documents\\inn-bot\\02 Projects\\Magic Metal\\2026-11-21 - Cataloxy 11 товаров - Prom опубликован.md",
+      "sha256": "c93a46e3cfc467298896e606dbe0f16045fe5d1c9e1ae69af81451c0647a9a1a"
+    }
+  ],
+  "publication_verification_limit": "Authenticated browser publication result readback confirmed; independent anonymous challenge-page read does not prove anonymous end-user availability."
+}
