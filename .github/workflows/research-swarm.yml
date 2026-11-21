@@ -1,0 +1,61 @@
+name: Research swarm (safe, read-only)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: research-swarm
+  cancel-in-progress: false
+jobs:
+  collect:
+    name: Research ${{ matrix.group }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        include:
+          - group: pipes
+            url: https://magicmet.ru/produkciya/truby-elektrosvarnye
+          - group: sheets
+            url: https://magicmet.ru/produkciya/listovoy-prokat
+          - group: nonferrous
+            url: https://magicmet.ru/produkciya/cvetnye-metally
+          - group: long-products
+            url: https://magicmet.ru/produkciya/sortovoy-i-fasonny-prokat
+          - group: fittings
+            url: https://magicmet.ru/produkciya/sdt
+          - group: hardware
+            url: https://magicmet.ru/produkciya/metizy-i-svarochnye-materialy
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Observe public catalog read-only
+        run: node scripts/research/swarm-observe.mjs "${{ matrix.url }}" --out="research-${{ matrix.group }}.json"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: research-${{ matrix.group }}
+          path: research-${{ matrix.group }}.json
+          retention-days: 14
+  summarize:
+    name: Swarm status
+    if: always()
+    needs: collect
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - name: Publish run status
+        env:
+          RESULT: ${{ needs.collect.result }}
+        run: |
+          echo "## Исследовательский рой" >> "$GITHUB_STEP_SUMMARY"
+          echo "Сбор: $RESULT" >> "$GITHUB_STEP_SUMMARY"
+          echo "Материалы в артефактах; публикация на сайт отключена." >> "$GITHUB_STEP_SUMMARY"
