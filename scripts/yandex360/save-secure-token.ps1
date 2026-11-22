@@ -33,14 +33,18 @@ try {
     }
     # ACL protects ciphertext/request/result files; DPAPI also binds token to this Windows user.
     $identity = [Security.Principal.WindowsIdentity]::GetCurrent().User
-    $acl = New-Object Security.AccessControl.DirectorySecurity
-    $acl.SetOwner($identity)
+    # Read/write only the DACL. Re-applying owner or SACL can require privileges
+    # unavailable to a normal user after the first token hardens this directory.
+    $acl = [IO.Directory]::GetAccessControl($secureRoot, [Security.AccessControl.AccessControlSections]::Access)
     $acl.SetAccessRuleProtection($true, $false)
+    foreach ($existingRule in @($acl.GetAccessRules($true, $false, [Security.Principal.SecurityIdentifier]))) {
+        [void]$acl.RemoveAccessRuleSpecific($existingRule)
+    }
     $rule = New-Object Security.AccessControl.FileSystemAccessRule(
         $identity, 'FullControl', 'ContainerInherit,ObjectInherit', 'None', 'Allow'
     )
     $acl.AddAccessRule($rule)
-    Set-Acl -LiteralPath $secureRoot -AclObject $acl
+    [IO.Directory]::SetAccessControl($secureRoot, $acl)
     $encrypted = ConvertFrom-SecureString -SecureString $secureToken
     $temporaryPath = Join-Path $secureRoot ([IO.Path]::GetRandomFileName())
     [IO.File]::WriteAllText($temporaryPath, $encrypted, (New-Object Text.UTF8Encoding($false)))
