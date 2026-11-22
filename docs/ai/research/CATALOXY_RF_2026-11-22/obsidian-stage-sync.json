@@ -1,0 +1,21 @@
+{
+  "commit": "c153abe12c32f5b6f2dbada7287004a06ab76583",
+  "files": [
+    {
+      "source": "docs/ai/START_FULL.md",
+      "destination": "00 - Инструкция старт - все подключения.md",
+      "sha256": "3de73a758643506ca9abb622b29a9b021d71c52f488e88a263a035445f78ea8c"
+    },
+    {
+      "source": "docs/ai/STAGE_20261122_PIPE_AND_RF_MARKUP.md",
+      "destination": "2026-11-22 - Трубы 57–89 и наценка РФ.md",
+      "sha256": "640858434cf45b1d5692223877d3906878933536eaace0963ab5d8679a25de69"
+    }
+  ],
+  "date": "2026-11-22",
+  "windows_pid": 2384,
+  "exit_code": 0,
+  "method": "pinned raw GitHub download; SHA256 before copy and after destination readback; backup-c153abe",
+  "vault": "C:\\Users\\asus\\Documents\\inn-bot\\02 Projects\\Magic Metal",
+  "verified": true
+}
