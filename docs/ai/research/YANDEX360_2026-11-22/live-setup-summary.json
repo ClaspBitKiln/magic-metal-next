@@ -1,0 +1,61 @@
+{
+  "date": "2026-11-22",
+  "provenance": "Normalized non-secret summary of primary-agent runtime readbacks; not a copy of private mailbox JSON",
+  "account": "m1@magicmet.ru",
+  "access": "Windows asus via RDC secure CLI to official Yandex360 MCP",
+  "native_chatgpt_tools_added": false,
+  "native_codex_config_changed": false,
+  "runtime_root": "%LOCALAPPDATA%\\MagicMetalYandex360",
+  "runtime_files": [
+    "client.mjs",
+    "cli.mjs",
+    "save-secure-token.ps1",
+    "run-secure.ps1"
+  ],
+  "token_storage": "Separate Mail/Disk DPAPI CurrentUser; contents excluded",
+  "mail": {
+    "tools_count": 13,
+    "tools_pid": 22832,
+    "live_read": "mail.list_folders",
+    "live_read_pid": 19124,
+    "status": 0,
+    "isError": false
+  },
+  "disk": {
+    "tools_count": 15,
+    "tools_pid": 20768,
+    "live_read": "disk.list_recent_items",
+    "live_read_pid": 19124,
+    "status": 0,
+    "isError": false
+  },
+  "acl": {
+    "pid": 19512,
+    "exit_code": 0,
+    "protected": true,
+    "rules_count": 1,
+    "only_current_user": true,
+    "repeat_save_fix_commit": "8912cd6"
+  },
+  "folders_snapshot": {
+    "01": {
+      "id": "9",
+      "messages": 18
+    },
+    "90": {
+      "id": "10",
+      "messages": 21
+    },
+    "Inbox": 2638,
+    "Sent": 2235
+  },
+  "server_sorting_rules": 5,
+  "rules_readback_pid": 9548,
+  "three_previously_sent_fw_restored_to_sent": {
+    "pid": 21268,
+    "new_forward_created": false
+  },
+  "send_delete_mark_read_actions_used": false,
+  "scheduler_polling_business_mailing_installed": false,
+  "private_proof_path": "%LOCALAPPDATA%\\MagicMetalYandex360\\live-setup-proof-20261122.json"
+}
