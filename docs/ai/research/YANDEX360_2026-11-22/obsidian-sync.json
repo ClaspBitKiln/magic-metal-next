@@ -1,0 +1,36 @@
+{
+  "date": "2026-11-22",
+  "source_commit": "2817544ac9ae681b2716d824224cef43aa64ced9",
+  "files": [
+    {
+      "source": "docs/ai/START_FULL.md",
+      "destination": "00 - Инструкция старт - все подключения.md",
+      "sha256": "c3b7bfa9d8618990c15200bd6b425b5fd776fcb0df7d4233ef4e6bd2353ea6b5"
+    },
+    {
+      "source": "docs/ai/STAGE_20261122_MAIL_AND_MCP.md",
+      "destination": "2026-11-22 - Почта m1 и Yandex360 MCP.md",
+      "sha256": "98ba902c4d00b504bd7c480b0ec13f55f19fb3cb1115006bd4d46ce742f5f145"
+    },
+    {
+      "source": "docs/ai/YANDEX360_MCP_RUNBOOK_20261122.md",
+      "destination": "2026-11-22 - Yandex360 MCP - подключение и восстановление.md",
+      "sha256": "d2286e659a7165abc0fd9f65ffe96b6c38e64c8e827d64fa47e08144df15751d"
+    },
+    {
+      "source": "docs/ai/YANDEX360_AUTOMATION_TOOL.md",
+      "destination": "2026-11-22 - Yandex360 - защищенный CLI.md",
+      "sha256": "ca4a7fbe4acd089994a0e350a6ef33dd7ed8391fbc84b296478e14d7fa4b8a67"
+    },
+    {
+      "source": "docs/ai/STAGE_20261122_PIPE_AND_RF_MARKUP.md",
+      "destination": "2026-11-22 - Трубы 57–89 и наценка РФ.md",
+      "sha256": "18db05f6014c6240b692fb6ed693b0f8a075e1db31c03d40dc7dc387b61664bf"
+    }
+  ],
+  "windows_pid": 19264,
+  "method": "pinned raw GitHub download; SHA256 before copy and after destination readback; backup-2817544",
+  "vault": "C:\\Users\\asus\\Documents\\inn-bot\\02 Projects\\Magic Metal",
+  "verified": true,
+  "exit_code": 0
+}
