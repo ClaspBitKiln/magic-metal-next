@@ -1,0 +1,263 @@
+{
+  "checkedAt": "2026-11-23",
+  "markets": [
+    "RF",
+    "UZ",
+    "KZ",
+    "KG"
+  ],
+  "rules": "Snapshots require live free/eligibility checks before publication; no new schedules.",
+  "channels": [
+    {
+      "id": "cataloxy",
+      "markets": [
+        "RF"
+      ],
+      "free": "confirmed",
+      "limit": null,
+      "formats": [
+        "text",
+        "photo"
+      ],
+      "externalLinks": true,
+      "photoOverlays": "check_rules",
+      "foreignSeller": "not_applicable",
+      "entry": "https://www.cataloxy.ru/cabinet/board.htm?products",
+      "source": "https://www.cataloxy.ru/rules/products.htm",
+      "state": "12_products_saved"
+    },
+    {
+      "id": "glotr",
+      "markets": [
+        "UZ"
+      ],
+      "free": "confirmed_account",
+      "limit": 100,
+      "formats": [
+        "text",
+        "photo"
+      ],
+      "externalLinks": true,
+      "photoOverlays": "check_rules",
+      "foreignSeller": "confirmed_account",
+      "entry": "https://glotr.uz/company/proposals/list/41690/",
+      "source": "owner_registration_email_and_cabinet_20261121",
+      "state": "5_products_moderation",
+      "nativeRUB": false
+    },
+    {
+      "id": "prom",
+      "markets": [
+        "UZ"
+      ],
+      "free": "conflicting",
+      "limit": null,
+      "formats": [
+        "text",
+        "photo"
+      ],
+      "externalLinks": true,
+      "photoOverlays": "check_rules",
+      "foreignSeller": "confirmed_account",
+      "entry": "https://my.prom.uz/app/products-all",
+      "source": "https://www.prom.uz/ad-placement/",
+      "secondSource": "https://www.prom.uz/rules/",
+      "state": "existing_account_check_live_limit"
+    },
+    {
+      "id": "allbiz",
+      "markets": [
+        "RF",
+        "UZ",
+        "KZ",
+        "KG"
+      ],
+      "free": "basic_advertised",
+      "limit": 20,
+      "formats": [
+        "text",
+        "photo"
+      ],
+      "externalLinks": "check_rules",
+      "photoOverlays": "check_rules",
+      "foreignSeller": "unverified_for_target_market",
+      "entry": "https://welcome.all.biz/one_step",
+      "source": "https://kz.all.biz/pricing",
+      "state": "candidate_eligibility_check"
+    },
+    {
+      "id": "bazar",
+      "markets": [
+        "KG"
+      ],
+      "free": "unless_otherwise_specified",
+      "limit": null,
+      "formats": [
+        "text",
+        "photo"
+      ],
+      "externalLinks": false,
+      "photoOverlays": false,
+      "foreignSeller": "unverified",
+      "entry": "https://www.bazar.kg/",
+      "source": "https://www.bazar.kg/agreement",
+      "state": "candidate_eligibility_check",
+      "languages": [
+        "ru",
+        "ky"
+      ],
+      "imageMin": [
+        400,
+        300
+      ]
+    },
+    {
+      "id": "lalafo",
+      "markets": [
+        "KG"
+      ],
+      "free": "limit_unverified",
+      "limit": null,
+      "formats": [
+        "text",
+        "photo"
+      ],
+      "externalLinks": "check_rules",
+      "photoOverlays": "check_rules",
+      "foreignSeller": "unverified",
+      "entry": "https://lalafo.kg/",
+      "source": "https://lalafo.kg/",
+      "state": "candidate_free_business_limit_check"
+    },
+    {
+      "id": "vsesdelki",
+      "markets": [
+        "KZ"
+      ],
+      "free": "category_advertised",
+      "limit": null,
+      "formats": [
+        "text",
+        "photo"
+      ],
+      "externalLinks": "check_rules",
+      "photoOverlays": "check_rules",
+      "foreignSeller": "unverified",
+      "entry": "https://www.vsesdelki.kz/add.html",
+      "source": "https://www.vsesdelki.kz/ads-i-category-i-metally-i-p.html",
+      "state": "candidate_eligibility_check"
+    },
+    {
+      "id": "metal100",
+      "markets": [
+        "RF"
+      ],
+      "free": "form_limit_unverified",
+      "limit": null,
+      "formats": [
+        "text",
+        "photo"
+      ],
+      "externalLinks": "check_rules",
+      "photoOverlays": "check_rules",
+      "foreignSeller": "not_applicable",
+      "entry": "https://metal100.ru/addAdvert",
+      "source": "https://metal100.ru/",
+      "state": "candidate_free_ad_check"
+    },
+    {
+      "id": "promportal",
+      "markets": [
+        "RF"
+      ],
+      "free": "official_faq_advertised",
+      "limit": null,
+      "formats": [
+        "text",
+        "photo"
+      ],
+      "externalLinks": "check_rules",
+      "photoOverlays": "check_rules",
+      "foreignSeller": "not_applicable",
+      "entry": "https://promportal.su/",
+      "source": "https://promportal.su/faqs/83/kakie-uslugi-na-portale-ya-mogu-poluchit-besplatno.htm",
+      "state": "candidate_free_limit_check"
+    },
+    {
+      "id": "olx_kz",
+      "markets": [
+        "KZ"
+      ],
+      "free": "business_zero_construction",
+      "limit": 0,
+      "formats": [
+        "text",
+        "photo"
+      ],
+      "externalLinks": "check_rules",
+      "photoOverlays": "check_rules",
+      "foreignSeller": "unverified",
+      "entry": "https://www.olx.kz/",
+      "source": "https://help.olx.kz/olxkzhelp/s/article/лимит-бесплатных-размещений-V47?language=ru",
+      "state": "excluded_free_business_queue"
+    },
+    {
+      "id": "satu",
+      "markets": [
+        "KZ"
+      ],
+      "free": "trial_not_permanent_free",
+      "limit": null,
+      "formats": [
+        "text",
+        "photo"
+      ],
+      "externalLinks": "check_rules",
+      "photoOverlays": "check_rules",
+      "foreignSeller": "unverified",
+      "entry": "https://satu.kz/join-now",
+      "source": "https://satu.kz/join-now",
+      "state": "excluded_free_queue"
+    },
+    {
+      "id": "flagma_ru",
+      "markets": [
+        "RF"
+      ],
+      "free": "not_decisive",
+      "limit": null,
+      "formats": [
+        "text",
+        "photo"
+      ],
+      "externalLinks": "check_rules",
+      "photoOverlays": "check_rules",
+      "foreignSeller": "not_applicable",
+      "entry": "https://flagma.ru/",
+      "source": "https://flagma.ru/c-terms.html",
+      "automation": "prohibited_without_portal_permission",
+      "state": "blocked_automation"
+    },
+    {
+      "id": "social_owned",
+      "markets": [
+        "RF",
+        "UZ",
+        "KZ",
+        "KG"
+      ],
+      "free": "own_channel_basic_posts",
+      "limit": null,
+      "formats": [
+        "text",
+        "photo"
+      ],
+      "externalLinks": true,
+      "photoOverlays": "check_rules",
+      "foreignSeller": "not_applicable",
+      "entry": "https://vk.com/",
+      "source": "community_rules_and_account_rights",
+      "state": "check_existing_owned_channel_not_create_duplicates"
+    }
+  ]
+}
