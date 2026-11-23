@@ -5,7 +5,7 @@ with tempfile.TemporaryDirectory(prefix='magicmet-php-http-') as tmp:
     root=pathlib.Path(tmp); (root/'public/api').mkdir(parents=True); (root/'private').mkdir()
     shutil.copy(src/'request.php',root/'public/api/request.php'); shutil.copy(src/'request-lib.php',root/'private/request-lib.php')
     (root/'private/request-config.php').write_text("<?php return ['RATE_LIMIT_SECRET'=>'"+'a'*32+"','RATE_LIMIT_DIR'=>'/app/private/rate'];")
-    cid=subprocess.check_output(['docker','run','--rm','-d','-p','127.0.0.1:18981:8080','-e','MAGICMET_REQUEST_CONFIG=/app/private/request-config.php','-v',str(root)+':/app','php:8.1-cli-alpine','php','-d','max_file_uploads=100','-S','0.0.0.0:8080','-t','/app/public'],text=True).strip()
+    cid=subprocess.check_output(['docker','run','--rm','--user','1000:1000','-d','-p','127.0.0.1:18981:8080','-e','MAGICMET_REQUEST_CONFIG=/app/private/request-config.php','-v',str(root)+':/app','php:8.1-cli-alpine','php','-d','display_errors=0','-d','log_errors=1','-d','max_file_uploads=100','-S','0.0.0.0:8080','-t','/app/public'],text=True).strip()
     def request(fields, files=()):
         shutil.rmtree(root/'private/rate',ignore_errors=True)
         boundary='MagicMetMultipartBoundary'
