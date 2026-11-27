@@ -1,4 +1,4 @@
-# PHP request handler — not deployed
+# PHP request handler — deployed on SpaceWeb
 
 Port of production SHA `8deef5981e26e4d214deed857dcd71b92abe5205` public
 `/api/request` to PHP8.1+/PHPMailer for existing SpaceWeb shared hosting.
@@ -49,3 +49,13 @@ Pure unit tests send no email. Before DNS, stage native multipart POST with two
 real files; missing consent, invalid contact, fake PDF, overlimit and SMTP failure.
 Confirm effective PHP count/byte limits and that actual received attachments match
 bytes in manager mailbox. Local tests do not establish remote SMTP readiness.
+
+## Verified 23 November 2026
+
+PHP8.1 Alpine: syntax checks and43 validation assertions PASS; native multipart
+HTTP tests6/6 PASS. Official PHPMailer6.12.0 installed from pinned composer.lock;
+Composer audit reported no advisories or abandoned packages. An offline MIME
+check confirmed two Cyrillic attachment filenames and exact decoded file bytes.
+No mail was sent. Actual remote SMTP delivery remains a staging prerequisite.
+
+Live acceptance27Nov2026: publicbrowserPOST200,emailDelivered:true;twoPDFs received in m1 folder01,654bytes each. Actual secrets remain outside public_html. Vercel billing is outside authorized technical work.

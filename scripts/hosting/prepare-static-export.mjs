@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 // Prepare an isolated source tree. This does not publish files or touch DNS.
-import { spawn, spawnSync } from 'node:child_process'
-import { pipeline } from 'node:stream/promises'
-import { existsSync, mkdirSync, readFileSync, writeFileSync, rmSync, symlinkSync, realpathSync } from 'node:fs'
+import { spawnSync } from 'node:child_process'
+import { existsSync, mkdirSync, readFileSync, writeFileSync, rmSync, symlinkSync, realpathSync, copyFileSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -20,11 +19,12 @@ if (!path.isAbsolute(targetArg) || target === repo || target.startsWith(repo + p
 const resolved = spawnSync('git', ['rev-parse', `${source}^{commit}`], { cwd: repo, encoding: 'utf8' })
 if (resolved.status || resolved.stdout.trim() !== source) throw new Error('Source commit unavailable')
 mkdirSync(target, { recursive: true })
-const archive = spawn('git', ['archive', source], { cwd: repo, stdio: ['ignore', 'pipe', 'inherit'] })
-const untar = spawn('tar', ['-x', '-C', target], { stdio: ['pipe', 'inherit', 'inherit'] })
-const archiveExit = new Promise((resolve, reject) => archive.once('error', reject).once('exit', code => code ? reject(new Error(`git archive: ${code}`)) : resolve()))
-const tarExit = new Promise((resolve, reject) => untar.once('error', reject).once('exit', code => code ? reject(new Error(`tar: ${code}`)) : resolve()))
-await Promise.all([pipeline(archive.stdout, untar.stdin), archiveExit, tarExit])
+const archivePath = path.join(target, '.source.tar')
+const archive = spawnSync('git', ['archive', '--output', archivePath, source], { cwd: repo, stdio: 'inherit' })
+if (archive.status !== 0) throw new Error('git archive failed')
+const untar = spawnSync('tar', ['-xf', archivePath, '-C', target], { stdio: 'inherit' })
+if (untar.status !== 0) throw new Error('tar extraction failed')
+rmSync(archivePath)
 const changes = []
 function change(relative, before, after) {
   const file = path.join(target, relative)
@@ -66,12 +66,16 @@ for (const relative of ['public/home-static.html', 'public/home.js', 'src/compon
   writeFileSync(file, adapted)
   changes.push(relative)
 }
+change('public/home.js', "  if (data.getAll('files[]').reduce(", "  if (data.getAll('files[]').filter(file => file instanceof File && file.name).length > 99) {\n    track('request_validation_error')\n    status.textContent = 'Не более 99 файлов в одной заявке. Объедините файлы или отправьте их на m1@magicmet.ru.'\n    return\n  }\n  if (data.getAll('files[]').reduce(")
+change('src/components/RequestForm.tsx', "    if (data.getAll('files[]').reduce(", "    if (data.getAll('files[]').filter(value => value instanceof File && value.name).length > 99) {\n      trackAnalyticsGoal('request_validation_error')\n      setStatus('error')\n      setFormError('Не более 99 файлов в одной заявке. Объедините файлы или отправьте их на m1@magicmet.ru.')\n      return\n    }\n    if (data.getAll('files[]').reduce(")
+change('src/components/QuoteCart.tsx', "    setStatus('sending')", "    if (data.getAll('files[]').filter(value => value instanceof File && value.name).length > 99) {\n      setStatus('error'); setError('Не более 99 файлов в одной заявке. Объедините файлы или отправьте их на m1@magicmet.ru.'); return\n    }\n    setStatus('sending')")
+change('public/analytics.js', "(() => {\n", "(() => {\n  // Technical-host staging must not inflate production analytics.\n  if (!['magicmet.ru', 'www.magicmet.ru'].includes(location.hostname)) return\n")
 for (const relative of ['src/app/robots.ts', 'src/app/(frontend)/sitemap.ts']) {
   const file = path.join(target, relative)
   writeFileSync(file, readFileSync(file, 'utf8') + "\nexport const dynamic = 'force-static'\n")
   changes.push(relative)
 }
-writeFileSync(path.join(target, 'public/.htaccess'), `Options -Indexes -MultiViews\nDirectoryIndex index.html\nErrorDocument 404 /404.html\n<IfModule mod_headers.c>\nHeader always set X-Content-Type-Options nosniff\nHeader always set Referrer-Policy strict-origin-when-cross-origin\nHeader always set X-Frame-Options SAMEORIGIN\nHeader always set Permissions-Policy "camera=(), microphone=(), geolocation=()"\n</IfModule>\nRewriteEngine On\nRewriteRule ^(?:spravochnik-nalichiya|poziciya)/?$ /#products [R=301,L,NE]\nRewriteRule ^korzina/?$ /#request [R=301,L,NE]\n# Request handling is deliberately absent until a separately verified SMTP endpoint is installed.\n# Category paths may also be physical parent directories: serve their HTML first.\nRewriteCond %{REQUEST_FILENAME}.html -f\nRewriteRule ^(.+?)/?$ $1.html [L]\n`)
+copyFileSync(path.join(repo, 'scripts/hosting/spaceweb-static.htaccess'), path.join(target, 'public/.htaccess'))
 const depsArg = option('--deps')
 if (depsArg) {
   const deps = realpathSync(path.resolve(depsArg))

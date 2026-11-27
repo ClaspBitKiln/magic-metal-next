@@ -1,0 +1,36 @@
+Options -Indexes -MultiViews
+DirectoryIndex index.html
+DirectorySlash Off
+ErrorDocument 404 /404.html
+
+# A technical-host preview must never become a search-engine duplicate.
+<IfModule mod_setenvif.c>
+SetEnvIfNoCase Host "^(?!(?:www\.)?magicmet\.ru(?::[0-9]+)?$)" MM_STAGING=1
+</IfModule>
+<IfModule mod_headers.c>
+Header always set X-Content-Type-Options nosniff
+Header always set Referrer-Policy strict-origin-when-cross-origin
+Header always set X-Frame-Options SAMEORIGIN
+Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+Header always set X-Robots-Tag "noindex, nofollow, noarchive" env=MM_STAGING
+</IfModule>
+
+RewriteEngine On
+# MM_FORCE_HTTPS: allow the technical HTTP host; account for SpaceWeb's TLS proxy.
+RewriteCond %{HTTP_HOST} ^(?:www\.)?magicmet\.ru(?::[0-9]+)?$ [NC]
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP:X-Forwarded-Proto} !^https$ [NC]
+RewriteRule ^ https://magicmet.ru%{REQUEST_URI} [R=301,L,NE]
+# Do not redirect the technical-host preview to production.
+RewriteCond %{HTTP_HOST} ^www\.magicmet\.ru(?::[0-9]+)?$ [NC]
+RewriteRule ^ https://magicmet.ru%{REQUEST_URI} [R=301,L,NE]
+RewriteRule ^(?:spravochnik-nalichiya|poziciya)/?$ /#products [R=301,L,NE]
+RewriteRule ^korzina/?$ /#request [R=301,L,NE]
+# Requires the separately installed and verified PHP adapter and private SMTP config.
+RewriteRule ^api/request/?$ api/request.php [END]
+# A category is also a physical parent directory: serve its .html before mod_dir.
+RewriteCond %{REQUEST_FILENAME} ^(.+)/$
+RewriteCond %1.html -f
+RewriteRule ^(.+)/$ $1.html [END]
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.+?)/?$ $1.html [END]
