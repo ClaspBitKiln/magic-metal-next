@@ -1,0 +1,26 @@
+{
+  "date": "2026-11-22",
+  "source_commit": "e451e864a926d43e0672f3b5f6ba90d5e87072fb",
+  "files": [
+    {
+      "source": "docs/ai/START_FULL.md",
+      "destination": "00 - Инструкция старт - все подключения.md",
+      "sha256": "0344a8bcccf29caeb0ebffb5aed8e5833ab8f52ab9886a23ed96c84154685af1"
+    },
+    {
+      "source": "docs/ai/STAGE_20261122_GLOTR_FIRST_PIPE.md",
+      "destination": "2026-11-22 - Glotr - первая карточка труб.md",
+      "sha256": "67cd37f0b9b48a8adef81b0d9d8a00edbe69bbd79749d85939a5d00ced344c71"
+    },
+    {
+      "source": "docs/ai/STAGE_20261122_PIPE_AND_RF_MARKUP.md",
+      "destination": "2026-11-22 - Трубы 57–89 и наценка РФ.md",
+      "sha256": "014ff50e7ced1f3b354c414834e7b8edfb79bf0847b00d59bb38a565afec35e2"
+    }
+  ],
+  "windows_pid": 19388,
+  "exit_code": 0,
+  "method": "pinned raw GitHub download; SHA256 before copy and after destination readback; backup-e451e86",
+  "vault": "C:\\Users\\asus\\Documents\\inn-bot\\02 Projects\\Magic Metal",
+  "verified": true
+}

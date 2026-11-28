@@ -1,0 +1,405 @@
+{
+  "checked_at": "2026-11-14",
+  "manufacturer": "УралАрм Завод",
+  "official_domain": "uaz74.ru",
+  "catalogue_url": "https://uaz74.ru/product/",
+  "pdf_url": "https://uaz74.ru/upload/pdf/Katalog_UAZ_3009.pdf",
+  "pdf_coverage": "30 of32pages; СДТ section covered",
+  "data_scope": "Manufacturer catalogue claims; not checked normative limits or actual physical stock",
+  "wall_thickness_mm": null,
+  "public_numeric_prices": null,
+  "confirmed_stock_quantity_t": null,
+  "stock_evidence": "Website seamless/welded elbow family rows labelledВналичии; no size/grade/quantity proof. PDF says stock and toorder.",
+  "supports": {
+    "present_in_catalogue": true,
+    "url": "https://uaz74.ru/product/opory-truboprovodov/",
+    "details_verified": false
+  },
+  "items": [
+    {
+      "type": "Отвод крутоизогнутый бесшовный",
+      "standard": "ГОСТ 17375-2001",
+      "outside_diameter_mm": {
+        "min": 32,
+        "max": 820
+      },
+      "pressure_MPa_catalogue": "≤10",
+      "material_claims": [
+        "20",
+        "09Г2С",
+        "12Х18Н10Т"
+      ],
+      "wall_thickness_mm": null,
+      "source_url": "https://uaz74.ru/upload/pdf/Katalog_UAZ_3009.pdf",
+      "cautions": "R1,5DN; материал/стандарт каждого исполнения проверять; OCR13ФФА не принят"
+    },
+    {
+      "type": "Отвод крутоизогнутый бесшовный",
+      "standard": "ГОСТ 30753-2001",
+      "outside_diameter_mm": {
+        "min": 57,
+        "max": 820
+      },
+      "pressure_MPa_catalogue": "≤10",
+      "material_claims": [
+        "20",
+        "09Г2С",
+        "12Х18Н10Т"
+      ],
+      "wall_thickness_mm": null,
+      "source_url": "https://uaz74.ru/upload/pdf/Katalog_UAZ_3009.pdf",
+      "cautions": "R1DN; общая строка материалов каталога не подтверждает все сочетания"
+    },
+    {
+      "type": "Отвод крутоизогнутый бесшовный",
+      "standard": "ОСТ 34.10.699-97",
+      "outside_diameter_mm": {
+        "min": 45,
+        "max": 630
+      },
+      "pressure_MPa_catalogue": "≤2,2 рабочее",
+      "material_claims": [
+        "20",
+        "09Г2С",
+        "12Х18Н10Т"
+      ],
+      "wall_thickness_mm": null,
+      "source_url": "https://uaz74.ru/upload/pdf/Katalog_UAZ_3009.pdf",
+      "cautions": "R1DN/1,5DN; общая строка материалов"
+    },
+    {
+      "type": "Отвод штампосварной",
+      "standard": "ТУ 1468-001-30995032-2012",
+      "outside_diameter_mm": {
+        "min": 630,
+        "max": 1420
+      },
+      "pressure_MPa_catalogue": "≤10",
+      "material_claims": [
+        "20",
+        "09Г2С",
+        "12Х18Н10Т",
+        "13ХФА"
+      ],
+      "wall_thickness_mm": null,
+      "source_url": "https://uaz74.ru/upload/pdf/Katalog_UAZ_3009.pdf",
+      "cautions": null
+    },
+    {
+      "type": "Отвод секторный сварной",
+      "standard": "ОСТ 34.10.752-97",
+      "outside_diameter_mm": {
+        "min": 108,
+        "max": 1620
+      },
+      "pressure_MPa_catalogue": "≤2,5",
+      "material_claims": [
+        "20",
+        "09Г2С",
+        "12Х18Н10Т",
+        "13ХФА"
+      ],
+      "wall_thickness_mm": null,
+      "source_url": "https://uaz74.ru/upload/pdf/Katalog_UAZ_3009.pdf",
+      "cautions": "R1,5DN вPDF; на сайте также семействоR1"
+    },
+    {
+      "type": "Отвод секторный сварной",
+      "standard": "ОСТ 36-21-77",
+      "outside_diameter_mm": {
+        "min": 530,
+        "max": 1420
+      },
+      "pressure_MPa_catalogue": "≤2,5",
+      "material_claims": [
+        "20",
+        "09Г2С"
+      ],
+      "wall_thickness_mm": null,
+      "source_url": "https://uaz74.ru/upload/pdf/Katalog_UAZ_3009.pdf",
+      "cautions": "R1,5DN"
+    },
+    {
+      "type": "Переход бесшовный концентрический/эксцентрический",
+      "standard": "ГОСТ 17378-2001",
+      "outside_diameter_mm": {
+        "min": 38,
+        "max": 530
+      },
+      "pressure_MPa_catalogue": "≤16",
+      "material_claims": [
+        "20",
+        "09Г2С"
+      ],
+      "wall_thickness_mm": null,
+      "source_url": "https://uaz74.ru/upload/pdf/Katalog_UAZ_3009.pdf",
+      "cautions": "диаметры концов и допустимые сочетания уточняются"
+    },
+    {
+      "type": "Переход штампосварной концентрический/эксцентрический",
+      "standard": "ТУ 1468-001-30995032-2012",
+      "outside_diameter_mm": {
+        "min": 630,
+        "max": 1420
+      },
+      "pressure_MPa_catalogue": "≤10",
+      "material_claims": [
+        "20",
+        "09Г2С",
+        "12Х18Н10Т"
+      ],
+      "wall_thickness_mm": null,
+      "source_url": "https://uaz74.ru/upload/pdf/Katalog_UAZ_3009.pdf",
+      "cautions": null
+    },
+    {
+      "type": "Переход сварной листовой",
+      "standard": "ОСТ 34.10.753-97",
+      "outside_diameter_mm": {
+        "min": 530,
+        "max": 1620
+      },
+      "pressure_MPa_catalogue": "≤2,2 рабочее",
+      "material_claims": [
+        "20",
+        "09Г2С"
+      ],
+      "wall_thickness_mm": null,
+      "source_url": "https://uaz74.ru/upload/pdf/Katalog_UAZ_3009.pdf",
+      "cautions": null
+    },
+    {
+      "type": "Переход сварной",
+      "standard": "ОСТ 36-22-77",
+      "outside_diameter_mm": null,
+      "pressure_MPa_catalogue": "≤2,5",
+      "material_claims": [
+        "20",
+        "09Г2С",
+        "12Х18Н10Т"
+      ],
+      "wall_thickness_mm": null,
+      "source_url": "https://uaz74.ru/upload/pdf/Katalog_UAZ_3009.pdf",
+      "cautions": "непубликуемый диапазон: OCR530–14620; требуется сверка"
+    },
+    {
+      "type": "Тройник штампованный бесшовный",
+      "standard": "ГОСТ 17376-2001",
+      "outside_diameter_mm": {
+        "min": 45,
+        "max": 426
+      },
+      "pressure_MPa_catalogue": "≤16",
+      "material_claims": [
+        "20",
+        "09Г2С",
+        "12Х18Н10Т"
+      ],
+      "wall_thickness_mm": null,
+      "source_url": "https://uaz74.ru/upload/pdf/Katalog_UAZ_3009.pdf",
+      "cautions": "проверять нормативную допустимость материала конкретного исполнения"
+    },
+    {
+      "type": "Тройник штампосварной",
+      "standard": "ТУ 1468-001-30995032-2012",
+      "outside_diameter_mm": {
+        "min": 530,
+        "max": 1420
+      },
+      "pressure_MPa_catalogue": "≤10",
+      "material_claims": [
+        "20",
+        "09Г2С",
+        "12Х18Н10Т"
+      ],
+      "wall_thickness_mm": null,
+      "source_url": "https://uaz74.ru/upload/pdf/Katalog_UAZ_3009.pdf",
+      "cautions": null
+    },
+    {
+      "type": "Тройник сварной равнопроходный/переходный",
+      "standard": "ОСТ 36-24-77",
+      "outside_diameter_mm": {
+        "min": 530,
+        "max": 1420
+      },
+      "pressure_MPa_catalogue": "≤2,5",
+      "material_claims": [
+        "углеродистая сталь"
+      ],
+      "wall_thickness_mm": null,
+      "source_url": "https://uaz74.ru/upload/pdf/Katalog_UAZ_3009.pdf",
+      "cautions": "марки не указаны"
+    },
+    {
+      "type": "Тройник сварной равнопроходный",
+      "standard": "ОСТ 34.10.762-97",
+      "outside_diameter_mm": {
+        "min": 76,
+        "max": 1620
+      },
+      "pressure_MPa_catalogue": null,
+      "material_claims": [
+        "20",
+        "09Г2С",
+        "12Х18Н10Т"
+      ],
+      "wall_thickness_mm": null,
+      "source_url": "https://uaz74.ru/upload/pdf/Katalog_UAZ_3009.pdf",
+      "cautions": "давление OCR≤22МПа; вероятная ошибка, не использовать до сверки"
+    },
+    {
+      "type": "Тройник сварной переходный",
+      "standard": "ОСТ 34.10.764-97",
+      "outside_diameter_mm": {
+        "min": 76,
+        "max": 1620
+      },
+      "pressure_MPa_catalogue": "≤2,2 рабочее",
+      "material_claims": [
+        "20",
+        "09Г2С",
+        "12Х18Н10Т"
+      ],
+      "wall_thickness_mm": null,
+      "source_url": "https://uaz74.ru/upload/pdf/Katalog_UAZ_3009.pdf",
+      "cautions": null
+    },
+    {
+      "type": "Заглушка",
+      "standard": "ГОСТ 17379-2001",
+      "outside_diameter_mm": {
+        "min": 32,
+        "max": 273
+      },
+      "pressure_MPa_catalogue": "≤16",
+      "material_claims": [
+        "20",
+        "09Г2С",
+        "12Х18Н10Т"
+      ],
+      "wall_thickness_mm": null,
+      "source_url": "https://uaz74.ru/upload/pdf/Katalog_UAZ_3009.pdf",
+      "cautions": "проверять нормативную допустимость материала конкретного исполнения"
+    },
+    {
+      "type": "Заглушка плоская приварная с рёбрами",
+      "standard": "ОСТ 34.10.759-97",
+      "outside_diameter_mm": {
+        "min": 325,
+        "max": 1620
+      },
+      "pressure_MPa_catalogue": "≤2,5",
+      "material_claims": [
+        "20",
+        "09Г2С"
+      ],
+      "wall_thickness_mm": null,
+      "source_url": "https://uaz74.ru/upload/pdf/Katalog_UAZ_3009.pdf",
+      "cautions": null
+    },
+    {
+      "type": "Заглушка фланцевая",
+      "standard": "АТК 24-200-02-90",
+      "outside_diameter_mm": null,
+      "pressure_MPa_catalogue": "0,6–16",
+      "material_claims": [
+        "20",
+        "09Г2С"
+      ],
+      "wall_thickness_mm": null,
+      "source_url": "https://uaz74.ru/upload/pdf/Katalog_UAZ_3009.pdf",
+      "cautions": "каталог10–1200мм под заголовкомнаружныйдиаметр; вероятноDN, не публиковать какOD"
+    },
+    {
+      "type": "Заглушка поворотная",
+      "standard": "АТК 26-18-5-93",
+      "outside_diameter_mm": null,
+      "pressure_MPa_catalogue": "1,6–16",
+      "material_claims": [
+        "Ст3",
+        "20",
+        "16ГС",
+        "09Г2С"
+      ],
+      "wall_thickness_mm": null,
+      "source_url": "https://uaz74.ru/upload/pdf/Katalog_UAZ_3009.pdf",
+      "cautions": "каталог25–700мм; обозначение размера требует сверкиDN/OD"
+    },
+    {
+      "type": "Заглушка",
+      "standard": "Т-ММ 25-01-06",
+      "outside_diameter_mm": null,
+      "pressure_MPa_catalogue": "≤10",
+      "material_claims": [
+        "Ст3",
+        "20",
+        "16ГС",
+        "09Г2С"
+      ],
+      "wall_thickness_mm": null,
+      "source_url": "https://uaz74.ru/upload/pdf/Katalog_UAZ_3009.pdf",
+      "cautions": "каталог10–600мм; обозначение размера требует сверкиDN/OD"
+    },
+    {
+      "type": "Днище эллиптическое отбортованное",
+      "standard": "ГОСТ 6533-78",
+      "outside_diameter_mm": {
+        "min": 133,
+        "max": 1420
+      },
+      "pressure_MPa_catalogue": "≤16",
+      "material_claims": [
+        "Ст3",
+        "20",
+        "16ГС",
+        "09Г2С"
+      ],
+      "wall_thickness_mm": null,
+      "source_url": "https://uaz74.ru/upload/pdf/Katalog_UAZ_3009.pdf",
+      "cautions": null
+    },
+    {
+      "type": "Фланец плоский приварной",
+      "standard": "ГОСТ 12820-80",
+      "outside_diameter_mm": null,
+      "pressure_MPa_catalogue": "0,1–2,5",
+      "material_claims": [
+        "20",
+        "09Г2С",
+        "12Х18Н10Т"
+      ],
+      "wall_thickness_mm": null,
+      "source_url": "https://uaz74.ru/upload/pdf/Katalog_UAZ_3009.pdf",
+      "cautions": "каталог10–2400мм; вероятноDN, не публиковать какOD; актуальность стандарта проверять"
+    },
+    {
+      "type": "Фланец воротниковый приварной",
+      "standard": "ГОСТ 12821-80",
+      "outside_diameter_mm": null,
+      "pressure_MPa_catalogue": "0,1–20",
+      "material_claims": [
+        "20",
+        "09Г2С",
+        "12Х18Н10Т"
+      ],
+      "wall_thickness_mm": null,
+      "source_url": "https://uaz74.ru/upload/pdf/Katalog_UAZ_3009.pdf",
+      "cautions": "каталог10–1600мм; вероятноDN, не публиковать какOD; актуальность стандарта проверять"
+    },
+    {
+      "type": "Фланец",
+      "standard": "ГОСТ 33259-2015",
+      "outside_diameter_mm": null,
+      "pressure_MPa_catalogue": "≤25",
+      "material_claims": [
+        "20",
+        "09Г2С",
+        "12Х18Н10Т"
+      ],
+      "wall_thickness_mm": null,
+      "source_url": "https://uaz74.ru/upload/pdf/Katalog_UAZ_3009.pdf",
+      "cautions": "каталог10–1600мм; вероятноDN, не публиковать какOD"
+    }
+  ]
+}

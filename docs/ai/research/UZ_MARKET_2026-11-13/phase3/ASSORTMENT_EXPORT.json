@@ -1,0 +1,92 @@
+{
+  "date": "2026-11-14",
+  "destination": "Uzbekistan",
+  "scope": "Assortment description of ordinary civilian goods; not a shipment permit or blanket approval of all size/grade combinations",
+  "official_source": "https://fstec.ru/dokumenty/vse-dokumenty/perechni/perechen-tovarov-utverzhden-prikazom-fstek-rossii-ot-20-yanvarya-2025-g-n-17",
+  "full_text_read_from": "https://www.kontur-extern.ru/info/normativ/document/1/488024-prikaz-fstek-rf-ot-20-01-2025-n-17",
+  "local_full_text": "/workspace/output/uz-market-20261113/export-control/order17-current-mirror.txt",
+  "source_limitation": "Official full-page retrieval previously503/tunnel; complete text read from legal mirror, not claimed as read official PDF",
+  "items": [
+    {
+      "key": "seamless-hot-st20",
+      "goods": "Обычная бесшовная горячедеформированная труба из стали20",
+      "hs_preliminary": [
+        "730439"
+      ],
+      "basis": "1.73",
+      "advertising_eligible": true,
+      "conditions": [
+        "Фактически нелегированная сталь и обычная гражданская трубная форма",
+        "Не специальная обсадная/бурильная/ядерная или военная деталь",
+        "Окончательная классификация и НТД по партии"
+      ]
+    },
+    {
+      "key": "seamless-hot-09g2s",
+      "goods": "Обычная бесшовная горячедеформированная труба09Г2С",
+      "hs_preliminary": [
+        "730459 or another code justified by actual composition/form"
+      ],
+      "basis": "2.21.1«а» in connection with 2.20.2«а»",
+      "advertising_eligible": true,
+      "conditions": [
+        "09Г2С прямо указана в таблице2.20.2«а»",
+        "Пункт2.21.1«а» распространяет положительное решение на трубную продукцию из соответствующих марок",
+        "ГОСТ8732-78/8731-74 указаны среди НТД в2.21",
+        "Если фактическая классификация отличается, заново сопоставить ее с перечнем; не выдавать730459 за окончательный код"
+      ]
+    },
+    {
+      "key": "carbon-steel-sheet-round",
+      "goods": "Обычные горячекатаные листы и круги из нелегированных сталей10,20,35,45",
+      "hs_preliminary": [
+        "7208",
+        "7214"
+      ],
+      "basis": "1.72",
+      "advertising_eligible": true,
+      "conditions": [
+        "Основание через группу и исключения, а не выдуманное прямое перечисление всех числовых марок",
+        "Фактическая нелегированная сталь и соответствующие товарные формы",
+        "При классификации как другая легированная сталь из-за технологических добавок необходимо отдельное сопоставление; возможная строка2.20.2«б» не применяется автоматически"
+      ]
+    },
+    {
+      "key": "steel-40h-sheet-round",
+      "goods": "Обычные листы/круги40Х",
+      "hs_preliminary": [
+        "7225",
+        "7228"
+      ],
+      "basis": "2.20.2«в»",
+      "advertising_eligible": true,
+      "conditions": [
+        "Именно40Х, не похожая марка",
+        "Подпункт«в» исключает поставки в недружественные страны и Грузию; дляУзбекистана это территориальное исключение не установлено в прочитанном материале",
+        "Соответствие НТД/форме/параметрам; не готовое военное/специальное изделие"
+      ]
+    },
+    {
+      "key": "al-amg3-plate",
+      "goods": "Обычная алюминиевая плитаАМг3",
+      "hs_preliminary": [
+        "760612 and listed detailed positions in 2.24.1"
+      ],
+      "basis": "2.24.1«а»",
+      "advertising_eligible": true,
+      "conditions": [
+        "АМг3(1530) прямо указана; ГОСТ17232-99 входит в НТД",
+        "Обычный стандартный полуфабрикат; точная форма/классификация из списка",
+        "Не переносить основание наАМг5/АМг6/1561 или порошковые/специальные материалы"
+      ]
+    }
+  ],
+  "all_items_shipment_release": false,
+  "common_conditions": [
+    "General notes of order17 apply",
+    "Verify factual batch, finalHS10, documents, recipient/enduse, route, current measures before shipment under183-FZ20/24",
+    "Assortment ranges must be backed by stock/catalog evidence separately",
+    "A range does not mean every grade occurs in every intermediate size or that the displayed price covers all variants",
+    "No new web calls, no paid lookups, no Prom mutations were performed by this review"
+  ]
+}

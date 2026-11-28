@@ -1,0 +1,19 @@
+{
+  "date": "2026-11-20",
+  "timezone": "Asia/Yekaterinburg",
+  "sourceCommit": "e8397e4a9df03c249aeb773ff56508698c4c4ac8",
+  "device": "DESKTOP-BNPIVK2",
+  "pid": 13848,
+  "readback": "Both downloaded pinned Git sources matched expected SHA256 before copy; both actual Obsidian notes matched SHA256 after copy. Process exited 0. Existing notes backed up with .backup-e8397e4 suffix.",
+  "notes": [
+    {
+      "name": "00 - Инструкция старт - все подключения.md",
+      "sha256": "a2d5ada88db8e74947b1788174670aaccbce91fa109a91d99afaaa57730f7e7c"
+    },
+    {
+      "name": "2026-11-20 - Cataloxy, презентация и фото 2ГИС.md",
+      "sha256": "b05db212b51088a4ac71d571671784911b41433ed86e4b7e46677c139b6abf68"
+    }
+  ],
+  "windowsReceipt": "%LOCALAPPDATA%\\MagicMetalDirectoryAutomation\\obsidian-sync-e8397e4-20261120.json"
+}

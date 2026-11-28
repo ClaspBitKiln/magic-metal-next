@@ -1,0 +1,8 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {checkPackage,loadChannels} from './preflight.mjs';
+const registry=await loadChannels();
+const base={platform:'bazar',market:'KG',format:'photo',title:'Лист стальной',body:'Поставка по спецификации',image:{path:'private.jpg',width:800,height:600,rightsConfirmed:true},liveFreeConfirmed:true,eligibilityConfirmed:true,duplicateChecked:true,rulesChecked:true};
+test('KG is a real supported market and ready never means published',()=>assert.equal(checkPackage(base,registry).status,'ready_for_authorized_execution'));
+test('Bazar disallows website/email and contact overlays',()=>{assert.equal(checkPackage({...base,body:'https://magicmet.ru'},registry).status,'blocked');assert.equal(checkPackage({...base,image:{...base.image,overlays:['phone']}},registry).status,'blocked');});
+test('business-zero, paid trials and forbidden automation stop the queue',()=>{for(const platform of ['olx_kz','satu','flagma_ru'])assert.equal(checkPackage({...base,platform,market:platform==='flagma_ru'?'RF':'KZ'},registry).status,'blocked');});
+test('wire ropes and logistics do not silently expand to other countries',()=>{assert.equal(checkPackage({...base,productGroup:'wire_ropes_china'},registry).status,'blocked');assert.equal(checkPackage({...base,quoteRoute:'tashkent'},registry).status,'blocked');});
+test('missing live evidence requires verification; RUB is not relabeled UZS',()=>{assert.equal(checkPackage({...base,liveFreeConfirmed:false},registry).status,'needs_verification');assert.equal(checkPackage({...base,platform:'glotr',market:'UZ',price:{nativeCurrency:'RUB'}},registry).status,'blocked');});

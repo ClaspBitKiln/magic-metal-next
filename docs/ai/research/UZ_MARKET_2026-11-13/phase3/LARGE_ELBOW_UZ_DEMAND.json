@@ -1,0 +1,115 @@
+{
+  "checked_date": "2026-11-14",
+  "scope": "Uzbekistan steel elbows/fittings: test whether only large diameters are useful RF export targets",
+  "tool_calls": {
+    "search": 3,
+    "scrape": 3,
+    "total": 6
+  },
+  "verdict": "The hypothesis only large is not established. Large diameters already appear in local supply offers; diameter alone is insufficient to infer shortage or competitive advantage.",
+  "sources": [
+    {
+      "url": "https://ttz.uz/novosti/",
+      "kind": "primary manufacturer website",
+      "http_status": 200,
+      "publication_date": null,
+      "facts": [
+        "Official TTZ catalog lists welded steep-radius elbows (Отводы крутоизогнутые приварные).",
+        "The news explicitly describes local welded PIPE production159–377mm; catalog also lists weldedPIPE426–1420mm."
+      ],
+      "not_established": [
+        "Elbow manufacturing diameter range",
+        "Steel grades and elbowGOST",
+        "Actual installed capacity or stock of elbows",
+        "Independent audit of manufacturer claims"
+      ],
+      "next_primary_url": "https://ttz.uz/product_categories/otvody-stalnye/",
+      "next_primary_url_read": false
+    },
+    {
+      "url": "https://flagma.uz/ru/otvody-stalnye-d530-d630-d720-d820-d1020-d1220-optom-pr-v-tashkente-o2005511.html",
+      "kind": "seller marketplace advertisement",
+      "http_status": 200,
+      "displayed_date": "2025-03-10 12:59",
+      "seller": "METALL ASIA, ООО",
+      "manufacturer_field": "МастерСталь",
+      "offered_diameters_mm": [
+        15,
+        20,
+        22,
+        25,
+        28,
+        32,
+        38,
+        40,
+        42,
+        48,
+        50,
+        51,
+        57,
+        60,
+        65,
+        73,
+        76,
+        80,
+        83,
+        89,
+        90,
+        100,
+        102,
+        108,
+        114,
+        127,
+        133,
+        159,
+        219,
+        245,
+        273,
+        299,
+        325,
+        377,
+        426,
+        530,
+        630,
+        720,
+        820,
+        1020,
+        1220,
+        1420
+      ],
+      "not_established": [
+        "LocalUzbekmanufacture",
+        "Current quantity/physicalstock",
+        "Manufacturing method and compliance per diameter",
+        "Deficit or active buyer demand"
+      ],
+      "caution": "A Tashkent address/title does not prove Uzbek origin. Related seller listings explicitly refer toRussia/China; do not treat wordбесшовныйforhugeelbows as independently certified."
+    },
+    {
+      "url": "https://aviastal.uz/zapornaya-armatura/otvody/otvod-stalnoi/18190",
+      "kind": "seller offer page",
+      "http_status": 401,
+      "search_excerpt": "Steel elbow720x10; claims available inTashkent, pricefrom93600UZS/piece",
+      "usable_for_price_comparison": false,
+      "reason": "Fullcontentnotread; displayed lowpriceunverified and not a firm comparable quote."
+    }
+  ],
+  "buyer_demand": {
+    "confirmed_current_large_elbow_tender": false,
+    "discovery_only": [
+      "https://www.bicotender.ru/tags/tendery-na-truby-v-uzbekistane/page/2/",
+      "https://tzone.uz/page/tender-card/63632105"
+    ],
+    "caution": "Search results includeKazakhstan and a repair of1020mmPIPE; neither proves an Uzbek purchase of1020mmelbows. No tendergrade/quantity/deadline was verified."
+  },
+  "selection_criteria": [
+    "ExactD×wall,angle,bendradius,grade,standard/execution,tests anddocuments",
+    "Verifiedlocalquantity and readydate for the required specification",
+    "VerifiedRFstock/reservation and deliverywindow",
+    "Full20tvehicleloading feasibility, not only grossmass—largefittings may be volumeoroversize constrained",
+    "Fullbuyerlandedcash/net comparison including dutiesVATfees; no unknownzeroes",
+    "Buyerdeadline/ability to pay for emergency delivery"
+  ],
+  "recommended_action": "Holdgeneric159x6card if competitive economics and20t availability are not established. Seek exact missing localspecifications in219–1020 rather than asserting any large diameter is scarce. Small/medium raregrades, thickwall, specifictests or urgentstockout may also be addressable; this is a hypothesis to verify, not proven shortage.",
+  "mutations": "None: no Prom edits, messages, registrations or payments"
+}

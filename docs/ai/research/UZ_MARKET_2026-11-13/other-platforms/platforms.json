@@ -1,0 +1,152 @@
+{
+  "checked_at": "2026-11-13",
+  "read_only": true,
+  "platforms": [
+    {
+      "name": "Glotr.uz",
+      "url": "https://glotr.uz/",
+      "status": "blocked_for_RF_under_standard_terms",
+      "free": {
+        "confirmed": true,
+        "evidence": "for-seller: Создайте ... интернет-магазин бесплатно",
+        "product_limit": null
+      },
+      "russian_company": "Типовые условия 3.5.1: Клиент учрежден и действует по законодательству Республики Узбекистан; требуется отдельное разрешение/договор",
+      "phone_plus7": "Форма registration/as-company содержит Russia +7; отправка кода не выполнялась",
+      "automation": "Пользовательское соглашение 4.4.1 запрещает программы/автоматические устройства доступа; не автоматизировать без письменного разрешения",
+      "moderation": "Типовые условия: публикации могут блокироваться при модерации; один товар в названии, достоверные сведения",
+      "sources": [
+        "https://glotr.uz/for-seller/",
+        "https://glotr.uz/page/tipovie-usloviya-60/",
+        "https://glotr.uz/page/polzovatelskoe-soglashenie-2/",
+        "https://glotr.uz/registration/as-company/"
+      ]
+    },
+    {
+      "name": "Tovar.uz",
+      "url": "https://tovar.uz/",
+      "status": "candidate_not_verified_RF",
+      "free": {
+        "confirmed": "registration_only",
+        "evidence": "Официальная категория говорит бесплатно зарегистрироваться; отсутствие тарифа не доказывает бесплатный каталог",
+        "product_limit": null,
+        "paid_tariffs_observed": {
+          "source": "https://tovar.uz/images/wyzywigimg/20241001040919.png",
+          "price_list_label_date": "2024-08-22",
+          "Light": {
+            "sum_per_year": 5000000,
+            "products": 1000
+          },
+          "Business": {
+            "sum_per_year": 7500000,
+            "products": 3000
+          },
+          "Premium": {
+            "sum_per_year": 48000000,
+            "products": 10000
+          },
+          "note": "Нулевой тариф не указан; старый прайс не гарантия текущей цены"
+        }
+      },
+      "russian_company": "Соглашение 1.2 любое дееспособное физическое или юридическое лицо; 1.1 площадка для Республики Узбекистан. Явный допуск нерезидента не подтвержден",
+      "phone_plus7": null,
+      "automation": "Публичная API/импорт и разрешение роботов не найдены; 5.4 запрет нарушения нормальной работы, 5.6 передача доступа третьим лицам без согласия запрещена",
+      "moderation": "oferta/3: модератор блокирует нарушения; один товар в названии, нет контактов/внешних ссылок в описании, фото без контактов/водяных знаков",
+      "sources": [
+        "https://tovar.uz/oferta",
+        "https://tovar.uz/oferta/3",
+        "https://tovar.uz/oferta/5",
+        "https://tovar.uz/signup",
+        "https://tovar.uz/categories/8245_registraciya_predpriyatiy_individualnyh_predprinimateley"
+      ]
+    },
+    {
+      "name": "Stroyka.uz",
+      "url": "https://stroyka.uz/",
+      "status": "unverified_previous_DB500",
+      "free": {
+        "confirmed": false,
+        "product_limit": null
+      },
+      "russian_company": null,
+      "phone_plus7": null,
+      "automation": null,
+      "moderation": null,
+      "sources": [],
+      "note": "По переданной истории два ответа DB500; новых запросов к сайту не выполняли, поиск условий не дал релевантных страниц."
+    },
+    {
+      "name": "Pulscen.uz",
+      "url": "https://pulscen.uz/",
+      "status": "unverified_unreachable",
+      "free": {
+        "confirmed": false,
+        "product_limit": null
+      },
+      "russian_company": null,
+      "phone_plus7": null,
+      "automation": null,
+      "moderation": null,
+      "sources": [
+        "https://pulscen.uz/"
+      ],
+      "note": "Один Firecrawl запрос: ERR_TUNNEL_CONNECTION_FAILED; поиск по домену пуст. Не переносить правила pulscen.ru на неподтвержденный узбекский домен."
+    },
+    {
+      "name": "BizOrg Узбекистан",
+      "url": "https://uz.bizorg.su/",
+      "status": "blocked_content_unavailable",
+      "free": {
+        "confirmed": false,
+        "product_limit": null
+      },
+      "russian_company": null,
+      "phone_plus7": null,
+      "automation": null,
+      "moderation": null,
+      "sources": [
+        "https://uz.bizorg.su/"
+      ],
+      "note": "Один Firecrawl scrape: SCRAPE_ALL_ENGINES_FAILED; дальнейших попыток не делали"
+    },
+    {
+      "name": "Goldenpages.uz",
+      "url": "https://www.goldenpages.uz/",
+      "status": "standard_form_UZ_only",
+      "free": {
+        "confirmed": true,
+        "product_limit": null,
+        "free_rubrics": 2,
+        "fields": "название, адрес, до2 телефонов, факс, email"
+      },
+      "russian_company": "Форма add прямо только для компаний, зарегистрированных на территории Узбекистана. Индивидуальное размещение РФ не подтверждено.",
+      "phone_plus7": null,
+      "automation": "Разрешенный API/импорт не найден; AntiBot в форме; не обходить",
+      "moderation": "Проверка службы информации/модератора",
+      "sources": [
+        "https://www.goldenpages.uz/faq/",
+        "https://www.goldenpages.uz/add/",
+        "https://www.goldenpages.uz/rubrics/?Id=1309"
+      ]
+    },
+    {
+      "name": "Yellowpages.uz",
+      "url": "https://www.yellowpages.uz/",
+      "status": "standard_form_UZ_only_RF_example",
+      "free": {
+        "confirmed": "rubric_promises_free_advertising",
+        "product_limit": null
+      },
+      "russian_company": "Форма только для зарегистрированных и работающих в Узбекистане. Есть российская карточка VERUMBIO, но это не подтверждает право самостоятельной РФ регистрации.",
+      "phone_plus7": "VERUMBIO FAQ содержит 74951207787, основной контакт искажен как +998749; поддержку корректного +7 не доказывает",
+      "automation": "Публичный разрешенный API/импорт не найден",
+      "moderation": "Сведения проверяются перед публикацией",
+      "sources": [
+        "https://www.yellowpages.uz/company/add",
+        "https://www.yellowpages.uz/kompaniya/verumbio-ooo",
+        "https://www.yellowpages.uz/rubrika/registraciya-predpriyatij-firm-kompanij/samarkand"
+      ]
+    }
+  ],
+  "existing_site_note": "Prom уже используется; 5 карточек на модерации, вопросы поддержке ведет основной исполнитель. Не новая альтернатива."
+}

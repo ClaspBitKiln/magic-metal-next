@@ -1,0 +1,7 @@
+{
+  "name": "magicmet/shared-request-handler",
+  "description": "SMTP request handler for Magic Metal static deployment",
+  "type": "project",
+  "require": { "php": ">=8.1", "ext-openssl": "*", "phpmailer/phpmailer": "^6.10" },
+  "config": { "sort-packages": true, "allow-plugins": false }
+}

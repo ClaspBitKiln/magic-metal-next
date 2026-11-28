@@ -1,0 +1,199 @@
+{
+  "checked_date": "2026-11-14",
+  "operations": 6,
+  "method": "3 targeted searches +3 page reads; public pages only; no paid customs bases, company contact, RFQ, registration or live Prom changes",
+  "sources": [
+    {
+      "id": "tmk-dealers2026",
+      "url": "https://www.tmk-group.ru/Distributors",
+      "publisher": "ПАО ТМК",
+      "page_label": "Список официальных представителей ПАО«ТМК»на2026год",
+      "retrieved_full_text": true,
+      "source_type": "manufacturer_confirmation",
+      "facts": [
+        {
+          "subject": "ООО GLOBAL STEEL",
+          "relationship": "official representative of PJSC TMK",
+          "territory": "РеспубликаУзбекистан",
+          "certificate_level": "платина",
+          "certificate_id": "302964714",
+          "evidence_quote": "ООО«GLOBALSTEEL» ...302964714 ...платина ...СНГ ...РеспубликаУзбекистан"
+        }
+      ],
+      "limits": [
+        "No transaction date, tonnage, specific steel20 grade/pipe dimension or named end customer stated.",
+        "No GlobalSteel warehouse/cash terms inferred from manufacturer list.",
+        "StalTradeAsia not found in this retrieved list; absence does not prove no commercial relationship."
+      ]
+    },
+    {
+      "id": "tmk-uz-rep2011",
+      "url": "https://www.tmk-group.ru/PressReleases/629",
+      "publisher": "ТМК",
+      "publication_date": "2011-10-21",
+      "retrieved_full_text": true,
+      "source_type": "historical_manufacturer_release",
+      "facts": [
+        {
+          "subject": "ТМК",
+          "relationship": "opened trade representative office",
+          "target": "Ташкент,Узбекистан",
+          "purpose": "more rapid cooperation with Uzbek oil/gas companies and promotion on wholesale market"
+        }
+      ],
+      "named_context_companies": [
+        "Узбекнефтегаз",
+        "ЛУКОЙЛ",
+        "Газпром",
+        "Petronas",
+        "CNPC",
+        "KNOC"
+      ],
+      "limits": [
+        "Release calls them current or prospective partners collectively; does not identify a steel20 shipment or a contract for a precise product.",
+        "2011 opening does not establish office activity in2026."
+      ]
+    },
+    {
+      "id": "staltrade-company",
+      "url": "https://staltrade.uz/company/",
+      "publisher": "ООО Stal Trade Asia",
+      "publication_date": null,
+      "retrieved_full_text": true,
+      "source_type": "seller_self_statement",
+      "facts": [
+        {
+          "subject": "ОООStalTradeAsia",
+          "relationship": "says it belongs to Kazakhstan СтальТрейдgroup and represents it inUzbekistan"
+        },
+        {
+          "subject": "ОООStalTradeAsia",
+          "relationship": "claims official dealership ofТМК,ЧТПЗ,ОМК,ПТПЗ inUzbekistan"
+        },
+        {
+          "subject": "ОООStalTradeAsia",
+          "relationship": "claims warehouses,transport,weekly deliveries,assembled railway wagon from branches or manufacturers and commodity credit"
+        }
+      ],
+      "commodity_scope": [
+        "бесшовные трубы",
+        "электросварные трубы",
+        "профильные трубы",
+        "ВГП",
+        "котловые и другие трубы"
+      ],
+      "limits": [
+        "No independent manufacturer confirmation of this exact2026dealer relationship obtained in this6-operation scope.",
+        "No specific ordinary steel20/dimension/tonnage shipment or named customer established.",
+        "Pavlodar plant is Kazakhstan, so do not count as Russian upstream production."
+      ]
+    }
+  ],
+  "chains": [
+    {
+      "id": "chain-A",
+      "scope": "Russian pipe manufacturer →manufacturer-confirmedUzbekrepresentative",
+      "nodes": [
+        {
+          "id": "tmk",
+          "role": "pipe producer group",
+          "country": "RU"
+        },
+        {
+          "id": "globalsteel",
+          "name": "ОООGLOBALSTEEL",
+          "role": "official manufacturer representative",
+          "country": "UZ"
+        },
+        {
+          "id": "enduser",
+          "role": "unidentifiedUzbekindustrialbuyer",
+          "country": "UZ",
+          "identity_confirmed": false
+        }
+      ],
+      "edges": [
+        {
+          "from": "tmk",
+          "to": "globalsteel",
+          "type": "official2026commercialauthorization",
+          "source": "tmk-dealers2026",
+          "transaction_proven": false
+        },
+        {
+          "from": "globalsteel",
+          "to": "enduser",
+          "type": "possible downstream resale model; not established transaction",
+          "source": null,
+          "transaction_proven": false
+        }
+      ],
+      "specific_steel20_pipe_chain_proven": false
+    },
+    {
+      "id": "chain-B",
+      "scope": "Seller-declaredRussianmaker →StalTradeAsialocalwarehousing/resale channel",
+      "nodes": [
+        {
+          "id": "rf-makers",
+          "names": [
+            "ТМК",
+            "ЧТПЗ",
+            "ОМК"
+          ],
+          "role": "namedRussianproducer/upstreamgroups"
+        },
+        {
+          "id": "staltrade",
+          "name": "ОООStalTradeAsia",
+          "country": "UZ",
+          "role": "localseller; warehouses/credit/consolidation according to ownsite"
+        },
+        {
+          "id": "industry",
+          "role": "unnamedUzbekcustomer",
+          "identity_confirmed": false
+        }
+      ],
+      "edges": [
+        {
+          "from": "rf-makers",
+          "to": "staltrade",
+          "type": "seller-declareddealership/sourcing",
+          "source": "staltrade-company",
+          "transaction_proven": false
+        },
+        {
+          "from": "staltrade",
+          "to": "industry",
+          "type": "offered B2B supply service, not named historical sale",
+          "source": "staltrade-company",
+          "transaction_proven": false
+        }
+      ],
+      "specific_steel20_pipe_chain_proven": false
+    }
+  ],
+  "construction_sheet_gap": {
+    "status": "No manufacturer-confirmedconstruction-sheetproducer→Uzbekdealer/end-user edge established within6operations",
+    "not_inferred": [
+      "НЛМК→МеталлинвестУЗ",
+      "Северсталь→МеталлинвестУЗ",
+      "specific40Хplate shipment via anydealer"
+    ],
+    "meaning": "Keep unproven rather than fill chain from logos or names."
+  },
+  "commercial_analysis": {
+    "proposed_mm_route": "Russianmill →RFstockholder(mc.ru/Metallotorg) →MagicMetal(exporter) →Uzbekindustrialimporter",
+    "route_status": "Proposed procurement/offer chain; not a documented historic sale",
+    "key_inference": "Removing an Uzbek reseller does not necessarily reduce total commercial layers when MagicMetal buys from another Russian trader. A producer-authorizedUzbekdealer may already buy directly from a mill; superiority must be demonstrated by exact full-landed price, stock, delivery and buyer working-capital terms.",
+    "buyer_costs_to_keep": [
+      "Uzbekduties/VAT/customs fees",
+      "broker/conformity/clearance",
+      "inventory and delivery risk",
+      "VAT funding",
+      "possible loss of local commoditycredit"
+    ],
+    "recommended_target": "Find exact grade/size/availability gaps among verifiedindustrialbuyers, then compare own20tfull-landed offer against localdealer and factorydirect routes."
+  }
+}

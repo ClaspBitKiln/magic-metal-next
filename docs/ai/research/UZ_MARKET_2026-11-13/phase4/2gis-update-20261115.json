@@ -1,0 +1,37 @@
+{
+  "date": "2026-11-15",
+  "platform": "2gis",
+  "existingFirmId": "70000001109666787",
+  "existingPublicUrl": "https://2gis.ru/chelyabinsk/firm/70000001109666787",
+  "status": "existing_card_verified_login_required",
+  "observedExistingAddress": "Челябинск, Братьев Кашириных164,офис72",
+  "observedExistingNotice": "Компания давно не обновляла данные",
+  "approvedUpdates": {
+    "name": "Мэджик Металл",
+    "legalName": "ООО «Мэджик Металл»",
+    "taxId": "7453362080",
+    "ogrn": "1247400030921",
+    "website": "https://magicmet.ru",
+    "email": "m1@magicmet.ru",
+    "phone": "+79227117363",
+    "contact": "Юртаев Илья",
+    "customerAddress": "Челябинск,ул.Гостевая,д.3,оф.306",
+    "legalAddress": "Челябинск,ул.Братьев Кашириных,д.164",
+    "hours": "Пн–Пт09:00–18:00,Сб–Всвыходные",
+    "otherPhonesOwnerProvided": [
+      "+73517512335",
+      "+73517512454",
+      "+79222307751",
+      "+79220199063"
+    ],
+    "otherEmailOwnerProvided": "medzhik.metall@mail.ru"
+  },
+  "constraints": [
+    "Update existing card; no duplicate",
+    "Legal address and customer reception address are distinct",
+    "No payment or advertising subscription",
+    "All product offers RUB; description reference USD in parentheses"
+  ],
+  "loginEntry": "https://account.2gis.com/",
+  "submitted": false
+}

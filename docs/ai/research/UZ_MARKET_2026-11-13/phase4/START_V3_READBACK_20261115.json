@@ -1,0 +1,36 @@
+{
+  "date": "2026-11-15",
+  "version": 3,
+  "status": "saved_and_readback_verified",
+  "source_commit": "8a9a538186af196488d637875b033079a7b87ddb",
+  "windows_pid": 18352,
+  "main_is_full_document": true,
+  "backup_before_replace": true,
+  "files": [
+    {
+      "source": "START_V3_OBSIDIAN_20261115.md",
+      "destination": "00 - Инструкция старт - все подключения.md",
+      "sha256": "cde2090bb9671cbe637d6c80406a00f3e2748c5d48e032c42c9e25b6baa2caa8"
+    },
+    {
+      "source": "START_V3_CONNECTIONS_OBSIDIAN_20261115.md",
+      "destination": "01 - Справочник подключений Magic Metal.md",
+      "sha256": "817cb7d0920c4ee444ae5bc2df20857bd797d5089acb10430aaa8391e5692efc"
+    },
+    {
+      "source": "START_V3_HANDOFF_OBSIDIAN_20261115.md",
+      "destination": "02 - Текущая передача Magic Metal.md",
+      "sha256": "778bd960fbc13643f92897fd4cb9d1e0b5a0080ba197b520ca008875bbe18ebf"
+    },
+    {
+      "source": "START_V3_QUICK_OBSIDIAN_20261115.md",
+      "destination": "03 - Краткий старт Magic Metal.md",
+      "sha256": "62bcec59238d7655fd3f93a6d223891d5041928b74bd469a3ad2734923efa7aa"
+    },
+    {
+      "source": "START_V3_REVIEW_OBSIDIAN_20261115.md",
+      "destination": "2026-11-15 - Полная стартовая инструкция v3.md",
+      "sha256": "73e823567394518a8f9a432d6468d6d5ca592f60c2924273534348b047fed51e"
+    }
+  ]
+}

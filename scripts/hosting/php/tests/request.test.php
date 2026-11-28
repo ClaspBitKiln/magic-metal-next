@@ -1,0 +1,37 @@
+<?php
+declare(strict_types=1);
+require dirname(__DIR__).'/request-lib.php';
+$n=0;
+function check(bool $condition,string $name):void {global $n;if(!$condition)throw new RuntimeException('FAIL '.$name);$n++;}
+$base=['consent'=>'on','startedAt'=>'1000','phone'=>'+7 922 711-73-63','message'=>'Труба 57х4 сталь 20, партия 20 тонн'];
+$validate=fn($form,$files=[])=>mm_validate($form,$files,1000,10000);
+check(isset($validate($base)['fields']),'valid metal request');
+check($validate(array_merge($base,['consent'=>'']))['status']===400,'consent');
+check($validate(array_merge($base,['phone'=>'abc']))['status']===400,'invalid contact');
+check($validate(array_merge($base,['email'=>'a@b']))['status']===400,'invalid secondary email');
+check($validate(array_merge($base,['phone'=>'','email'=>'a@example.org']))['status']===200,'email only');
+check($validate(array_merge($base,['message'=>'']))['status']===400,'empty specification');
+check($validate(array_merge($base,['startedAt'=>'9500']))['status']===400,'too fast');
+check($validate(array_merge($base,['website'=>'spam']))['honeypot']===true,'honeypot');
+check($validate(array_merge($base,['message'=>'SEO backlink audit discount unsubscribe https://example.org']))['status']===400,'five-signal spam');
+check($validate(array_merge($base,['message'=>'Steel pipe drawing https://example.org/pipe.pdf']))['status']===200,'legitimate external link');
+check($validate(array_merge($base,['message'=>'AaBbCcDdEeFf','delivery'=>'BbAaCcDdEeFf']))['status']===400,'random fields');
+$pdf=['name'=>'spec.pdf','size'=>8,'buffer'=>'%PDF-1.7'];
+check(count($validate(array_merge($base,['message'=>'']),[$pdf,$pdf])['files'])===2,'multiple real attachments');
+check($validate($base,[array_merge($pdf,['name'=>'bad.exe'])])['status']===415,'extension');
+check($validate($base,[array_merge($pdf,['buffer'=>'not PDF!'])])['status']===415,'fake content');
+check($validate($base,[array_merge($pdf,['size'=>MM_MAX_FILES_SIZE+1])])['status']===413,'total file limit');
+check(mm_validate($base,[],MM_MAX_REQUEST_SIZE+1,10000)['status']===413,'request byte limit');
+check(mm_safe_filename('../a\\b\x00.pdf')!== '../a\\b\x00.pdf','safe filename');
+foreach (['png'=>"\x89PNG\r\n\x1a\n",'jpg'=>"\xff\xd8\xff",'docx'=>'PKx','xls'=>"\xd0\xcf\x11\xe0\xa1\xb1\x1a\xe1",'dwg'=>'AC1027','dxf'=>"0\r\nSECTION",'mp3'=>'ID3','m4a'=>'1234ftyp','wav'=>'RIFF1234WAVE','ogg'=>'OggS','webm'=>"\x1a\x45\xdf\xa3",'webp'=>'RIFF1234WEBP'] as $ext=>$content) check(mm_file_signature($content,$ext),'signature '.$ext);
+check(!mm_file_signature('','mp3'),'truncated signature');
+$dir=sys_get_temp_dir().'/mm-rate-test-'.bin2hex(random_bytes(6));$key=str_repeat('a',32);
+for($i=0;$i<5;$i++)check(!mm_rate_limited($dir,$key,'192.0.2.1',1000+$i),'rate allow '.$i);
+check(mm_rate_limited($dir,$key,'192.0.2.1',1005),'rate sixth blocks');
+check(!mm_rate_limited($dir,$key,'192.0.2.2',1005),'separate client');
+check(!mm_rate_limited($dir,$key,'192.0.2.1',1905),'rate expiry');
+$files=glob($dir.'/*');check(count($files)===2,'persistent files');
+foreach($files as $file){check(!str_contains(file_get_contents($file),'192.0.2.'),'no raw IP');unlink($file);}rmdir($dir);
+check(mm_delivery_failure(true,'smtp-auth')['status']===503,'attachment delivery failure');
+check(str_contains(mm_delivery_failure(true,'smtp-auth')['json']['error'],'прикреплённых'),'attachment-specific error');
+echo "PASS {$n} assertions\n";

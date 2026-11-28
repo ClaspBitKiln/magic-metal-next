@@ -1,0 +1,137 @@
+{
+  "date": "2026-11-22",
+  "status": "prepared_not_published",
+  "source": "Новое прямое указание владельца22.11.2026",
+  "rule": "ЦенаРФ=сопоставимаябазапоставщика+2000RUB/t; заменяет+1000, не добавляется поверхнего",
+  "records": [
+    {
+      "id": "407929054",
+      "base_sku": "ЛистСт3/09Г2С4–200; базаСт3 4×1500×6000,Челябинск",
+      "supplier_base_rub_t": 61490,
+      "old_rf_rub_t": 62490,
+      "new_rf_rub_t": 63490,
+      "delta_rub_t": 1000,
+      "source_evidence_date": "2026-11-15",
+      "evidence_file": "UZ_MARKET_2026-11-13/phase4/CATALOXY_RF_PRICE_BASE_20261115.json"
+    },
+    {
+      "id": "407929055",
+      "base_sku": "Круг20/35/45/40Х; база45Ø180,Москва",
+      "supplier_base_rub_t": 64690,
+      "old_rf_rub_t": 65690,
+      "new_rf_rub_t": 66690,
+      "delta_rub_t": 1000,
+      "source_evidence_date": "2026-11-15",
+      "evidence_file": "UZ_MARKET_2026-11-13/phase4/CATALOXY_RF_PRICE_BASE_20261115.json"
+    },
+    {
+      "id": "407929056",
+      "base_sku": "Конструкционные листы; база45 20×1500×6000,Челябинск",
+      "supplier_base_rub_t": 89890,
+      "old_rf_rub_t": 90890,
+      "new_rf_rub_t": 91890,
+      "delta_rub_t": 1000,
+      "source_evidence_date": "2026-11-15",
+      "evidence_file": "UZ_MARKET_2026-11-13/phase4/CATALOXY_RF_PRICE_BASE_20261115.json"
+    },
+    {
+      "id": "407929057",
+      "base_sku": "Бесшовные57–273; база159×6,Челябинск",
+      "supplier_base_rub_t": 113890,
+      "old_rf_rub_t": 114890,
+      "new_rf_rub_t": 115890,
+      "delta_rub_t": 1000,
+      "source_evidence_date": "2026-11-15",
+      "evidence_file": "UZ_MARKET_2026-11-13/phase4/CATALOXY_RF_PRICE_BASE_20261115.json"
+    },
+    {
+      "id": "407929572",
+      "base_sku": "Листоцинкованный; база08пс0,5×1250×2500,Челябинск",
+      "supplier_base_rub_t": 89890,
+      "old_rf_rub_t": 90890,
+      "new_rf_rub_t": 91890,
+      "delta_rub_t": 1000,
+      "source_evidence_date": "архив16.11; свежаякотировка22.11неполучена",
+      "evidence_file": "UZ_MARKET_2026-11-13/phase4/CATALOXY_COLD_GALV_DRAFT_20261116.json"
+    },
+    {
+      "id": "407929573",
+      "base_sku": "Листх/к; базаСт08 1×1250×2500,Челябинск",
+      "supplier_base_rub_t": 67990,
+      "old_rf_rub_t": 68990,
+      "new_rf_rub_t": 69990,
+      "delta_rub_t": 1000,
+      "source_evidence_date": "архив16.11; свежаякотировка22.11неполучена",
+      "evidence_file": "UZ_MARKET_2026-11-13/phase4/CATALOXY_COLD_GALV_DRAFT_20261116.json"
+    },
+    {
+      "id": "407929575",
+      "base_sku": "Поковки20/45/40Х; база40ХØ400 прессоваясотжигом,МоскваКарачарово",
+      "supplier_base_rub_t": 147200,
+      "old_rf_rub_t": 148200,
+      "new_rf_rub_t": 149200,
+      "delta_rub_t": 1000,
+      "source_evidence_date": "последняяпроверка16.11подтвержденастадией20.11; исходныйснимок13.11",
+      "evidence_file": "CATALOXY_NEXT_RF_SOURCES_20261116.md"
+    },
+    {
+      "id": "407929576",
+      "base_sku": "ПлитыАМг2/АМг3; базаАМг2 30×1200×3000,МоскваКапотня",
+      "supplier_base_rub_t": 526000,
+      "old_rf_rub_t": 527000,
+      "new_rf_rub_t": 528000,
+      "delta_rub_t": 1000,
+      "source_evidence_date": "последняяпроверка16.11подтвержденастадией20.11; исходныйснимок13.11",
+      "evidence_file": "CATALOXY_NEXT_RF_SOURCES_20261116.md"
+    },
+    {
+      "id": "407933217",
+      "base_sku": "КругД16ТØ70×3000,Челябинск",
+      "supplier_base_rub_t": 549000,
+      "old_rf_rub_t": 550000,
+      "new_rf_rub_t": 551000,
+      "delta_rub_t": 1000,
+      "source_evidence_date": "2026-11-21",
+      "evidence_file": "../STAGE_20261121_CATALOXY_PROM.md"
+    },
+    {
+      "id": "407933218",
+      "base_sku": "ЭлектродыУОНИ13/55Ø3,уп5кг,Тольятти/отгрузкаВидное",
+      "supplier_base_rub_t": 131000,
+      "old_rf_rub_t": 132000,
+      "new_rf_rub_t": 133000,
+      "delta_rub_t": 1000,
+      "source_evidence_date": "2026-11-21",
+      "evidence_file": "../STAGE_20261121_CATALOXY_PROM.md"
+    }
+  ],
+  "unchanged": [
+    {
+      "id": "407929571",
+      "reason": "Канаты:договорнаяцена, числоваябазанеустановлена"
+    }
+  ],
+  "electrode_equivalent": {
+    "supplier_pack_rub": 655,
+    "kg_pack": 5,
+    "new_rub_pack": 665,
+    "new_rub_kg": 133,
+    "new_rub_t": 133000
+  },
+  "pipe_57_89_rf_new_owner_base": {
+    "supplier_with_vat_rub_t": [
+      105000,
+      110000
+    ],
+    "new_rf_with_same_basis_rub_t": [
+      107000,
+      112000
+    ],
+    "source": "Владелец22.11;НДС22%подтвержден",
+    "not_for": "159×6, неизвестныестенки/марки/изготовитель/остатки"
+  },
+  "export_tashkent_unchanged_rub_t": [
+    135000,
+    140000
+  ]
+}
